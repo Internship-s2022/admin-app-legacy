@@ -1,4 +1,11 @@
-# Getting started with ${App Name}
+# Getting started with Radium Admin
+
+## Domains
+
+- https://admin.app.radiumrocket.com Production (master)
+- https://uat.admin.app.radiumrocket.com UAT (uat)
+- https://test.admin.app.radiumrocket.com Test (test)
+- https://dev.admin.app.radiumrocket.com Develop (develop)
 
 ## Features
 
