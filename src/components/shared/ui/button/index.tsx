@@ -1,17 +1,12 @@
 import React, { FC } from 'react';
 import { Button } from '@mui/material';
 
-interface BtnProps {
-  onClick: () => void;
-  label: string;
-  disabled: boolean;
-}
-
+import { BtnProps } from './types';
 const Buttons: FC<BtnProps> = (props) => {
-  const { onClick, label, disabled } = props;
+  const { onClick, btnName, disabled } = props;
   return (
     <Button variant="contained" onClick={onClick} disabled={disabled}>
-      {label}
+      {btnName}
     </Button>
   );
 };
