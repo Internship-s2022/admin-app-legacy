@@ -1,5 +1,5 @@
-export interface BtnProps {
-  onClick?: () => void;
-  btnName: string;
+export interface ButtonProps {
+  onClick: () => void;
+  label: string;
   disabled?: boolean;
 }

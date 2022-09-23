@@ -1,14 +1,15 @@
-import React, { FC } from 'react';
-import { Button } from '@mui/material';
+import React from 'react';
+import { Button as MaterialButton } from '@mui/material';
 
-import { BtnProps } from './types';
-const Buttons: FC<BtnProps> = (props) => {
-  const { onClick, btnName, disabled } = props;
+import { ButtonProps } from './types';
+
+const Button = (props: ButtonProps): JSX.Element => {
+  const { onClick, label, disabled } = props;
   return (
-    <Button variant="contained" onClick={onClick} disabled={disabled}>
-      {btnName}
-    </Button>
+    <MaterialButton variant="contained" onClick={onClick} disabled={disabled}>
+      {label}
+    </MaterialButton>
   );
 };
 
-export default Buttons;
+export default Button;
