@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Home, Login } from '../pages';
 import { Footer, Header } from '../shared/common';
 import styles from './layout.module.css';
 
-const Layout = () => {
+const Layout: FC = () => {
   return (
     <div className={styles.container}>
       <Header />
