@@ -1,23 +1,20 @@
 import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Home, Login } from '../pages';
 import { Footer, Header } from '../shared/common';
 import styles from './layout.module.css';
 
-const Layout = () => {
-  let currentScreen = <Home />;
-  switch (window.location.pathname) {
-    case '/login':
-      currentScreen = <Login />;
-      break;
-    default:
-      break;
-  }
-
+const Layout = (): JSX.Element => {
   return (
     <div className={styles.container}>
       <Header />
-      {currentScreen}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login/*" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
       <Footer />
     </div>
   );
