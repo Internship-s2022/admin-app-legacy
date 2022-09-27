@@ -1,9 +1,10 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Input } from 'src/components/shared/ui';
+import { Button, Input, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 
+import styles from './index.module.css';
 import { FormValues } from './types';
 
 const StoryBook = () => {
@@ -15,27 +16,45 @@ const StoryBook = () => {
     mode: 'onChange',
   });
 
+  const [open, setOpen] = React.useState(false);
+
   const onSubmit = (data) => {
     console.log('Data: ', data);
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input control={control} testId={'fn-input'} name="FirstName" type={'text'} />
         <Input control={control} testId={'ln-input'} name="LastName" type={'text'} />
-        <Button
-          materialVariant={Variant.CONTAINED}
-          label="SUBMIT"
-          onClick={handleSubmit(onSubmit)}
-        ></Button>
-        <Button materialVariant={Variant.OUTLINED} label="RESET" onClick={() => reset()}></Button>{' '}
-        <Button
-          materialVariant={Variant.TEXT}
-          label="TEXT"
-          onClick={() => console.log('Hi')}
-        ></Button>
+        <div className={styles.buttonsContainer}>
+          <Button
+            testId="submit-btn"
+            materialVariant={Variant.CONTAINED}
+            label="SUBMIT"
+            onClick={handleSubmit(onSubmit)}
+          ></Button>
+          <Button
+            testId="reset-btn"
+            materialVariant={Variant.OUTLINED}
+            label="RESET"
+            onClick={() => reset()}
+          ></Button>{' '}
+        </div>
       </form>
+      <div>
+        <Button
+          testId="pum-btn"
+          materialVariant={Variant.TEXT}
+          onClick={() => setOpen(true)}
+          label="pum"
+        />
+        <Modal onClose={setOpen} isOpen={open} testId="testId">
+          <div>
+            <p>pum</p>
+          </div>
+        </Modal>
+      </div>
     </div>
   );
 };

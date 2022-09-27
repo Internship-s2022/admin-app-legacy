@@ -9,4 +9,5 @@ export interface ButtonProps {
   disabled?: boolean;
   materialVariant: Variant;
   type?: string;
+  testId: string;
 }
