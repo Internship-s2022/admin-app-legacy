@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Input, Modal } from 'src/components/shared/ui';
+import { Button, Input, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 
 import styles from './index.module.css';
@@ -55,6 +55,7 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
+      <Table testId={'testingTable'} headers={['coso', 'pum']} value={['holis', 'kedice']} />
     </div>
   );
 };
