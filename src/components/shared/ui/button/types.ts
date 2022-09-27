@@ -4,7 +4,7 @@ export enum Variant {
   OUTLINED = 'outlined',
 }
 export interface ButtonProps {
-  onClick?: () => void;
+  onClick: () => void;
   label: string;
   disabled?: boolean;
   materialVariant: Variant;
