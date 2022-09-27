@@ -11,9 +11,9 @@ import {
 import { TableProps } from './types';
 
 const Table = (props: TableProps): JSX.Element => {
-  const { headers, value } = props;
+  const { headers, value, testId } = props;
   return (
-    <TableContainer>
+    <TableContainer id={testId}>
       <BasicTable>
         <TableHead>
           <TableRow>
