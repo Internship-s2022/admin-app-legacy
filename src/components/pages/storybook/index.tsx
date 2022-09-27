@@ -1,7 +1,8 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import Input from 'src/components/shared/ui/input';
+import { Button, Input } from 'src/components/shared/ui';
+import { Variant } from 'src/components/shared/ui/button/types';
 
 import { FormValues } from './types';
 
@@ -23,8 +24,17 @@ const StoryBook = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Input control={control} testId={'fn-input'} name="FirstName" type={'text'} />
         <Input control={control} testId={'ln-input'} name="LastName" type={'text'} />
-        <button>Submit</button>
-        <button onClick={() => reset()}>Reset</button>
+        <Button
+          materialVariant={Variant.CONTAINED}
+          label="SUBMIT"
+          onClick={handleSubmit(onSubmit)}
+        ></Button>
+        <Button materialVariant={Variant.OUTLINED} label="RESET" onClick={() => reset()}></Button>{' '}
+        <Button
+          materialVariant={Variant.TEXT}
+          label="TEXT"
+          onClick={() => console.log('Hi')}
+        ></Button>
       </form>
     </div>
   );
