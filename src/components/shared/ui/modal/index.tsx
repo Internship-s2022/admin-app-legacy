@@ -16,5 +16,3 @@ const Modal = (props: ModalProps): JSX.Element => {
 };
 
 export default Modal;
-
-//onClose={(_, reason) => reason === 'backdropClick' && setOpen(false)
