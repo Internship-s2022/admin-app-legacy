@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 
-import { Button, Input, Modal } from 'src/components/shared/ui';
+import { Button, Input, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 
 import styles from './index.module.css';
@@ -47,14 +47,15 @@ const StoryBook = () => {
           testId="pum-btn"
           materialVariant={Variant.TEXT}
           onClick={() => setOpen(true)}
-          label="pum"
+          label="TEXT"
         />
         <Modal onClose={setOpen} isOpen={open} testId="testId">
           <div>
-            <p>pum</p>
+            <p>This is a modal</p>
           </div>
         </Modal>
       </div>
+      <Table testId={'testingTable'} headers={['testing', 'headers']} value={['now', 'values']} />
     </div>
   );
 };
