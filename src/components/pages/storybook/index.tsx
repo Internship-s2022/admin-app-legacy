@@ -47,15 +47,15 @@ const StoryBook = () => {
           testId="pum-btn"
           materialVariant={Variant.TEXT}
           onClick={() => setOpen(true)}
-          label="pum"
+          label="TEXT"
         />
         <Modal onClose={setOpen} isOpen={open} testId="testId">
           <div>
-            <p>pum</p>
+            <p>This is a modal</p>
           </div>
         </Modal>
       </div>
-      <Table testId={'testingTable'} headers={['coso', 'pum']} value={['holis', 'kedice']} />
+      <Table testId={'testingTable'} headers={['testing', 'headers']} value={['now', 'values']} />
     </div>
   );
 };
