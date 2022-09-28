@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@mui/material';
 
+import styles from './table.module.css';
 import { TableProps } from './types';
 
 const Table = (props: TableProps): JSX.Element => {
@@ -16,7 +17,7 @@ const Table = (props: TableProps): JSX.Element => {
     <TableContainer id={testId}>
       <BasicTable>
         <TableHead>
-          <TableRow>
+          <TableRow className={styles.headers}>
             {headers.map((header, index) => (
               <TableCell key={index}>{header}</TableCell>
             ))}
