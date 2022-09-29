@@ -19,15 +19,15 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       console.log(action.payload);
       return {
         ...state,
-        // users: action.payload.user,
+        users: action.payload,
         isPending: false,
         error: undefined,
       };
     case Actions.GET_USERS_ERROR:
       return {
         ...state,
-        // error: action.payload,
-        // isLoading: false,
+        isPending: false,
+        error: action.payload,
       };
     default:
       return state;

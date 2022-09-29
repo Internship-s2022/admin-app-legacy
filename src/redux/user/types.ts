@@ -2,9 +2,9 @@ import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { ActionType } from 'typesafe-actions';
 
-// import { RootReducer } from '..';
+import { RootState } from '../store';
 import * as actions from './actions';
-import * as thunks from './thunk';
+import * as thunks from './thunks';
 
 export enum AccesRoleType {
   MANAGER = 'Manager',
@@ -20,12 +20,12 @@ export interface User {
   firstName: string;
   lastName: string;
   location: string;
-  workedHours: number;
+  workedHours?: number;
   isActive: boolean;
 }
 
 export interface State {
-  users: [];
+  users: User[];
   isPending: boolean;
   error: string;
 }
@@ -37,5 +37,5 @@ export enum Actions {
 }
 
 export type ActionsType = ActionType<typeof actions>;
-// export type AppThunk = ActionCreator<ThunkAction<void, RootReducer, null, Action<null>>>;
+export type AppThunk = ActionCreator<ThunkAction<void, RootState, null, Action<null>>>;
 export type ApiResponse<T> = { message: string; data: T; error: boolean };
