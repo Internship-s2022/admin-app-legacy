@@ -1,15 +1,17 @@
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 import Layout from './components/layout';
 import reportWebVitals from './report-web-vitals';
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
-    <Layout />
+    <StyledEngineProvider injectFirst>
+      <Layout />
+    </StyledEngineProvider>
   </React.StrictMode>,
 );
 
