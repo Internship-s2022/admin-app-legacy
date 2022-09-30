@@ -1,20 +1,17 @@
-import { AnyAction } from 'redux';
-import { ThunkDispatch } from 'redux-thunk';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
 import { Button, Input, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
-import { RootState } from 'src/redux/store';
 import { getUsers } from 'src/redux/user/thunks';
+import { AppDispatch } from 'src/types';
 
 import styles from './index.module.css';
 import { FormValues } from './types';
 
 const StoryBook = () => {
-  type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch: AppDispatch<null> = useDispatch();
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       FirstName: '',

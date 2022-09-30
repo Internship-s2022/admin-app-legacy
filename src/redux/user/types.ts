@@ -9,10 +9,10 @@ import { RootState } from '../store';
 import * as actions from './actions';
 
 export enum AccesRoleType {
-  MANAGER = 'Manager',
-  SUPER_ADMIN = 'Super_Admin',
-  ADMIN = 'Admin',
-  EMPLOYEE = 'Employee',
+  MANAGER = 'MANAGER',
+  SUPER_ADMIN = 'SUPER_ADMIN',
+  ADMIN = 'ADMIN',
+  EMPLOYEE = 'EMPLOYEE',
 }
 
 export interface User {
