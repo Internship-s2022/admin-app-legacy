@@ -1,15 +1,18 @@
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 
 import Layout from './components/layout';
+import store from './redux/store';
 import reportWebVitals from './report-web-vitals';
-
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
-    <Layout />
+    <Provider store={store}>
+      <Layout />
+    </Provider>
   </React.StrictMode>,
 );
 

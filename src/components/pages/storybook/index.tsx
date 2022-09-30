@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 
 import { Button, Input, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import { getUsers } from 'src/redux/user/thunks';
+import { AppDispatch } from 'src/types';
 
 import styles from './index.module.css';
 import { FormValues } from './types';
 
 const StoryBook = () => {
+  const dispatch: AppDispatch<null> = useDispatch();
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       FirstName: '',
@@ -15,6 +19,10 @@ const StoryBook = () => {
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, []);
 
   const [open, setOpen] = React.useState(false);
 
