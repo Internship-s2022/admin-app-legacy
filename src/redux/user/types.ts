@@ -1,4 +1,4 @@
-import { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { ActionType } from 'typesafe-actions';
@@ -7,7 +7,6 @@ import api from 'src/config/api';
 
 import { RootState } from '../store';
 import * as actions from './actions';
-import * as thunks from './thunks';
 
 export enum AccesRoleType {
   MANAGER = 'Manager',

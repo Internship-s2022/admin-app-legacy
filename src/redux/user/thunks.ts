@@ -1,9 +1,7 @@
 import { Dispatch } from 'redux';
 
-import api from 'src/config/api';
-
 import { getUsersError, getUsersPending, getUsersSuccess } from './actions';
-import { AppThunk, User, userRequest } from './types';
+import { AppThunk, userRequest } from './types';
 
 export const getUsers: AppThunk = () => {
   return async (dispatch: Dispatch) => {
