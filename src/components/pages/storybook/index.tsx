@@ -55,7 +55,11 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-      <Table testId={'testingTable'} headers={['testing', 'headers']} value={['now', 'values']} />
+      <Table
+        testId={'testingTable'}
+        headers={['testing', 'headers']}
+        value={[{ prop1: 'now', prop2: 'values' }]}
+      />
     </div>
   );
 };

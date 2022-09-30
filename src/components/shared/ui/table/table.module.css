@@ -1,3 +1,21 @@
 .headers {
   background-color: #b3b3b3;
 }
+
+.headers th {
+  padding: 2%;
+  font-weight: bolder;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2%;
+  border: 1px solid #b3b3b3;
+  border-top: none;
+}
