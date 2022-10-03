@@ -17,6 +17,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         label={props.label}
         placeholder={props.name}
         helperText={error?.message}
+        fullWidth
       />
     </div>
   );

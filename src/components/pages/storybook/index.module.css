@@ -6,6 +6,10 @@
   justify-content: center;
 }
 
+.inputsContainer {
+  width: 330px;
+}
+
 .buttonsContainer {
   display: flex;
   justify-content: space-around;
