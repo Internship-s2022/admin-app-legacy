@@ -8,7 +8,7 @@ import api from 'src/config/api';
 import { RootState } from '../store';
 import * as actions from './actions';
 
-export enum AccesRoleType {
+export enum AccessRoleType {
   MANAGER = 'MANAGER',
   SUPER_ADMIN = 'SUPER_ADMIN',
   ADMIN = 'ADMIN',
@@ -16,14 +16,15 @@ export enum AccesRoleType {
 }
 
 export interface User {
-  firebaseUid: string;
-  accesRoleType: AccesRoleType;
-  email: string;
+  _id?: string;
+  firebaseUid?: string;
+  accessRoleType: AccessRoleType;
+  email?: string;
   firstName: string;
   lastName: string;
-  location: string;
+  location?: string;
   workedHours?: number;
-  isActive: boolean;
+  isActive?: boolean;
 }
 
 export interface State {

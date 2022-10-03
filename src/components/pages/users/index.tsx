@@ -1,18 +1,41 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import { RootState } from 'src/redux/store';
+import { getUsers } from 'src/redux/user/thunks';
+import { User } from 'src/redux/user/types';
+import { AppDispatch } from 'src/types';
 
+import { Headers } from '../../shared/ui/table/types';
 import styles from './users.module.css';
 const Users = () => {
   const [open, isOpen] = useState(false);
-  const users = [
-    {
-      name: 'Paula',
-      role: 'Admin',
-    },
+  const dispatch: AppDispatch<null> = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUsers());
+  }, []);
+
+  const listUser = useSelector((state: RootState) => state.user?.users);
+
+  const listUserData = listUser.map((item) => {
+    return {
+      id: item?._id,
+      firstName: item?.firstName,
+      lastName: item?.lastName,
+      accessRoleType: item?.accessRoleType,
+    };
+  });
+
+  const header: Headers[] = [
+    { header: 'Name', key: 'firstName' },
+    { header: 'Last Name', key: 'lastName' },
+    { header: 'Access Role', key: 'accessRoleType' },
   ];
+
   return (
     <>
       <div className={styles.welcomeMessage}>
@@ -20,16 +43,7 @@ const Users = () => {
         <p>Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
       </div>
       <div className={styles.tableContainer}>
-        <Table
-          applyButton={true}
-          buttonLabel={'Asignar acceso'}
-          buttonTestId={'UserButton'}
-          buttonVariant={Variant.CONTAINED}
-          testId={'userTable'}
-          headers={['Usuarios']}
-          value={users}
-          onClick={() => isOpen(true)}
-        />
+        <Table<User> testId={'userTable'} headers={header} value={listUserData} />
         <Button
           materialVariant={Variant.TEXT}
           onClick={() =>

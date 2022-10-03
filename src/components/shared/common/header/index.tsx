@@ -38,6 +38,9 @@ const Header = () => {
           <li>
             <a href="/storybook">Storybook</a>
           </li>
+          <li>
+            <a href="/users">Users</a>
+          </li>
         </ul>
       </nav>
     </header>
