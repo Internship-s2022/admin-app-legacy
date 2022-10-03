@@ -1,12 +1,7 @@
-export enum AccessRoleTypes {
-  MANAGER = 'MANAGER',
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE',
-}
+import { AccessRoleType } from 'src/constants';
 
 export type FormValues = {
   FirstName: string;
   LastName: string;
-  AccessRole: AccessRoleTypes;
+  AccessRole: AccessRoleType;
 };

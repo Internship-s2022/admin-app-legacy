@@ -102,7 +102,7 @@ const StoryBook = () => {
       <Table<User>
         showButtons={true}
         buttonVariant={Variant.CONTAINED}
-        buttonLabel={'Editar Acceso'}
+        buttonLabel={'Change access'}
         buttonTestId={'table-button'}
         testId={'userTable'}
         headers={header}
