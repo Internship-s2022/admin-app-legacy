@@ -2,6 +2,7 @@ import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
+import { StyledEngineProvider } from '@mui/material/styles';
 
 import Layout from './components/layout';
 import store from './redux/store';
@@ -11,7 +12,9 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Layout />
+      <StyledEngineProvider injectFirst>
+        <Layout />
+      </StyledEngineProvider>
     </Provider>
   </React.StrictMode>,
 );

@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Input, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import { RootState } from 'src/redux/store';
 import { getUsers } from 'src/redux/user/thunks';
+import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 
+import { Headers } from '../../shared/ui/table/types';
 import styles from './index.module.css';
 import { FormValues } from './types';
 
@@ -24,11 +27,27 @@ const StoryBook = () => {
     dispatch(getUsers());
   }, []);
 
+  const listUser = useSelector((state: RootState) => state.user?.users);
   const [open, setOpen] = React.useState(false);
+
+  const listUserData = listUser.map((item) => {
+    return {
+      id: item?._id,
+      firstName: item?.firstName,
+      lastName: item?.lastName,
+      accessRoleType: item?.accessRoleType,
+    };
+  });
 
   const onSubmit = (data) => {
     console.log('Data: ', data);
   };
+
+  const header: Headers[] = [
+    { header: 'Name', key: 'firstName' },
+    { header: 'Last Name', key: 'lastName' },
+    { header: 'Access Role', key: 'accessRoleType' },
+  ];
 
   return (
     <div className={styles.container}>
@@ -63,7 +82,16 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-      <Table testId={'testingTable'} headers={['testing', 'headers']} value={['now', 'values']} />
+      <Table<User>
+        showButtons={true}
+        buttonVariant={Variant.CONTAINED}
+        buttonLabel={'Editar Acceso'}
+        buttonTestId={'table-button'}
+        testId={'userTable'}
+        headers={header}
+        value={listUserData}
+        onClick={() => setOpen(true)}
+      />
     </div>
   );
 };

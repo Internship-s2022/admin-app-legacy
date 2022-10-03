@@ -1,6 +1,7 @@
 import { action } from 'typesafe-actions';
 
-import { Actions, User } from './types';
+import { Actions } from './constants';
+import { User } from './types';
 
 export const getUsersSuccess = (users: User[]) => action(Actions.GET_USERS_SUCCESS, users);
 
