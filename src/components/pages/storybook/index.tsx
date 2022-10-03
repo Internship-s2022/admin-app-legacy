@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, Input, Modal, Table } from 'src/components/shared/ui';
+import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { RootState } from 'src/redux/store';
 import { getUsers } from 'src/redux/user/thunks';
@@ -49,11 +49,28 @@ const StoryBook = () => {
     { header: 'Access Role', key: 'accessRoleType' },
   ];
 
+  const accessRoles = [
+    { value: 'MANAGER', label: 'Manager' },
+    { value: 'ADMIN', label: 'Admin' },
+    { value: 'SUPER_ADMIN', label: 'Super Admin' },
+    { value: 'EMPLOYEE', label: 'Employee' },
+  ];
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Input control={control} testId={'fn-input'} name="FirstName" type={'text'} />
-        <Input control={control} testId={'ln-input'} name="LastName" type={'text'} />
+        <div className={styles.inputsContainer}>
+          <TextInput control={control} testId={'fn-input'} name="FirstName" type={'text'} />
+          <TextInput control={control} testId={'ln-input'} name="LastName" type={'text'} />
+          <Dropdown
+            label="Select user role"
+            options={accessRoles}
+            fullWidth
+            control={control}
+            testId={'dropdown'}
+            name="AccessRole"
+          />
+        </div>
         <div className={styles.buttonsContainer}>
           <Button
             testId="submit-btn"
