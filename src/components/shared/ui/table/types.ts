@@ -1,9 +1,14 @@
+import { Variant } from '../button/types';
+
 export interface TableProps<Data extends RowData> {
   headers: Headers[];
   value: Data[];
   showButtons?: boolean;
-  buttons?: TableButton[];
   testId: string;
+  buttonVariant: Variant;
+  buttonLabel: string;
+  buttonTestId: string;
+  onClick: () => void;
 }
 export interface RowData {
   _id?: string;
@@ -11,10 +16,4 @@ export interface RowData {
 export interface Headers {
   header: string;
   key: string;
-}
-export interface TableButton {
-  active: boolean;
-  icon: JSX.Element;
-  title: string;
-  onClick: () => void;
 }

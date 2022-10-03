@@ -84,7 +84,16 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-      <Table<User> testId={'testingTable'} headers={header} value={listUserData} />
+      <Table<User>
+        showButtons={true}
+        buttonVariant={Variant.CONTAINED}
+        buttonLabel={'Editar Acceso'}
+        buttonTestId={'table-button'}
+        testId={'userTable'}
+        headers={header}
+        value={listUserData}
+        onClick={() => setOpen(true)}
+      />
     </div>
   );
 };

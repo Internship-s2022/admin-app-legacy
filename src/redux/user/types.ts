@@ -18,10 +18,10 @@ export enum AccessRoleType {
 export interface User {
   _id?: string;
   firebaseUid?: string;
-  accessRoleType: AccessRoleType;
+  accessRoleType: string;
   email?: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   location?: string;
   workedHours?: number;
   isActive?: boolean;

@@ -3,7 +3,6 @@
 }
 
 .headers th {
-  padding: 2%;
   font-weight: bolder;
 }
 
@@ -12,10 +11,10 @@
   flex-direction: column;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
-  padding: 2%;
+.table {
   border: 1px solid #b3b3b3;
-  border-top: none;
+}
+
+.rows:nth-of-type(even) {
+  background-color: #b3b3b36f;
 }
