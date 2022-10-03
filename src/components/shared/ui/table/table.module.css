@@ -12,7 +12,7 @@
 }
 
 .table {
-  border: 1px solid #b3b3b3;
+  border: 2px solid #b3b3b3;
 }
 
 .rows:nth-of-type(even) {
