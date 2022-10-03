@@ -1,52 +1,54 @@
 import React from 'react';
 import {
+  IconButton,
   Table as BasicTable,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from '@mui/material';
 
 import { Button } from '../index';
 import styles from './table.module.css';
-import { TableProps } from './types';
+import { RowData, TableProps } from './types';
 
-const Table = (props: TableProps): JSX.Element => {
-  const { buttonLabel, buttonVariant, buttonTestId, onClick, applyButton, headers, value, testId } =
-    props;
+const Table = <T extends RowData>(props: TableProps<T>) => {
+  const { showButtons, headers, value, testId } = props;
   return (
     <>
       <TableContainer id={testId}>
         <BasicTable>
           <TableHead>
             <TableRow className={styles.headers}>
-              {headers.map((header, index) => (
-                <TableCell key={index}>{header[index]}</TableCell>
+              {headers.map((row) => (
+                <TableCell key={row.key}>{row.header}</TableCell>
               ))}
             </TableRow>
           </TableHead>
-          <TableBody className={styles.body}>
-            {value.map((row, index) => {
-              if (row)
-                return (
-                  <TableRow key={index} className={styles.row}>
-                    {headers.map((header, index) => {
-                      return <TableCell key={index}>{row[header]}</TableCell>;
-                    })}
-                    {applyButton && (
-                      <TableCell>
-                        <Button
-                          materialVariant={buttonVariant}
-                          onClick={onClick}
-                          label={buttonLabel}
-                          testId={buttonTestId}
-                        />
-                      </TableCell>
+          <TableBody>
+            {value.map((row) => (
+              <TableRow key={row['id']} hover={true}>
+                {headers.map((header, index) => (
+                  <TableCell key={index} scope="row" className={styles.cell}>
+                    {row[header.key]}
+                  </TableCell>
+                ))}
+                {showButtons && (
+                  <TableCell className={styles.cell}>
+                    {props.buttons.map(
+                      (btn, index) =>
+                        btn.active && (
+                          <Tooltip key={index} title={btn.title}>
+                            <IconButton onClick={btn.onClick}>{btn.icon}</IconButton>
+                          </Tooltip>
+                        ),
                     )}
-                  </TableRow>
-                );
-            })}
+                  </TableCell>
+                )}
+              </TableRow>
+            ))}
           </TableBody>
         </BasicTable>
       </TableContainer>
@@ -55,11 +57,3 @@ const Table = (props: TableProps): JSX.Element => {
 };
 
 export default Table;
-
-// {value.map((cell, index) => (
-//   <TableRow className={styles.row} key={index}>
-//     <TableCell>{cell.prop}</TableCell>
-//     {/* <TableCell>{cell.role}</TableCell> */}
-//
-//   </TableRow>
-// ))}

@@ -1,17 +1,21 @@
 import './index.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { StyledEngineProvider } from '@mui/material/styles';
 
 import Layout from './components/layout';
+import store from './redux/store';
 import reportWebVitals from './report-web-vitals';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
   <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <Layout />
-    </StyledEngineProvider>
+    <Provider store={store}>
+      <StyledEngineProvider injectFirst>
+        <Layout />
+      </StyledEngineProvider>
+    </Provider>
   </React.StrictMode>,
 );
 
