@@ -7,32 +7,29 @@ import { Variant } from 'src/components/shared/ui/button/types';
 import { formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { getUsers } from 'src/redux/user/thunks';
-import { AccessRoleType, User } from 'src/redux/user/types';
+import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
+import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { Headers } from '../../shared/ui/table/types';
 import styles from './users.module.css';
+
 const Users = () => {
   const [open, isOpen] = useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
+  const listUser = useSelector((state: RootState) => state.user?.users);
 
   useEffect(() => {
     dispatch(getUsers());
   }, []);
 
-  const listUser = useSelector((state: RootState) => state.user?.users);
-
   const listUserData = listUser.map((item) => {
     return {
       id: item?._id,
-      name: `${item?.firstName.substring(0, 1).toUpperCase() + item?.firstName.substring(1)} ${
-        item?.lastName.substring(0, 1).toUpperCase() + item?.lastName.substring(1)
-      }`,
+      name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
       accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
     };
   });
-
-  console.log(formattedRoleType[AccessRoleType.SUPER_ADMIN]);
 
   const header: Headers[] = [
     { header: 'Nombre', key: 'name' },
@@ -59,9 +56,7 @@ const Users = () => {
         <div className={styles.addButton}>
           <Button
             materialVariant={Variant.TEXT}
-            onClick={() =>
-              console.log('acá se va a abrir el modal con el form que va a hacer la chiqui')
-            }
+            onClick={() => console.log('TODO modal para agregar usuario')} //TODO modal para agregar usuario
             label={'+ Agregar un nuevo usuario'}
             testId={'addUserButton'}
           />

@@ -8,13 +8,6 @@ import api from 'src/config/api';
 import { RootState } from '../store';
 import * as actions from './actions';
 
-export enum AccessRoleType {
-  MANAGER = 'MANAGER',
-  SUPER_ADMIN = 'SUPER_ADMIN',
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE',
-}
-
 export interface User {
   _id?: string;
   firebaseUid?: string;
@@ -31,12 +24,6 @@ export interface State {
   users: User[];
   isPending: boolean;
   error: string;
-}
-
-export enum Actions {
-  GET_USERS_SUCCESS = 'GET_USERS_SUCCESS',
-  GET_USERS_PENDING = 'GET_USERS_PENDING',
-  GET_USERS_ERROR = 'GET_USERS_ERROR',
 }
 
 const responseBody = (response: AxiosResponse) => response.data;

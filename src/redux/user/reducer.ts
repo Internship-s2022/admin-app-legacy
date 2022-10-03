@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
 
-import { Actions, ActionsType, State } from './types';
+import { Actions } from './constants';
+import { ActionsType, State } from './types';
 
 const initialState: State = {
   users: [],

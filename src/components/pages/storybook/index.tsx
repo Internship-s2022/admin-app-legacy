@@ -39,8 +39,6 @@ const StoryBook = () => {
     };
   });
 
-  console.log('usuarios', listUserData);
-
   const onSubmit = (data) => {
     console.log('Data: ', data);
   };
