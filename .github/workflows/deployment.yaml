@@ -35,5 +35,6 @@ jobs:
           PRODUCTION: ${{ inputs.production }}
           BUILD_ENV: | # ADD ALL ENV VARIABLES HERE
             REACT_APP_SHOW_ENV=${{ secrets.REACT_APP_SHOW_ENV }}
+            REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}
           ALIAS_DOMAINS: |
             https://${{ inputs.domain }}${{ secrets.APP_DOMAIN }}
