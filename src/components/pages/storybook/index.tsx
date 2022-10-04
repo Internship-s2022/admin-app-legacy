@@ -69,7 +69,6 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-
       <Table<User>
         showButtons={true}
         buttonVariant={Variant.CONTAINED}

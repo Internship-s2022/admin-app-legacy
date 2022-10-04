@@ -22,12 +22,16 @@
   text-align: center;
 }
 
-.addButton {
-  margin-top: 3%;
+.addUserButton {
+  margin-top: 2%;
 }
 
 .formContainer {
   padding: 15px;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 .inputsContainer {

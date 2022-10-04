@@ -87,7 +87,7 @@ const Users = () => {
           value={listUserData}
           onClick={() => setOpen(true)}
         />
-        <div>
+        <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.TEXT}
             onClick={() => setFormOpen(true)} //TODO modal para agregar usuario
@@ -114,7 +114,7 @@ const Users = () => {
                 <Dropdown
                   control={control}
                   testId={'access-role-dropdown'}
-                  label="Access role"
+                  label="Rol de acceso"
                   name="accessRole"
                   options={accessRoles}
                   error
@@ -133,7 +133,7 @@ const Users = () => {
                 <TextInput
                   control={control}
                   testId={'first-name-input'}
-                  label="First name"
+                  label="Nombre"
                   name="firstName"
                   type={'text'}
                   error
@@ -142,7 +142,7 @@ const Users = () => {
                 <TextInput
                   control={control}
                   testId={'last-name-input'}
-                  label="Last name"
+                  label="Apellido"
                   name="lastName"
                   type={'text'}
                   error
@@ -151,7 +151,7 @@ const Users = () => {
                 <TextInput
                   control={control}
                   testId={'location-input'}
-                  label="Location"
+                  label="Localidad"
                   name="location"
                   type={'text'}
                   error
@@ -170,21 +170,20 @@ const Users = () => {
                 <Button
                   testId="submit-btn"
                   materialVariant={Variant.CONTAINED}
-                  label="SUBMIT"
+                  label="Confirmar"
                   onClick={handleSubmit(onSubmit)}
                 ></Button>
                 <Button
                   testId="reset-btn"
                   materialVariant={Variant.OUTLINED}
-                  label="Cancel"
+                  label="Cancelar"
                   onClick={() => onClose()}
-                ></Button>{' '}
+                ></Button>
               </div>
             </form>
           </div>
         </Modal>
       </div>
-
       <Modal testId={'User-access-modal'} isOpen={open} onClose={() => setOpen(!open)}>
         <div className={styles.modalMessage}>
           <p>Este es el Modal para cambiar el rol de acceso de cada usuario.</p>
