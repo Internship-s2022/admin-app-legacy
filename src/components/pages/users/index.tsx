@@ -30,7 +30,7 @@ const Users = () => {
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
-      firebaseUid: '',
+      firebaseUid: '1a12sdas3',
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
       firstName: '',
@@ -103,16 +103,6 @@ const Users = () => {
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className={styles.inputsContainer}>
-                <TextInput
-                  control={control}
-                  testId={'firebase-input'}
-                  label="Firebase Uid"
-                  name="firebaseUid"
-                  type={'text'}
-                  variant="standard"
-                  error
-                  fullWidth
-                />
                 <Dropdown
                   control={control}
                   testId={'access-role-dropdown'}
