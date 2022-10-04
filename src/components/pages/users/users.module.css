@@ -22,6 +22,27 @@
   text-align: center;
 }
 
-.addButton {
-  margin-top: 3%;
+.addUserButton {
+  margin-top: 2%;
+}
+
+.formContainer {
+  padding: 15px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 330px;
+  padding: 20px;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
 }
