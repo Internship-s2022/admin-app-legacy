@@ -23,3 +23,9 @@ export const editUserSuccess = (accessRole: AccessRoleType, id: string) =>
 export const editUserPending = () => action(Actions.EDIT_USER_PENDING);
 
 export const editUserError = (error: string) => action(Actions.EDIT_USER_ERROR, error);
+
+export const deleteUserSuccess = (user: User) => action(Actions.DELETE_USER_SUCCESS, user);
+
+export const deleteUserPending = () => action(Actions.DELETE_USER_PENDING);
+
+export const deleteUserError = (error: string) => action(Actions.DELETE_USER_ERROR, error);

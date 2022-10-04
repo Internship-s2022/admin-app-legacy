@@ -68,6 +68,23 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
         isPending: false,
         error: action.payload,
       };
+    case Actions.DELETE_USER_PENDING:
+      return {
+        ...state,
+        isPending: true,
+      };
+    case Actions.DELETE_USER_SUCCESS:
+      return {
+        ...state,
+        users: state.users.filter((item) => item._id !== action.payload._id),
+        isPending: false,
+      };
+    case Actions.DELETE_USER_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+        isPending: false,
+      };
     default:
       return state;
   }

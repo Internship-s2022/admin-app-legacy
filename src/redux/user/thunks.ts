@@ -4,6 +4,9 @@ import {
   addUserPending,
   addUsersError,
   addUserSuccess,
+  deleteUserError,
+  deleteUserPending,
+  deleteUserSuccess,
   editUserError,
   editUserPending,
   editUserSuccess,
@@ -55,3 +58,17 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
     }
   };
 };
+
+// export const deleteUser: AppThunk = (id) => {
+//   return async (dispatch: Dispatch) => {
+//     try {
+//       dispatch(deleteUserPending());
+//       const response = await userRequest.delete(`/user/${id}`);
+//       if (response.data?.length) {
+//         return dispatch(deleteUserSuccess(response.data));
+//       }
+//     } catch (error) {
+//       dispatch(deleteUserError(error));
+//     }
+//   };
+// };
