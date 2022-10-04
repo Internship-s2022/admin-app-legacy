@@ -1,6 +1,13 @@
 import { Dispatch } from 'redux';
 
-import { getUsersError, getUsersPending, getUsersSuccess } from './actions';
+import {
+  addUserPendign,
+  addUsersError,
+  addUserSuccess,
+  getUsersError,
+  getUsersPending,
+  getUsersSuccess,
+} from './actions';
 import { AppThunk, userRequest } from './types';
 
 export const getUsers: AppThunk = () => {
@@ -13,6 +20,20 @@ export const getUsers: AppThunk = () => {
       }
     } catch (error) {
       dispatch(getUsersError(error));
+    }
+  };
+};
+
+export const addUser: AppThunk = (data, id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(addUserPendign());
+      const response = await userRequest.post('/user${id}', data);
+      if (response.data?.length) {
+        return dispatch(addUserSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(addUsersError(error));
     }
   };
 };

@@ -7,7 +7,7 @@ import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { getUsers } from 'src/redux/user/thunks';
+import { addUser, getUsers } from 'src/redux/user/thunks';
 import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 
@@ -31,9 +31,20 @@ const StoryBook = () => {
     mode: 'onChange',
     resolver: joiResolver(storybookValidation),
   });
+  const user = {
+    firebaseUid: '23setd12',
+    accessRoleType: 'MANAGER',
+    email: 'luchito.pruebas@radiumrocket.com',
+    firstName: 'Pichichi',
+    lastName: 'Scioli',
+    location: 'Rosario',
+    birthDate: '2002/12/11',
+    isActive: true,
+  };
 
   useEffect(() => {
     dispatch(getUsers());
+    dispatch(addUser(user));
   }, []);
 
   const listUser = useSelector((state: RootState) => state.user?.users);
