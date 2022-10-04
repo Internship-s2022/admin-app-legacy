@@ -25,3 +25,20 @@
 .addButton {
   margin-top: 3%;
 }
+
+.formContainer {
+  padding: 15px;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 330px;
+  padding: 20px;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+}

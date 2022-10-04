@@ -7,10 +7,10 @@
 }
 
 .inputsContainer {
-  width: 330px;
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 330px;
   padding: 20px;
 }
 

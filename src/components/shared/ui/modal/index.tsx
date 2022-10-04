@@ -10,7 +10,7 @@ const Modal = (props: ModalProps): JSX.Element => {
   };
   return (
     <MaterialModal onClose={handleClose} open={isOpen} id={testId}>
-      <div>{children}</div>
+      {children}
     </MaterialModal>
   );
 };

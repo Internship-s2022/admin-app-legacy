@@ -48,25 +48,10 @@ const StoryBook = () => {
     };
   });
 
-  const onSubmit = (data) => {
-    console.log('Data: ', data);
-  };
-  const onClose = () => {
-    reset();
-    setOpen(false);
-  };
-
   const header: Headers[] = [
     { header: 'Name', key: 'firstName' },
     { header: 'Last Name', key: 'lastName' },
     { header: 'Access Role', key: 'accessRoleType' },
-  ];
-
-  const accessRoles = [
-    { value: 'MANAGER', label: 'Manager' },
-    { value: 'ADMIN', label: 'Admin' },
-    { value: 'SUPER_ADMIN', label: 'Super Admin' },
-    { value: 'EMPLOYEE', label: 'Employee' },
   ];
 
   return (
@@ -84,92 +69,7 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-      <div>
-        <Button
-          testId="add-btn"
-          materialVariant={Variant.TEXT}
-          onClick={() => setOpen(true)}
-          label="Agregar usuario"
-        />
-        <Modal onClose={setOpen} isOpen={open} testId="testId">
-          <div className={styles.formContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <TextInput
-                control={control}
-                testId={'firebase-input'}
-                label="Firebase Uid"
-                name="firebaseUid"
-                type={'text'}
-                variant="standard"
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'access-role-input'}
-                label="Access role"
-                name="accessRole"
-                type={'text'}
-                variant="filled"
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'email-input'}
-                label="Email"
-                name="email"
-                type={'text'}
-                variant="outlined"
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'first-name-input'}
-                label="First name"
-                name="firstName"
-                type={'text'}
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'last-name-input'}
-                label="Last name"
-                name="lastName"
-                type={'text'}
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'location-input'}
-                label="Location"
-                name="location"
-                type={'text'}
-                error
-              />
-              <TextInput
-                control={control}
-                testId={'date-input'}
-                name="birthDate"
-                type="date"
-                error
-              />
-              <div className={styles.buttonsContainer}>
-                <Button
-                  testId="submit-btn"
-                  materialVariant={Variant.CONTAINED}
-                  label="SUBMIT"
-                  onClick={handleSubmit(onSubmit)}
-                ></Button>
-                <Button
-                  testId="reset-btn"
-                  materialVariant={Variant.OUTLINED}
-                  label="Cancel"
-                  onClick={() => onClose()}
-                ></Button>{' '}
-              </div>
-            </form>
-          </div>
-        </Modal>
-      </div>
+
       <Table<User>
         showButtons={true}
         buttonVariant={Variant.CONTAINED}
