@@ -14,3 +14,9 @@ export const addUserPending = () => action(Actions.ADD_USER_PENDING);
 export const addUserSuccess = (user: User) => action(Actions.ADD_USER_SUCCESS, user);
 
 export const addUsersError = (error: string) => action(Actions.ADD_USER_ERROR, error);
+
+export const editUserSuccess = (user: User) => action(Actions.EDIT_USER_SUCCESS, user);
+
+export const editUserPending = () => action(Actions.EDIT_USER_PENDING);
+
+export const editUserError = (error: string) => action(Actions.EDIT_USER_ERROR, error);

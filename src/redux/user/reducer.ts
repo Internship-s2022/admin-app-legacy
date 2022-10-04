@@ -46,6 +46,28 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
         isPending: false,
         error: action.payload,
       };
+    case Actions.EDIT_USER_PENDING:
+      return {
+        ...state,
+        isPending: true,
+      };
+    case Actions.EDIT_USER_SUCCESS:
+      return {
+        ...state,
+        users: state.users.map((item) => {
+          if (item._id === action.payload._id) {
+            return action.payload;
+          }
+          return item;
+        }),
+        isPending: false,
+      };
+    case Actions.EDIT_USER_ERROR:
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
