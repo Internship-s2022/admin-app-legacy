@@ -17,7 +17,6 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
         isPending: true,
       };
     case Actions.GET_USERS_SUCCESS:
-      console.log(action.payload);
       return {
         ...state,
         users: action.payload,
@@ -25,6 +24,23 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
         error: undefined,
       };
     case Actions.GET_USERS_ERROR:
+      return {
+        ...state,
+        isPending: false,
+        error: action.payload,
+      };
+    case Actions.ADD_USER_PENDING:
+      return {
+        ...state,
+        isPending: true,
+      };
+    case Actions.ADD_USER_SUCCESS:
+      return {
+        ...state,
+        users: [...state.users, action.payload],
+        isPending: false,
+      };
+    case Actions.ADD_USER_ERROR:
       return {
         ...state,
         isPending: false,

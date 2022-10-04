@@ -2,7 +2,7 @@ import { AccessRoleType } from 'src/constants';
 
 export type FormValues = {
   firebaseUid: string;
-  accessRole?: AccessRoleType;
+  accessRoleType?: AccessRoleType;
   email: string;
   firstName: string;
   lastName: string;

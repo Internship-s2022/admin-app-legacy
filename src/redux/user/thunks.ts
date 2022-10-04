@@ -1,7 +1,16 @@
 import { Dispatch } from 'redux';
 
-import { getUsersError, getUsersPending, getUsersSuccess } from './actions';
-import { AppThunk, userRequest } from './types';
+import { userRequest } from 'src/config/api';
+
+import {
+  addUserPending,
+  addUsersError,
+  addUserSuccess,
+  getUsersError,
+  getUsersPending,
+  getUsersSuccess,
+} from './actions';
+import { AppThunk } from './types';
 
 export const getUsers: AppThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -13,6 +22,20 @@ export const getUsers: AppThunk = () => {
       }
     } catch (error) {
       dispatch(getUsersError(error));
+    }
+  };
+};
+
+export const addUser: AppThunk = (data) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(addUserPending());
+      const response = await userRequest.post('/user', data);
+      if (response.data?.length) {
+        return dispatch(addUserSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(addUsersError(error));
     }
   };
 };

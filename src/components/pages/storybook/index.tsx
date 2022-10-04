@@ -7,7 +7,7 @@ import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { getUsers } from 'src/redux/user/thunks';
+import { addUser, getUsers } from 'src/redux/user/thunks';
 import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 

@@ -1,18 +1,18 @@
 import Joi from 'joi';
 
 import { AccessRoleType } from 'src/constants';
-export const storybookValidation = Joi.object({
+export const userValidation = Joi.object({
   firebaseUid: Joi.string()
     .min(3)
     .max(35)
     .messages({
-      'string.pattern': 'You have to use a valid firebaseUid',
-      'string.empty': 'You have to add a firebaseUid to create an user',
-      'string.min': 'Firebase Uid must not contain less than 3 letters',
+      'string.pattern': 'Tienes que utilizar un firebaseUid valido',
+      'string.empty': 'FirebaseUid es un campo requerido',
+      'string.min': 'FirebaseUid debe contener al menos 3 caracteres',
     })
     .required(),
 
-  accessRole: Joi.string()
+  accessRoleType: Joi.string()
     .valid(
       AccessRoleType.ADMIN,
       AccessRoleType.EMPLOYEE,
@@ -20,24 +20,24 @@ export const storybookValidation = Joi.object({
       AccessRoleType.SUPER_ADMIN,
     )
     .messages({
-      'any.only': 'Access rol type must be one Admin, Employee, Manager or Super Admin',
+      'any.only': 'El rol de acceso debe ser Admin, Employee, Manager o Super Admin',
     }),
 
   email: Joi.string()
     .regex(/^[a-zA-Z.]*@radiumrocket.com/)
     .messages({
-      'string.pattern.base': 'You have to use a valid email',
-      'string.empty': 'You have to add an email to create an user',
+      'string.pattern.base': 'Utilice un mail con el dominio @radiumrocket',
+      'string.empty': 'Debes completar este campo para crear un usuario',
     }),
 
   firstName: Joi.string()
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
     .messages({
-      'string.base': 'First name has to be a string',
-      'string.empty': 'You have to add a first name to create an username ',
-      'string.pattern': 'First name must contain only letters',
-      'string.min': 'First name must contain more than 3 letters',
+      'string.base': 'El nombre debe contener solo letras',
+      'string.pattern': 'El nombre debe contener solo letras',
+      'string.empty': 'Debes completar este campo para crear un usuario',
+      'string.min': 'El nombre debe contener al menos 3 letras',
     })
     .required(),
 
@@ -45,19 +45,19 @@ export const storybookValidation = Joi.object({
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
     .messages({
-      'string.base': 'Last name has to be a string',
-      'string.pattern': 'Last name must contain only letters',
-      'string.empty': 'You have to add a last name to create an user ',
-      'string.min': 'Last name must contain more than 3 letters',
+      'string.base': 'El apellido debe contener solo letras',
+      'string.pattern': 'El apellido debe contener solo letras',
+      'string.empty': 'Debes completar este campo para crear un usuario',
+      'string.min': 'El apellido debe contener al menos 3 letras',
     })
     .required(),
 
   location: Joi.string()
     .min(3)
     .messages({
-      'string.base': 'Location has to be a string',
-      'string.empty': 'You have to add a location to create an user',
-      'string.min': 'Location must contain more than 3 letters',
+      'string.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
+      'string.empty': 'Debes completar este campo para crear un usuario',
+      'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
     })
     .required(),
 
@@ -65,9 +65,10 @@ export const storybookValidation = Joi.object({
     .greater('1-1-1900')
     .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
     .messages({
-      'date.greater': 'Date of birth must be earlier than 1900',
-      'date.less': 'Your must be over 18',
-      'any.required': 'Birth date is a required field',
+      'date.greater': 'La fecha de nacimiento no puede ser anterior al 1900',
+      'date.less': 'El usuario debe ser mayor a 18 anos',
+      'any.required': 'Debes completar este campo para crear un usuario',
     })
     .required(),
+  isActive: Joi.boolean().required(),
 });
