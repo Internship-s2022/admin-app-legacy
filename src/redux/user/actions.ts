@@ -9,7 +9,7 @@ export const getUsersSuccess = (users: User[]) => action(Actions.GET_USERS_SUCCE
 
 export const getUsersError = (error: string) => action(Actions.GET_USERS_ERROR, error);
 
-export const addUserPendign = () => action(Actions.ADD_USER_PENDING);
+export const addUserPending = () => action(Actions.ADD_USER_PENDING);
 
 export const addUserSuccess = (user: User) => action(Actions.ADD_USER_SUCCESS, user);
 

@@ -3,7 +3,7 @@ import { Dispatch } from 'redux';
 import { userRequest } from 'src/config/api';
 
 import {
-  addUserPendign,
+  addUserPending,
   addUsersError,
   addUserSuccess,
   getUsersError,
@@ -29,7 +29,7 @@ export const getUsers: AppThunk = () => {
 export const addUser: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
     try {
-      dispatch(addUserPendign());
+      dispatch(addUserPending());
       const response = await userRequest.post('/user', data);
       if (response.data?.length) {
         return dispatch(addUserSuccess(response.data));
