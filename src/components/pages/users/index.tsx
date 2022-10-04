@@ -8,7 +8,7 @@ import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { getUsers } from 'src/redux/user/thunks';
+import { addUser, getUsers } from 'src/redux/user/thunks';
 import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
@@ -16,7 +16,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 import { Headers } from '../../shared/ui/table/types';
 import { FormValues } from './types';
 import styles from './users.module.css';
-import { storybookValidation } from './validations';
+import { userValidation } from './validations';
 
 const Users = () => {
   const [open, setOpen] = React.useState(false);
@@ -31,15 +31,16 @@ const Users = () => {
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       firebaseUid: '',
-      accessRole: AccessRoleType.EMPLOYEE,
+      accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
       firstName: '',
       lastName: '',
       location: '',
       birthDate: undefined,
+      isActive: true,
     },
     mode: 'onChange',
-    resolver: joiResolver(storybookValidation),
+    resolver: joiResolver(userValidation),
   });
 
   const listUserData = listUser.map((item) => {
@@ -49,14 +50,6 @@ const Users = () => {
       accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
     };
   });
-
-  const onSubmit = (data) => {
-    console.log('Data: ', data);
-  };
-  const onClose = () => {
-    reset();
-    setFormOpen(false);
-  };
 
   const header: Headers[] = [
     { header: 'Nombre', key: 'name' },
@@ -69,6 +62,15 @@ const Users = () => {
     { value: 'SUPER_ADMIN', label: 'Super Admin' },
     { value: 'EMPLOYEE', label: 'Employee' },
   ];
+
+  const onSubmit = (data) => {
+    dispatch(addUser(data));
+  };
+
+  const onClose = () => {
+    reset();
+    setFormOpen(false);
+  };
 
   return (
     <>
@@ -115,7 +117,7 @@ const Users = () => {
                   control={control}
                   testId={'access-role-dropdown'}
                   label="Rol de acceso"
-                  name="accessRole"
+                  name="accessRoleType"
                   options={accessRoles}
                   error
                   fullWidth
