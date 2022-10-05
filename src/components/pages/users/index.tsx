@@ -9,6 +9,7 @@ import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { addUser, getUsers } from 'src/redux/user/thunks';
+import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
@@ -32,6 +33,8 @@ const Users = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
 
+  // const userId = '633b4bc6d436d6d8846b2328';
+
   useEffect(() => {
     dispatch(getUsers());
   }, [listUser]);
@@ -51,7 +54,8 @@ const Users = () => {
     resolver: joiResolver(userValidation),
   });
 
-  const listUserData = listUser.map((item): UserData => {
+  // const fillteredUsers = listUser.filter((item): User => item?.isActive === true);
+  const listUserData = listUser.map((item) => {
     return {
       id: item?._id,
       name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
