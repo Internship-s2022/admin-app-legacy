@@ -9,7 +9,6 @@ import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { addUser, getUsers } from 'src/redux/user/thunks';
-import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
@@ -35,7 +34,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsers());
-  }, []);
+  }, [listUser]);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -67,6 +66,7 @@ const Users = () => {
 
   const onSubmit = (data) => {
     dispatch(addUser(data));
+    onClose();
   };
 
   const onClose = () => {
