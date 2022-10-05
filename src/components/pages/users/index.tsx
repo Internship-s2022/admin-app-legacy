@@ -33,8 +33,6 @@ const Users = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
 
-  // const userId = '633b4bc6d436d6d8846b2328';
-
   useEffect(() => {
     dispatch(getUsers());
   }, [listUser]);
@@ -67,6 +65,17 @@ const Users = () => {
     { header: 'Nombre', key: 'name' },
     { header: 'Rol de acceso', key: 'accessRoleType' },
   ];
+
+  const accessRoles = [
+    { value: 'MANAGER', label: 'Manager' },
+    { value: 'ADMIN', label: 'Admin' },
+    { value: 'SUPER_ADMIN', label: 'Super Admin' },
+    { value: 'EMPLOYEE', label: 'Employee' },
+  ];
+
+  // const handleDelete = () => {
+  //   dispatch(deleteUser());
+  // };
 
   const onSubmit = (data) => {
     dispatch(addUser(data));
