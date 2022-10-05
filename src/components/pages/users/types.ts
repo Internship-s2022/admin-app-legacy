@@ -11,7 +11,7 @@ export type FormValues = {
   isActive: boolean;
 };
 
-export interface ListUserData {
+export interface UserData {
   id?: string;
   name: string;
   accessRoleType: string;

@@ -35,7 +35,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
               <Button
                 key={item.value}
                 testId={`access${item.label}Btn`}
-                materialVariant={accessRole == item.value ? Variant.CONTAINED : Variant.OUTLINED}
+                materialVariant={accessRole === item.value ? Variant.CONTAINED : Variant.OUTLINED}
                 label={item.label}
                 onClick={() => setAccessRole(item.value)}
                 styles={styles.buttonStyle}

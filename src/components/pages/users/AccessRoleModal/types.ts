@@ -1,7 +1,7 @@
-import { ListUserData } from '../types';
+import { UserData } from '../types';
 
 export interface AccessRoleModalProps {
-  row: ListUserData;
+  row: UserData;
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -15,7 +15,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { Headers } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { FormValues, ListUserData } from './types';
+import { FormValues, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
 
@@ -27,7 +27,7 @@ export const accessRoles = [
 ];
 
 const Users = () => {
-  const [row, setRow] = React.useState({} as ListUserData);
+  const [row, setRow] = React.useState({} as UserData);
   const [open, setOpen] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
@@ -52,7 +52,7 @@ const Users = () => {
     resolver: joiResolver(userValidation),
   });
 
-  const listUserData = listUser.map((item): ListUserData => {
+  const listUserData = listUser.map((item): UserData => {
     return {
       id: item?._id,
       name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
@@ -81,7 +81,7 @@ const Users = () => {
         <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
       </div>
       <div className={styles.tableContainer}>
-        <Table<User>
+        <Table<UserData>
           showButtons={true}
           buttonVariant={Variant.CONTAINED}
           buttonLabel={'Editar Acceso'}
