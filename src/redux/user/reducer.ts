@@ -1,4 +1,3 @@
-/* eslint-disable no-case-declarations */
 import { Reducer } from 'redux';
 
 import { Actions } from './constants';
