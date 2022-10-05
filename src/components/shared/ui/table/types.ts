@@ -8,7 +8,7 @@ export interface TableProps<Data extends RowData> {
   buttonVariant: Variant;
   buttonLabel: string;
   buttonTestId: string;
-  onClick: () => void;
+  onClick: (row: any) => void;
 }
 export interface RowData {
   _id?: string;
