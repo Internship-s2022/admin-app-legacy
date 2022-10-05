@@ -1,7 +1,3 @@
-/* * {
-  outline: 1px solid red;
-} */
-
 .container {
   display: flex;
   flex-direction: column;
@@ -16,7 +12,7 @@
   display: flex;
   gap: 20px;
   justify-content: space-around;
-  width: 85%
+  width: 85%;
 }
 
 .buttonsContainer div {
@@ -44,29 +40,30 @@
 .inputsContainer {
   display: flex;
   flex-direction: column;
-  width:  85%;;
   gap: 55px;
+  width: 85%;
 }
 
 .dropdown {
-  width: 550px;
   align-self: flex-start;
+  width: 550px;
 }
- .dateInput {
-   width: 350px;
-   align-self: flex-start;
+
+.dateInput {
+  align-self: flex-start;
+  width: 350px;
   height: 100px;
- }
+}
 
 .textInput {
   width: 400px;
 }
 
 .inputsContainer h3 {
-  margin: 0px;
+  margin: 0;
 }
 
-.inputsContainer>div {
+.inputsContainer > div {
   display: flex;
   gap: 10px;
   justify-content: space-between;
@@ -79,8 +76,8 @@
 
 .modalContent {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 400px;
-  height: 500px ;
+  height: 500px;
 }
