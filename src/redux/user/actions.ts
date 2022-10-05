@@ -1,5 +1,7 @@
 import { action } from 'typesafe-actions';
 
+import { AccessRoleType } from 'src/constants';
+
 import { Actions } from './constants';
 import { User } from './types';
 
@@ -15,7 +17,8 @@ export const addUserSuccess = (user: User) => action(Actions.ADD_USER_SUCCESS, u
 
 export const addUsersError = (error: string) => action(Actions.ADD_USER_ERROR, error);
 
-export const editUserSuccess = (user: User) => action(Actions.EDIT_USER_SUCCESS, user);
+export const editUserSuccess = (accessRole: AccessRoleType, id: string) =>
+  action(Actions.EDIT_USER_SUCCESS, { accessRole, id });
 
 export const editUserPending = () => action(Actions.EDIT_USER_PENDING);
 

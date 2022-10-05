@@ -1,3 +1,4 @@
+/* eslint-disable no-case-declarations */
 import { Reducer } from 'redux';
 
 import { Actions } from './constants';
@@ -55,8 +56,8 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         users: state.users.map((item) => {
-          if (item._id === action.payload._id) {
-            return action.payload;
+          if (item._id === action.payload.id) {
+            return { ...item, accessRoleType: action.payload.accessRole };
           }
           return item;
         }),

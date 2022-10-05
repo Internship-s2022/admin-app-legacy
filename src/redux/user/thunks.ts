@@ -1,7 +1,5 @@
 import { Dispatch } from 'redux';
 
-import { userRequest } from 'src/config/api';
-
 import {
   addUserPending,
   addUsersError,
@@ -13,7 +11,7 @@ import {
   getUsersPending,
   getUsersSuccess,
 } from './actions';
-import { editUserRequest, getUsersRequest } from './api';
+import { addUserRequest, editUserRequest, getUsersRequest } from './api';
 import { AppThunk, User } from './types';
 
 export const getUsers: AppThunk = () => {
@@ -34,7 +32,7 @@ export const addUser: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(addUserPending());
-      const response = await userRequest.post('/user', data);
+      const response = await addUserRequest(data);
       if (response.data?.length) {
         return dispatch(addUserSuccess(response.data));
       }
@@ -49,8 +47,8 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
     try {
       dispatch(editUserPending());
       const response = await editUserRequest(options);
-      if (response.data?.length) {
-        return dispatch(editUserSuccess(response.data));
+      if (!response.error) {
+        return dispatch(editUserSuccess(response.data.accessRoleType, options.id));
       }
     } catch (error) {
       dispatch(editUserError(error));
