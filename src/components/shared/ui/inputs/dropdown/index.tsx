@@ -10,10 +10,17 @@ const Dropdown = <Form extends FieldValues>(props: DropdownProps<Form>): JSX.Ele
     fieldState: { error },
   } = useController(props);
 
-  const { label, options } = props;
+  const { label, options, styles } = props;
 
   return (
-    <TextField {...field} label={label} helperText={error?.message} select fullWidth>
+    <TextField
+      {...field}
+      className={styles}
+      label={label}
+      helperText={error?.message}
+      select
+      fullWidth
+    >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
           {option.label}
