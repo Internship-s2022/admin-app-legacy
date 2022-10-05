@@ -8,6 +8,7 @@ interface selectOption {
 
 export type DropdownProps<Form extends FieldValues> = {
   testId: string;
+  styles?: string;
   options: selectOption[];
   onChange?: () => void;
 } & UseControllerProps<Form> &

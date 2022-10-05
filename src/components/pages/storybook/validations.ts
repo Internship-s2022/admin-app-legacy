@@ -3,17 +3,7 @@ import Joi from 'joi';
 import { AccessRoleType } from 'src/constants';
 
 export const storybookValidation = Joi.object({
-  firebaseUid: Joi.string()
-    .min(3)
-    .max(35)
-    .messages({
-      'string.pattern': 'Tienes que utilizar un firebaseUid valido',
-      'string.empty': 'FirebaseUid es un campo requerido',
-      'string.min': 'FirebaseUid debe contener al menos 3 caracteres',
-    })
-    .required(),
-
-  accessRole: Joi.string()
+  accessRoleType: Joi.string()
     .valid(
       AccessRoleType.ADMIN,
       AccessRoleType.EMPLOYEE,
@@ -27,7 +17,7 @@ export const storybookValidation = Joi.object({
   email: Joi.string()
     .regex(/^[a-zA-Z.]*@radiumrocket.com/)
     .messages({
-      'string.pattern': 'Tienes que utilizar un mail valido',
+      'string.pattern.base': 'Tienes que utilizar un mail valido',
       'string.empty': 'Debes completar este campo para crear un usuario',
     }),
 
@@ -36,7 +26,7 @@ export const storybookValidation = Joi.object({
     .min(3)
     .messages({
       'string.base': 'El nombre debe contener solo letras',
-      'string.pattern': 'El nombre debe contener solo letras',
+      'string.pattern.base': 'El nombre debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El nombre debe contener al menos 3 letras',
     })
@@ -47,22 +37,13 @@ export const storybookValidation = Joi.object({
     .min(3)
     .messages({
       'string.base': 'El apellido debe contener solo letras',
-      'string.pattern': 'El apellido debe contener solo letras',
+      'string.pattern.base': 'El apellido debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El apellido debe contener al menos 3 letras',
     })
     .required(),
 
-  location: Joi.string()
-    .min(3)
-    .messages({
-      'string.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
-      'string.empty': 'Debes completar este campo para crear un usuario',
-      'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
-    })
-    .required(),
-
-  birthDate: Joi.date()
+  date: Joi.date()
     .greater('1-1-1900')
     .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
     .messages({
