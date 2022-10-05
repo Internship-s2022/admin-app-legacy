@@ -12,3 +12,7 @@ export enum AccessRoleType {
   ADMIN = 'ADMIN',
   EMPLOYEE = 'EMPLOYEE',
 }
+
+export enum ApiRoutes {
+  USER = '/user',
+}

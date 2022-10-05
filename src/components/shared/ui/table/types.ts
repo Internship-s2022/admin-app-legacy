@@ -1,6 +1,6 @@
 import { Variant } from '../button/types';
 
-export interface TableProps<Data extends RowData> {
+export interface TableProps<Data> {
   headers: Headers[];
   value: Data[];
   showButtons?: boolean;
@@ -8,10 +8,10 @@ export interface TableProps<Data extends RowData> {
   buttonVariant: Variant;
   buttonLabel: string;
   buttonTestId: string;
-  onClick: () => void;
+  onClick: (row: Data) => void;
 }
 export interface RowData {
-  _id?: string;
+  id?: string;
 }
 export interface Headers {
   header: string;

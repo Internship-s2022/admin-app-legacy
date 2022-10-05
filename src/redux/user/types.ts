@@ -8,7 +8,7 @@ import * as actions from './actions';
 export interface User {
   _id?: string;
   firebaseUid?: string;
-  accessRoleType: string;
+  accessRoleType?: string;
   email?: string;
   firstName?: string;
   lastName?: string;

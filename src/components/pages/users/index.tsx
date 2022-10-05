@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -9,16 +9,24 @@ import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { addUser, getUsers } from 'src/redux/user/thunks';
-import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { Headers } from '../../shared/ui/table/types';
-import { FormValues } from './types';
+import AccessRoleModal from './AccessRoleModal';
+import { FormValues, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
 
+export const accessRoles = [
+  { value: 'MANAGER', label: 'Manager' },
+  { value: 'ADMIN', label: 'Admin' },
+  { value: 'SUPER_ADMIN', label: 'Super Admin' },
+  { value: 'EMPLOYEE', label: 'Employee' },
+];
+
 const Users = () => {
+  const [row, setRow] = React.useState({} as UserData);
   const [open, setOpen] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
@@ -26,7 +34,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsers());
-  }, []);
+  }, [listUser]);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -43,7 +51,7 @@ const Users = () => {
     resolver: joiResolver(userValidation),
   });
 
-  const listUserData = listUser.map((item) => {
+  const listUserData = listUser.map((item): UserData => {
     return {
       id: item?._id,
       name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
@@ -56,15 +64,9 @@ const Users = () => {
     { header: 'Rol de acceso', key: 'accessRoleType' },
   ];
 
-  const accessRoles = [
-    { value: 'MANAGER', label: 'Manager' },
-    { value: 'ADMIN', label: 'Admin' },
-    { value: 'SUPER_ADMIN', label: 'Super Admin' },
-    { value: 'EMPLOYEE', label: 'Employee' },
-  ];
-
   const onSubmit = (data) => {
     dispatch(addUser(data));
+    onClose();
   };
 
   const onClose = () => {
@@ -79,7 +81,7 @@ const Users = () => {
         <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
       </div>
       <div className={styles.tableContainer}>
-        <Table<User>
+        <Table<UserData>
           showButtons={true}
           buttonVariant={Variant.CONTAINED}
           buttonLabel={'Editar Acceso'}
@@ -87,12 +89,15 @@ const Users = () => {
           testId={'userTable'}
           headers={header}
           value={listUserData}
-          onClick={() => setOpen(true)}
+          onClick={(data) => {
+            setOpen(true);
+            setRow(data);
+          }}
         />
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.TEXT}
-            onClick={() => setFormOpen(true)} //TODO modal para agregar usuario
+            onClick={() => setFormOpen(true)}
             label={'+ Agregar un nuevo usuario'}
             testId={'addUserButton'}
           />
@@ -164,22 +169,20 @@ const Users = () => {
                   materialVariant={Variant.CONTAINED}
                   label="Confirmar"
                   onClick={handleSubmit(onSubmit)}
-                ></Button>
+                />
                 <Button
                   testId="reset-btn"
                   materialVariant={Variant.OUTLINED}
                   label="Cancelar"
                   onClick={() => onClose()}
-                ></Button>
+                />
               </div>
             </form>
           </div>
         </Modal>
       </div>
       <Modal testId={'User-access-modal'} isOpen={open} onClose={() => setOpen(!open)}>
-        <div className={styles.modalMessage}>
-          <p>Este es el Modal para cambiar el rol de acceso de cada usuario.</p>
-        </div>
+        <AccessRoleModal row={row} open={open} setOpen={setOpen} />
       </Modal>
     </>
   );

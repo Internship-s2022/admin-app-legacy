@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { Mapped, useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
@@ -13,7 +13,7 @@ import { AppDispatch } from 'src/types';
 
 import { Headers } from '../../shared/ui/table/types';
 import styles from './index.module.css';
-import { FormValues } from './types';
+import { FormValues, MappedUserList } from './types';
 import { storybookValidation } from './validations';
 
 const StoryBook = () => {
@@ -39,7 +39,7 @@ const StoryBook = () => {
   const listUser = useSelector((state: RootState) => state.user?.users);
   const [open, setOpen] = React.useState(false);
 
-  const listUserData = listUser.map((item) => {
+  const listUserData = listUser.map((item): MappedUserList => {
     return {
       id: item?._id,
       firstName: item?.firstName,
@@ -69,7 +69,7 @@ const StoryBook = () => {
           </div>
         </Modal>
       </div>
-      <Table<User>
+      <Table<MappedUserList>
         showButtons={true}
         buttonVariant={Variant.CONTAINED}
         buttonLabel={'Change access'}

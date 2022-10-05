@@ -10,4 +10,5 @@ export interface ButtonProps {
   materialVariant: Variant;
   type?: string;
   testId: string;
+  styles?: string;
 }

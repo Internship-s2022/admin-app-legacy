@@ -41,7 +41,7 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
                   <TableCell align="right" className={styles.buttonCell}>
                     <Button
                       materialVariant={buttonVariant}
-                      onClick={onClick}
+                      onClick={() => onClick(row)}
                       label={buttonLabel}
                       testId={buttonTestId}
                     />

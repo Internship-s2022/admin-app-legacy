@@ -13,15 +13,6 @@
   margin-bottom: 10%;
 }
 
-.modalMessage {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 350px;
-  height: 200px;
-  text-align: center;
-}
-
 .addUserButton {
   margin-top: 2%;
 }

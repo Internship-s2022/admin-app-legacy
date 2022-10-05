@@ -10,3 +10,10 @@ export type FormValues = {
   birthDate: Date;
   isActive: boolean;
 };
+
+export interface MappedUserList {
+  id?: string;
+  firstName: string;
+  lastName: string;
+  accessRoleType: string;
+}
