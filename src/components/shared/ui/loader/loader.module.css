@@ -26,7 +26,7 @@
   position: absolute;
   inset: 0;
   content: '';
-  background: rgb(255 255 255 / 70%);
+  background: #ffffffb3;
   animation: layerTr 1s linear infinite alternate;
 }
 
