@@ -14,3 +14,6 @@ export const addUserRequest = (body: User) =>
 
 export const editUserRequest = (options: { body: User; id: string }) =>
   api.patch<User>(`${ApiRoutes.USER}/${options.id}`, options.body).then(responseBody);
+
+export const deleteUserRequest = (id: string) =>
+  api.patch<User>(`${ApiRoutes.USER}/delete/${id}`).then(responseBody);

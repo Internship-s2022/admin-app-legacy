@@ -13,8 +13,7 @@ import styles from './table.module.css';
 import { RowData, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
-  const { showButtons, headers, value, testId, buttonTestId, buttonLabel, onClick, buttonVariant } =
-    props;
+  const { showButtons, headers, value, testId, buttons } = props;
   return (
     <>
       <TableContainer id={testId}>
@@ -37,14 +36,20 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
                     {row[header.key]}
                   </TableCell>
                 ))}
-                {showButtons && (
+                {buttons?.length && (
                   <TableCell align="right" className={styles.buttonCell}>
-                    <Button
-                      materialVariant={buttonVariant}
-                      onClick={() => onClick(row)}
-                      label={buttonLabel}
-                      testId={buttonTestId}
-                    />
+                    {buttons.map(
+                      (button, index) =>
+                        button.active && (
+                          <Button
+                            key={index}
+                            materialVariant={button.variant}
+                            onClick={() => button.onClick(row)}
+                            label={button.label}
+                            testId={button.testId}
+                          />
+                        ),
+                    )}
                   </TableCell>
                 )}
               </TableRow>

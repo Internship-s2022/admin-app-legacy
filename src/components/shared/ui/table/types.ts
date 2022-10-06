@@ -1,14 +1,10 @@
 import { Variant } from '../button/types';
-
 export interface TableProps<Data> {
   headers: Headers[];
   value: Data[];
   showButtons?: boolean;
   testId: string;
-  buttonVariant: Variant;
-  buttonLabel: string;
-  buttonTestId: string;
-  onClick: (row: Data) => void;
+  buttons?: TableButton<Data>[];
 }
 export interface RowData {
   id?: string;
@@ -16,4 +12,11 @@ export interface RowData {
 export interface Headers {
   header: string;
   key: string;
+}
+export interface TableButton<Data> {
+  active: boolean;
+  testId: string;
+  label: string;
+  onClick: (row: Data) => void;
+  variant: Variant;
 }

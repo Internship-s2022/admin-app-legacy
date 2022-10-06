@@ -24,8 +24,7 @@ export const editUserPending = () => action(Actions.EDIT_USER_PENDING);
 
 export const editUserError = (error: string) => action(Actions.EDIT_USER_ERROR, error);
 
-export const deleteUserSuccess = (user: User, id: string) =>
-  action(Actions.DELETE_USER_SUCCESS, { user, id });
+export const deleteUserSuccess = (id: string) => action(Actions.DELETE_USER_SUCCESS, id);
 
 export const deleteUserPending = () => action(Actions.DELETE_USER_PENDING);
 

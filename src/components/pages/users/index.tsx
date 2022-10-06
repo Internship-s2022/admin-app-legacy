@@ -8,12 +8,11 @@ import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { addUser, getUsers } from 'src/redux/user/thunks';
-import { User } from 'src/redux/user/types';
+import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
-import { Headers } from '../../shared/ui/table/types';
+import { Headers, TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
 import { FormValues, UserData } from './types';
 import styles from './users.module.css';
@@ -32,6 +31,9 @@ const Users = () => {
   const [formOpen, setFormOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
+  const isPending = useSelector((state: RootState) => state.user.isPending);
+
+  const filteredUser = listUser.filter((item) => item.isActive === true);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -52,8 +54,7 @@ const Users = () => {
     resolver: joiResolver(userValidation),
   });
 
-  // const fillteredUsers = listUser.filter((item): User => item?.isActive === true);
-  const listUserData = listUser.map((item) => {
+  const listUserData = filteredUser.map((item): UserData => {
     return {
       id: item?._id,
       name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
@@ -66,17 +67,6 @@ const Users = () => {
     { header: 'Rol de acceso', key: 'accessRoleType' },
   ];
 
-  const accessRoles = [
-    { value: 'MANAGER', label: 'Manager' },
-    { value: 'ADMIN', label: 'Admin' },
-    { value: 'SUPER_ADMIN', label: 'Super Admin' },
-    { value: 'EMPLOYEE', label: 'Employee' },
-  ];
-
-  // const handleDelete = () => {
-  //   dispatch(deleteUser());
-  // };
-
   const onSubmit = (data) => {
     dispatch(addUser(data));
     onClose();
@@ -87,7 +77,41 @@ const Users = () => {
     setFormOpen(false);
   };
 
-  return (
+  const handleDelete = (data) => {
+    dispatch(deleteUser(data.id));
+  };
+
+  const buttonsArray: TableButton<UserData>[] = [
+    {
+      active: true,
+      label: 'editar',
+      testId: 'editButton',
+      variant: Variant.CONTAINED,
+      onClick: (data) => {
+        setOpen(true);
+        setRow(data);
+      },
+    },
+    {
+      active: true,
+      label: 'X',
+      testId: 'deleteButton',
+      variant: Variant.CONTAINED,
+      onClick: (data) => {
+        handleDelete(data);
+      },
+    },
+  ];
+  return !listUser.length ? (
+    <div className={styles.addUserButton}>
+      <Button
+        materialVariant={Variant.TEXT}
+        onClick={() => setFormOpen(true)}
+        label={'+ Agregar un nuevo usuario'}
+        testId={'addUserButton'}
+      />
+    </div>
+  ) : (
     <>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
@@ -96,16 +120,10 @@ const Users = () => {
       <div className={styles.tableContainer}>
         <Table<UserData>
           showButtons={true}
-          buttonVariant={Variant.CONTAINED}
-          buttonLabel={'Editar Acceso'}
-          buttonTestId={'table-button'}
           testId={'userTable'}
           headers={header}
           value={listUserData}
-          onClick={(data) => {
-            setOpen(true);
-            setRow(data);
-          }}
+          buttons={buttonsArray}
         />
         <div className={styles.addUserButton}>
           <Button

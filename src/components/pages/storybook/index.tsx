@@ -175,13 +175,9 @@ const StoryBook = () => {
         <h3>Tabla con usuarios</h3>
         <Table<MappedUserList>
           showButtons={true}
-          buttonVariant={Variant.CONTAINED}
-          buttonLabel={'Change access'}
-          buttonTestId={'table-button'}
           testId={'userTable'}
           headers={header}
           value={value}
-          onClick={() => undefined}
         />
       </div>
     </div>

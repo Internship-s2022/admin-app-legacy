@@ -14,7 +14,7 @@ import {
   getUsersPending,
   getUsersSuccess,
 } from './actions';
-import { addUserRequest, editUserRequest, getUsersRequest } from './api';
+import { addUserRequest, deleteUserRequest, editUserRequest, getUsersRequest } from './api';
 import { AppThunk, User } from './types';
 
 export const getUsers: AppThunk = () => {
@@ -59,16 +59,16 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
   };
 };
 
-// export const deleteUser: AppThunk = (id) => {
-//   return async (dispatch: Dispatch) => {
-//     try {
-//       dispatch(deleteUserPending());
-//       const response = await userRequest.delete(`/user/${id}`);
-//       if (response.data?.length) {
-//         return dispatch(deleteUserSuccess(response.data));
-//       }
-//     } catch (error) {
-//       dispatch(deleteUserError(error));
-//     }
-//   };
-// };
+export const deleteUser: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(deleteUserPending());
+      const response = await deleteUserRequest(id);
+      if (!response.error) {
+        return dispatch(deleteUserSuccess(id));
+      }
+    } catch (error) {
+      dispatch(deleteUserError(error));
+    }
+  };
+};
