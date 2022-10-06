@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
-import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import { Button, Dropdown, Loader, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';

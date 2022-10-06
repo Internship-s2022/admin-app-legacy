@@ -16,7 +16,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": "."
+    "baseUrl": ".",
   },
-  "include": ["src", "./jestSetup.ts"],
+  "include": ["src", "./jestSetup.ts", "declaration.d.ts"],
 }

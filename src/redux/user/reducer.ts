@@ -69,7 +69,6 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
         isPending: false,
         error: action.payload,
       };
-
     case Actions.DELETE_USER_PENDING:
       return {
         ...state,
