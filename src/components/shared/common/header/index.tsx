@@ -1,5 +1,6 @@
 import React from 'react';
 
+import Navbar from '../navbar';
 import styles from './header.module.css';
 
 const Header = () => {
@@ -7,7 +8,9 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.brand}>Radium Rocket</div>
-        <div className={styles.brand}>SHOW_ENV: {process.env.REACT_APP_SHOW_ENV}</div>
+        <nav className={styles.brand}>
+          <Navbar />
+        </nav>
         <div>
           <a href="https://www.facebook.com/radiumrocket" target="_blank" rel="noreferrer">
             <img
