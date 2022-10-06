@@ -35,7 +35,7 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsers());
-  }, [listUser]);
+  }, []);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {

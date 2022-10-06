@@ -36,7 +36,7 @@ export const addUser: AppThunk = (data) => {
     try {
       dispatch(addUserPending());
       const response = await addUserRequest(data);
-      if (response.data?.length) {
+      if (!response.error) {
         return dispatch(addUserSuccess(response.data));
       }
     } catch (error) {
