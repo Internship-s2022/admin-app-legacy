@@ -4,6 +4,9 @@ import {
   addUserPending,
   addUsersError,
   addUserSuccess,
+  deleteUserError,
+  deleteUserPending,
+  deleteUserSuccess,
   editUserError,
   editUserPending,
   editUserSuccess,
@@ -11,7 +14,7 @@ import {
   getUsersPending,
   getUsersSuccess,
 } from './actions';
-import { addUserRequest, editUserRequest, getUsersRequest } from './api';
+import { addUserRequest, deleteUserRequest, editUserRequest, getUsersRequest } from './api';
 import { AppThunk, User } from './types';
 
 export const getUsers: AppThunk = () => {
@@ -33,7 +36,7 @@ export const addUser: AppThunk = (data) => {
     try {
       dispatch(addUserPending());
       const response = await addUserRequest(data);
-      if (response.data?.length) {
+      if (!response.error) {
         return dispatch(addUserSuccess(response.data));
       }
     } catch (error) {
@@ -52,6 +55,20 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
       }
     } catch (error) {
       dispatch(editUserError(error));
+    }
+  };
+};
+
+export const deleteUser: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(deleteUserPending());
+      const response = await deleteUserRequest(id);
+      if (!response.error) {
+        return dispatch(deleteUserSuccess(id));
+      }
+    } catch (error) {
+      dispatch(deleteUserError(error));
     }
   };
 };

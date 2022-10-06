@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
-import { getUsers } from 'src/redux/user/thunks';
+import { RootState } from 'src/redux/store';
+import { addUser, getUsers } from 'src/redux/user/thunks';
 import { User } from 'src/redux/user/types';
 import { AppDispatch } from 'src/types';
 
@@ -170,13 +171,9 @@ const StoryBook = () => {
         <h3>Tabla con usuarios</h3>
         <Table<MappedUserList>
           showButtons={true}
-          buttonVariant={Variant.CONTAINED}
-          buttonLabel={'Change access'}
-          buttonTestId={'table-button'}
           testId={'userTable'}
           headers={header}
           value={value}
-          onClick={() => undefined}
         />
       </div>
     </div>
