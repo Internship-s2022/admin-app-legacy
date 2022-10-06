@@ -36,10 +36,6 @@ const StoryBook = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  // const handleDelete = (id) => {
-  //   dispatch(deleteUser(id));
-  // };
-
   const header: Headers[] = [
     { header: 'Nombre', key: 'firstName' },
     { header: 'Rol de acceso', key: 'accessRoleType' },
