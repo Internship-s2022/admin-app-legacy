@@ -1,12 +1,12 @@
 import { createTheme } from '@mui/material/styles';
 
-export const tabTheme = createTheme({
+export const themes = createTheme({
   palette: {
     primary: {
-      main: '#fff',
+      main: '#4EA381',
     },
     secondary: {
-      main: '#000',
+      main: '#F3F3F3',
     },
   },
 });
