@@ -12,8 +12,9 @@
   font-weight: bold;
 }
 
-.socialIcon {
-  margin-left: 15px;
+.logout {
+  display: flex;
+  justify-content: center;
 }
 
 .navbar {
