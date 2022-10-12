@@ -3,6 +3,7 @@
     "target": "ES6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -17,5 +18,5 @@
     "jsx": "react",
     "baseUrl": "."
   },
-  "include": ["src"]
+  "include": ["src", "./jestSetup.ts"],
 }
