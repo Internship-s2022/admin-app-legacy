@@ -31,7 +31,6 @@ const Users = () => {
   const [formOpen, setFormOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
-  const isPending = useSelector((state: RootState) => state.user.isPending);
 
   const filteredUser = listUser.filter((item) => item.isActive === true);
 
