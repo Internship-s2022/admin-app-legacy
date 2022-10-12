@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
-import { RootState } from 'src/redux/store';
-import { addUser, getUsers } from 'src/redux/user/thunks';
-import { User } from 'src/redux/user/types';
+import { getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 
 import { Headers } from '../../shared/ui/table/types';
