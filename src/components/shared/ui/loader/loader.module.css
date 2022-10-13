@@ -9,12 +9,13 @@
   width: 100vw;
   height: 100vh;
   background-color: #00000080;
+  backdrop-filter: blur(7px);
 }
 
 .loader {
+  position: relative;
   width: 48px;
   height: 48px;
-  margin: auto;
   color: #373867;
   background: #4ea381;
   transform: rotateX(65deg) rotate(45deg);
@@ -26,21 +27,20 @@
   position: absolute;
   inset: 0;
   content: '';
-  background: #ffffffb3;
-  animation: layerTr 1s linear infinite alternate;
+  background: #ffffff;
+  animation: layer-tr 1s linear infinite alternate;
 }
 
 @keyframes layers1 {
   0% {
     box-shadow: 0 0 0 0;
+  }
 
-    90%,
-    100% {
-      box-shadow: 20px 20px 0 -4px;
-    }
+  90%,
+  100% {
+    box-shadow: 20px 20px 0 -4px;
   }
 }
-
 @keyframes layer-tr {
   0% {
     transform: translate(0, 0) scale(1);

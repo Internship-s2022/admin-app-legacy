@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
-import { Button, Dropdown, Loader, Modal, Table, TextInput } from 'src/components/shared/ui';
+import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
@@ -29,6 +29,7 @@ const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const [open, setOpen] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState(false);
+
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
 
@@ -101,6 +102,7 @@ const Users = () => {
       },
     },
   ];
+
   return !listUser.length ? (
     <div className={styles.addUserButton}>
       <Button

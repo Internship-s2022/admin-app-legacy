@@ -9,8 +9,8 @@ const rootReducer = combineReducers({
 });
 
 const configureStore = () => {
-  const enhacer = composeWithDevTools(applyMiddleware(thunk));
-  return createStore(rootReducer, enhacer);
+  const enhancer = composeWithDevTools(applyMiddleware(thunk));
+  return createStore(rootReducer, enhancer);
 };
 
 const store = configureStore();

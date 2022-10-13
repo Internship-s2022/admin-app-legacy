@@ -12,10 +12,10 @@ import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
   const isPending = useSelector((state: RootState) => state.user.isPending);
-  return !isPending ? (
-    <Loader />
-  ) : (
+
+  return (
     <div className={styles.container}>
+      {isPending && <Loader />}
       <Header />
       <BrowserRouter>
         <Routes>
