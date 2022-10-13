@@ -11,11 +11,11 @@ import { Loader } from '../shared/ui';
 import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
-  const isPending = useSelector((state: RootState) => state.user.isPending);
+  const isLoading = useSelector((state: RootState) => state.user.isLoading);
 
   return (
     <div className={styles.container}>
-      {isPending && <Loader />}
+      {isLoading && <Loader />}
       <Header />
       <BrowserRouter>
         <Routes>

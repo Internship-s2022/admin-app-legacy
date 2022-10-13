@@ -19,7 +19,7 @@ export interface User {
 
 export interface State {
   users: User[];
-  isPending: boolean;
+  isLoading: boolean;
   error: string;
 }
 
