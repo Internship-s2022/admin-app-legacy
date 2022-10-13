@@ -29,6 +29,7 @@ const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const [open, setOpen] = React.useState(false);
   const [formOpen, setFormOpen] = React.useState(false);
+
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
 
@@ -101,6 +102,7 @@ const Users = () => {
       },
     },
   ];
+
   return !listUser.length ? (
     <div className={styles.addUserButton}>
       <Button

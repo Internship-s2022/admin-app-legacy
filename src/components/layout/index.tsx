@@ -1,14 +1,21 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import { RootState } from 'src/redux/store';
 
 import { Home, Login, Users } from '../pages';
 import StoryBook from '../pages/storybook';
-import { Footer, Header } from '../shared/common';
+import { Header } from '../shared/common';
+import { Loader } from '../shared/ui';
 import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
+  const isLoading = useSelector((state: RootState) => state.user.isLoading);
+
   return (
     <div className={styles.container}>
+      {isLoading && <Loader />}
       <Header />
       <BrowserRouter>
         <Routes>
@@ -18,7 +25,6 @@ const Layout = (): JSX.Element => {
           <Route path="users/*" element={<Users />} />
         </Routes>
       </BrowserRouter>
-      <Footer />
     </div>
   );
 };

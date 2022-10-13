@@ -14,5 +14,5 @@ export enum AccessRoleType {
 }
 
 export enum ApiRoutes {
-  USER = '/user',
+  USER = '/users',
 }

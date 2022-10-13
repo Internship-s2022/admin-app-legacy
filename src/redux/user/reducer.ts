@@ -5,7 +5,7 @@ import { ActionsType, State } from './types';
 
 const initialState: State = {
   users: [],
-  isPending: false,
+  isLoading: false,
   error: undefined,
 };
 
@@ -14,43 +14,43 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
     case Actions.GET_USERS_PENDING:
       return {
         ...state,
-        isPending: true,
+        isLoading: true,
       };
     case Actions.GET_USERS_SUCCESS:
       return {
         ...state,
         users: action.payload,
-        isPending: false,
+        isLoading: false,
         error: undefined,
       };
     case Actions.GET_USERS_ERROR:
       return {
         ...state,
-        isPending: false,
+        isLoading: false,
         error: action.payload,
       };
     case Actions.ADD_USER_PENDING:
       return {
         ...state,
-        isPending: true,
+        isLoading: true,
       };
     case Actions.ADD_USER_SUCCESS:
       return {
         ...state,
         users: [...state.users, action.payload],
-        isPending: false,
+        isLoading: false,
         error: undefined,
       };
     case Actions.ADD_USER_ERROR:
       return {
         ...state,
-        isPending: false,
+        isLoading: false,
         error: action.payload,
       };
     case Actions.EDIT_USER_PENDING:
       return {
         ...state,
-        isPending: true,
+        isLoading: true,
       };
     case Actions.EDIT_USER_SUCCESS:
       return {
@@ -61,24 +61,23 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
           }
           return item;
         }),
-        isPending: false,
+        isLoading: false,
       };
     case Actions.EDIT_USER_ERROR:
       return {
         ...state,
-        isPending: false,
+        isLoading: false,
         error: action.payload,
       };
-
     case Actions.DELETE_USER_PENDING:
       return {
         ...state,
-        isPending: true,
+        isLoading: true,
       };
     case Actions.DELETE_USER_SUCCESS:
       return {
         ...state,
-        isPending: false,
+        isLoading: false,
         users: state.users.filter((user) => user._id !== action.payload),
         error: undefined,
       };
@@ -86,7 +85,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         error: action.payload,
-        isPending: false,
+        isLoading: false,
       };
     default:
       return state;
