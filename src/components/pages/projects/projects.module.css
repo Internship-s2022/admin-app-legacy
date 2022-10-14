@@ -1,0 +1,19 @@
+.welcomeMessage {
+  margin: 5%;
+  text-align: center;
+}
+
+.welcomeMessage h1 {
+  font-size: 30px;
+}
+
+.tableContainer {
+  align-self: center;
+  width: 70%;
+  margin-bottom: 10%;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+}

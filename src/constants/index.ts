@@ -1,3 +1,9 @@
+export enum ApiRoutes {
+  USER = '/users',
+  EMPLOYEE = '/employees',
+  PROJECTS = '/projects',
+}
+
 //Navbar
 export const navbarItems = [
   {
@@ -40,8 +46,9 @@ export enum AccessRoleType {
   EMPLOYEE = 'EMPLOYEE',
 }
 
-export enum ApiRoutes {
-  USER = '/users',
-  EMPLOYEE = '/employees',
-  PROJECTS = '/projects',
-}
+//Projects
+
+export const formattedProjectType = {
+  PROJECT_BUILDING: 'Product building',
+  STAFF_AUMENTATION: 'Staff augmentation',
+};

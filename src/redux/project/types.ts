@@ -3,39 +3,38 @@ import { ThunkAction } from 'redux-thunk';
 import { ActionType } from 'typesafe-actions';
 
 import { RootState } from '../store';
-import { User } from '../user/types';
 import * as actions from './actions';
 
-interface Employee {
-  skills?: string[];
-  seniority?: string;
-  projectHistory?: string[];
-  absences?: string[];
-  user: User;
-  potentialRole?: string[];
-  notes?: string;
-}
+// interface Employee {
+//   skills?: string[];
+//   seniority?: string;
+//   projectHistory?: string[];
+//   absences?: string[];
+//   user: User;
+//   potentialRole?: string[];
+//   notes?: string;
+// }
 
-interface Shadow {
-  id: string;
-  shadowReference: Employee;
-  dependency: number;
-  dedication: number;
-  active: boolean;
-}
+// interface Shadow {
+//   id: string;
+//   shadowReference: Employee;
+//   dependency: number;
+//   dedication: number;
+//   active: boolean;
+// }
 
-interface Member {
-  _id: string;
-  hasShadow: boolean;
-  shadow: Shadow[];
-  employeeId: string;
-  projectId: string;
-  role: string;
-  dedication: number;
-  startDate: Date;
-  endDate: Date;
-  active: boolean;
-}
+// interface Member {
+//   _id: string;
+//   hasShadow: boolean;
+//   shadow: Shadow[];
+//   employeeId: string;
+//   projectId: string;
+//   role: string;
+//   dedication: number;
+//   startDate: Date;
+//   endDate: Date;
+//   active: boolean;
+// }
 
 export interface Project {
   _id?: string;
@@ -45,7 +44,7 @@ export interface Project {
   notes: string;
   startDate: Date;
   endDate: Date;
-  members: Member[];
+  members: string[];
   isCritic: string;
   isUpdated: boolean;
   projectType: string;
