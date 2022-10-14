@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RootState } from 'src/redux/store';
 
 import { Home, Login, Users } from '../pages';
+import Employees from '../pages/employees';
 import StoryBook from '../pages/storybook';
 import { Header } from '../shared/common';
 import { Loader } from '../shared/ui';
@@ -23,6 +24,7 @@ const Layout = (): JSX.Element => {
           <Route path="login/*" element={<Login />} />
           <Route path="storybook/*" element={<StoryBook />} />
           <Route path="users/*" element={<Users />} />
+          <Route path="employees/*" element={<Employees />} />
         </Routes>
       </BrowserRouter>
     </div>

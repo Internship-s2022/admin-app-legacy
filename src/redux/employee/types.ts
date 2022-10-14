@@ -1,17 +1,18 @@
-import { ThunkAction } from 'redux-thunk';
-import { Action, ActionCreator, ActionType } from 'typesafe-actions';
+import { ActionType } from 'typesafe-actions';
 
-import { RootState } from '../store';
+import { User } from 'src/components/pages/employees/types';
+
 import * as actions from './actions';
 
 export interface Employee {
+  _id: string;
   skills?: string[];
   seniority: string;
   projectHistory?: string[];
   absences?: string[];
-  userId: string;
   potentialRole?: string[];
   notes?: string;
+  user: User;
 }
 
 export interface State {

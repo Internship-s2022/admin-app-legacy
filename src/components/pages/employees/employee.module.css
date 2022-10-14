@@ -1,0 +1,39 @@
+.welcomeMessage {
+  margin: 5%;
+  text-align: center;
+}
+
+.welcomeMessage h1 {
+  font-size: 30px;
+}
+
+.tableContainer {
+  align-self: center;
+  width: 70%;
+  margin-bottom: 10%;
+}
+
+.addUserButton {
+  margin-top: 2%;
+}
+
+.formContainer {
+  padding: 15px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.inputsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 330px;
+  padding: 20px;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: space-around;
+}
