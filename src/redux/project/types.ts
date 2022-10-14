@@ -54,7 +54,7 @@ export interface Project {
 
 export interface State {
   projects: Project[];
-  isPending: boolean;
+  isLoading: boolean;
   error: string;
 }
 
