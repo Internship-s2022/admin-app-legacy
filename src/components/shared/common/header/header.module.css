@@ -3,21 +3,26 @@
   align-items: center;
   justify-content: space-between;
   height: 50px;
-  padding: 0 5%;
-  background-color: #ea3354;
+  padding: 1% 5%;
+  background-color: #373867;
 }
 
-.brand {
+.navbarContainer {
   font-size: 1rem;
   font-weight: bold;
 }
 
 .logout {
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-.navbar {
+.logout span {
+  margin-right: 5px;
+}
+
+.temporaryNavbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -45,14 +50,4 @@
   color: black;
   text-decoration: none;
   text-transform: capitalize;
-}
-
-@media screen and (min-width: 750px) {
-  .container {
-    padding: 0 20%;
-  }
-
-  .navbar {
-    padding: 0 20%;
-  }
 }

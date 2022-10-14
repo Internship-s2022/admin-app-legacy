@@ -18,25 +18,6 @@ export const navbarItems = [
   },
 ];
 
-// export const managerNavbarItems = [
-//   {
-//     path: '/manager/home',
-//     name: 'Dashboard',
-//   },
-//   {
-//     path: '/manager/projects',
-//     name: 'Proyectos',
-//   },
-//   {
-//     path: '/manager/employees',
-//     name: 'Empleados',
-//   },
-//   {
-//     path: '/manager/clients',
-//     name: 'Clientes',
-//   },
-// ];
-//Users
 export const formattedRoleType = {
   SUPER_ADMIN: 'Super Admin',
   ADMIN: 'Admin',

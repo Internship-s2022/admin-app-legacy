@@ -1,31 +1,21 @@
 import React from 'react';
-import { Box, Tab, Tabs } from '@mui/material';
+import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
 
-import { LinkTabProps } from './types';
+import LinkTab from './linkTab';
 
 const Navbar = () => {
-  const LinkTab = (props: LinkTabProps) => {
-    return (
-      <Tab
-        component="a"
-        onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-          event.preventDefault();
-        }}
-        {...props}
-      />
-    );
-  };
   const [value, setValue] = React.useState(0);
-  const handleChange = (event: React.SyntheticEvent, value: number) => {
+  const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
   };
+
   return (
     <Box>
       <Tabs
-        textColor="primary"
-        indicatorColor="secondary"
+        textColor="secondary"
+        indicatorColor="primary"
         value={value}
         onChange={handleChange}
         aria-label="lab API tabs example"
