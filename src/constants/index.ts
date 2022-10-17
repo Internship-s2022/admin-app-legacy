@@ -1,4 +1,31 @@
-//Users
+//Navbar
+export const navbarItems = [
+  {
+    path: '/',
+    name: 'Dashboard',
+  },
+  {
+    path: '/projects',
+    name: 'Proyectos',
+  },
+  {
+    path: '/employees',
+    name: 'Empleados',
+  },
+  {
+    path: '/clients',
+    name: 'Clientes',
+  },
+  {
+    path: '/storybook',
+    name: 'Storybook',
+  },
+  {
+    path: '/users',
+    name: 'Users',
+  },
+];
+
 export const formattedRoleType = {
   SUPER_ADMIN: 'Super Admin',
   ADMIN: 'Admin',
