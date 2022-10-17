@@ -10,16 +10,27 @@ import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
 import styles from './employee.module.css';
-import { EmployeeData } from './types';
+import { EmployeeData, MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listEmployee = useSelector((state: RootState) => state.employee?.employees);
 
+  const projects: Projects[] = [
+    {
+      name: 'Radium Admin',
+    },
+    {
+      name: 'Qira',
+    },
+  ];
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
     name: `${employee.user.firstName} ${employee.user.lastName}`,
-    projects: employee.projectHistory,
+    projects:
+      projects.length > 1
+        ? `${projects[0].name} y ${(projects.length - 1).toString()} más`
+        : projects[0].name,
   }));
 
   useEffect(() => {
@@ -28,9 +39,10 @@ const Employees = () => {
 
   const header: Headers[] = [
     { header: 'Nombre', key: 'name' },
-    { header: 'Proyectos', key: 'projectName' },
+    { header: 'Proyectos', key: 'projects' },
   ];
-  const buttonsArray: TableButton<EmployeeData>[] = [
+
+  const buttonsArray: TableButton<MappedEmployeeData>[] = [
     {
       active: true,
       label: 'editar',
@@ -42,14 +54,17 @@ const Employees = () => {
     },
   ];
 
+  console.log('listemployee', listEmployee);
+  console.log('matched', matchedEmployee);
+
   return (
     <>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">¡Bienvenido Admin!</Typography>
-        <p>¡Esta es la lista de Empleados! Puedes asignarles el acceso que desees!</p>
+        <p>¡Esta es la lista de Empleados!</p>
       </div>
       <div className={styles.tableContainer}>
-        <Table<EmployeeData>
+        <Table<MappedEmployeeData>
           showButtons={true}
           testId={'userTable'}
           headers={header}
