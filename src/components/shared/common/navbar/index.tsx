@@ -1,15 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
 
 import LinkTab from './linkTab';
-
 const Navbar = () => {
-  const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
+  const [value, setValue] = React.useState<number>(0);
+
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  useEffect(() => {
+    handleNavigation('/');
+  }, []);
 
   return (
     <Box>
@@ -21,7 +31,14 @@ const Navbar = () => {
         aria-label="lab API tabs example"
       >
         {navbarItems.map((item) => {
-          return <LinkTab key={item.name} label={item.name} href={item.path}></LinkTab>;
+          return (
+            <LinkTab
+              handleNavigation={handleNavigation}
+              key={item.name}
+              label={item.name}
+              href={item.path}
+            ></LinkTab>
+          );
         })}
       </Tabs>
     </Box>

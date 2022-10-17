@@ -1,20 +1,24 @@
 //Navbar
 export const navbarItems = [
   {
-    path: '/#',
+    path: '/',
     name: 'Dashboard',
   },
   {
-    path: '/#',
+    path: '/projects',
     name: 'Proyectos',
   },
   {
-    path: '/#',
+    path: '/employees',
     name: 'Empleados',
   },
   {
-    path: '/#',
+    path: '/clients',
     name: 'Clientes',
+  },
+  {
+    path: '/storybook',
+    name: 'Storybook',
   },
 ];
 

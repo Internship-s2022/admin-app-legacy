@@ -1,3 +1,7 @@
+header {
+  color: #ffffff;
+}
+
 .container {
   display: flex;
   align-items: center;
@@ -22,32 +26,7 @@
   margin-right: 5px;
 }
 
-.temporaryNavbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 100px;
-  padding: 0 5%;
-  background-color: #f0f4f9;
-}
-
-.appName {
-  font-size: 2rem;
+.brand span:first-child {
+  margin-right: 5px;
   font-weight: bold;
-}
-
-.routes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  list-style-type: none;
-}
-
-.routes > li > a {
-  margin-left: 15px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: black;
-  text-decoration: none;
-  text-transform: capitalize;
 }

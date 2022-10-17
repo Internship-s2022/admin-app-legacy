@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LogOutIcon from '../../ui/icons/LogOutIcon';
+import LogOutIcon from '../../ui/icons/logOutIcons';
 import Navbar from '../navbar';
 import styles from './header.module.css';
 
@@ -8,7 +8,10 @@ const Header = () => {
   return (
     <header>
       <div className={styles.container}>
-        <div className={styles.brand}>Radium Rocket</div>
+        <div className={styles.brand}>
+          <span>Radium</span>
+          <span>Admin</span>
+        </div>
         <nav className={styles.navbarContainer}>
           <Navbar />
         </nav>
@@ -17,20 +20,6 @@ const Header = () => {
           <LogOutIcon />
         </div>
       </div>
-      <nav className={styles.temporaryNavbar}>
-        <div className={styles.appName}>App</div>
-        <ul className={styles.routes}>
-          <li>
-            <a href="/login">login</a>
-          </li>
-          <li>
-            <a href="/storybook">Storybook</a>
-          </li>
-          <li>
-            <a href="/users">Users</a>
-          </li>
-        </ul>
-      </nav>
     </header>
   );
 };
