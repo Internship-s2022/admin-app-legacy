@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
-import { Table } from 'src/components/shared/ui';
+import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { Headers, TableButton } from 'src/components/shared/ui/table/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState } from 'src/redux/store';
@@ -54,9 +55,6 @@ const Employees = () => {
     },
   ];
 
-  console.log('listemployee', listEmployee);
-  console.log('matched', matchedEmployee);
-
   return (
     <>
       <div className={styles.welcomeMessage}>
@@ -64,6 +62,12 @@ const Employees = () => {
         <p>¡Esta es la lista de Empleados!</p>
       </div>
       <div className={styles.tableContainer}>
+        <div className={styles.searchInputContainer}>
+          <div className={styles.iconContainer}>
+            <SearchIcon />
+          </div>
+          <input className={styles.searchInput}></input>
+        </div>
         <Table<MappedEmployeeData>
           showButtons={true}
           testId={'userTable'}

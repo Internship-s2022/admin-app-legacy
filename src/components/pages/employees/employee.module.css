@@ -37,3 +37,32 @@
   display: flex;
   justify-content: space-around;
 }
+
+.searchInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 65%;
+  padding: 2px;
+  margin-bottom: 20px;
+  border: 1px solid #000000;
+}
+
+.searchInput {
+  width: 50%;
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 10px;
+}

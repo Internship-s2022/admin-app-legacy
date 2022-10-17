@@ -26,9 +26,9 @@ export const accessRoles = [
 ];
 
 const Users = () => {
-  const [row, setRow] = React.useState({} as UserData);
-  const [open, setOpen] = React.useState(false);
-  const [formOpen, setFormOpen] = React.useState(false);
+  const [row, setRow] = React.useState<UserData>({} as UserData);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [formOpen, setFormOpen] = React.useState<boolean>(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
   const listUser = useSelector((state: RootState) => state.user?.users);
