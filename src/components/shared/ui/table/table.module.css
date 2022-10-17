@@ -18,3 +18,7 @@
 .rows:nth-of-type(even) {
   background-color: #b3b3b36f;
 }
+
+.icon {
+  margin: 10px;
+}

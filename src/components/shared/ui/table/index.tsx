@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Avatar,
   Table as BasicTable,
   TableBody,
   TableCell,
@@ -13,13 +14,14 @@ import styles from './table.module.css';
 import { RowData, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
-  const { showButtons, headers, value, testId, buttons } = props;
+  const { showButtons, headers, value, testId, buttons, profileIcon } = props;
   return (
     <>
       <TableContainer id={testId}>
         <BasicTable className={styles.table}>
           <TableHead>
             <TableRow className={styles.headers}>
+              {profileIcon && <TableCell align="center"></TableCell>}
               {headers.map((row) => (
                 <TableCell align="center" key={row.key}>
                   {row.header}
@@ -31,6 +33,7 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
           <TableBody>
             {value.map((row) => (
               <TableRow className={styles.rows} key={row['id']} hover={true}>
+                {profileIcon && <Avatar className={styles.icon}></Avatar>}
                 {headers.map((header, index) => (
                   <TableCell align="center" key={index} scope="row">
                     {row[header.key]}

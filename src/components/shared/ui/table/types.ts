@@ -5,6 +5,7 @@ export interface TableProps<Data> {
   showButtons?: boolean;
   testId: string;
   buttons?: TableButton<Data>[];
+  profileIcon?: boolean;
 }
 export interface RowData {
   id?: string;
