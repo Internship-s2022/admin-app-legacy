@@ -20,6 +20,10 @@ export const navbarItems = [
     path: '/storybook',
     name: 'Storybook',
   },
+  {
+    path: '/users',
+    name: 'Users',
+  },
 ];
 
 export const formattedRoleType = {
