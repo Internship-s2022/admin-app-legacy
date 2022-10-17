@@ -5,6 +5,7 @@ import { Box, Tabs } from '@mui/material';
 import { navbarItems } from 'src/constants';
 
 import LinkTab from './linkTab';
+
 const Navbar = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState<number>(0);
@@ -23,13 +24,7 @@ const Navbar = () => {
 
   return (
     <Box>
-      <Tabs
-        textColor="secondary"
-        indicatorColor="primary"
-        value={value}
-        onChange={handleChange}
-        aria-label="lab API tabs example"
-      >
+      <Tabs textColor="secondary" indicatorColor="primary" value={value} onChange={handleChange}>
         {navbarItems.map((item) => {
           return (
             <LinkTab
