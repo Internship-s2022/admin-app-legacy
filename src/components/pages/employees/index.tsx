@@ -3,28 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
 import { Table } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
-import { Headers, TableButton } from 'src/components/shared/ui/table/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
+import { buttonsArray, header, projects } from './constants';
 import styles from './employee.module.css';
-import { MappedEmployeeData, Projects } from './types';
+import { MappedEmployeeData } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listEmployee = useSelector((state: RootState) => state.employee?.employees);
 
-  const projects: Projects[] = [
-    {
-      name: 'Radium Admin',
-    },
-    {
-      name: 'Qira',
-    },
-  ];
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
     name: `${employee.user.firstName} ${employee.user.lastName}`,
@@ -37,23 +28,6 @@ const Employees = () => {
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
-
-  const header: Headers[] = [
-    { header: 'Nombre', key: 'name' },
-    { header: 'Proyectos', key: 'projects' },
-  ];
-
-  const buttonsArray: TableButton<MappedEmployeeData>[] = [
-    {
-      active: true,
-      label: 'editar',
-      testId: 'editButton',
-      variant: Variant.CONTAINED,
-      onClick: (data) => {
-        console.log(data, 'edit employee');
-      },
-    },
-  ];
 
   return (
     <>
