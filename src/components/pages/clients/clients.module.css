@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 12%;
+}
+
+h1 {
+  margin-bottom: 2%;
+}
+
+.inputsContainer {
+  display: flex;
+  gap: 20px;
+  align-self: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 40px;
+}
+
+.searchBar {
+  width: 40%;
+}
+
+.tableContainer {
+  align-self: center;
+  width: 100%;
+}
+
+.tableContainer td,
+.tableContainer th {
+  text-align: left;
+}
