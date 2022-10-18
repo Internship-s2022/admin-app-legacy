@@ -5,40 +5,13 @@ import { ActionType } from 'typesafe-actions';
 import { RootState } from '../store';
 import * as actions from './actions';
 
-// interface Employee {
-//   skills?: string[];
-//   seniority?: string;
-//   projectHistory?: string[];
-//   absences?: string[];
-//   user: User;
-//   potentialRole?: string[];
-//   notes?: string;
-// }
-
-// interface Shadow {
-//   id: string;
-//   shadowReference: Employee;
-//   dependency: number;
-//   dedication: number;
-//   active: boolean;
-// }
-
-// interface Member {
-//   _id: string;
-//   hasShadow: boolean;
-//   shadow: Shadow[];
-//   employeeId: string;
-//   projectId: string;
-//   role: string;
-//   dedication: number;
-//   startDate: Date;
-//   endDate: Date;
-//   active: boolean;
-// }
-
+interface Client {
+  _id: string;
+  name: string;
+}
 export interface Project {
   _id?: string;
-  clientName: string;
+  clientName: Client;
   projectName: string;
   description: string;
   notes: string;

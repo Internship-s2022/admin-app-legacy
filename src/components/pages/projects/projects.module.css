@@ -1,19 +1,41 @@
-.welcomeMessage {
-  margin: 5%;
-  text-align: center;
+/* * {
+  outline: 1px solid red;
+} */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 12%;
 }
 
-.welcomeMessage h1 {
-  font-size: 30px;
+h1 {
+  margin-bottom: 2%;
+}
+
+.topTableContainer {
+  display: flex;
+  gap: 20px;
+  align-self: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 40px;
+}
+
+.searchBar {
+  width: 60%;
+}
+
+.addButton {
+  height: 40px;
 }
 
 .tableContainer {
   align-self: center;
-  width: 70%;
-  margin-bottom: 10%;
+  width: 100%;
 }
 
-.buttonsContainer {
-  display: flex;
-  justify-content: space-around;
+.tableContainer td,
+.tableContainer th {
+  text-align: left;
 }

@@ -12,8 +12,9 @@ import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
-import { Headers, TableButton } from '../../shared/ui/table/types';
+import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
+import { userHeaders } from './constants';
 import { FormValues, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
@@ -61,11 +62,6 @@ const Users = () => {
       accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
     };
   });
-
-  const header: Headers[] = [
-    { header: 'Nombre', key: 'name' },
-    { header: 'Rol de acceso', key: 'accessRoleType' },
-  ];
 
   const onSubmit = (data) => {
     dispatch(addUser(data));
@@ -122,7 +118,7 @@ const Users = () => {
         <Table<UserData>
           showButtons={true}
           testId={'userTable'}
-          headers={header}
+          headers={userHeaders}
           value={listUserData}
           buttons={buttonsArray}
         />

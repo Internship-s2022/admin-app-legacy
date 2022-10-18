@@ -46,9 +46,9 @@ export enum AccessRoleType {
   EMPLOYEE = 'EMPLOYEE',
 }
 
-//Projects
-
-export const formattedProjectType = {
-  PROJECT_BUILDING: 'Product building',
-  STAFF_AUMENTATION: 'Staff augmentation',
-};
+export const dropdownAccessRoles = [
+  { value: 'MANAGER', label: 'Manager' },
+  { value: 'ADMIN', label: 'Admin' },
+  { value: 'SUPER_ADMIN', label: 'Super Admin' },
+  { value: 'EMPLOYEE', label: 'Employee' },
+];
