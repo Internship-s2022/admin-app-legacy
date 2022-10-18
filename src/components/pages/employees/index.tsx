@@ -13,7 +13,7 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { header, projects } from './constants';
 import styles from './employee.module.css';
-import { MappedEmployeeData } from './types';
+import { MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
@@ -23,7 +23,7 @@ const Employees = () => {
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
     name: `${employee.user.firstName} ${employee.user.lastName}`,
-    projects: formattedTableData(projects, 'name'),
+    projects: formattedTableData<Projects>(projects, 'name'),
   }));
 
   useEffect(() => {

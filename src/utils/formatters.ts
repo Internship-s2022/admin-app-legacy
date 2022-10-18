@@ -5,10 +5,10 @@ export const capitalizeFirstLetter = (text: string) => {
   return '';
 };
 
-export const formattedTableData = (list: unknown[], field: string) => {
+export const formattedTableData = <T>(list: T[], field: string) => {
   let result = '-';
   if (list?.length > 1) {
-    result = `${list[0]?.[field]} y ${list?.length - 1} mas`;
+    result = `${list[0]?.[field]} y ${list?.length - 1} más`;
   } else if (list?.length == 1) {
     result = `${list[0]?.[field]}`;
   }
