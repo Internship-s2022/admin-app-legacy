@@ -25,4 +25,3 @@ export interface State {
 
 export type ActionsType = ActionType<typeof actions>;
 export type AppThunk = ActionCreator<ThunkAction<void, RootState, null, Action<null>>>;
-export type ApiResponse<T> = { message: string; data: T; error: boolean };

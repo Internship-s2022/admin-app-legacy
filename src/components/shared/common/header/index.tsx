@@ -20,23 +20,6 @@ const Header = () => {
           <LogOutIcon />
         </div>
       </div>
-      <nav className={styles.navbar}>
-        <div className={styles.appName}>App</div>
-        <ul className={styles.routes}>
-          <li>
-            <a href="/login">login</a>
-          </li>
-          <li>
-            <a href="/storybook">Storybook</a>
-          </li>
-          <li>
-            <a href="/users">Users</a>
-          </li>
-          <li>
-            <a href="/employees">Employees</a>
-          </li>
-        </ul>
-      </nav>
     </header>
   );
 };

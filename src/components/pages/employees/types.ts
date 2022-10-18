@@ -7,6 +7,7 @@ export interface EmployeeData {
 export interface Projects {
   name: string;
 }
+
 export interface User {
   birthDate: Date;
   email: string;

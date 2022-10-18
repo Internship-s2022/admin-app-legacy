@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
-import { Button, Table } from 'src/components/shared/ui';
+import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { Headers, TableButton } from 'src/components/shared/ui/table/types';
@@ -11,7 +11,7 @@ import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
 import styles from './employee.module.css';
-import { EmployeeData, MappedEmployeeData, Projects } from './types';
+import { MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
@@ -58,8 +58,7 @@ const Employees = () => {
   return (
     <>
       <div className={styles.welcomeMessage}>
-        <Typography variant="h1">¡Bienvenido Admin!</Typography>
-        <p>¡Esta es la lista de Empleados!</p>
+        <Typography variant="h1">¡Lista de Empleados!</Typography>
       </div>
       <div className={styles.tableContainer}>
         <div className={styles.searchInputContainer}>
