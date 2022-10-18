@@ -1,8 +1,9 @@
 import { Dispatch } from 'redux';
 
+import { AppThunk } from 'src/redux/types';
+
 import { getClientsError, getClientsPending, getClientsSuccess } from './actions';
 import { getClientsRequest } from './api';
-import { AppThunk } from './types';
 
 export const getClients: AppThunk = () => {
   return async (dispatch: Dispatch) => {
