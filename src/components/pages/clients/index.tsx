@@ -10,6 +10,7 @@ import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
 import styles from './clients.module.css';
+import { ClientsData } from './types';
 
 const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
@@ -17,7 +18,7 @@ const Clients = () => {
 
   const filteredClient = listClients.filter((item) => item.isActive === true);
 
-  const listClientsData = filteredClient.map((item) => {
+  const listClientsData = filteredClient.map((item): ClientsData => {
     return {
       id: item._id,
       name: item.name,
@@ -73,7 +74,7 @@ const Clients = () => {
         />
       </div>
       <div className={styles.tableContainer}>
-        <Table
+        <Table<ClientsData>
           showButtons={true}
           testId={'clientsTable'}
           headers={header}
