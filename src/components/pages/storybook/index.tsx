@@ -146,7 +146,7 @@ const StoryBook = () => {
       <div className={styles.tableContainer}>
         <h3>Tabla con usuarios</h3>
         <Table<MappedUserList>
-          showButtons={true}
+          showButtons={false}
           testId={'userTable'}
           headers={storybookHeaders}
           value={tableValues}

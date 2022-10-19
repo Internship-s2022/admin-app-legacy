@@ -100,34 +100,40 @@ const Users = () => {
   ];
 
   return !listUser.length ? (
-    <div className={styles.addUserButton}>
-      <Button
-        materialVariant={Variant.TEXT}
-        onClick={() => setFormOpen(true)}
-        label={'+ Agregar un nuevo usuario'}
-        testId={'addUserButton'}
-      />
+    <div className={styles.noList}>
+      <span>No se ha podido cargar lista de Usuarios</span>
+      <div>
+        <Button
+          materialVariant={Variant.CONTAINED}
+          onClick={() => setFormOpen(true)}
+          label={'+ Agregar un nuevo usuario'}
+          testId={'addUserButton'}
+        />
+      </div>
     </div>
   ) : (
     <>
-      <div className={styles.welcomeMessage}>
-        <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
-        <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
-      </div>
-      <div className={styles.tableContainer}>
-        <Table<UserData>
-          showButtons={true}
-          testId={'userTable'}
-          headers={userHeaders}
-          value={listUserData}
-          buttons={buttonsArray}
-        />
-        <div className={styles.addUserButton}>
+      <div className={styles.container}>
+        <div className={styles.welcomeMessage}>
+          <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
+          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
+        </div>
+        <div className={styles.inputsContainer}>
+          <input className={styles.searchBar} placeholder="Buscar"></input>
           <Button
-            materialVariant={Variant.TEXT}
+            materialVariant={Variant.CONTAINED}
             onClick={() => setFormOpen(true)}
             label={'+ Agregar un nuevo usuario'}
             testId={'addUserButton'}
+          />
+        </div>
+        <div className={styles.tableContainer}>
+          <Table<UserData>
+            showButtons={true}
+            testId={'userTable'}
+            headers={userHeaders}
+            value={listUserData}
+            buttons={buttonsArray}
           />
         </div>
       </div>
