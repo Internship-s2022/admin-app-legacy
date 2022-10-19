@@ -34,8 +34,7 @@ export const userValidation = Joi.object({
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
     .messages({
-      'string.base': 'El nombre debe contener solo letras',
-      'string.pattern': 'El nombre debe contener solo letras',
+      'string.pattern.base': 'El nombre debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El nombre debe contener al menos 3 letras',
     })
@@ -45,17 +44,17 @@ export const userValidation = Joi.object({
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
     .messages({
-      'string.base': 'El apellido debe contener solo letras',
-      'string.pattern': 'El apellido debe contener solo letras',
+      'string.pattern.base': 'El apellido debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El apellido debe contener al menos 3 letras',
     })
     .required(),
 
   location: Joi.string()
+    .regex(/^[a-zA-Z0-9\s]*$/)
     .min(3)
     .messages({
-      'string.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
+      'string.pattern.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
     })
