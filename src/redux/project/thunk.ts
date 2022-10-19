@@ -13,7 +13,11 @@ export const getProjects: AppThunk = () => {
         dispatch(getProjectsSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getProjectsError(error));
+      if (error.code !== 'ERR_NETWORK') {
+        dispatch(getProjectsError(error.response.data.message));
+      } else {
+        dispatch(getProjectsError(error.message));
+      }
     }
   };
 };

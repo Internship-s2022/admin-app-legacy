@@ -28,67 +28,6 @@ const projectReducer: Reducer<State, ActionsType> = (state = initialState, actio
         isLoading: false,
         error: action.payload,
       };
-    case Actions.ADD_PROJECT_PENDING:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case Actions.ADD_PROJECT_SUCCESS:
-      return {
-        ...state,
-        projects: [...state.projects, action.payload],
-        isLoading: false,
-        error: undefined,
-      };
-    case Actions.ADD_PROJECT_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
-    case Actions.EDIT_PROJECT_PENDING:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case Actions.EDIT_PROJECT_SUCCESS:
-      return {
-        ...state,
-        projects: state.projects.map((project) => {
-          if (project._id === action.payload._id) {
-            return action.payload;
-          }
-          return project;
-        }),
-        isLoading: false,
-        error: undefined,
-      };
-    case Actions.EDIT_PROJECT_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
-    case Actions.DELETE_PROJECT_PENDING:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case Actions.DELETE_PROJECT_SUCCESS:
-      return {
-        ...state,
-        projects: state.projects.filter((project) => {
-          project._id !== action.payload;
-        }),
-        isLoading: false,
-        error: undefined,
-      };
-    case Actions.DELETE_PROJECT_ERROR:
-      return {
-        ...state,
-        isLoading: false,
-        error: action.payload,
-      };
     default:
       return state;
   }
