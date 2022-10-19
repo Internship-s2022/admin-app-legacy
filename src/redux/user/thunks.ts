@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 
+import { AppThunk } from '../types';
 import {
   addUserPending,
   addUsersError,
@@ -15,7 +16,7 @@ import {
   getUsersSuccess,
 } from './actions';
 import { addUserRequest, deleteUserRequest, editUserRequest, getUsersRequest } from './api';
-import { AppThunk, User } from './types';
+import { User } from './types';
 
 export const getUsers: AppThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -26,7 +27,11 @@ export const getUsers: AppThunk = () => {
         return dispatch(getUsersSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getUsersError(error));
+      if (error.code !== 'ERR_NETWORK') {
+        dispatch(getUsersError(error.response.data.message));
+      } else {
+        dispatch(getUsersError(error.message));
+      }
     }
   };
 };

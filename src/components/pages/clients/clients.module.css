@@ -3,50 +3,7 @@
   flex-direction: column;
   gap: 25px;
   padding: 0 12% 5%;
-}
-
-.welcomeMessage {
-  margin: 5%;
-  text-align: center;
-}
-
-.welcomeMessage h1 {
-  font-size: 30px;
-}
-
-.tableContainer {
-  align-self: center;
-  width: 100%;
-  margin-bottom: 10%;
-}
-
-.searchBar {
-  width: 40%;
-}
-
-.addUserButton {
-  margin-top: 2%;
-}
-
-.formContainer {
-  padding: 15px;
-}
-
-::-webkit-scrollbar {
-  display: none;
-}
-
-.inputsContainer {
-  display: flex;
-  gap: 20px;
-  align-self: center;
-  width: 100%;
-  height: 40px;
-}
-
-.buttonsContainer {
-  display: flex;
-  justify-content: space-around;
+  margin: auto;
 }
 
 .noList {
@@ -67,6 +24,33 @@
   font-size: 18px;
   font-style: italic;
   font-weight: 100;
+}
+
+h1 {
+  margin-bottom: 2%;
+}
+
+.inputsContainer {
+  display: flex;
+  gap: 20px;
+  align-self: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 40px;
+}
+
+.searchBar {
+  width: 40%;
+}
+
+.tableContainer {
+  align-self: center;
+  width: 100%;
+}
+
+.tableContainer td,
+.tableContainer th {
+  text-align: left;
 }
 
 .searchInputContainer {
@@ -98,4 +82,15 @@ input:focus {
   align-items: center;
   justify-content: center;
   margin-left: 8px;
+}
+
+.welcomeMessage {
+  display: flex;
+  justify-content: flex-start;
+  margin: 69px 0 34px;
+}
+
+.welcomeMessage h1 {
+  font-size: 24px;
+  font-weight: 500;
 }

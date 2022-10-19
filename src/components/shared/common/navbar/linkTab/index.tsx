@@ -5,7 +5,7 @@ import styles from './linkTab.module.css';
 import { LinkTabProps } from './types';
 
 const LinkTab = (props: LinkTabProps) => {
-  const { handleNavigation, href } = props;
+  const { handleNavigation, href, ...rest } = props;
 
   return (
     <Tab
@@ -15,7 +15,7 @@ const LinkTab = (props: LinkTabProps) => {
         event.preventDefault();
         handleNavigation(href);
       }}
-      {...props}
+      {...rest}
     ></Tab>
   );
 };

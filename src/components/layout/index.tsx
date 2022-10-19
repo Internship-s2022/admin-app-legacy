@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Home, Login, Users } from '../pages';
+import Clients from '../pages/clients';
 import Employees from '../pages/employees';
 import Projects from '../pages/projects';
 import StoryBook from '../pages/storybook';
@@ -20,6 +21,7 @@ const Layout = (): JSX.Element => {
           <Route path="users/*" element={<Users />} />
           <Route path="employees/*" element={<Employees />} />
           <Route path="projects/*" element={<Projects />} />
+          <Route path="clients/*" element={<Clients />} />
         </Routes>
       </BrowserRouter>
     </div>

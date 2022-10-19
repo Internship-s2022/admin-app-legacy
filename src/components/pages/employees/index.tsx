@@ -45,7 +45,7 @@ const Employees = () => {
   return !listEmployee.length ? (
     <div className={styles.noList}>
       <div className={styles.noListTitle}>
-        <span>Lista de empleados</span>
+        <span>Lista de Empleados</span>
         <div className={styles.noListMessage}>
           <p>No se ha podido cargar la lista de Empleados</p>
           <p className={styles.error}>Error: {employeeError}</p>
