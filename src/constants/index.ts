@@ -2,6 +2,7 @@ export enum ApiRoutes {
   USER = '/users',
   EMPLOYEE = '/employees',
   PROJECTS = '/projects',
+  CLIENT = '/clients',
 }
 
 //Navbar
