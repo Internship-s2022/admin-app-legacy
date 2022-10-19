@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
-import { Headers } from 'src/components/shared/ui/table/types';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
+import { header } from './constants';
 import { ClientsData } from './types';
 
 const Clients = () => {
@@ -27,14 +27,6 @@ const Clients = () => {
       localContact: item.localContact?.name,
     };
   });
-
-  const header: Headers[] = [
-    { header: 'Cliente', key: 'name' },
-    { header: 'Projectos', key: 'projects' },
-    { header: 'Contacto cliente', key: 'clientContact' },
-    { header: 'Email', key: 'email' },
-    { header: 'Contacto Radium', key: 'localContact' },
-  ];
 
   const buttonsArray = [
     {
