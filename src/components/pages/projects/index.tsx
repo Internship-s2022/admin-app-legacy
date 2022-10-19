@@ -77,10 +77,7 @@ const Projects = () => {
           <div className={styles.iconContainer}>
             <SearchIcon />
           </div>
-          <input
-            className={styles.searchInput}
-            placeholder="Buscá por Nombre, proyecto o disponibilidad"
-          />
+          <input className={styles.searchInput} placeholder="Búsqueda por palabra clave" />
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
