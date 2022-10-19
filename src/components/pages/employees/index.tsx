@@ -62,7 +62,10 @@ const Employees = () => {
           <div className={styles.iconContainer}>
             <SearchIcon />
           </div>
-          <input className={styles.searchInput} placeholder="Search"></input>
+          <input
+            className={styles.searchInput}
+            placeholder="Buscá por Nombre, proyecto o disponibilidad"
+          ></input>
         </div>
         <Table<MappedEmployeeData>
           showButtons={true}
