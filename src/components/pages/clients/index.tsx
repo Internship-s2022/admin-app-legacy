@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Typography } from '@mui/material';
 
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
@@ -14,10 +16,12 @@ import { ClientsData } from './types';
 
 const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listClients = useSelector((state: RootState) => state.client?.clients);
-  const filteredClients = listClients.filter((item) => item.isActive === true);
+  const activeClients = useSelector((state: RootState) =>
+    state.client?.clients.filter((item) => item.isActive),
+  );
+  const clientError = useSelector((state: RootState) => state.client?.error);
 
-  const listClientsData = filteredClients.map((item): ClientsData => {
+  const listClientsData = activeClients.map((item): ClientsData => {
     return {
       id: item._id,
       name: item.name,
@@ -44,24 +48,28 @@ const Clients = () => {
     dispatch(getClients());
   }, []);
 
-  return !listClients.length ? (
+  return !activeClients.length ? (
     <div className={styles.noList}>
-      <span>No se ha podido cargar lista de clientes</span>
-      <div>
-        <Button
-          materialVariant={Variant.CONTAINED}
-          onClick={() => undefined}
-          label={'+ Agregar cliente'}
-          testId={'addClientButton'}
-          styles={'addButton'}
-        />
+      <div className={styles.noListTitle}>
+        <span>Lista de Clientes</span>
+        <div className={styles.noListMessage}>
+          <p>No se ha podido cargar la lista de Clientes</p>
+          <p className={styles.error}>Error: {clientError}</p>
+        </div>
       </div>
     </div>
   ) : (
     <div className={styles.container}>
-      <h1>Lista de Clientes</h1>
+      <div className={styles.welcomeMessage}>
+        <Typography variant="h1">Lista de Clientes</Typography>
+      </div>
       <div className={styles.inputsContainer}>
-        <input className={styles.searchBar} placeholder="Buscar"></input>
+        <div className={styles.searchInputContainer}>
+          <div className={styles.iconContainer}>
+            <SearchIcon />
+          </div>
+          <input className={styles.searchInput} placeholder="Busqueda por palabra clave"></input>
+        </div>
         <Button
           materialVariant={Variant.CONTAINED}
           onClick={() => undefined}
