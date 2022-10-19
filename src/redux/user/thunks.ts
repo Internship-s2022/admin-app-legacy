@@ -27,7 +27,11 @@ export const getUsers: AppThunk = () => {
         return dispatch(getUsersSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getUsersError(error));
+      if (error.code !== 'ERR_NETWORK') {
+        dispatch(getUsersError(error.response.data.message));
+      } else {
+        dispatch(getUsersError(error.message));
+      }
     }
   };
 };

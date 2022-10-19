@@ -17,7 +17,7 @@ export const getClients: AppThunk = () => {
       if (error.code !== 'ERR_NETWORK') {
         dispatch(getClientsError(error.response.data.message));
       } else {
-        dispatch(error.message);
+        dispatch(getClientsError(error.message));
       }
     }
   };
