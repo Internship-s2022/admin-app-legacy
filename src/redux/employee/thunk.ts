@@ -9,11 +9,16 @@ export const getEmployees: AppThunk = () => {
     try {
       dispatch(getEmployeePending());
       const response = await getEmployeesRequest();
+      console.log('response ===>', response);
       if (response.data?.length) {
         return dispatch(getEmployeeSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getEmployeeError(error));
+      if (error.code != 'ERR_NETWORK') {
+        dispatch(getEmployeeError(error.response.data.message));
+      } else {
+        dispatch(getEmployeeError(error.message));
+      }
     }
   };
 };

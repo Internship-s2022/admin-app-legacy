@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
-import { Loader, Table } from 'src/components/shared/ui';
+import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
@@ -18,7 +18,7 @@ import { MappedEmployeeData, Projects } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listEmployee = useSelector((state: RootState) => state.employee?.employees);
-  const isLoading = useSelector((state: RootState) => state.employee?.isLoading);
+  const employeeError = useSelector((state: RootState) => state.employee?.error);
 
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
@@ -42,9 +42,18 @@ const Employees = () => {
     },
   ];
 
-  return (
+  return !listEmployee.length ? (
+    <div className={styles.noList}>
+      <div className={styles.noListTitle}>
+        <span>Lista de empleados</span>
+        <div className={styles.noListMessage}>
+          <p>No se ha podido cargar la lista de Empleados</p>
+          <p className={styles.error}>Error: {employeeError}</p>
+        </div>
+      </div>
+    </div>
+  ) : (
     <>
-      {isLoading && <Loader />}
       <div className={styles.tableContainer}>
         <div className={styles.welcomeMessage}>
           <Typography variant="h1">Lista de Empleados</Typography>
