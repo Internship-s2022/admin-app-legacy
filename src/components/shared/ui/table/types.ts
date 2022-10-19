@@ -5,14 +5,18 @@ export interface TableProps<Data> {
   showButtons?: boolean;
   testId: string;
   buttons?: TableButton<Data>[];
+  profileIcon?: boolean;
 }
+
 export interface RowData {
   id?: string;
 }
+
 export interface Headers {
   header: string;
   key: string;
 }
+
 export interface TableButton<Data> {
   active: boolean;
   testId: string;
