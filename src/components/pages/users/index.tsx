@@ -6,6 +6,7 @@ import { Typography } from '@mui/material';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
@@ -32,9 +33,11 @@ const Users = () => {
   const [formOpen, setFormOpen] = React.useState<boolean>(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const listUser = useSelector((state: RootState) => state.user?.users);
-
-  const filteredUser = listUser.filter((item) => item.isActive === true);
+  const activeUsers = useSelector((state: RootState) =>
+    state.user?.users.filter((item) => item.isActive),
+  );
+  console.log(activeUsers);
+  const userError = useSelector((state: RootState) => state.user?.error);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -55,7 +58,7 @@ const Users = () => {
     resolver: joiResolver(userValidation),
   });
 
-  const listUserData = filteredUser.map((item): UserData => {
+  const listUserData = activeUsers.map((item): UserData => {
     return {
       id: item?._id,
       name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
@@ -99,16 +102,14 @@ const Users = () => {
     },
   ];
 
-  return !listUser.length ? (
+  return !activeUsers.length ? (
     <div className={styles.noList}>
-      <span>No se ha podido cargar lista de Usuarios</span>
-      <div>
-        <Button
-          materialVariant={Variant.CONTAINED}
-          onClick={() => setFormOpen(true)}
-          label={'+ Agregar un nuevo usuario'}
-          testId={'addUserButton'}
-        />
+      <div className={styles.noListTitle}>
+        <span>Lista de Usuarios</span>
+        <div className={styles.noListMessage}>
+          <p>No se ha podido cargar la lista de Usuarios</p>
+          <p className={styles.error}>Error: {userError}</p>
+        </div>
       </div>
     </div>
   ) : (
@@ -119,7 +120,12 @@ const Users = () => {
           <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
         </div>
         <div className={styles.inputsContainer}>
-          <input className={styles.searchBar} placeholder="Buscar"></input>
+          <div className={styles.searchInputContainer}>
+            <div className={styles.iconContainer}>
+              <SearchIcon />
+            </div>
+            <input className={styles.searchInput} placeholder="Busqueda por palabra clave"></input>
+          </div>
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => setFormOpen(true)}

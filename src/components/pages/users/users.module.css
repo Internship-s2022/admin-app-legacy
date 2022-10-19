@@ -52,10 +52,50 @@
 .noList {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  margin-top: 3%;
+  margin-left: 20%;
+  font-weight: 500;
 }
 
-.noList span {
-  margin: 5%;
-  font-weight: 500;
+.noListTitle {
+  font-size: 28px;
+}
+
+.noListMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 100;
+}
+
+.searchInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 65%;
+  height: 38px;
+  padding: 2px;
+  margin-bottom: 34px;
+  border: 1px solid rgb(55 56 103 / 40%);
+  border-radius: 5px;
+}
+
+.searchInput {
+  width: 50%;
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
 }
