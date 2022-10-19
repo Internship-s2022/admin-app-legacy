@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography } from '@mui/material';
 
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
@@ -8,6 +7,7 @@ import { Headers } from 'src/components/shared/ui/table/types';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
+import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
 import { ClientsData } from './types';
@@ -15,16 +15,16 @@ import { ClientsData } from './types';
 const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listClients = useSelector((state: RootState) => state.client?.clients);
+  const filteredClients = listClients.filter((item) => item.isActive === true);
 
-  const filteredClient = listClients.filter((item) => item.isActive === true);
-
-  const listClientsData = filteredClient.map((item): ClientsData => {
+  const listClientsData = filteredClients.map((item): ClientsData => {
     return {
       id: item._id,
       name: item.name,
-      projects: item.projects,
-      clientContact: item.clientContact,
-      localContact: item.localContact,
+      projects: formattedTableData(item.projects, 'projectName'),
+      clientContact: item.clientContact?.name,
+      email: item.clientContact?.email,
+      localContact: item.localContact?.name,
     };
   });
 
@@ -32,12 +32,9 @@ const Clients = () => {
     { header: 'Cliente', key: 'name' },
     { header: 'Projectos', key: 'projects' },
     { header: 'Contacto cliente', key: 'clientContact' },
+    { header: 'Email', key: 'email' },
     { header: 'Contacto Radium', key: 'localContact' },
   ];
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, []);
 
   const buttonsArray = [
     {
@@ -50,19 +47,27 @@ const Clients = () => {
       },
     },
   ];
+
+  useEffect(() => {
+    dispatch(getClients());
+  }, []);
+
   return !listClients.length ? (
-    <div>
-      <Button
-        materialVariant={Variant.CONTAINED}
-        onClick={() => undefined}
-        label={'+ Agregar cliente'}
-        testId={'addClientButton'}
-        styles={'addButton'}
-      />
+    <div className={styles.noList}>
+      <span>No se ha podido cargar lista de clientes</span>
+      <div>
+        <Button
+          materialVariant={Variant.CONTAINED}
+          onClick={() => undefined}
+          label={'+ Agregar cliente'}
+          testId={'addClientButton'}
+          styles={'addButton'}
+        />
+      </div>
     </div>
   ) : (
     <div className={styles.container}>
-      <Typography variant="h1">Lista de Clientes</Typography>
+      <h1>Lista de Clientes</h1>
       <div className={styles.inputsContainer}>
         <input className={styles.searchBar} placeholder="Buscar"></input>
         <Button
