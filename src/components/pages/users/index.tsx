@@ -36,7 +36,6 @@ const Users = () => {
   const activeUsers = useSelector((state: RootState) =>
     state.user?.users.filter((item) => item.isActive),
   );
-  console.log(activeUsers);
   const userError = useSelector((state: RootState) => state.user?.error);
 
   useEffect(() => {
