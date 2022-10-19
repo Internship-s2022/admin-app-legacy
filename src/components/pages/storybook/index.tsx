@@ -5,11 +5,11 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
-import { AccessRoleType, formattedRoleType } from 'src/constants';
+import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 
-import { Headers } from '../../shared/ui/table/types';
+import { storybookHeaders, tableValues } from './constants';
 import styles from './index.module.css';
 import { FormValues, MappedUserList } from './types';
 import { storybookValidation } from './validations';
@@ -33,28 +33,6 @@ const StoryBook = () => {
   }, []);
 
   const [open, setOpen] = React.useState(false);
-
-  const header: Headers[] = [
-    { header: 'Nombre', key: 'firstName' },
-    { header: 'Rol de acceso', key: 'accessRoleType' },
-  ];
-
-  const value: MappedUserList[] = [
-    { firstName: 'Nicolas Lobos', accessRoleType: formattedRoleType.SUPER_ADMIN },
-    { firstName: 'Samuel Trillo', accessRoleType: formattedRoleType.ADMIN },
-    { firstName: 'Karen Soto', accessRoleType: formattedRoleType.EMPLOYEE },
-    { firstName: 'Luciano Alarcon', accessRoleType: formattedRoleType.EMPLOYEE },
-    { firstName: 'Juan Moreira', accessRoleType: formattedRoleType.EMPLOYEE },
-    { firstName: 'Paula Rinaldi', accessRoleType: formattedRoleType.EMPLOYEE },
-    { firstName: 'Alex Galindo', accessRoleType: formattedRoleType.EMPLOYEE },
-  ];
-
-  const accessRoles = [
-    { value: 'MANAGER', label: 'Manager' },
-    { value: 'ADMIN', label: 'Admin' },
-    { value: 'SUPER_ADMIN', label: 'Super Admin' },
-    { value: 'EMPLOYEE', label: 'Employee' },
-  ];
 
   return (
     <div className={styles.container}>
@@ -170,8 +148,8 @@ const StoryBook = () => {
         <Table<MappedUserList>
           showButtons={true}
           testId={'userTable'}
-          headers={header}
-          value={value}
+          headers={storybookHeaders}
+          value={tableValues}
         />
       </div>
     </div>

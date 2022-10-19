@@ -1,3 +1,9 @@
+export enum ApiRoutes {
+  USER = '/users',
+  EMPLOYEE = '/employees',
+  PROJECTS = '/projects',
+}
+
 //Navbar
 export const navbarItems = [
   {
@@ -40,7 +46,9 @@ export enum AccessRoleType {
   EMPLOYEE = 'EMPLOYEE',
 }
 
-export enum ApiRoutes {
-  USER = '/users',
-  EMPLOYEE = '/employees',
-}
+export const dropdownAccessRoles = [
+  { value: 'MANAGER', label: 'Manager' },
+  { value: 'ADMIN', label: 'Admin' },
+  { value: 'SUPER_ADMIN', label: 'Super Admin' },
+  { value: 'EMPLOYEE', label: 'Employee' },
+];

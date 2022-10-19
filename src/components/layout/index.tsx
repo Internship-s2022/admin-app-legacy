@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { Home, Login, Users } from '../pages';
 import Employees from '../pages/employees';
+import Projects from '../pages/projects';
 import StoryBook from '../pages/storybook';
 import { Header } from '../shared/common';
 import styles from './layout.module.css';
@@ -18,6 +19,7 @@ const Layout = (): JSX.Element => {
           <Route path="storybook/*" element={<StoryBook />} />
           <Route path="users/*" element={<Users />} />
           <Route path="employees/*" element={<Employees />} />
+          <Route path="projects/*" element={<Projects />} />
         </Routes>
       </BrowserRouter>
     </div>
