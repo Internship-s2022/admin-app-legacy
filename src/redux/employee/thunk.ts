@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 
-import { AppThunk } from '../user/types';
+import { AppThunk } from '../types';
 import { getEmployeeError, getEmployeePending, getEmployeeSuccess } from './actions';
 import { getEmployeesRequest } from './api';
 

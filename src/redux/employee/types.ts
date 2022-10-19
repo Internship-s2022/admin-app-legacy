@@ -22,4 +22,3 @@ export interface State {
 }
 
 export type ActionsType = ActionType<typeof actions>;
-export type ApiResponse<T> = { message: string; data: T; error: boolean };
