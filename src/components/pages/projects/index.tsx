@@ -16,7 +16,7 @@ import { MappedProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) => state.project.projects);
+  const listProjects = useSelector((state: RootState) => state.project.list);
   const projectError = useSelector((state: RootState) => state.project?.error);
 
   const formattedMember = membersArray.map((member) => {

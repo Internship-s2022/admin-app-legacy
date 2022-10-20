@@ -15,7 +15,7 @@ export interface User {
 }
 
 export interface State {
-  users: User[];
+  list: User[];
   isLoading: boolean;
   error: string;
 }

@@ -16,7 +16,7 @@ export interface Employee {
 }
 
 export interface State {
-  employees: Employee[];
+  list: Employee[];
   isLoading: boolean;
   error: string;
 }

@@ -17,7 +17,7 @@ import { MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listEmployee = useSelector((state: RootState) => state.employee?.employees);
+  const listEmployee = useSelector((state: RootState) => state.employee?.list);
   const employeeError = useSelector((state: RootState) => state.employee?.error);
 
   const matchedEmployee = listEmployee.map((employee) => ({
