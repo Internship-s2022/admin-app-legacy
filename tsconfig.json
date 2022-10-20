@@ -18,5 +18,5 @@
     "jsx": "react",
     "baseUrl": ".",
   },
-  "include": ["src", "./jestSetup.ts", "declaration.d.ts"],
+  "include": ["src", "./jestSetup.ts", "declaration.ts"],
 }
