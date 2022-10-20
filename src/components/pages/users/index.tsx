@@ -9,6 +9,7 @@ import { Variant } from 'src/components/shared/ui/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
+import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
@@ -28,9 +29,9 @@ export const accessRoles = [
 ];
 
 const Users = () => {
-  const [row, setRow] = React.useState<UserData>({} as UserData);
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [formOpen, setFormOpen] = React.useState<boolean>(false);
+  const [row, setRow] = React.useState({} as UserData);
+  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
@@ -72,7 +73,7 @@ const Users = () => {
 
   const onClose = () => {
     reset();
-    setFormOpen(false);
+    dispatch(closeFormModal());
   };
 
   const handleDelete = (data) => {
@@ -86,7 +87,7 @@ const Users = () => {
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        setOpen(true);
+        dispatch(openModal());
         setRow(data);
       },
     },
@@ -118,7 +119,7 @@ const Users = () => {
           <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
           <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
         </div>
-        <div className={styles.inputsContainer}>
+        <div className={styles.topTableContainer}>
           <div className={styles.searchInputContainer}>
             <div className={styles.iconContainer}>
               <SearchIcon />
@@ -127,7 +128,7 @@ const Users = () => {
           </div>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => setFormOpen(true)}
+            onClick={() => dispatch(openFormModal())}
             label={'+ Agregar un nuevo usuario'}
             testId={'addUserButton'}
           />
@@ -143,7 +144,11 @@ const Users = () => {
         </div>
       </div>
       <div className={styles.modalContainer}>
-        <Modal onClose={setFormOpen} isOpen={formOpen} testId="add-user-modal">
+        <Modal
+          onClose={() => dispatch(closeFormModal())}
+          isOpen={showFormModal}
+          testId="add-user-modal"
+        >
           <div className={styles.formContainer}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className={styles.inputsContainer}>
@@ -220,8 +225,8 @@ const Users = () => {
           </div>
         </Modal>
       </div>
-      <Modal testId={'User-access-modal'} isOpen={open} onClose={() => setOpen(!open)}>
-        <AccessRoleModal row={row} open={open} setOpen={setOpen} />
+      <Modal testId={'User-access-modal'} isOpen={showModal} onClose={() => dispatch(closeModal())}>
+        <AccessRoleModal row={row} open={showModal} />
       </Modal>
     </>
   );

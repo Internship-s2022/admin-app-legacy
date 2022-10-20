@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import styles from 'src/components/pages/users/AccessRoleModal/accessRoleModal.module.css';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
+import { closeModal } from 'src/redux/ui/actions';
 import { editUser } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 
@@ -11,7 +12,7 @@ import { accessRoles } from '../index';
 import { AccessRoleModalProps } from './types';
 
 const AccessRoleModal = (props: AccessRoleModalProps) => {
-  const { row, setOpen } = props;
+  const { row } = props;
   const [accessRole, setAccessRole] = React.useState(row.accessRoleType.toUpperCase());
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -24,7 +25,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
 
   const onSubmit = (data) => {
     dispatch(editUser(data));
-    setOpen(false);
+    dispatch(closeModal());
   };
   return (
     <div>
@@ -55,7 +56,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
           testId={'confirmAccessRoleBtn'}
           materialVariant={Variant.OUTLINED}
           label={'Cancelar'}
-          onClick={() => setOpen(false)}
+          onClick={() => dispatch(closeModal())}
         ></Button>
       </div>
     </div>

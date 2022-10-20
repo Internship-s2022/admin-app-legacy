@@ -5,6 +5,7 @@ import { composeWithDevTools } from '@redux-devtools/extension';
 import clientReducer from './client/reducer';
 import employeeReducer from './employee/reducer';
 import projectReducer from './project/reducer';
+import uiReducer from './ui/reducer';
 import userReducer from './user/reducer';
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   employee: employeeReducer,
   project: projectReducer,
   client: clientReducer,
+  ui: uiReducer,
 });
 
 const configureStore = () => {
