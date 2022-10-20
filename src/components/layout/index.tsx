@@ -19,7 +19,6 @@ const Layout = (): JSX.Element => {
   return (
     <div className={styles.container}>
       {isLoading && <Loader />}
-
       <BrowserRouter>
         <Header />
         <Routes>
