@@ -1,0 +1,29 @@
+.headers {
+  background-color: #b3b3b3;
+}
+
+.headers th {
+  font-weight: bolder;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  border: 2px solid #b3b3b3;
+}
+
+.rows:nth-of-type(even) {
+  background-color: #b3b3b36f;
+}
+
+.icon {
+  margin: 10px;
+}
+
+.buttonCell {
+  display: flex;
+  gap: 10px;
+}

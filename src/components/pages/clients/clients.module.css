@@ -1,0 +1,96 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 0 12% 5%;
+  margin: auto;
+}
+
+.noList {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 3%;
+  margin-left: 20%;
+  font-weight: 500;
+}
+
+.noListTitle {
+  font-size: 28px;
+}
+
+.noListMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 100;
+}
+
+h1 {
+  margin-bottom: 2%;
+}
+
+.inputsContainer {
+  display: flex;
+  gap: 20px;
+  align-self: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 40px;
+}
+
+.searchBar {
+  width: 40%;
+}
+
+.tableContainer {
+  align-self: center;
+  width: 100%;
+}
+
+.tableContainer td,
+.tableContainer th {
+  text-align: left;
+}
+
+.searchInputContainer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 65%;
+  height: 38px;
+  padding: 2px;
+  margin-bottom: 34px;
+  border: 1px solid rgb(55 56 103 / 40%);
+  border-radius: 5px;
+}
+
+.searchInput {
+  width: 50%;
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: none;
+}
+
+input:focus {
+  outline: none;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+}
+
+.welcomeMessage {
+  display: flex;
+  justify-content: flex-start;
+  margin: 69px 0 34px;
+}
+
+.welcomeMessage h1 {
+  font-size: 24px;
+  font-weight: 500;
+}
