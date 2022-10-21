@@ -30,7 +30,8 @@ export const userValidation = Joi.object({
       'string.pattern.base': 'Utilice un mail valido',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El mail debe contener al menos 3 letras',
-    }),
+    })
+    .required(),
 
   firstName: Joi.string()
     .regex(/^[a-zA-Z\s]*$/)
@@ -58,7 +59,7 @@ export const userValidation = Joi.object({
     .min(3)
     .alphanum()
     .messages({
-      'string.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
+      'string.alphanum': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
     })
