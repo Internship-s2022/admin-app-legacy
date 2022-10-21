@@ -4,7 +4,7 @@ import { Actions } from './constants';
 import { ActionsType, State } from './types';
 
 const initialState: State = {
-  employees: [],
+  list: [],
   isLoading: false,
   error: undefined,
 };
@@ -19,7 +19,7 @@ const employeeReducer: Reducer<State, ActionsType> = (state = initialState, acti
     case Actions.GET_EMPLOYEE_SUCCESS:
       return {
         ...state,
-        employees: action.payload,
+        list: action.payload,
         isLoading: false,
         error: undefined,
       };

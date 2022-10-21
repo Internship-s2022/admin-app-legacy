@@ -16,7 +16,7 @@ export interface Client {
   isActive: boolean;
 }
 export interface State {
-  clients: Client[];
+  list: Client[];
   isLoading: boolean;
   error: string;
 }

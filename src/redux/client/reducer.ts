@@ -4,7 +4,7 @@ import { Actions } from './constants';
 import { ActionsType, State } from './types';
 
 const initialState: State = {
-  clients: [],
+  list: [],
   isLoading: false,
   error: undefined,
 };
@@ -19,7 +19,7 @@ const clientReducer: Reducer<State, ActionsType> = (state = initialState, action
     case Actions.GET_CLIENTS_SUCCESS:
       return {
         ...state,
-        clients: action.payload,
+        list: action.payload,
         isLoading: false,
         error: undefined,
       };

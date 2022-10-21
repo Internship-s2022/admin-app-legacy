@@ -17,7 +17,7 @@ import { ClientsData } from './types';
 const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const activeClients = useSelector((state: RootState) =>
-    state.client?.clients.filter((item) => item.isActive),
+    state.client?.list.filter((item) => item.isActive),
   );
   const clientError = useSelector((state: RootState) => state.client?.error);
 
