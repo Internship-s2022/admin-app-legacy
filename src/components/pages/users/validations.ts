@@ -24,15 +24,18 @@ export const userValidation = Joi.object({
     }),
 
   email: Joi.string()
-    .regex(/^[a-zA-Z.]*@radiumrocket.com/)
+    .regex(/^[a-zA-Z.]+@radiumrocket.com/)
+    .min(20)
     .messages({
-      'string.pattern.base': 'Utilice un mail con el dominio @radiumrocket',
+      'string.pattern.base': 'Utilice un mail valido',
       'string.empty': 'Debes completar este campo para crear un usuario',
+      'string.min': 'El mail debe contener al menos 3 letras',
     }),
 
   firstName: Joi.string()
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
+    .trim()
     .messages({
       'string.pattern.base': 'El nombre debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
@@ -43,6 +46,7 @@ export const userValidation = Joi.object({
   lastName: Joi.string()
     .regex(/^[a-zA-Z\s]*$/)
     .min(3)
+    .trim()
     .messages({
       'string.pattern.base': 'El apellido debe contener solo letras',
       'string.empty': 'Debes completar este campo para crear un usuario',
@@ -51,10 +55,10 @@ export const userValidation = Joi.object({
     .required(),
 
   location: Joi.string()
-    .regex(/^[a-zA-Z0-9\s]*$/)
     .min(3)
+    .alphanum()
     .messages({
-      'string.pattern.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
+      'string.base': 'Ingrese un nombre de localidad valido. Sin caracteres especiales',
       'string.empty': 'Debes completar este campo para crear un usuario',
       'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
     })

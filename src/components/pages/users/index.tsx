@@ -54,7 +54,7 @@ const Users = () => {
       birthDate: undefined,
       isActive: true,
     },
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
 
