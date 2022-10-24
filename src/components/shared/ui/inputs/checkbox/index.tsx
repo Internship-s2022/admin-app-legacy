@@ -5,7 +5,7 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/materia
 import { CheckProps } from './types';
 
 const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.Element => {
-  const { control, name, options, config, ...rest } = props;
+  const { control, name, options, config, testId, ...rest } = props;
   const {
     field: { ref, value, onChange, ...inputProps },
   } = useController({
@@ -21,9 +21,6 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
 
     if (newArray.length > 0) {
       const index = newArray.findIndex((x) => x === item);
-      console.log('index', index);
-      console.log('value', item);
-      console.log('new array', newArray);
       if (index === -1) {
         newArray.push(item);
       } else {
@@ -32,7 +29,6 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
     } else {
       newArray.push(item);
     }
-
     onChange(newArray);
   };
 
@@ -49,10 +45,12 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
                   inputRef={ref}
                   onChange={() => handleChange(option[config.value])}
                   disabled={rest?.disabled}
+                  data-testid={option[config.value]}
                 />
               }
               label={<p>{option[config.label]}</p>}
               key={option[config.value]}
+              data-testid={testId}
             />
           ))}
         </FormGroup>

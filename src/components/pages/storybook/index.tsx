@@ -211,9 +211,19 @@ const StoryBook = () => {
             />
           </div>
         </div>
+        <div className={styles.checkbox}>
+          <CheckboxInput
+            label="example"
+            name="potentialRole"
+            control={control}
+            options={checkboxData}
+            config={config}
+            testId={'checkbox-id'}
+          />
+        </div>
         <div>
           <Button
-            testId="submit-btn"
+            testId={'submit-button'}
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
