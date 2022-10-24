@@ -4,7 +4,7 @@ import { Actions } from './constants';
 import { ActionsType, State } from './types';
 
 const initialState: State = {
-  users: [],
+  list: [],
   isLoading: false,
   error: undefined,
 };
@@ -19,7 +19,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
     case Actions.GET_USERS_SUCCESS:
       return {
         ...state,
-        users: action.payload,
+        list: action.payload,
         isLoading: false,
         error: undefined,
       };
@@ -37,7 +37,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
     case Actions.ADD_USER_SUCCESS:
       return {
         ...state,
-        users: [...state.users, action.payload],
+        list: [...state.list, action.payload],
         isLoading: false,
         error: undefined,
       };
@@ -55,7 +55,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
     case Actions.EDIT_USER_SUCCESS:
       return {
         ...state,
-        users: state.users.map((item) => {
+        list: state.list.map((item) => {
           if (item._id === action.payload.id) {
             return { ...item, accessRoleType: action.payload.accessRole };
           }
@@ -78,7 +78,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         isLoading: false,
-        users: state.users.filter((user) => user._id !== action.payload),
+        list: state.list.filter((user) => user._id !== action.payload),
         error: undefined,
       };
     case Actions.DELETE_USER_ERROR:

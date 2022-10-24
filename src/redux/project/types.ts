@@ -25,7 +25,7 @@ export interface Project {
 }
 
 export interface State {
-  projects: Project[];
+  list: Project[];
   isLoading: boolean;
   error: string;
 }

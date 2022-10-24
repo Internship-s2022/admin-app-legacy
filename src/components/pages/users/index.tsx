@@ -35,7 +35,7 @@ const Users = () => {
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
-    state.user?.users.filter((item) => item.isActive),
+    state.user?.list.filter((item) => item.isActive),
   );
   const userError = useSelector((state: RootState) => state.user?.error);
 
@@ -54,7 +54,7 @@ const Users = () => {
       birthDate: undefined,
       isActive: true,
     },
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
 
