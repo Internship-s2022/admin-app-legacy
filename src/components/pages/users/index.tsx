@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
-import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import { Button, DatePicker, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
@@ -67,8 +67,9 @@ const Users = () => {
   });
 
   const onSubmit = (data) => {
+    console.log('data:', data);
     dispatch(addUser(data));
-    onClose();
+    // onClose();
   };
 
   const onClose = () => {
@@ -198,14 +199,7 @@ const Users = () => {
                   error
                   fullWidth
                 />
-                <TextInput
-                  control={control}
-                  testId={'date-input'}
-                  name="birthDate"
-                  type="date"
-                  error
-                  fullWidth
-                />
+                <DatePicker label={'date picker'} testId={'date-picker'} />
               </div>
               <div className={styles.buttonsContainer}>
                 <Button

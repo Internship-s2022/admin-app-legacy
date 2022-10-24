@@ -11,6 +11,8 @@ const DatePickerInput = (props: DPickerProps) => {
 
   const { label, testId, styles } = props;
 
+  console.log('VALUE:', value);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
@@ -18,7 +20,7 @@ const DatePickerInput = (props: DPickerProps) => {
         data-test-id={testId}
         value={value}
         className={styles}
-        onChange={(newValue) => setValue(newValue)}
+        onChange={(newValue) => setValue(format(new Date(newValue), 'yyyy/MM/dd'))}
         renderInput={(params) => <TextField {...params} />} //set inputs props with TextField props
         inputFormat={'yyyy/MM/dd'}
       />
