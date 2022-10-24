@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +52,7 @@ const Users = () => {
       firstName: '',
       lastName: '',
       location: '',
-      birthDate: undefined,
+      birthDate: new Date(Date.now()),
       isActive: true,
     },
     mode: 'onBlur',
@@ -67,9 +68,12 @@ const Users = () => {
   });
 
   const onSubmit = (data) => {
-    console.log('data:', data);
+    data = {
+      ...data,
+      birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
+    };
     dispatch(addUser(data));
-    // onClose();
+    onClose();
   };
 
   const onClose = () => {
@@ -199,7 +203,13 @@ const Users = () => {
                   error
                   fullWidth
                 />
-                <DatePicker label={'date picker'} testId={'date-picker'} />
+                <DatePicker
+                  label={'date picker'}
+                  testId={'date-picker'}
+                  name="birthDate"
+                  control={control}
+                  error
+                />
               </div>
               <div className={styles.buttonsContainer}>
                 <Button

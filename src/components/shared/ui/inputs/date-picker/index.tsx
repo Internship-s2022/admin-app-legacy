@@ -1,27 +1,34 @@
-import { format } from 'date-fns';
 import React from 'react';
+import { FieldValues, useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import { DPickerProps } from './types';
 
-const DatePickerInput = (props: DPickerProps) => {
-  const [value, setValue] = React.useState<string>(format(new Date(Date.now()), 'yyyy/MM/dd'));
+const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): JSX.Element => {
+  const {
+    field: { value, onChange, onBlur },
+    fieldState: { error },
+  } = useController(props);
 
   const { label, testId, styles } = props;
-
-  console.log('VALUE:', value);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        onChange={onChange}
+        value={value}
         label={label}
         data-test-id={testId}
-        value={value}
         className={styles}
-        onChange={(newValue) => setValue(format(new Date(newValue), 'yyyy/MM/dd'))}
-        renderInput={(params) => <TextField {...params} />} //set inputs props with TextField props
+        renderInput={(params) => (
+          <TextField
+            onBlur={onBlur}
+            {...params}
+            error={Boolean(error)}
+            helperText={error?.message}
+          />
+        )}
         inputFormat={'yyyy/MM/dd'}
       />
     </LocalizationProvider>
