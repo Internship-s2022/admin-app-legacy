@@ -53,4 +53,6 @@ export const storybookValidation = Joi.object({
     })
     .required(),
   skills: Joi.array(),
+
+  potentialRole: Joi.any(),
 });
