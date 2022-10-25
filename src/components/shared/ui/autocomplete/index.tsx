@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { useController } from 'react-hook-form';
+import { FieldValues, useController } from 'react-hook-form';
 import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 
-const SkillsAutocomplete = (props) => {
+import { AutocompleteProps } from './types';
+
+const SkillsAutocomplete = <Form extends FieldValues>(
+  props: AutocompleteProps<Form>,
+): JSX.Element => {
+  const { control, name, skills, testId } = props;
   const handleDelete = (chipToDelete: string) => {
     onChange((value) => value.filter((value) => value !== chipToDelete));
   };
@@ -12,7 +17,7 @@ const SkillsAutocomplete = (props) => {
   const {
     field: { value, onChange },
     fieldState: { error },
-  } = useController(props);
+  } = useController({ name, control });
 
   return (
     <div>
@@ -20,8 +25,7 @@ const SkillsAutocomplete = (props) => {
         multiple
         value={value}
         id="tags-filled"
-        // eslint-disable-next-line react/prop-types
-        options={props.skills.map((option) => option)}
+        options={skills.map((option) => option)}
         freeSolo
         renderTags={() => null}
         renderInput={(params) => (
@@ -37,6 +41,7 @@ const SkillsAutocomplete = (props) => {
         onChange={(_, values) => {
           onChange(values);
         }}
+        data-testid={testId}
       />
       {value?.map((option) => (
         <Chip

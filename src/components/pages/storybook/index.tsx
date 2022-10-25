@@ -30,6 +30,8 @@ const StoryBook = () => {
     resolver: joiResolver(storybookValidation),
   });
 
+  const arraySkills: string[] = ['React', 'Redux', 'CSS', 'Vue'];
+
   useEffect(() => {
     dispatch(getUsers());
   }, []);
@@ -145,9 +147,10 @@ const StoryBook = () => {
           </div>
           <div className={styles.textInput}>
             <SkillsAutocomplete
+              testId={'autocompleteTestId'}
               control={control}
               name={'skills'}
-              skills={['React', 'Redux', 'CSS', 'Vue']}
+              skills={arraySkills}
             />
           </div>
         </div>
