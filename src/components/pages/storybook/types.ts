@@ -6,6 +6,7 @@ export type FormValues = {
   accessRoleType: AccessRoleType;
   email: string;
   date: Date;
+  skills: [];
 };
 export interface MappedUserList {
   id?: string;

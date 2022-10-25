@@ -52,4 +52,5 @@ export const storybookValidation = Joi.object({
       'any.required': 'Debes completar este campo para crear un usuario',
     })
     .required(),
+  skills: Joi.array(),
 });
