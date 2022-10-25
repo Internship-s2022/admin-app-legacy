@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
-import SkillsAutocomplete from 'src/components/shared/ui/autocomplete';
+import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
@@ -146,7 +146,7 @@ const StoryBook = () => {
             />
           </div>
           <div className={styles.textInput}>
-            <SkillsAutocomplete
+            <AutocompleteInput
               testId={'autocompleteTestId'}
               control={control}
               name={'skills'}

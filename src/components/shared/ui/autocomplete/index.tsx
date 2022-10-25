@@ -8,7 +8,7 @@ import styles from 'src/components/shared/ui/autocomplete/autocomplete.module.cs
 
 import { AutocompleteProps } from './types';
 
-const SkillsAutocomplete = <Form extends FieldValues>(
+const AutocompleteInput = <Form extends FieldValues>(
   props: AutocompleteProps<Form>,
 ): JSX.Element => {
   const { control, name, skills, testId } = props;
@@ -58,4 +58,4 @@ const SkillsAutocomplete = <Form extends FieldValues>(
   );
 };
 
-export default SkillsAutocomplete;
+export default AutocompleteInput;
