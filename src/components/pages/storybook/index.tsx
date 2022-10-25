@@ -218,7 +218,7 @@ const StoryBook = () => {
             control={control}
             options={checkboxData}
             config={config}
-            testId={'checkbox-id'}
+            testId={'checkboxId'}
           />
         </div>
         <div>
