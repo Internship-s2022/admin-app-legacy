@@ -4,6 +4,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 
+import styles from 'src/components/shared/ui/autocomplete/autocomplete.module.css';
+
 import { AutocompleteProps } from './types';
 
 const SkillsAutocomplete = <Form extends FieldValues>(
@@ -49,6 +51,7 @@ const SkillsAutocomplete = <Form extends FieldValues>(
           variant="outlined"
           label={option}
           onDelete={() => handleDelete(option)}
+          className={styles.chips}
         />
       ))}
     </div>
