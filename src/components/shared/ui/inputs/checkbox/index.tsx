@@ -13,23 +13,22 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
     control,
   });
 
-  const checkboxIds = useWatch({ control, name: name }) || [];
+  const checkboxValues = useWatch({ control, name: name }) || [];
 
-  const handleChange = (change) => {
-    const newArray = [...checkboxIds];
-    const item = change;
+  const handleChange = (changedValues) => {
+    const selectedValues = [...checkboxValues];
 
-    if (newArray.length > 0) {
-      const index = newArray.findIndex((x) => x === item);
+    if (selectedValues.length > 0) {
+      const index = selectedValues.findIndex((item) => item === changedValues);
       if (index === -1) {
-        newArray.push(item);
+        selectedValues.push(changedValues);
       } else {
-        newArray.splice(index, 1);
+        selectedValues.splice(index, 1);
       }
     } else {
-      newArray.push(item);
+      selectedValues.push(changedValues);
     }
-    onChange(newArray);
+    onChange(selectedValues);
   };
 
   return (
