@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import { Button, DatePicker, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/button/types';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
@@ -108,15 +108,12 @@ const StoryBook = () => {
               />
             </div>
             <div className={styles.dateInput}>
-              <TextInput
-                styles={styles.dateInput}
-                control={control}
-                testId={'date-input'}
+              <DatePicker
+                label={'date picker'}
+                testId={'datePickerTestId'}
                 name="date"
-                type={'date'}
-                variant="outlined"
+                control={control}
                 error
-                fullWidth
               />
             </div>
           </div>
@@ -136,7 +133,7 @@ const StoryBook = () => {
             <div className={styles.textInput}>
               <TextInput
                 control={control}
-                testId={'email-input'}
+                testId={'lastNameInput'}
                 label="Standard Input"
                 name="lastName"
                 type={'text'}
@@ -157,65 +154,27 @@ const StoryBook = () => {
                 fullWidth
               />
             </div>
+            <div className={styles.textInput}>
+              <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+            </div>
+            <div className={styles.checkbox}>
+              <CheckboxInput
+                testId={'checkbox'}
+                label="example"
+                name="potentialRole"
+                control={control}
+                options={checkboxData}
+              />
+            </div>
           </div>
-        </div>
-        <div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'name-input'}
-              label="Outlined Input"
-              name="firstName"
-              type={'text'}
-              variant="outlined"
-              error
-              fullWidth
+          <div>
+            <Button
+              testId={'submit-button'}
+              materialVariant={Variant.CONTAINED}
+              label="Confirmar"
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'email-input'}
-              label="Standard Input"
-              name="lastName"
-              type={'text'}
-              variant="standard"
-              error
-              fullWidth
-            />
-          </div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'email-input'}
-              label="Filled Input"
-              name="email"
-              type={'text'}
-              variant="filled"
-              error
-              fullWidth
-            />
-          </div>
-          <div className={styles.textInput}>
-            <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
-          </div>
-          <div className={styles.checkbox}>
-            <CheckboxInput
-              testId={'checkbox'}
-              label="example"
-              name="potentialRole"
-              control={control}
-              options={checkboxData}
-            />
-          </div>
-        </div>
-        <div>
-          <Button
-            testId={'submit-button'}
-            materialVariant={Variant.CONTAINED}
-            label="Confirmar"
-            onClick={handleSubmit(onSubmit)}
-          />
         </div>
       </form>
       <div className={styles.tableContainer}>

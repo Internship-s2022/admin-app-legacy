@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +52,7 @@ const Users = () => {
       firstName: '',
       lastName: '',
       location: '',
-      birthDate: undefined,
+      birthDate: new Date(Date.now()),
       isActive: true,
     },
     mode: 'onBlur',
@@ -67,6 +68,10 @@ const Users = () => {
   });
 
   const onSubmit = (data) => {
+    data = {
+      ...data,
+      birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
+    };
     dispatch(addUser(data));
     onClose();
   };

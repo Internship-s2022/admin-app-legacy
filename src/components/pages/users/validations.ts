@@ -71,10 +71,12 @@ export const userValidation = Joi.object({
     .greater('1-1-1900')
     .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
     .messages({
+      'date.base': 'El formato de fecha debe ser aaaa/mm/dd',
       'date.greater': 'La fecha de nacimiento no puede ser anterior al 1900',
       'date.less': 'El usuario debe ser mayor a 18 años',
       'any.required': 'Debes completar este campo para crear un usuario',
     })
     .required(),
+
   isActive: Joi.boolean().required(),
 });
