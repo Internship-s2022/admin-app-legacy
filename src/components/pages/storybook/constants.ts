@@ -9,11 +9,11 @@ export const storybookHeaders: Headers[] = [
 ];
 
 export const tableValues: MappedUserList[] = [
-  { firstName: 'Nicolas Lobos', accessRoleType: formattedRoleType.SUPER_ADMIN },
-  { firstName: 'Samuel Trillo', accessRoleType: formattedRoleType.ADMIN },
-  { firstName: 'Karen Soto', accessRoleType: formattedRoleType.EMPLOYEE },
-  { firstName: 'Luciano Alarcon', accessRoleType: formattedRoleType.EMPLOYEE },
-  { firstName: 'Juan Moreira', accessRoleType: formattedRoleType.EMPLOYEE },
-  { firstName: 'Paula Rinaldi', accessRoleType: formattedRoleType.EMPLOYEE },
-  { firstName: 'Alex Galindo', accessRoleType: formattedRoleType.EMPLOYEE },
+  { id: '1', firstName: 'Nicolas Lobos', accessRoleType: formattedRoleType.SUPER_ADMIN },
+  { id: '2', firstName: 'Samuel Trillo', accessRoleType: formattedRoleType.ADMIN },
+  { id: '3', firstName: 'Karen Soto', accessRoleType: formattedRoleType.EMPLOYEE },
+  { id: '4', firstName: 'Luciano Alarcon', accessRoleType: formattedRoleType.EMPLOYEE },
+  { id: '5', firstName: 'Juan Moreira', accessRoleType: formattedRoleType.EMPLOYEE },
+  { id: '6', firstName: 'Paula Rinaldi', accessRoleType: formattedRoleType.EMPLOYEE },
+  { id: '7', firstName: 'Alex Galindo', accessRoleType: formattedRoleType.EMPLOYEE },
 ];
