@@ -146,12 +146,7 @@ const StoryBook = () => {
             />
           </div>
           <div className={styles.textInput}>
-            <AutocompleteInput
-              testId={'autocompleteTestId'}
-              control={control}
-              name={'skills'}
-              skills={arraySkills}
-            />
+            <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
           </div>
         </div>
       </div>

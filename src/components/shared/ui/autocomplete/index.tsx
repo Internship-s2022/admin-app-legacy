@@ -11,7 +11,7 @@ import { AutocompleteProps } from './types';
 const AutocompleteInput = <Form extends FieldValues>(
   props: AutocompleteProps<Form>,
 ): JSX.Element => {
-  const { control, name, skills, testId } = props;
+  const { control, name, skills } = props;
   const handleDelete = (chipToDelete: string) => {
     onChange((value) => value.filter((value) => value !== chipToDelete));
   };
@@ -32,9 +32,9 @@ const AutocompleteInput = <Form extends FieldValues>(
         renderTags={() => null}
         renderInput={(params) => (
           <TextField
+            {...params}
             helperText={error?.message}
             error={Boolean(error)}
-            {...params}
             variant="filled"
             label="Skills"
             placeholder="Select or add skill"
@@ -43,7 +43,7 @@ const AutocompleteInput = <Form extends FieldValues>(
         onChange={(_, values) => {
           onChange(values);
         }}
-        data-testid={testId}
+        data-testid={'autocompleteTestId'}
       />
       {value?.map((option) => (
         <Chip
@@ -52,6 +52,7 @@ const AutocompleteInput = <Form extends FieldValues>(
           label={option}
           onDelete={() => handleDelete(option)}
           className={styles.chips}
+          data-testid={option.toLowerCase()}
         />
       ))}
     </div>
