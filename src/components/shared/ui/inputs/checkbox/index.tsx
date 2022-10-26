@@ -5,9 +5,9 @@ import { Checkbox, FormControl, FormControlLabel, FormGroup } from '@mui/materia
 import { CheckProps } from './types';
 
 const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.Element => {
-  const { control, name, options, config, testId, ...rest } = props;
+  const { control, name, options, testId, className } = props;
   const {
-    field: { ref, value, onChange, ...inputProps },
+    field: { ref, onChange },
   } = useController({
     name,
     control,
@@ -15,9 +15,9 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
 
   const checkboxIds = useWatch({ control, name: name }) || [];
 
-  const handleChange = (value) => {
+  const handleChange = (change) => {
     const newArray = [...checkboxIds];
-    const item = value;
+    const item = change;
 
     if (newArray.length > 0) {
       const index = newArray.findIndex((x) => x === item);
@@ -34,22 +34,19 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
 
   return (
     <div>
-      <FormControl className={rest?.className}>
+      <FormControl className={className}>
         <FormGroup>
           {options.map((option) => (
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={value?.some((checked) => checked === option[config.value])}
-                  {...inputProps}
                   inputRef={ref}
-                  onChange={() => handleChange(option[config.value])}
-                  disabled={rest?.disabled}
-                  data-testid={option[config.value]}
+                  onChange={() => handleChange(option['value'])}
+                  data-testid={option['value']}
                 />
               }
-              label={<p>{option[config.label]}</p>}
-              key={option[config.value]}
+              label={<p>{option['label']}</p>}
+              key={option['value']}
               data-testid={testId}
             />
           ))}
