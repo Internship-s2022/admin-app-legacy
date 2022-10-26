@@ -8,12 +8,6 @@ export type CheckProps<Form extends FieldValues> = {
   styles?: string;
   onChange?: () => void;
   options: PotentialRole[];
-  config: Config;
   testId: string;
 } & UseControllerProps<Form> &
   CheckboxProps;
-
-interface Config {
-  label: string;
-  value: string;
-}

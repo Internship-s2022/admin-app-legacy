@@ -49,8 +49,6 @@ const StoryBook = () => {
 
   const onSubmit = (data) => console.log('data', data);
 
-  const config = { label: 'label', value: 'value' };
-
   return (
     <div className={styles.container}>
       <div className={styles.buttonsContainer}>
@@ -217,7 +215,6 @@ const StoryBook = () => {
             name="potentialRole"
             control={control}
             options={checkboxData}
-            config={config}
             testId={'checkboxId'}
           />
         </div>
