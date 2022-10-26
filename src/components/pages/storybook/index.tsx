@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/button/types';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
@@ -23,10 +24,13 @@ const StoryBook = () => {
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
       date: undefined,
+      skills: [],
     },
     mode: 'onBlur',
     resolver: joiResolver(storybookValidation),
   });
+
+  const arraySkills: string[] = ['React', 'Redux', 'CSS', 'Vue'];
 
   useEffect(() => {
     dispatch(getUsers());
@@ -140,6 +144,9 @@ const StoryBook = () => {
               error
               fullWidth
             />
+          </div>
+          <div className={styles.textInput}>
+            <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
           </div>
         </div>
       </div>
