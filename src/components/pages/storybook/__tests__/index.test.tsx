@@ -6,30 +6,45 @@ import StoryBook from 'src/components/pages/storybook';
 import store from 'src/redux/store';
 
 describe('StoryBook - Unit Testing', () => {
+  const customRender = () => {
+    return render(
+      <Provider store={store}>
+        <StoryBook></StoryBook>
+      </Provider>,
+    );
+  };
+
   describe('AutocompleteInput - Unit Testing', () => {
     it('Should check if autocomplete is rendering well', () => {
-      const { getByTestId } = render(
-        <Provider store={store}>
-          <StoryBook></StoryBook>
-        </Provider>,
-      );
-
+      const { getByTestId } = customRender();
       expect(getByTestId('autocompleteTestId')).toBeInTheDocument();
     });
-    it.skip('Should return a chip when entering a value and pressing enter', () => {
-      const { getByTestId, getByText } = render(
-        <Provider store={store}>
-          <StoryBook></StoryBook>
-        </Provider>,
-      );
 
-      const autocomplete = getByTestId('autocompleteTestId');
+    it('Should return a chip when entering a preset value and selecting it', () => {
+      const { getByTestId, getByPlaceholderText, getByText } = customRender();
 
-      fireEvent.click(autocomplete);
-      // fireEvent.click();
-      // const chipOption = getByTestId('');
+      const input = getByPlaceholderText('Select or add skill');
+      fireEvent.change(input, {
+        target: {
+          value: 'Re',
+        },
+      });
+      const tag = getByText('React');
+      fireEvent.click(tag);
 
-      expect(getByText('React')).toBeInTheDocument();
+      expect(getByTestId('react')).toBeInTheDocument();
+    });
+
+    it('Should return a chip when entering a value and pressing enter', () => {
+      const { getByTestId, getByPlaceholderText } = customRender();
+      const input = getByPlaceholderText('Select or add skill');
+      fireEvent.change(input, {
+        target: {
+          value: 'test',
+        },
+      });
+      fireEvent.keyDown(input, { key: 'Enter' });
+      expect(getByTestId('test')).toBeInTheDocument();
     });
   });
 });
