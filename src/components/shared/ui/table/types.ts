@@ -1,4 +1,4 @@
-import { Variant } from '../button/types';
+import { Variant } from '../buttons/button/types';
 export interface TableProps<Data> {
   headers: Headers[];
   value: Data[];

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import styles from 'src/components/pages/users/AccessRoleModal/accessRoleModal.module.css';
 import { Button } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { closeModal } from 'src/redux/ui/actions';
 import { editUser } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';

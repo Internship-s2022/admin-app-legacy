@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Typography } from '@mui/material';
 
 import { Table } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getEmployees } from 'src/redux/employee/thunk';

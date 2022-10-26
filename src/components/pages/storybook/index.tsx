@@ -3,9 +3,17 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Button, DatePicker, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  Modal,
+  Table,
+  TextInput,
+  ToggleButton,
+} from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
@@ -16,7 +24,7 @@ import styles from './index.module.css';
 import { FormValues, MappedUserList, PotentialRole } from './types';
 import { storybookValidation } from './validations';
 
-const StoryBook = () => {
+const StoryBook = (): JSX.Element => {
   const dispatch: AppDispatch<null> = useDispatch();
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -46,6 +54,11 @@ const StoryBook = () => {
   }, []);
 
   const [open, setOpen] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
+
+  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setChecked(event.target.checked);
+  };
 
   const onSubmit = (data) => console.log('data', data);
 
@@ -62,13 +75,8 @@ const StoryBook = () => {
           />
         </div>
         <div>
-          <h3>Outlined button</h3>
-          <Button
-            testId="outlined-button"
-            materialVariant={Variant.OUTLINED}
-            onClick={() => undefined}
-            label="Outlined"
-          />
+          <h3>Toggle button</h3>
+          <ToggleButton handleChange={handleToggleChange} testId="toggleButtonTestId" />
         </div>
         <div>
           <h3>Contained button</h3>
