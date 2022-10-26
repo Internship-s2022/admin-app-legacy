@@ -4,9 +4,9 @@ import { Switch } from '@mui/material';
 import { ToggleButtonProps } from './types';
 
 const ToggleButton = (props: ToggleButtonProps): JSX.Element => {
-  const { styles, handleChange } = props;
+  const { styles, handleChange, color } = props;
 
-  return <Switch onChange={handleChange} />;
+  return <Switch onChange={handleChange} color={color} />;
 };
 
 export default ToggleButton;
