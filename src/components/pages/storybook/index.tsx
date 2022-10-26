@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import {
+  AutocompleteInput,
   Button,
   DatePicker,
   Dropdown,
@@ -12,7 +13,6 @@ import {
   TextInput,
   ToggleButton,
 } from 'src/components/shared/ui';
-import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
@@ -126,44 +126,50 @@ const StoryBook = (): JSX.Element => {
             </div>
           </div>
           <div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'name-input'}
-                label="Outlined Input"
-                name="firstName"
-                type={'text'}
-                variant="outlined"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'lastNameInput'}
-                label="Standard Input"
-                name="lastName"
-                type={'text'}
-                variant="standard"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'email-input'}
-                label="Filled Input"
-                name="email"
-                type={'text'}
-                variant="filled"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+            <div className={styles.inputsSecondaryContainer}>
+              <div className={styles.inputsTopContainer}>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'name-input'}
+                    label="Outlined Input"
+                    name="firstName"
+                    type={'text'}
+                    variant="outlined"
+                    error
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'lastNameInput'}
+                    label="Standard Input"
+                    name="lastName"
+                    type={'text'}
+                    variant="standard"
+                    error
+                    fullWidth
+                  />
+                </div>
+              </div>
+              <div className={styles.inputsBottomContainer}>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'email-input'}
+                    label="Filled Input"
+                    name="email"
+                    type={'text'}
+                    variant="filled"
+                    error
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.textInput}>
+                  <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+                </div>
+              </div>
             </div>
             <div className={styles.checkbox}>
               <CheckboxInput

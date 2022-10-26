@@ -12,7 +12,6 @@ const Button = (props: ButtonProps): JSX.Element => {
       onClick={onClick}
       disabled={disabled}
       className={styles}
-      data-testid={testId}
     >
       {label}
     </MaterialButton>

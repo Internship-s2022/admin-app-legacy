@@ -1,3 +1,4 @@
+export { default as AutocompleteInput } from './autocomplete';
 export { default as Button } from './buttons/button';
 export { default as ToggleButton } from './buttons/toggle-button';
 export { default as DatePicker } from './inputs/date-picker';

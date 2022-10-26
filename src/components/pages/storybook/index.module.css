@@ -55,6 +55,18 @@
   height: 100px;
 }
 
+.inputsSecondaryContainer {
+  display: flex;
+  gap: 15px;
+  margin-right: 10px;
+}
+
+.inputsSecondaryContainer > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
 .textInput {
   width: 400px;
 }
