@@ -47,4 +47,16 @@ describe('StoryBook - Unit Testing', () => {
       expect(getByTestId('test')).toBeInTheDocument();
     });
   });
+
+  describe('Checkbox input - Unit testing', () => {
+    it('should the checkbox is rendering well', () => {
+      const { getByText } = customRender();
+
+      expect(getByText('TL')).toBeInTheDocument();
+      expect(getByText('PM')).toBeInTheDocument();
+      expect(getByText('DEV')).toBeInTheDocument();
+      expect(getByText('QA')).toBeInTheDocument();
+      expect(getByText('UXUI')).toBeInTheDocument();
+    });
+  });
 });

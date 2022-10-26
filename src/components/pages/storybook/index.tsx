@@ -6,18 +6,19 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/button/types';
+import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 
 import { storybookHeaders, tableValues } from './constants';
 import styles from './index.module.css';
-import { FormValues, MappedUserList } from './types';
+import { FormValues, MappedUserList, PotentialRole } from './types';
 import { storybookValidation } from './validations';
 
 const StoryBook = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const { control } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -25,18 +26,28 @@ const StoryBook = () => {
       email: '',
       date: undefined,
       skills: [],
+      potentialRole: [],
     },
-    mode: 'onBlur',
+    mode: 'all',
     resolver: joiResolver(storybookValidation),
   });
 
   const arraySkills: string[] = ['React', 'Redux', 'CSS', 'Vue'];
+  const checkboxData: PotentialRole[] = [
+    { label: 'TL', value: 'TL' },
+    { label: 'PM', value: 'PM' },
+    { label: 'DEV', value: 'DEV' },
+    { label: 'QA', value: 'QA' },
+    { label: 'UXUI', value: 'UXUI' },
+  ];
 
   useEffect(() => {
     dispatch(getUsers());
   }, []);
 
   const [open, setOpen] = React.useState(false);
+
+  const onSubmit = (data) => console.log('data', data);
 
   return (
     <div className={styles.container}>
@@ -81,31 +92,71 @@ const StoryBook = () => {
           />
         </div>
       </div>
-      <div className={styles.inputsContainer}>
-        <h3>Inputs</h3>
-        <div>
-          <div className={styles.dropdown}>
-            <Dropdown
-              control={control}
-              testId={'storybook-dropdown'}
-              label="Dropdown"
-              name="accessRoleType"
-              options={accessRoles}
-              fullWidth
-              error
-            />
+      <form onSubmit={handleSubmit(onSubmit)} className={styles.container}>
+        <div className={styles.inputsContainer}>
+          <h3>Inputs</h3>
+          <div>
+            <div className={styles.dropdown}>
+              <Dropdown
+                control={control}
+                testId={'storybook-dropdown'}
+                label="Dropdown"
+                name="accessRoleType"
+                options={accessRoles}
+                fullWidth
+                error
+              />
+            </div>
+            <div className={styles.dateInput}>
+              <TextInput
+                styles={styles.dateInput}
+                control={control}
+                testId={'date-input'}
+                name="date"
+                type={'date'}
+                variant="outlined"
+                error
+                fullWidth
+              />
+            </div>
           </div>
-          <div className={styles.dateInput}>
-            <TextInput
-              styles={styles.dateInput}
-              control={control}
-              testId={'date-input'}
-              name="date"
-              type={'date'}
-              variant="outlined"
-              error
-              fullWidth
-            />
+          <div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'name-input'}
+                label="Outlined Input"
+                name="firstName"
+                type={'text'}
+                variant="outlined"
+                error
+                fullWidth
+              />
+            </div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'email-input'}
+                label="Standard Input"
+                name="lastName"
+                type={'text'}
+                variant="standard"
+                error
+                fullWidth
+              />
+            </div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'email-input'}
+                label="Filled Input"
+                name="email"
+                type={'text'}
+                variant="filled"
+                error
+                fullWidth
+              />
+            </div>
           </div>
         </div>
         <div>
@@ -148,8 +199,25 @@ const StoryBook = () => {
           <div className={styles.textInput}>
             <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
           </div>
+          <div className={styles.checkbox}>
+            <CheckboxInput
+              testId={'checkbox'}
+              label="example"
+              name="potentialRole"
+              control={control}
+              options={checkboxData}
+            />
+          </div>
         </div>
-      </div>
+        <div>
+          <Button
+            testId={'submit-button'}
+            materialVariant={Variant.CONTAINED}
+            label="Confirmar"
+            onClick={handleSubmit(onSubmit)}
+          />
+        </div>
+      </form>
       <div className={styles.tableContainer}>
         <h3>Tabla con usuarios</h3>
         <Table<MappedUserList>
