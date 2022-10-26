@@ -51,6 +51,7 @@ describe('StoryBook - Unit Testing', () => {
   describe('Checkbox input - Unit testing', () => {
     it('should the checkbox is rendering well', () => {
       const { getByText } = customRender();
+
       expect(getByText('TL')).toBeInTheDocument();
       expect(getByText('PM')).toBeInTheDocument();
       expect(getByText('DEV')).toBeInTheDocument();

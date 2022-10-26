@@ -201,22 +201,13 @@ const StoryBook = () => {
           </div>
           <div className={styles.checkbox}>
             <CheckboxInput
+              testId={'checkbox'}
               label="example"
               name="potentialRole"
               control={control}
               options={checkboxData}
-              config={config}
             />
           </div>
-        </div>
-        <div className={styles.checkbox}>
-          <CheckboxInput
-            label="example"
-            name="potentialRole"
-            control={control}
-            options={checkboxData}
-            testId={'checkboxId'}
-          />
         </div>
         <div>
           <Button
