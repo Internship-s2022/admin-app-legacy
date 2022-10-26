@@ -108,67 +108,73 @@ const StoryBook = () => {
               />
             </div>
             <div className={styles.dateInput}>
-              <DatePicker label={'date picker'} testId={'date-picker'} />
+              <DatePicker
+                label={'date picker'}
+                testId={'datePickerTestId'}
+                name="date"
+                control={control}
+                error
+              />
             </div>
           </div>
-        </div>
-        <div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'name-input'}
-              label="Outlined Input"
-              name="firstName"
-              type={'text'}
-              variant="outlined"
-              error
-              fullWidth
+          <div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'name-input'}
+                label="Outlined Input"
+                name="firstName"
+                type={'text'}
+                variant="outlined"
+                error
+                fullWidth
+              />
+            </div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'lastNameInput'}
+                label="Standard Input"
+                name="lastName"
+                type={'text'}
+                variant="standard"
+                error
+                fullWidth
+              />
+            </div>
+            <div className={styles.textInput}>
+              <TextInput
+                control={control}
+                testId={'email-input'}
+                label="Filled Input"
+                name="email"
+                type={'text'}
+                variant="filled"
+                error
+                fullWidth
+              />
+            </div>
+            <div className={styles.textInput}>
+              <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+            </div>
+            <div className={styles.checkbox}>
+              <CheckboxInput
+                testId={'checkbox'}
+                label="example"
+                name="potentialRole"
+                control={control}
+                options={checkboxData}
+              />
+            </div>
+          </div>
+          <div>
+            <Button
+              testId={'submit-button'}
+              materialVariant={Variant.CONTAINED}
+              label="Confirmar"
+              onClick={handleSubmit(onSubmit)}
             />
           </div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'lastNameInput'}
-              label="Standard Input"
-              name="lastName"
-              type={'text'}
-              variant="standard"
-              error
-              fullWidth
-            />
-          </div>
-          <div className={styles.textInput}>
-            <TextInput
-              control={control}
-              testId={'email-input'}
-              label="Filled Input"
-              name="email"
-              type={'text'}
-              variant="filled"
-              error
-              fullWidth
-            />
-          </div>
-          <div className={styles.textInput}>
-            <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
-          </div>
-          <div className={styles.checkbox}>
-            <CheckboxInput
-              testId={'checkbox'}
-              label="example"
-              name="potentialRole"
-              control={control}
-              options={checkboxData}
-            />
-          </div>
-        </div>
-        <div>
-          <Button
-            testId={'submit-button'}
-            materialVariant={Variant.CONTAINED}
-            label="Confirmar"
-            onClick={handleSubmit(onSubmit)}
-          />
         </div>
       </form>
       <div className={styles.tableContainer}>

@@ -57,6 +57,11 @@ describe('StoryBook - Unit Testing', () => {
       expect(getByText('DEV')).toBeInTheDocument();
       expect(getByText('QA')).toBeInTheDocument();
       expect(getByText('UXUI')).toBeInTheDocument();
+  describe('DatePicker - Unit Test', () => {
+    it('Should render Date Picker on Storybook', () => {
+      const { getByTestId } = customRender();
+
+      expect(getByTestId('datePickerTestId')).toBeInTheDocument();
     });
   });
 });

@@ -19,10 +19,10 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
         onChange={onChange}
         value={value}
         label={label}
-        data-test-id={testId}
         className={styles}
         renderInput={(params) => (
           <TextField
+            data-testid={testId}
             onBlur={onBlur}
             {...params}
             error={Boolean(error)}

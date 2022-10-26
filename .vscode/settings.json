@@ -17,8 +17,9 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.preferences.importModuleSpecifier": "shortest",
   "cSpell.words": [
-    "stylelint",
     "nodemodules",
+    "stylelint",
+    "testid",
     "vercel"
   ],
   "[typescriptreact]": {
