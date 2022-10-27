@@ -3,9 +3,17 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Button, DatePicker, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
-import AutocompleteInput from 'src/components/shared/ui/autocomplete';
-import { Variant } from 'src/components/shared/ui/button/types';
+import {
+  AutocompleteInput,
+  Button,
+  DatePicker,
+  Dropdown,
+  Modal,
+  Table,
+  TextInput,
+  ToggleButton,
+} from 'src/components/shared/ui';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { AccessRoleType, dropdownAccessRoles as accessRoles } from 'src/constants';
 import { getUsers } from 'src/redux/user/thunks';
@@ -16,7 +24,7 @@ import styles from './index.module.css';
 import { FormValues, MappedUserList, PotentialRole } from './types';
 import { storybookValidation } from './validations';
 
-const StoryBook = () => {
+const StoryBook = (): JSX.Element => {
   const dispatch: AppDispatch<null> = useDispatch();
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
@@ -46,6 +54,11 @@ const StoryBook = () => {
   }, []);
 
   const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
+
+  const handleToggleChange = (checked: boolean): void => {
+    setSelected(checked);
+  };
 
   const onSubmit = (data) => console.log('data', data);
 
@@ -62,12 +75,11 @@ const StoryBook = () => {
           />
         </div>
         <div>
-          <h3>Outlined button</h3>
-          <Button
-            testId="outlined-button"
-            materialVariant={Variant.OUTLINED}
-            onClick={() => undefined}
-            label="Outlined"
+          <h3>Toggle button</h3>
+          <ToggleButton
+            handleChange={handleToggleChange}
+            testId="toggleButtonTestId"
+            checked={selected}
           />
         </div>
         <div>
@@ -118,44 +130,50 @@ const StoryBook = () => {
             </div>
           </div>
           <div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'name-input'}
-                label="Outlined Input"
-                name="firstName"
-                type={'text'}
-                variant="outlined"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'lastNameInput'}
-                label="Standard Input"
-                name="lastName"
-                type={'text'}
-                variant="standard"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <TextInput
-                control={control}
-                testId={'email-input'}
-                label="Filled Input"
-                name="email"
-                type={'text'}
-                variant="filled"
-                error
-                fullWidth
-              />
-            </div>
-            <div className={styles.textInput}>
-              <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+            <div className={styles.inputsSecondaryContainer}>
+              <div className={styles.inputsTopContainer}>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'name-input'}
+                    label="Outlined Input"
+                    name="firstName"
+                    type={'text'}
+                    variant="outlined"
+                    error
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'lastNameInput'}
+                    label="Standard Input"
+                    name="lastName"
+                    type={'text'}
+                    variant="standard"
+                    error
+                    fullWidth
+                  />
+                </div>
+              </div>
+              <div className={styles.inputsBottomContainer}>
+                <div className={styles.textInput}>
+                  <TextInput
+                    control={control}
+                    testId={'email-input'}
+                    label="Filled Input"
+                    name="email"
+                    type={'text'}
+                    variant="filled"
+                    error
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.textInput}>
+                  <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
+                </div>
+              </div>
             </div>
             <div className={styles.checkbox}>
               <CheckboxInput

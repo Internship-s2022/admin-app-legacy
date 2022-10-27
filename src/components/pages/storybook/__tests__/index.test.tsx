@@ -67,4 +67,12 @@ describe('StoryBook - Unit Testing', () => {
       expect(getByTestId('datePickerTestId')).toBeInTheDocument();
     });
   });
+
+  describe('Toggle button- Unit Test', () => {
+    it('Should render toggle button on storybook', () => {
+      const { getByTestId } = customRender();
+
+      expect(getByTestId('toggleButtonTestId')).toBeInTheDocument();
+    });
+  });
 });
