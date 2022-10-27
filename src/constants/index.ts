@@ -31,6 +31,10 @@ export const navbarItems = [
     path: '/users',
     name: 'Users',
   },
+  {
+    path: '/login',
+    name: 'Login',
+  },
 ];
 
 export const formattedRoleType = {

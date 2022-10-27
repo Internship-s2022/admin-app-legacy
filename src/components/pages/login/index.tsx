@@ -1,15 +1,25 @@
 import React from 'react';
+import GoogleButton from 'react-google-button';
 
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import styles from './login.module.css';
 
 const Login = () => {
+  const handleGoogleSignIn = () => {
+    alert('Aca se habre el modal');
+  };
+
   return (
-    <section className={styles.container}>
+    <div className={styles.container}>
       <h2>{capitalizeFirstLetter('login')}</h2>
-    </section>
+      <GoogleButton onClick={handleGoogleSignIn} />
+    </div>
   );
 };
+
+// REMINDER:
+// CARGAR EL LOGO Y RENDERIZARLO
+// ARRANCAR TICKET 33 (REDUX)
 
 export default Login;
