@@ -57,7 +57,6 @@ const StoryBook = (): JSX.Element => {
   const [selected, setSelected] = React.useState(false);
 
   const handleToggleChange = (checked: boolean): void => {
-    console.log({ checked });
     setSelected(checked);
   };
 
