@@ -54,10 +54,11 @@ const StoryBook = (): JSX.Element => {
   }, []);
 
   const [open, setOpen] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
+  const [selected, setSelected] = React.useState(false);
 
-  const handleToggleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-    setChecked(event.target.checked);
+  const handleToggleChange = (checked: boolean): void => {
+    console.log({ checked });
+    setSelected(checked);
   };
 
   const onSubmit = (data) => console.log('data', data);
@@ -76,7 +77,11 @@ const StoryBook = (): JSX.Element => {
         </div>
         <div>
           <h3>Toggle button</h3>
-          <ToggleButton handleChange={handleToggleChange} testId="toggleButtonTestId" />
+          <ToggleButton
+            handleChange={handleToggleChange}
+            testId="toggleButtonTestId"
+            checked={selected}
+          />
         </div>
         <div>
           <h3>Contained button</h3>
