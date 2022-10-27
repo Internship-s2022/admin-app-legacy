@@ -1,6 +1,7 @@
 import React from 'react';
 import GoogleButton from 'react-google-button';
 
+import RadiumLogo from 'src/components/shared/ui/icons/radiumLogo/radiumLogo';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import styles from './login.module.css';
@@ -13,6 +14,7 @@ const Login = () => {
   return (
     <div className={styles.container}>
       <h2>{capitalizeFirstLetter('login')}</h2>
+      <RadiumLogo />
       <GoogleButton onClick={handleGoogleSignIn} />
     </div>
   );
