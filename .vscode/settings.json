@@ -20,6 +20,7 @@
     "nodemodules",
     "stylelint",
     "testid",
+    "specfiles",
     "vercel"
   ],
   "[typescriptreact]": {
