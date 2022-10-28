@@ -1,0 +1,58 @@
+.container {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.secondContainer {
+  width: 57%;
+}
+
+.wrapperContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.textInputContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  margin: 47px 0;
+}
+
+.textInput {
+  width: 231px;
+  height: 40px;
+}
+
+.secondWrapperContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.checkboxContainer {
+  width: 34%;
+}
+
+.rightContainer {
+  width: 40%;
+  margin-top: 47px;
+}
+
+.rightInputs {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 95px;
+}
+
+.rightInputs > div {
+  width: 100%;
+  height: 100px;
+}
+
+.rightInputs > div > div > div > fieldset {
+  height: 150px;
+}

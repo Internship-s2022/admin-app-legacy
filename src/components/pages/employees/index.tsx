@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { TableRow, Typography } from '@mui/material';
 
 import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -13,10 +14,13 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { header, projects } from './constants';
 import styles from './employee.module.css';
-import { MappedEmployeeData, Projects } from './types';
+import { EmployeeData, MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
+  const navigate = useNavigate();
+  const [row, setRow] = React.useState({} as EmployeeData);
+
   const listEmployee = useSelector((state: RootState) => state.employee?.list);
   const employeeError = useSelector((state: RootState) => state.employee?.error);
 
@@ -30,15 +34,18 @@ const Employees = () => {
     dispatch(getEmployees());
   }, []);
 
+  const handleNavigation = (path, data) => {
+    navigate(path);
+    setRow(data);
+  };
+
   const buttonsArray: TableButton<MappedEmployeeData>[] = [
     {
       active: true,
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (data) => {
-        console.log(data, 'edit employee');
-      },
+      onClick: (row) => handleNavigation('/employees-edit', console.log(row)),
     },
   ];
 
@@ -73,6 +80,7 @@ const Employees = () => {
           buttons={buttonsArray}
         />
       </div>
+      <div></div>
     </>
   );
 };
