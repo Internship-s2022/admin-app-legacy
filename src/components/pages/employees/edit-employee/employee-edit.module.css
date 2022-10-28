@@ -1,11 +1,18 @@
 .container {
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   padding: 20px;
 }
 
+.fieldsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
 .secondContainer {
-  width: 57%;
+  width: 64%;
+  margin-top: 6.6%;
 }
 
 .wrapperContainer {
@@ -16,9 +23,9 @@
 .textInputContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
-  margin: 47px 0;
+  margin-bottom: 47px;
 }
 
 .textInput {
@@ -30,6 +37,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  margin-left: 3%;
 }
 
 .checkboxContainer {
@@ -37,22 +45,93 @@
 }
 
 .rightContainer {
-  width: 40%;
-  margin-top: 47px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 34%;
+  margin-top: 6.3%;
+  margin-left: 34px;
 }
 
 .rightInputs {
   display: flex;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 95px;
+  margin-bottom: 60px;
+}
+
+/* .rightInputs > div {
+  width: 100%;
+  height: 100px;
+} */
+
+.rightInputs > div > div > div > fieldset {
+  height: 150px;
+}
+
+.welcomeMessage {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  margin-block: 1%;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.header {
+  padding: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #373867;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.rows {
+  padding: 13px;
+  font-size: 12px;
+  color: #373867;
+  border: none;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.viewMore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 7px;
 }
 
 .rightInputs > div {
   width: 100%;
-  height: 100px;
+  margin-bottom: 50px;
 }
 
-.rightInputs > div > div > div > fieldset {
-  height: 150px;
+.titles {
+  font-weight: 500;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 20px;
 }

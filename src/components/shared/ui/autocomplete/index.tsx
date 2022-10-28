@@ -32,6 +32,7 @@ const AutocompleteInput = <Form extends FieldValues>(
         renderTags={() => null}
         renderInput={(params) => (
           <TextField
+            color="error"
             {...params}
             helperText={error?.message}
             error={Boolean(error)}

@@ -12,6 +12,7 @@ const Button = (props: ButtonProps): JSX.Element => {
       onClick={onClick}
       disabled={disabled}
       className={styles}
+      color="error"
     >
       {label}
     </MaterialButton>

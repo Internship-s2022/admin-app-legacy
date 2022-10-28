@@ -10,7 +10,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     fieldState: { error },
   } = useController(props);
 
-  const { label, type, variant, styles, testId, multiline, maxRows } = props;
+  const { label, type, variant, styles, testId, multiline, maxRows, color } = props;
   return (
     <div>
       <TextField
@@ -25,6 +25,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         variant={variant}
         multiline={multiline}
         maxRows={maxRows}
+        color="error"
       />
     </div>
   );

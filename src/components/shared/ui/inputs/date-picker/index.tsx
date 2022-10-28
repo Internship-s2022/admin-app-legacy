@@ -22,6 +22,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
         className={styles}
         renderInput={(params) => (
           <TextField
+            color="error"
             data-testid={testId}
             onBlur={onBlur}
             {...params}
