@@ -50,21 +50,29 @@ describe('Edit Employee page - Unit Testing', () => {
       expect(getByText('UXUI')).toBeInTheDocument();
     });
     describe('Buttons - Unit Testing', () => {
-      it('should check the input for toggleButton is rendering well', () => {
+      it('should check the button for toggleButton is rendering well', () => {
         const { getByTestId } = customRender();
         expect(getByTestId('toggleButtonTestId')).toBeInTheDocument();
       });
-      it('should check the input for view more is rendering well', () => {
+      it('should check the button for view more is rendering well', () => {
         const { getByTestId } = customRender();
         expect(getByTestId('viewMoreButton')).toBeInTheDocument();
       });
-      it('should check the input for cancel is rendering well', () => {
+      it('should check the button for cancel is rendering well', () => {
         const { getByTestId } = customRender();
         expect(getByTestId('cancelButton')).toBeInTheDocument();
       });
-      it('should check the input for confirm is rendering well', () => {
+      it('should check the button for confirm is rendering well', () => {
         const { getByTestId } = customRender();
         expect(getByTestId('confirmButton')).toBeInTheDocument();
+      });
+      it('should check the button for add absences is rendering well', () => {
+        const { getByTestId } = customRender();
+        expect(getByTestId('absencesButton')).toBeInTheDocument();
+      });
+      it('should check the text for absences is rendering well', () => {
+        const { getByText } = customRender();
+        expect(getByText('+ Agregar ausencias')).toBeInTheDocument();
       });
     });
   });
