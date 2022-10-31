@@ -28,7 +28,7 @@ const Layout = (): JSX.Element => {
           <Route path="storybook/*" element={<StoryBook />} />
           <Route path="users/*" element={<Users />} />
           <Route path="employees/*" element={<Employees />} />
-          <Route path="employees-edit/*" element={<EditEmployee />} />
+          <Route path="employees/edit/*" element={<EditEmployee />} />
           <Route path="projects/*" element={<Projects />} />
           <Route path="clients/*" element={<Clients />} />
         </Routes>

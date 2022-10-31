@@ -45,7 +45,7 @@ const Employees = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => handleNavigation('/employees-edit', console.log(row)),
+      onClick: (row) => handleNavigation('/employees/edit', console.log(row)),
     },
   ];
 

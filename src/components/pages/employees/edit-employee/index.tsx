@@ -3,7 +3,6 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
 import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
-import { PotentialRole } from 'src/components/pages/storybook/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -14,7 +13,7 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { projects } from '../constants';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constans';
-import styles from './employee-edit.module.css';
+import styles from './editEmployee.module.css';
 
 const EditEmployee = () => {
   const { handleSubmit, control, reset } = useForm<FormValues>({
