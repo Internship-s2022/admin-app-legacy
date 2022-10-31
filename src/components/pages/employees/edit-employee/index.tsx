@@ -2,13 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 
-import {
-  EmployeeData,
-  FormValues,
-  MappedEmployeeData,
-  Projects,
-  Seniority,
-} from 'src/components/pages/employees/types';
+import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
 import { PotentialRole } from 'src/components/pages/storybook/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
@@ -81,7 +75,7 @@ const EditEmployee = () => {
               <div className={styles.textInput}>
                 <TextInput
                   control={control}
-                  testId={'firstName-input'}
+                  testId={'firstNameInput'}
                   label="Nombre"
                   name="firstName"
                   type={'text'}
@@ -93,7 +87,7 @@ const EditEmployee = () => {
               <div className={styles.textInput}>
                 <TextInput
                   control={control}
-                  testId={'lastName-input'}
+                  testId={'lastNameInput'}
                   label="Apellido"
                   name="lastName"
                   type={'text'}
@@ -105,7 +99,7 @@ const EditEmployee = () => {
               <div className={styles.textInput}>
                 <TextInput
                   control={control}
-                  testId={'email-input'}
+                  testId={'emailInput'}
                   label="Email"
                   name="email"
                   type={'text'}
@@ -128,7 +122,7 @@ const EditEmployee = () => {
               <div className={styles.textInput}>
                 <Dropdown
                   control={control}
-                  testId={'seniority-dropdown'}
+                  testId={'seniorityDropdown'}
                   label="Seniority"
                   name="seniority"
                   options={seniority}
@@ -145,7 +139,7 @@ const EditEmployee = () => {
             <div className={styles.checkboxContainer}>
               <div className={styles.titles}>Rol potencial</div>
               <CheckboxInput
-                testId={'checkbox'}
+                testId={'checkboxInput'}
                 name="potentialRole"
                 control={control}
                 options={checkboxData}
@@ -193,7 +187,7 @@ const EditEmployee = () => {
             </table>
             <div className={styles.viewMore}>
               <Button
-                testId="text-button"
+                testId="viewMoreButton"
                 materialVariant={Variant.TEXT}
                 onClick={() => undefined}
                 label="Ver más"
@@ -204,7 +198,7 @@ const EditEmployee = () => {
             <div className={styles.rightInputs}>
               <TextInput
                 control={control}
-                testId={'carreer-plan-input'}
+                testId={'carreerPlanInput'}
                 label="Plan de Carrera"
                 name="carreerPlan"
                 type={'text'}
@@ -218,7 +212,7 @@ const EditEmployee = () => {
             <div className={styles.rightInputs}>
               <TextInput
                 control={control}
-                testId={'notes-input'}
+                testId={'notesInput'}
                 label="Notas"
                 name="notes"
                 type={'text'}
@@ -235,7 +229,7 @@ const EditEmployee = () => {
       <div className={styles.buttonContainer}>
         <div>
           <Button
-            testId="text-button"
+            testId="cancelButton"
             materialVariant={Variant.OUTLINED}
             onClick={() => undefined}
             label="Cancelar"
@@ -243,7 +237,7 @@ const EditEmployee = () => {
         </div>
         <div>
           <Button
-            testId="text-button"
+            testId="confirmButton"
             materialVariant={Variant.CONTAINED}
             onClick={() => undefined}
             label="Confirmar"

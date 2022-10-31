@@ -15,7 +15,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     <div>
       <TextField
         {...field}
-        data-test-id={testId}
+        data-testid={testId}
         className={styles}
         label={label}
         helperText={error?.message}
