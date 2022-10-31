@@ -8,6 +8,7 @@ import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/u
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { RootState } from 'src/redux/store';
 import { formattedTableData } from 'src/utils/formatters';
@@ -27,9 +28,9 @@ const EditEmployee = () => {
       seniority: Seniority.JR,
       skills: [],
       potentialRole: [],
-      disponibility: false,
+      availability: false,
       historyProjects: [],
-      carreerPlan: '',
+      careerPlan: '',
       notes: '',
     },
     mode: 'onBlur',
@@ -57,77 +58,38 @@ const EditEmployee = () => {
 
   return (
     <div className={styles.container}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className={styles.welcomeMessage}>Editar un empleado</div>
-        <div className={styles.fieldsContainer}>
-          <div className={styles.secondContainer}>
-            <div className={styles.wrapperContainer}>
-              <div className={styles.textInputContainer}>
-                <div className={styles.textInput}>
-                  <TextInput
-                    control={control}
-                    testId={'firstNameInput'}
-                    label="Nombre"
-                    name="firstName"
-                    type={'text'}
-                    variant="outlined"
-                    error
-                    fullWidth
-                  />
-                </div>
-                <div className={styles.textInput}>
-                  <TextInput
-                    control={control}
-                    testId={'lastNameInput'}
-                    label="Apellido"
-                    name="lastName"
-                    type={'text'}
-                    variant="outlined"
-                    error
-                    fullWidth
-                  />
-                </div>
-                <div className={styles.textInput}>
-                  <TextInput
-                    control={control}
-                    testId={'emailInput'}
-                    label="Email"
-                    name="email"
-                    type={'text'}
-                    variant="outlined"
-                    error
-                    fullWidth
-                  />
-                </div>
+      <div className={styles.welcomeMessage}>
+        <div>Editar un empleado</div>
+        <div className={styles.pepito}>
+          <BellIcon></BellIcon>
+        </div>
+      </div>
+      <form>
+        <div className={styles.formContainer}>
+          <div className={styles.leftSide}>
+            <div className={styles.firstColumn}>
+              <div className={styles.elementContainer}>
+                <TextInput
+                  control={control}
+                  testId={'firstNameInput'}
+                  label="Nombre"
+                  name="firstName"
+                  type={'text'}
+                  variant="outlined"
+                  error
+                  fullWidth
+                />
               </div>
-              <div className={styles.textInputContainer}>
-                <div className={styles.textInput}>
-                  <DatePicker
-                    label={'Fecha de cumpleaños'}
-                    testId={'datePickerTestId'}
-                    name="dateOfBirth"
-                    control={control}
-                    error
-                  />
-                </div>
-                <div className={styles.textInput}>
-                  <Dropdown
-                    control={control}
-                    testId={'seniorityDropdown'}
-                    label="Seniority"
-                    name="seniority"
-                    options={seniority}
-                    error
-                    fullWidth
-                  />
-                </div>
-                <div className={styles.textInput}>
-                  <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
-                </div>
+              <div className={styles.elementContainer}>
+                <DatePicker
+                  label={'Fecha de cumpleaños'}
+                  testId={'datePickerTestId'}
+                  name="dateOfBirth"
+                  control={control}
+                  error
+                />
               </div>
-            </div>
-            <div className={styles.secondWrapperContainer}>
-              <div className={styles.checkboxContainer}>
+              <div className={styles.elementContainer}>
                 <div className={styles.titles}>Rol potencial</div>
                 <CheckboxInput
                   testId={'checkboxInput'}
@@ -136,16 +98,42 @@ const EditEmployee = () => {
                   options={checkboxData}
                 />
               </div>
-              <div className={styles.bottomContainer}>
-                <div className={styles.absencesContainer}>
-                  <div className={styles.disponibility}>Disponibilidad</div>
-                  <ToggleButton
-                    handleChange={handleToggleChange}
-                    testId="toggleButtonTestId"
-                    checked={selected}
-                  />
-                </div>
-                <div className={styles.absence}>
+            </div>
+            <div className={styles.middleColumn}>
+              <div className={styles.elementContainer}>
+                <TextInput
+                  control={control}
+                  testId={'lastNameInput'}
+                  label="Apellido"
+                  name="lastName"
+                  type={'text'}
+                  variant="outlined"
+                  error
+                  fullWidth
+                />
+              </div>
+              <div className={styles.elementContainer}>
+                <Dropdown
+                  control={control}
+                  testId={'seniorityDropdown'}
+                  label="Seniority"
+                  name="seniority"
+                  options={seniority}
+                  error
+                  fullWidth
+                />
+              </div>
+              <div className={styles.elementContainer}>
+                <div className={styles.availability}>Disponibilidad</div>
+                <ToggleButton
+                  handleChange={handleToggleChange}
+                  testId="toggleButtonTestId"
+                  checked={selected}
+                  name="availability"
+                />
+              </div>
+              <div className={styles.absence}>
+                <div className={styles.addAbsenceContainer}>
                   <div className={styles.absenceTitle}>Ausencias</div>
                   <div className={styles.buttonAbsences}>
                     <Button
@@ -156,12 +144,29 @@ const EditEmployee = () => {
                     />
                   </div>
                 </div>
-                <div className={styles.noAbcenses}>No hay ausencias programadas</div>
+                <div className={styles.noAbsences}>No hay ausencias programadas</div>
+              </div>
+            </div>
+            <div className={styles.thirdColumn}>
+              <div className={styles.elementContainer}>
+                <TextInput
+                  control={control}
+                  testId={'emailInput'}
+                  label="Email"
+                  name="email"
+                  type={'text'}
+                  variant="outlined"
+                  error
+                  fullWidth
+                />
+              </div>
+              <div className={styles.elementContainer}>
+                <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />{' '}
               </div>
             </div>
           </div>
-          <div className={styles.rightContainer}>
-            <div className={styles.pepito}>
+          <div className={styles.rightSide}>
+            <div className={styles.tableContainer}>
               <table className={styles.table}>
                 <thead>
                   <tr>
@@ -199,13 +204,13 @@ const EditEmployee = () => {
                 />
               </div>
             </div>
-            <div className={styles.dropboxContainer}>
+            <div>
               <div className={styles.rightInputs}>
                 <TextInput
                   control={control}
-                  testId={'carreerPlanInput'}
+                  testId={'careerPlanInput'}
                   label="Plan de Carrera"
-                  name="carreerPlan"
+                  name="careerPlan"
                   type={'text'}
                   variant="outlined"
                   error

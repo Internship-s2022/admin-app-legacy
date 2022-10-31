@@ -1,23 +1,60 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+  height: 100%;
   padding: 20px;
 }
 
-.fieldsContainer {
+.formContainer {
   display: flex;
   flex-direction: row;
 }
 
-.secondContainer {
-  width: 64%;
-  margin-top: 6.6%;
+.leftSide {
+  display: flex;
+  flex-direction: row;
+  width: 65%;
 }
 
-.wrapperContainer {
+.rightSide {
+  width: 35%;
+}
+
+.firstColumn,
+.middleColumn,
+.thirdColumn {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  width: 33%;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 280px;
+  margin: 20px 0;
+}
+
+.disponibilityContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 250px;
+  margin-top: 30px 0;
+}
+
+.tableContainer {
+  margin: 20px 0;
+}
+
+.addAbsenceContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
 }
 
 .textInputContainer {
@@ -66,6 +103,8 @@
 }
 
 .welcomeMessage {
+  display: flex;
+  justify-content: space-between;
   margin: 0;
   font-size: 30px;
   font-weight: 500;
@@ -128,27 +167,17 @@
   flex-direction: row;
   gap: 10px;
   justify-content: flex-end;
+  width: 100%;
   margin-top: 20px;
 }
 
-.bottomContainer {
-  width: 40%;
-}
-
-.absencesContainer {
-  display: flex;
-  flex-direction: column;
-  height: 60%;
-}
-
-.disponibility {
+.availability {
   font-weight: 500;
 }
 
 .absence {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
 }
 
 .absenceTitle {
@@ -156,10 +185,10 @@
   align-items: center;
 }
 
-.noAbcenses {
+.noAbsences {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 70px;
   font-style: italic;
   color: #8d8d8d;
 }
