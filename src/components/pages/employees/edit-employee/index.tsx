@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { joiResolver } from '@hookform/resolvers/joi';
 
 import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
@@ -14,6 +15,7 @@ import { formattedTableData } from 'src/utils/formatters';
 import { projects } from '../constants';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constans';
 import styles from './editEmployee.module.css';
+import editEmployeeValidations from './validations';
 
 const EditEmployee = () => {
   const { handleSubmit, control, reset } = useForm<FormValues>({
@@ -31,6 +33,7 @@ const EditEmployee = () => {
       notes: '',
     },
     mode: 'onBlur',
+    resolver: joiResolver(editEmployeeValidations),
   });
 
   const [selected, setSelected] = React.useState(false);
