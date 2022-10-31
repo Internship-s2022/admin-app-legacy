@@ -13,24 +13,8 @@ import { RootState } from 'src/redux/store';
 import { formattedTableData } from 'src/utils/formatters';
 
 import { projects } from '../constants';
-import { projectHeadersEmp } from './constans';
+import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constans';
 import styles from './employee-edit.module.css';
-
-const seniority = [
-  { value: 'JR', label: 'JR' },
-  { value: 'SSR', label: 'SSR' },
-  { value: 'SR', label: 'SR' },
-];
-
-const arraySkills: string[] = ['React', 'Redux', 'CSS', 'Vue'];
-
-const checkboxData: PotentialRole[] = [
-  { label: 'TL', value: 'TL' },
-  { label: 'PM', value: 'PM' },
-  { label: 'DEV', value: 'DEV' },
-  { label: 'QA', value: 'QA' },
-  { label: 'UXUI', value: 'UXUI' },
-];
 
 const EditEmployee = () => {
   const { handleSubmit, control, reset } = useForm<FormValues>({
