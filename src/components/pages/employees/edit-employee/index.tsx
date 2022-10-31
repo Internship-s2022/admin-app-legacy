@@ -134,13 +134,27 @@ const EditEmployee = () => {
                   options={checkboxData}
                 />
               </div>
-              <div>
-                <div className={styles.titles}>Disponibilidad</div>
-                <ToggleButton
-                  handleChange={handleToggleChange}
-                  testId="toggleButtonTestId"
-                  checked={selected}
-                />
+              <div className={styles.bottomContainer}>
+                <div className={styles.absencesContainer}>
+                  <div className={styles.disponibility}>Disponibilidad</div>
+                  <ToggleButton
+                    handleChange={handleToggleChange}
+                    testId="toggleButtonTestId"
+                    checked={selected}
+                  />
+                </div>
+                <div className={styles.absence}>
+                  <div className={styles.absenceTitle}>Ausencias</div>
+                  <div className={styles.buttonAbsences}>
+                    <Button
+                      testId="absencesButton"
+                      materialVariant={Variant.CONTAINED}
+                      onClick={() => undefined}
+                      label="+ Agregar ausencias"
+                    />
+                  </div>
+                </div>
+                <div className={styles.noAbcenses}>No hay ausencias programadas</div>
               </div>
             </div>
           </div>

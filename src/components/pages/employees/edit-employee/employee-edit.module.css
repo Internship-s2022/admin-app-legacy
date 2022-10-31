@@ -130,3 +130,41 @@
   justify-content: flex-end;
   margin-top: 20px;
 }
+
+.bottomContainer {
+  width: 40%;
+}
+
+.absencesContainer {
+  display: flex;
+  flex-direction: column;
+  height: 60%;
+}
+
+.disponibility {
+  font-weight: 500;
+}
+
+.absence {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.absenceTitle {
+  display: flex;
+  align-items: center;
+}
+
+.noAbcenses {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  font-style: italic;
+  color: #8d8d8d;
+}
+
+.buttonAbsences {
+  display: flex;
+  justify-content: space-between;
+}
