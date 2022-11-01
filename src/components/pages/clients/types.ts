@@ -19,7 +19,7 @@ export type FormValues = {
   localEmail: string;
   clientContact: string;
   clientEmail: string;
-  notes: string;
-  relationshipStart: Date;
-  relationshipEnd: Date;
+  notes?: string;
+  relationshipStart?: Date;
+  relationshipEnd?: Date;
 };

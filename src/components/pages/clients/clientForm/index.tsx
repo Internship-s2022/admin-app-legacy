@@ -12,7 +12,7 @@ import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 import { FormValues } from '../types';
 
 const ClientForm = () => {
-  const { control, reset } = useForm<FormValues>({
+  const { control } = useForm<FormValues>({
     defaultValues: {
       name: '',
       localContact: '',

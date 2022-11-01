@@ -48,7 +48,7 @@ const createClientValidation = Joi.object({
     .required(),
 
   relationshipStart: Joi.date().less('now').messages({
-    'date.less': 'Relationship start date must be earlier than now',
+    'date.less': 'La fecha de inicio debe ser menor que la fecha actual',
   }),
 
   relationshipEnd: Joi.date().greater(Joi.ref('relationshipStart')).messages({
@@ -56,16 +56,15 @@ const createClientValidation = Joi.object({
   }),
 
   notes: Joi.string().min(0).max(35).messages({
-    'string.base': 'Notes must be a string',
-    'string.min': 'Notes must not contain less than 3 letters',
+    'string.base': 'Notas tiene que ser un string',
+    'string.min': 'Notes no debe contener más de  3 letras',
   }),
 });
 
 const updateClientValidation = Joi.object({
-  name: Joi.string().min(3).max(35).messages({
+  name: Joi.string().max(35).messages({
     'string.base': 'El nombre del ciente debe ser un string',
     'string.min': 'El nombre  del cliente debe tener al menos 3 letras',
-    'any.required': 'Nombre es en campo requerido',
   }),
 
   localContact: Joi.string().min(3).max(35).messages({
@@ -78,13 +77,12 @@ const updateClientValidation = Joi.object({
     .min(20)
     .messages({
       'string.pattern.base': 'Email no válido.',
-      'string.empty': 'Email es un campo requerido',
       'string.min': 'Email debe contener al menos tres caracteres.',
     }),
 
   clientContact: Joi.string().min(3).max(35).messages({
-    'string.base': 'Our local contact name must be a string',
-    'string.min': 'Our local contact name must contain more than 3 letters',
+    'string.base': 'El contacto del cliente debe ser un string',
+    'string.min': 'El contacto del cliente debe tener al menos 3 letras',
   }),
 
   clientEmail: Joi.string()
@@ -92,21 +90,20 @@ const updateClientValidation = Joi.object({
     .min(20)
     .messages({
       'string.pattern.base': 'Email no válido.',
-      'string.empty': 'Email es un campo requerido',
       'string.min': 'Email debe contener al menos tres caracteres.',
     }),
 
   relationshipStart: Joi.date().less('now').messages({
-    'date.less': 'Relationship start date must be earlier than now',
+    'date.less': 'La fecha de inicio debe ser menor que la fecha actual',
   }),
 
-  relationshipEnd: Joi.date().greater('now').messages({
-    'date.greater': 'Relationship end date must be later than now',
+  relationshipEnd: Joi.date().greater(Joi.ref('relationshipStart')).messages({
+    'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
   }),
 
   notes: Joi.string().min(0).max(35).messages({
-    'string.base': 'Notes must be a string',
-    'string.min': 'Notes must not contain less than 3 letters',
+    'string.base': 'Notas tiene que ser un string',
+    'string.min': 'Notes no debe contener más de  3 letras',
   }),
 });
 
