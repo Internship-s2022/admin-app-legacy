@@ -58,7 +58,7 @@ const ClientForm = () => {
                 <TextInput
                   control={control}
                   testId={'clientEmailInput'}
-                  label="Email"
+                  label="Email contacto cliente"
                   name="clientEmail"
                   type={'text'}
                   variant="outlined"
@@ -70,7 +70,7 @@ const ClientForm = () => {
                 <TextInput
                   control={control}
                   testId={'localEmailInput'}
-                  label="Email Radium Rocket"
+                  label="Email contacto Radium Rocket"
                   name="localEmail"
                   type={'text'}
                   variant="outlined"
@@ -108,7 +108,7 @@ const ClientForm = () => {
                 <div className={styles.inputs}>
                   <DatePicker
                     label={'Inicio'}
-                    testId={'datePickerTestId'}
+                    testId={'startDatePickerTestId'}
                     name="relationshipStart"
                     control={control}
                   />
@@ -116,7 +116,7 @@ const ClientForm = () => {
                 <div className={styles.inputs}>
                   <DatePicker
                     label={'Fin'}
-                    testId={'datePickerTestId'}
+                    testId={'endDatePickerTestId'}
                     name="relationshipEnd"
                     control={control}
                   />
