@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
@@ -26,8 +27,14 @@ const ClientForm = () => {
     resolver: joiResolver(validations.createClientValidation),
   });
 
+  const navigate = useNavigate();
+
   const handleSubmit = () => {
     console.log('holi');
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   return (
@@ -141,7 +148,7 @@ const ClientForm = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => reset()}
+              onClick={() => handleNavigation('/clients')}
               label="Cancelar"
             />
           </div>
