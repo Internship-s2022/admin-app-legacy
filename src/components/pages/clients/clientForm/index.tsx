@@ -140,6 +140,8 @@ const ClientForm = () => {
               type={'text'}
               variant="outlined"
               fullWidth
+              multiline
+              rows={5}
             />
           </div>
         </form>
