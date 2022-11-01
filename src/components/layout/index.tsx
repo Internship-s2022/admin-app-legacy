@@ -6,6 +6,7 @@ import { RootState } from 'src/redux/store';
 
 import { Home, Login, Users } from '../pages';
 import Clients from '../pages/clients';
+import ClientForm from '../pages/clients/clientForm';
 import Employees from '../pages/employees';
 import EditEmployee from '../pages/employees/edit-employee';
 import Projects from '../pages/projects';
@@ -31,6 +32,7 @@ const Layout = (): JSX.Element => {
           <Route path="employees/edit/*" element={<EditEmployee />} />
           <Route path="projects/*" element={<Projects />} />
           <Route path="clients/*" element={<Clients />} />
+          <Route path="clients/add/*" element={<ClientForm />} />
         </Routes>
       </BrowserRouter>
     </div>

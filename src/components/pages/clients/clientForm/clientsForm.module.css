@@ -1,0 +1,68 @@
+.container {
+  padding: 0 52px;
+}
+
+.welcomeMessage {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 21px;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.bellIcon {
+  cursor: pointer;
+}
+
+.formContainer form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leftContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.rightContainer {
+  width: 30%;
+  padding: 0 10px;
+  margin: 20px 0;
+}
+
+.dateContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.rightContainer fieldset {
+  height: 178px;
+}
+
+.dateContainer div:first-child {
+  width: calc(100% - 40px);
+}
+
+.inputs {
+  width: calc(100% - 40px);
+  margin: 20px 0;
+}
+
+.leftColumns {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
