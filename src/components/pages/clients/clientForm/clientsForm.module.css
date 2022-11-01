@@ -1,0 +1,58 @@
+.container {
+  padding: 0 52px;
+}
+
+.formContainer form {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leftContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.rightContainer {
+  width: 30%;
+  padding: 0 10px;
+  margin: 20px 0;
+}
+
+.dateContainer {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.dateContainer div {
+  width: calc(100% - 10px);
+}
+
+.inputs {
+  width: calc(100% - 10px);
+  margin: 20px 0;
+}
+
+.notesInput {
+  width: 90%;
+}
+
+.notesInput div {
+  height: 185px;
+}
+
+.leftColumns {
+  display: flex;
+  flex-wrap: wrap;
+  width: 50%;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}

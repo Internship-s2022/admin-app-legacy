@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import { Button, Table } from 'src/components/shared/ui';
@@ -20,6 +21,7 @@ const Clients = () => {
     state.client?.list.filter((item) => item.isActive),
   );
   const clientError = useSelector((state: RootState) => state.client?.error);
+  const navigate = useNavigate();
 
   const listClientsData = activeClients.map((item): ClientsData => {
     return {
@@ -43,6 +45,10 @@ const Clients = () => {
       },
     },
   ];
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   useEffect(() => {
     dispatch(getClients());
@@ -72,7 +78,7 @@ const Clients = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => undefined}
+          onClick={() => handleNavigation('/clients/create')}
           label={'+ Agregar cliente'}
           testId={'addClientButton'}
           styles={'addButton'}
