@@ -29,10 +29,10 @@ const ProjectForm = () => {
         <div>Nuevo Proyecto</div>
         <div className={styles.iconGroup}>
           <div className={styles.iconContainer}>
-            <ClockIcon></ClockIcon>
+            <ClockIcon />
           </div>
           <div className={styles.iconContainer}>
-            <BellIcon></BellIcon>
+            <BellIcon />
           </div>
         </div>
       </div>
