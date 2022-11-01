@@ -32,7 +32,7 @@ const Layout = (): JSX.Element => {
           <Route path="employees/edit/*" element={<EditEmployee />} />
           <Route path="projects/*" element={<Projects />} />
           <Route path="clients/*" element={<Clients />} />
-          <Route path="clients/create/*" element={<ClientForm />} />
+          <Route path="clients/add/*" element={<ClientForm />} />
         </Routes>
       </BrowserRouter>
     </div>
