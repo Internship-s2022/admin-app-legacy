@@ -6,6 +6,7 @@ import styles from 'src/components/pages/clients/clientForm/clientsForm.module.c
 import validations from 'src/components/pages/clients/validations';
 import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 
 import { FormValues } from '../types';
 
@@ -31,8 +32,11 @@ const ClientForm = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <span>Crear un cliente</span>
+      <div className={styles.welcomeMessage}>
+        <div>Crear un cliente</div>
+        <div className={styles.bellIcon}>
+          <BellIcon />
+        </div>
       </div>
       <div className={styles.formContainer}>
         <form>
