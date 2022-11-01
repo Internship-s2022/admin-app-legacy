@@ -5,41 +5,36 @@ import { Seniority } from '../types';
 
 const editEmployeeValidations = Joi.object({
   skills: Joi.array().items(Joi.string().min(3).max(35)).messages({
-    'string.min': 'Skills must contain more than 2 letters',
-    'string.max': 'Skills must contain less than 36 letters',
-    'string.base': 'Skills must be a string',
+    'string.min': 'Las skills deben contener mas de 3 letras',
+    'string.max': 'Las skills deben contener menos de 35 letras',
+    'string.base': 'Las skills deben ser una cadena de caracteres',
   }),
 
   seniority: Joi.string().valid(Seniority.JR, Seniority.SR, Seniority.SSR).messages({
-    'any.only': 'Seniority must be JR, SR, SSR or TRAINEE',
+    'any.only': 'El seniority debe ser JR, SR, SSR or TRAINEE',
   }),
-
-  projectHistory: Joi.array()
-    .items(Joi.string())
-    .messages({ 'string.base': 'Array items must be strings' }),
 
   absences: Joi.array()
     .items(Joi.string())
-    .messages({ 'string.base': 'Array items must be strings' }),
-
-  user: Joi.string().messages({
-    'string.base': 'User Id must be a string',
-  }),
+    .messages({ 'string.base': 'Los items del array deben ser una cadena de caracteres' }),
 
   potentialRole: Joi.array().items(
     Joi.string()
       .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UI_UX)
       .messages({
-        'any.only': 'Potential role must be DEV, QA, UI_UX, PM or TL',
-        'string.base': 'Array items must be strings',
+        'any.only': 'El rol potencial debe ser DEV, QA, UI-UX, PM o TL',
+        'string.base': 'Los items del array deben ser una cadena de caracteres',
       }),
   ),
 
-  notes: Joi.string().min(12).max(499).messages({
-    'string.min': 'notes must contain more than 11 characters',
-    'string.max': 'notes must contain less than 500 characters',
-    'string.base': 'Notes must be a string',
+  notes: Joi.string().min(0).max(499).messages({
+    'string.max': 'Las notas debe contener menos de 500 caracteres',
+    'string.base': 'Las notas deben ser una cadena de caracteres',
   }),
-});
+
+  careerPlan: Joi.string().min(0).max(499).messages({
+    'string.max': 'El plan de carrea debe contener menos de 500 caracteres',
+  }),
+}).options({ allowUnknown: true });
 
 export default editEmployeeValidations;

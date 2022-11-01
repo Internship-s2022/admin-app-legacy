@@ -61,7 +61,7 @@ const EditEmployee = () => {
       <div className={styles.welcomeMessage}>
         <div>Editar un empleado</div>
         <div className={styles.pepito}>
-          <BellIcon></BellIcon>
+          <BellIcon />
         </div>
       </div>
       <form>
@@ -76,8 +76,8 @@ const EditEmployee = () => {
                   name="firstName"
                   type={'text'}
                   variant="outlined"
-                  error
                   fullWidth
+                  disabled
                 />
               </div>
               <div className={styles.elementContainer}>
@@ -86,7 +86,6 @@ const EditEmployee = () => {
                   testId={'datePickerTestId'}
                   name="dateOfBirth"
                   control={control}
-                  error
                 />
               </div>
               <div className={styles.elementContainer}>
@@ -108,8 +107,8 @@ const EditEmployee = () => {
                   name="lastName"
                   type={'text'}
                   variant="outlined"
-                  error
                   fullWidth
+                  disabled
                 />
               </div>
               <div className={styles.elementContainer}>
@@ -119,7 +118,6 @@ const EditEmployee = () => {
                   label="Seniority"
                   name="seniority"
                   options={seniority}
-                  error
                   fullWidth
                 />
               </div>
@@ -131,8 +129,6 @@ const EditEmployee = () => {
                   checked={selected}
                   name="availability"
                 />
-              </div>
-              <div className={styles.absence}>
                 <div className={styles.addAbsenceContainer}>
                   <div className={styles.absenceTitle}>Ausencias</div>
                   <div className={styles.buttonAbsences}>
@@ -156,8 +152,7 @@ const EditEmployee = () => {
                   name="email"
                   type={'text'}
                   variant="outlined"
-                  error
-                  fullWidth
+                  disabled
                 />
               </div>
               <div className={styles.elementContainer}>
@@ -213,10 +208,9 @@ const EditEmployee = () => {
                   name="careerPlan"
                   type={'text'}
                   variant="outlined"
-                  error
                   fullWidth
                   multiline
-                  maxRows={5}
+                  rows={5}
                 />
               </div>
               <div className={styles.rightInputs}>
@@ -227,10 +221,9 @@ const EditEmployee = () => {
                   name="notes"
                   type={'text'}
                   variant="outlined"
-                  error
                   fullWidth
                   multiline
-                  maxRows={5}
+                  rows={5}
                 />
               </div>
             </div>

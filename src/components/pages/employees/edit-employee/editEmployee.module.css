@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   height: 100%;
-  padding: 20px;
+  padding: 20px 52px;
 }
 
 .formContainer {
@@ -36,14 +36,6 @@
   justify-content: flex-start;
   width: 280px;
   margin: 20px 0;
-}
-
-.disponibilityContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 250px;
-  margin-top: 30px 0;
 }
 
 .tableContainer {
@@ -95,11 +87,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-bottom: 60px;
-}
-
-.rightInputs > div > div > div > fieldset {
-  height: 150px;
+  margin: 0;
 }
 
 .welcomeMessage {
@@ -155,7 +143,6 @@
 
 .rightInputs > div {
   width: 100%;
-  margin-bottom: 50px;
 }
 
 .titles {

@@ -10,7 +10,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     fieldState: { error },
   } = useController(props);
 
-  const { label, type, variant, styles, testId, multiline, rows, color, disabled } = props;
+  const { label, type, variant, styles, testId, multiline, rows, color = 'info', disabled } = props;
   return (
     <div>
       <TextField
@@ -26,7 +26,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         multiline={multiline}
         rows={rows}
         disabled={disabled}
-        color="info"
+        color={color}
       />
     </div>
   );
