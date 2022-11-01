@@ -7,6 +7,7 @@ import { RootState } from 'src/redux/store';
 import { Home, Login, Users } from '../pages';
 import Clients from '../pages/clients';
 import Employees from '../pages/employees';
+import EditEmployee from '../pages/employees/edit-employee';
 import Projects from '../pages/projects';
 import StoryBook from '../pages/storybook';
 import { Header } from '../shared/common';
@@ -27,6 +28,7 @@ const Layout = (): JSX.Element => {
           <Route path="storybook/*" element={<StoryBook />} />
           <Route path="users/*" element={<Users />} />
           <Route path="employees/*" element={<Employees />} />
+          <Route path="employees/edit/*" element={<EditEmployee />} />
           <Route path="projects/*" element={<Projects />} />
           <Route path="clients/*" element={<Clients />} />
         </Routes>

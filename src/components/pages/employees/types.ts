@@ -1,3 +1,5 @@
+import { PotentialRole } from '../storybook/types';
+
 export interface EmployeeData {
   id: string;
   name: string;
@@ -18,4 +20,24 @@ export interface User {
 
 export interface MappedEmployeeData extends Omit<EmployeeData, 'projects'> {
   projects: string;
+}
+
+export type FormValues = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dateOfBirth: string;
+  seniority: Seniority;
+  skills: string[];
+  potentialRole: PotentialRole[];
+  availability: boolean;
+  historyProjects: Projects[];
+  careerPlan: string;
+  notes: string;
+};
+
+export enum Seniority {
+  JR = 'JR',
+  SSR = 'SSR',
+  SR = 'SR',
 }

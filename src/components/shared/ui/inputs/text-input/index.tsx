@@ -10,19 +10,23 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     fieldState: { error },
   } = useController(props);
 
-  const { label, type, variant, styles, testId } = props;
+  const { label, type, variant, styles, testId, multiline, rows, color = 'info', disabled } = props;
   return (
     <div>
       <TextField
         {...field}
-        data-test-id={testId}
+        data-testid={testId}
         className={styles}
         label={label}
-        helperText={error?.message}
+        helperText={!disabled && (error?.message || ' ')}
         type={type}
         fullWidth
         error={Boolean(error)}
         variant={variant}
+        multiline={multiline}
+        rows={rows}
+        disabled={disabled}
+        color={color}
       />
     </div>
   );
