@@ -9,6 +9,9 @@ export const themes = createTheme({
       main: '#FFFFFF',
     },
     error: {
+      main: '#FF0000',
+    },
+    info: {
       main: '#373867',
     },
   },

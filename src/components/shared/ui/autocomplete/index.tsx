@@ -32,13 +32,13 @@ const AutocompleteInput = <Form extends FieldValues>(
         renderTags={() => null}
         renderInput={(params) => (
           <TextField
-            color="error"
             {...params}
             helperText={error?.message}
             error={Boolean(error)}
             variant="filled"
             label="Skills"
             placeholder="Select or add skill"
+            color="info"
           />
         )}
         onChange={(_, values) => {

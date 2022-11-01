@@ -21,7 +21,7 @@ const Dropdown = <Form extends FieldValues>(props: DropdownProps<Form>): JSX.Ele
       helperText={error?.message}
       select
       fullWidth
-      color="error"
+      color="info"
     >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
