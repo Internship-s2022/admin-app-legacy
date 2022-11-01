@@ -143,6 +143,7 @@ const EditEmployee = () => {
                       materialVariant={Variant.CONTAINED}
                       onClick={() => undefined}
                       label="+ Agregar ausencias"
+                      styles={styles.buttonText}
                     />
                   </div>
                 </div>
