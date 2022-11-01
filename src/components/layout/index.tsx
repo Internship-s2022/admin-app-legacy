@@ -10,6 +10,7 @@ import ClientForm from '../pages/clients/clientForm';
 import Employees from '../pages/employees';
 import EditEmployee from '../pages/employees/edit-employee';
 import Projects from '../pages/projects';
+import ProjectForm from '../pages/projects/projectForm';
 import StoryBook from '../pages/storybook';
 import { Header } from '../shared/common';
 import { Loader } from '../shared/ui';
@@ -31,6 +32,7 @@ const Layout = (): JSX.Element => {
           <Route path="employees/*" element={<Employees />} />
           <Route path="employees/edit/*" element={<EditEmployee />} />
           <Route path="projects/*" element={<Projects />} />
+          <Route path="projects/add/*" element={<ProjectForm />} />
           <Route path="clients/*" element={<Clients />} />
           <Route path="clients/add/*" element={<ClientForm />} />
         </Routes>

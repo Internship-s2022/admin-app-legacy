@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -38,6 +39,11 @@ const Projects = () => {
   useEffect(() => {
     dispatch(getProjects());
   }, []);
+
+  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
@@ -81,7 +87,7 @@ const Projects = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => undefined}
+          onClick={() => handleNavigation('/projects/add')}
           label={'+ Agregar proyecto'}
           testId={'addProjectButton'}
           styles={'addButton'}
