@@ -18,7 +18,7 @@ const Dropdown = <Form extends FieldValues>(props: DropdownProps<Form>): JSX.Ele
       data-testid={testId}
       className={styles}
       label={label}
-      helperText={error?.message}
+      helperText={error?.message || ' '}
       select
       fullWidth
       color="info"

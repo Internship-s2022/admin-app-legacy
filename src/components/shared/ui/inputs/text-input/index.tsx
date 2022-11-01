@@ -18,7 +18,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         data-testid={testId}
         className={styles}
         label={label}
-        helperText={error?.message || ' '}
+        helperText={!disabled && (error?.message || ' ')}
         type={type}
         fullWidth
         error={Boolean(error)}

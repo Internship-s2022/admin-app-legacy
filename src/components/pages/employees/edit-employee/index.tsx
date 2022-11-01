@@ -1,6 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
@@ -19,6 +20,7 @@ import styles from './editEmployee.module.css';
 import editEmployeeValidations from './validations';
 
 const EditEmployee = () => {
+  const navigate = useNavigate();
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       firstName: '',
@@ -44,6 +46,10 @@ const EditEmployee = () => {
     setSelected(checked);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
     name: `${employee.user.firstName} ${employee.user.lastName}`,
@@ -60,7 +66,7 @@ const EditEmployee = () => {
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
         <div>Editar un empleado</div>
-        <div className={styles.pepito}>
+        <div className={styles.bellIcon}>
           <BellIcon />
         </div>
       </div>
@@ -88,7 +94,7 @@ const EditEmployee = () => {
                   control={control}
                 />
               </div>
-              <div className={styles.elementContainer}>
+              <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
                 <div className={styles.titles}>Rol potencial</div>
                 <CheckboxInput
                   testId={'checkboxInput'}
@@ -121,7 +127,7 @@ const EditEmployee = () => {
                   fullWidth
                 />
               </div>
-              <div className={styles.elementContainer}>
+              <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
                 <div className={styles.availability}>Disponibilidad</div>
                 <ToggleButton
                   handleChange={handleToggleChange}
@@ -234,7 +240,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => reset()}
+              onClick={() => handleNavigation('/employees')}
               label="Cancelar"
             />
           </div>

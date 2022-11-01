@@ -28,12 +28,12 @@ const editEmployeeValidations = Joi.object({
   ),
 
   notes: Joi.string().min(0).max(499).messages({
-    'string.max': 'Las notas debe contener menos de 500 caracteres',
+    'string.max': 'Las notas deben contener menos de 500 caracteres',
     'string.base': 'Las notas deben ser una cadena de caracteres',
   }),
 
   careerPlan: Joi.string().min(0).max(499).messages({
-    'string.max': 'El plan de carrea debe contener menos de 500 caracteres',
+    'string.max': 'El plan de carrera debe contener menos de 500 caracteres',
   }),
 }).options({ allowUnknown: true });
 

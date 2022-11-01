@@ -27,7 +27,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
             data-testid={testId}
             onBlur={onBlur}
             error={Boolean(error)}
-            helperText={error?.message}
+            helperText={error?.message || ' '}
           />
         )}
         inputFormat={'yyyy/MM/dd'}
