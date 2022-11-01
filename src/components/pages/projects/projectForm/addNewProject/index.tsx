@@ -20,12 +20,7 @@ const AddNewProject = () => {
       criticality: null,
       description: '',
       notes: '',
-      members: [
-        {
-          firstName: 'Samuel',
-          lastName: 'Trillo',
-        },
-      ],
+      members: [],
     },
     mode: 'onBlur',
   });
@@ -48,7 +43,6 @@ const AddNewProject = () => {
                 name="projectName"
                 type={'text'}
                 variant="outlined"
-                error
                 fullWidth
               />
             </div>
@@ -59,7 +53,6 @@ const AddNewProject = () => {
                 label="Tipo de Proyecto"
                 name="projectType"
                 options={projectTypeOptions}
-                error
                 fullWidth
               />
             </div>
@@ -73,7 +66,6 @@ const AddNewProject = () => {
                 name="clientName"
                 type={'text'}
                 variant="outlined"
-                error
                 fullWidth
               />
             </div>
@@ -84,7 +76,6 @@ const AddNewProject = () => {
                 label="Criticidad"
                 name="criticality"
                 options={criticalityOptions}
-                error
                 fullWidth
               />
             </div>
@@ -97,17 +88,10 @@ const AddNewProject = () => {
                   testId={'startDate'}
                   name="startDate"
                   control={control}
-                  error
                 />
               </div>
               <div className={styles.dateSelection}>
-                <DatePicker
-                  label={'Fin'}
-                  testId={'endDate'}
-                  name="endDate"
-                  control={control}
-                  error
-                />
+                <DatePicker label={'Fin'} testId={'endDate'} name="endDate" control={control} />
               </div>
             </div>
             <div className={styles.saveButton}>
@@ -130,10 +114,9 @@ const AddNewProject = () => {
                 name="description"
                 type={'text'}
                 variant="outlined"
-                error
                 fullWidth
                 multiline
-                maxRows={5}
+                rows={5}
               />
             </div>
             <div className={styles.rightInputs}>
@@ -144,10 +127,9 @@ const AddNewProject = () => {
                 name="notes"
                 type={'text'}
                 variant="outlined"
-                error
                 fullWidth
                 multiline
-                maxRows={5}
+                rows={5}
               />
             </div>
           </div>

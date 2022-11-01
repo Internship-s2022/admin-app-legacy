@@ -10,6 +10,7 @@ import { RootState } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
+import AddMemberForm from './addMember';
 import AddNewProject from './addNewProject';
 import styles from './projectForm.module.css';
 
@@ -77,13 +78,14 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <div className={styles.modalContainer}>
+          <AddMemberForm />
+          {/* <div className={styles.modalContainer}>
             <div className={styles.headerAddMember}>Agregar miembro al proyecto</div>
             <div className={styles.contentContainer}>
               <div className={styles.memberForm}>TO DO Formulario</div>
               <div className={styles.memberForm}>TO DO Calendario</div>
             </div>
-          </div>
+          </div> */}
         </Modal>
       </div>
     </div>
