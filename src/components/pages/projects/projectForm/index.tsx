@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { TextField } from '@mui/material';
 
-import { Button, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
+import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon/clockIcon';
 import { RootState } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
+import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import AddNewProject from './addNewProject';
-import { projectTypeOptions } from './addNewProject/constants';
 import styles from './projectForm.module.css';
 
 const ProjectForm = () => {

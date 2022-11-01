@@ -10,7 +10,7 @@ import styles from './addNewProject.module.css';
 import { criticalityOptions, projectTypeOptions } from './constants';
 
 const AddNewProject = () => {
-  const { handleSubmit, control, reset } = useForm<ProjectFormValues>({
+  const { control } = useForm<ProjectFormValues>({
     defaultValues: {
       projectName: '',
       clientName: '',
@@ -28,7 +28,6 @@ const AddNewProject = () => {
       ],
     },
     mode: 'onBlur',
-    // resolver: joiResolver(editEmployeeValidations),
   });
 
   const navigate = useNavigate();
