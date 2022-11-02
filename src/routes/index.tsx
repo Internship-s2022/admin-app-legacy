@@ -44,9 +44,6 @@ const AppRoutes = (): JSX.Element => {
     }
   }, []);
 
-  // console.log('session role:', localStorage.getItem('role'));
-  // console.log('token:', localStorage.getItem('token'));
-
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
@@ -57,10 +54,9 @@ const AppRoutes = (): JSX.Element => {
             <Route path="/admin/*" element={<Admin />} />
           </Route>
           <Route element={<PrivateRoute role={AccessRoleType.SUPER_ADMIN} />}>
-            <Route path="/super-admin" element={<SuperAdmin />} />
+            <Route path="/super-admin/*" element={<SuperAdmin />} />
           </Route>
           <Route path="/not-allowed" element={<NotAllowed />} />
-          <Route path="/invalid-email" element={<InvalidEmail />} />
           <Route path="/*" element={<Navigate to={'/login'} />} />
         </Route>
       </Routes>

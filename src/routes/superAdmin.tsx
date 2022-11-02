@@ -8,7 +8,7 @@ const SuperAdmin = (): JSX.Element => {
     <Routes>
       <Route path={'/'} element={<Home />} />
       <Route path={'/users'} element={<Users />} />
-      <Route path="/*" element={<Navigate to="/home" />} />
+      <Route path="/" element={<Navigate to="/" />} />
     </Routes>
   );
 };
