@@ -15,4 +15,6 @@ export interface UserData {
   id?: string;
   name: string;
   accessRoleType: string;
+  email?: string;
+  photo?: string;
 }

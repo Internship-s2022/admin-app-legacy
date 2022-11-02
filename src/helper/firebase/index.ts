@@ -1,3 +1,4 @@
+import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
 const firebaseConfig = {
@@ -11,16 +12,13 @@ const firebaseConfig = {
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const auth = getAuth(firebaseApp);
 
 export const tokenListener = () => {
-  firebase.auth().onIdTokenChanged(async (user) => {
+  auth.onIdTokenChanged(async (user) => {
     if (user) {
       const token = await user.getIdToken();
-      const {
-        claims: { role },
-      } = await user.getIdTokenResult();
-      sessionStorage.setItem('token', token);
-      sessionStorage.setItem('role', role);
+      localStorage.setItem('token', token);
     }
   });
 };
