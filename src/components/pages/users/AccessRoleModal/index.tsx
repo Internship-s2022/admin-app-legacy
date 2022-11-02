@@ -27,6 +27,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
     dispatch(editUser(data));
     dispatch(closeModal());
   };
+
   return (
     <div>
       <div className={styles.modalContainer}>

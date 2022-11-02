@@ -19,7 +19,6 @@ import { EmployeeData, MappedEmployeeData, Projects } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const navigate = useNavigate();
-  const [row, setRow] = React.useState({} as EmployeeData);
 
   const listEmployee = useSelector((state: RootState) => state.employee?.list);
   const employeeError = useSelector((state: RootState) => state.employee?.error);
@@ -34,18 +33,13 @@ const Employees = () => {
     dispatch(getEmployees());
   }, []);
 
-  const handleNavigation = (path, data) => {
-    navigate(path);
-    setRow(data);
-  };
-
   const buttonsArray: TableButton<MappedEmployeeData>[] = [
     {
       active: true,
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => handleNavigation('/employees/edit', {}),
+      onClick: (row) => navigate(`/employees/edit/${row.id}`),
     },
   ];
 

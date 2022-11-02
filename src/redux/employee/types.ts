@@ -12,6 +12,7 @@ export interface Employee {
   absences?: string[];
   potentialRole?: string[];
   notes?: string;
+  careerPlan: string;
   user: User;
 }
 
