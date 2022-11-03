@@ -33,6 +33,7 @@ const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
+  const superAdmin = useSelector((state: RootState) => state.auth.authUser);
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
@@ -121,7 +122,7 @@ const Users = () => {
     <>
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
+          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
           <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
         </div>
         <div className={styles.topTableContainer}>

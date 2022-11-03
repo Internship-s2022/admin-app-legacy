@@ -2,6 +2,7 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from '@redux-devtools/extension';
 
+import authReducer from './auth/reducer';
 import clientReducer from './client/reducer';
 import employeeReducer from './employee/reducer';
 import projectReducer from './project/reducer';
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   project: projectReducer,
   client: clientReducer,
   ui: uiReducer,
+  auth: authReducer,
 });
 
 const configureStore = () => {
