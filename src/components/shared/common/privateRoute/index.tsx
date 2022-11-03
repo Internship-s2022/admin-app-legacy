@@ -12,6 +12,7 @@ const PrivateRoute = ({
   children,
 }: PrivateRouteProps): JSX.Element => {
   const { error } = useSelector((state: RootState) => state.auth);
+
   const accessRole = localStorage.getItem('role');
   const token = localStorage.getItem('token');
 

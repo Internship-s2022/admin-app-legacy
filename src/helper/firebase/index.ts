@@ -19,22 +19,26 @@ export const auth = getAuth(firebaseApp);
 
 export const tokenListener = () => {
   auth.onIdTokenChanged(async (user) => {
-    if (user) {
-      const token = await user.getIdToken();
-      const {
-        claims: { role, email, name, picture },
-      } = await user.getIdTokenResult();
-      store.dispatch(
-        setAuthentication({
-          token,
-          accessRoleType: role,
-          email,
-          name,
-          photo: picture,
-        }),
-      );
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
+    try {
+      if (user) {
+        const token = await user.getIdToken();
+        const {
+          claims: { role, email, name, picture },
+        } = await user.getIdTokenResult();
+        store.dispatch(
+          setAuthentication({
+            token,
+            accessRoleType: role,
+            email,
+            name,
+            photo: picture,
+          }),
+        );
+        localStorage.setItem('token', token);
+        localStorage.setItem('role', role);
+      }
+    } catch (error: any) {
+      return console.error(error);
     }
   });
 };

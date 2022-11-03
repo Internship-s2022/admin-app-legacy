@@ -10,7 +10,7 @@ const Admin = (): JSX.Element => {
       <Route path={'/employees'} element={<Employees />} />
       <Route path={'/clients'} element={<Clients />} />
       <Route path={'/projects'} element={<Projects />} />
-      <Route path="/" element={<Navigate to="/" />} />
+      <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );
 };

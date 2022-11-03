@@ -1,10 +1,11 @@
 import React from 'react';
 
-import styles from './radiumLogo.module.css';
+import { LogoProps } from './types';
 
-const RadiumLogo = (): JSX.Element => {
+const RadiumLogo = (props: LogoProps): JSX.Element => {
+  const { testId } = props;
   return (
-    <div className={styles.svgIcon} color="primary">
+    <div data-testid={testId} color="primary">
       <img src="assets/images/Logo.png" alt="radium logo" />
     </div>
   );

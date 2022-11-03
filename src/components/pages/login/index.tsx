@@ -26,8 +26,14 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <RadiumLogo />
-      <GoogleButton test-id="google-button" onClick={handleGoogleSignIn} />
+      <RadiumLogo testId="radium-logo" />
+      <GoogleButton
+        label="Continuar con Google"
+        className={styles.googleButton}
+        type="light"
+        test-id="google-button"
+        onClick={handleGoogleSignIn}
+      />
     </div>
   );
 };

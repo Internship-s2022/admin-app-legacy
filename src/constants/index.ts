@@ -8,10 +8,7 @@ export enum ApiRoutes {
 
 //Navbar
 
-export const superAdminNavbar = [
-  { path: '/super-admin/', name: 'Home' },
-  { path: '/super-admin/users', name: 'User' },
-];
+export const superAdminNavbar = [{ path: '/super-admin/users', name: 'User' }];
 
 export const adminNavbar = [
   { path: '/admin/', name: 'Dashboard' },
@@ -21,7 +18,7 @@ export const adminNavbar = [
 ];
 
 export const navbarItems = {
-  SUPERADMIN: superAdminNavbar,
+  SUPER_ADMIN: superAdminNavbar,
   ADMIN: adminNavbar,
 };
 

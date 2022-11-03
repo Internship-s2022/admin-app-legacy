@@ -8,7 +8,6 @@ import { AccessRoleType } from 'src/constants';
 import { tokenListener } from 'src/helper/firebase';
 
 const Login = lazy(() => import('src/components/pages/login'));
-const InvalidEmail = lazy(() => import('src/components/pages/invalidEmail'));
 
 const PrivateRoute = lazy(() => import('src/components/shared/common/privateRoute'));
 const Admin = lazy(() => import('./admin'));
@@ -57,7 +56,7 @@ const AppRoutes = (): JSX.Element => {
             <Route path="/super-admin/*" element={<SuperAdmin />} />
           </Route>
           <Route path="/not-allowed" element={<NotAllowed />} />
-          <Route path="/*" element={<Navigate to={'/login'} />} />
+          <Route path="/*" element={<Navigate to={redirectPath(role)} />} />
         </Route>
       </Routes>
     </Suspense>

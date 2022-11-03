@@ -10,15 +10,15 @@ import { Loader } from '../shared/ui';
 import styles from './layout.module.css';
 
 const Layout = (props: PropsWithChildren): JSX.Element => {
-  const { children } = props;
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
+  const role = localStorage.getItem('role');
 
   useEffect(() => tokenListener(), []);
 
   return (
     <div className={styles.container}>
       {isLoading && <Loader />}
-      <Header />
+      {role && <Header />}
       <Outlet />
     </div>
   );

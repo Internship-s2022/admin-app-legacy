@@ -10,7 +10,7 @@ const Home = () => {
 
   return (
     <section className={styles.container}>
-      <h2>Bienvenido {user.accessRoleType ? user.name : ''}</h2>
+      {user.name.length ? <h2>Bienvenido {user.name}</h2> : ''}
     </section>
   );
 };

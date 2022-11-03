@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
-import { RootState } from 'src/redux/store';
 
 import LinkTab from './linkTab';
 
