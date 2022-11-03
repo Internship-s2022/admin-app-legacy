@@ -10,8 +10,12 @@ import styles from './header.module.css';
 const Header = () => {
   const navigate = useNavigate();
   const handleLogout = async () => {
-    await firebaseApp.auth().signOut();
-    navigate('/login');
+    try {
+      await firebaseApp.auth().signOut();
+      navigate('/login');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
