@@ -13,7 +13,7 @@ export const login: AppThunk = () => {
       dispatch(loginPending());
       const provider = new GoogleAuthProvider();
       provider.setCustomParameters({
-        hd: 'radiumrocket.com',
+        hd: process.env.REACT_APP_EMAIL_DOMAIN,
       });
 
       const result = await signInWithPopup(auth, provider);

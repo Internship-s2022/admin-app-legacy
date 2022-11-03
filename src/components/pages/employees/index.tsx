@@ -26,7 +26,7 @@ const Employees = () => {
 
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
-    name: `${employee.user.firstName} ${employee.user.lastName}`,
+    name: `${employee.user?.firstName} ${employee.user?.lastName}`,
     projects: formattedTableData<Projects>(projects, 'name'),
   }));
 
