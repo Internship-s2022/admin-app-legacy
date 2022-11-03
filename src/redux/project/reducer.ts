@@ -1,15 +1,20 @@
 import { Reducer } from 'react';
 
-import { Actions } from './constants';
-import { ActionsType, State } from './types';
+import { State } from 'src/redux/types';
 
-const initialState: State = {
+import { Actions } from './constants';
+import { ActionsType, Project } from './types';
+
+const initialState: State<Project> = {
   list: [],
   isLoading: false,
   error: undefined,
 };
 
-const projectReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
+const projectReducer: Reducer<State<Project>, ActionsType> = (
+  state = initialState,
+  action,
+): State<Project> => {
   switch (action.type) {
     case Actions.GET_PROJECTS_PENDING:
       return {
@@ -26,7 +31,7 @@ const projectReducer: Reducer<State, ActionsType> = (state = initialState, actio
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { message: action.payload.message, networkError: action.payload.networkError },
       };
     default:
       return state;

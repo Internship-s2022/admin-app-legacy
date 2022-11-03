@@ -15,10 +15,5 @@ export interface Client {
   notes?: string;
   isActive: boolean;
 }
-export interface State {
-  list: Client[];
-  isLoading: boolean;
-  error: string;
-}
 
 export type ActionsType = ActionType<typeof actions>;

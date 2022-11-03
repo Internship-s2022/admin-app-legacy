@@ -1,5 +1,7 @@
 import { action } from 'typesafe-actions';
 
+import { ErrorFormat } from 'src/redux/types';
+
 import { Actions } from './constants';
 import { Employee } from './types';
 

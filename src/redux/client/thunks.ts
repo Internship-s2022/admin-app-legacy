@@ -18,10 +18,10 @@ export const getClients: AppThunk = () => {
       }
     } catch (error) {
       if (error.code !== 'ERR_NETWORK') {
-        dispatch(getClientsError(error.response.data.message));
+        dispatch(getClientsError({ message: error.response.data.message, networkError: false }));
         dispatch(setLoaderOff());
       } else {
-        dispatch(getClientsError(error.message));
+        dispatch(getClientsError({ message: error.message, networkError: true }));
         dispatch(setLoaderOff());
       }
     }

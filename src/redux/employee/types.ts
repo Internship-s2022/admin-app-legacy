@@ -16,10 +16,4 @@ export interface Employee {
   user: User;
 }
 
-export interface State {
-  list: Employee[];
-  isLoading: boolean;
-  error: string;
-}
-
 export type ActionsType = ActionType<typeof actions>;

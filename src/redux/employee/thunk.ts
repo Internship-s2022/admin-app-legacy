@@ -25,10 +25,10 @@ export const getEmployees: AppThunk = () => {
       }
     } catch (error) {
       if (error.code !== 'ERR_NETWORK') {
-        dispatch(getEmployeeError(error.response.data.message));
+        dispatch(getEmployeeError({ message: error.response.data.message, networkError: false }));
         dispatch(setLoaderOff());
       } else {
-        dispatch(getEmployeeError(error.message));
+        dispatch(getEmployeeError({ message: error.message, networkError: true }));
         dispatch(setLoaderOff());
       }
     }

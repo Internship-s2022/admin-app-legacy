@@ -48,7 +48,7 @@ const Employees = () => {
         <span>Lista de Empleados</span>
         <div className={styles.noListMessage}>
           <p>No se ha podido cargar la lista de Empleados</p>
-          <p className={styles.error}>Error: {employeeError}</p>
+          {/* <p className={styles.error}>Error: {employeeError}</p> */}
         </div>
       </div>
     </div>

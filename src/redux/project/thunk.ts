@@ -17,10 +17,10 @@ export const getProjects: AppThunk = () => {
       }
     } catch (error: any) {
       if (error.code !== 'ERR_NETWORK') {
-        dispatch(getProjectsError(error.response.data.message));
+        dispatch(getProjectsError({ message: error.response.data.message, networkError: false }));
         dispatch(setLoaderOff());
       } else {
-        dispatch(getProjectsError(error.message));
+        dispatch(getProjectsError({ message: error.message, networkError: true }));
         dispatch(setLoaderOff());
       }
     }

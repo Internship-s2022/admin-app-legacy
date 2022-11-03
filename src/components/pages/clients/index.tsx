@@ -60,7 +60,7 @@ const Clients = () => {
         <span>Lista de Clientes</span>
         <div className={styles.noListMessage}>
           <p>No se ha podido cargar la lista de Clientes</p>
-          <p className={styles.error}>Error: {clientError}</p>
+          {/* <p className={styles.error}>Error: {clientError}</p> */}
         </div>
       </div>
     </div>
