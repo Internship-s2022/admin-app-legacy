@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -8,25 +7,25 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getEmployees } from 'src/redux/employee/thunk';
-import { RootState } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
-import { header, projects } from './constants';
+import { header } from './constants';
 import styles from './employee.module.css';
-import { EmployeeData, MappedEmployeeData, Projects } from './types';
+import { MappedEmployeeData, Projects } from './types';
 
 const Employees = () => {
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
 
-  const listEmployee = useSelector((state: RootState) => state.employee?.list);
-  const employeeError = useSelector((state: RootState) => state.employee?.error);
+  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
 
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee._id,
-    name: `${employee.user?.firstName} ${employee.user?.lastName}`,
-    projects: formattedTableData<Projects>(projects, 'name'),
+    name: `${employee.user.firstName} ${employee.user.lastName}`,
+    projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
   }));
 
   useEffect(() => {

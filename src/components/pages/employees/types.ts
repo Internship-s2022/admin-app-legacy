@@ -4,8 +4,15 @@ export interface EmployeeData {
   projects: Projects[];
 }
 
+interface Project {
+  _id: string;
+  projectName: string;
+}
 export interface Projects {
-  name: string;
+  project: Project;
+  role: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface User {

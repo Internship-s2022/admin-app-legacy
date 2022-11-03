@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
+import { FormValues, Seniority } from 'src/components/pages/employees/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -12,18 +11,44 @@ import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { editEmployee } from 'src/redux/employee/thunk';
-import { RootState } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
-import { formattedTableData } from 'src/utils/formatters';
 
-import { projects } from '../constants';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
 import editEmployeeValidations from './validations';
 
 const EditEmployee = () => {
   const navigate = useNavigate();
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<null> = useAppDispatch();
+  const params = useParams();
+
+  const [selected, setSelected] = React.useState(false);
+  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+
+  useEffect(() => {
+    if (listEmployee.length && matchedEmployee?._id) {
+      reset({
+        id: matchedEmployee._id,
+        user: {
+          _id: matchedEmployee.user._id,
+          firstName: matchedEmployee.user.firstName,
+          lastName: matchedEmployee.user.lastName,
+          email: matchedEmployee.user.email,
+          birthDate: matchedEmployee.user.birthDate,
+        },
+        seniority: matchedEmployee?.seniority as Seniority,
+        skills: matchedEmployee?.skills || [],
+        potentialRole: matchedEmployee.potentialRole,
+        availability: false,
+        projectHistory: [],
+        careerPlan: '',
+        notes: '',
+      });
+    } else {
+      navigate('/employees');
+    }
+  }, []);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -47,8 +72,16 @@ const EditEmployee = () => {
     resolver: joiResolver(editEmployeeValidations),
   });
 
-  const [selected, setSelected] = React.useState(false);
-  const listEmployee = useSelector((state: RootState) => state.employee?.list);
+  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
+
+  const formattedProjects = latestProjects?.map((item) => ({
+    id: item?.project?._id ? item?.project?._id : '-',
+    name: item?.project?.projectName ? item?.project?.projectName : '-',
+    role: item?.role ? item?.role : '-',
+    startDate: item?.startDate ? item?.startDate : '-',
+    endDate: item?.endDate ? item?.endDate : '-',
+  }));
 
   const handleToggleChange = (checked: boolean): void => {
     setSelected(checked);
@@ -58,45 +91,12 @@ const EditEmployee = () => {
     navigate(path);
   };
 
-  const params = useParams();
-
-  const formattedEmployee = listEmployee.map((employee) => ({
-    id: employee._id,
-    name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
-    projects: formattedTableData<Projects>(projects, 'name'),
-  }));
-
-  const latestEmployees = formattedEmployee.slice(-2);
-
-  const matchedEmployee = listEmployee.find((item) => item?._id === params.id);
-
   const onSubmit = (data) => {
-    const { id, user, ...rest } = data;
+    const { id, user, projectHistory, ...rest } = data;
+    console.log(data);
     dispatch(editEmployee({ body: rest, id: id }));
     handleNavigation('/employees');
   };
-
-  useEffect(() => {
-    if (matchedEmployee?._id) {
-      reset({
-        id: matchedEmployee._id,
-        user: {
-          _id: matchedEmployee.user._id,
-          firstName: matchedEmployee.user.firstName,
-          lastName: matchedEmployee.user.lastName,
-          email: matchedEmployee.user.email,
-          birthDate: matchedEmployee.user.birthDate,
-        },
-        seniority: matchedEmployee?.seniority as Seniority,
-        skills: matchedEmployee?.skills || [],
-        potentialRole: matchedEmployee.potentialRole,
-        availability: false,
-        projectHistory: [],
-        careerPlan: '',
-        notes: '',
-      });
-    }
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -210,7 +210,7 @@ const EditEmployee = () => {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    {projectHeadersEmp.map((header, index) => {
+                    {projectHeadersEmp?.map((header, index) => {
                       return (
                         <th className={styles.header} key={index}>
                           {header.header}
@@ -220,7 +220,7 @@ const EditEmployee = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {latestEmployees.map((data) => {
+                  {formattedProjects?.map((data) => {
                     return (
                       <tr key={data.id}>
                         {projectHeadersEmp.map((header, index) => {

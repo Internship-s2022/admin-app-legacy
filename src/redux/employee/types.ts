@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
-import { User } from 'src/components/pages/employees/types';
+import { Projects, User } from 'src/components/pages/employees/types';
 
 import * as actions from './actions';
 
@@ -8,7 +8,7 @@ export interface Employee {
   _id: string;
   skills?: string[];
   seniority: string;
-  projectHistory?: string[];
+  projectHistory?: Projects[];
   absences?: string[];
   potentialRole?: string[];
   notes?: string;

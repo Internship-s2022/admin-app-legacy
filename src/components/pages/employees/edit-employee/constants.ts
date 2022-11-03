@@ -3,10 +3,10 @@ import { Headers } from 'src/components/shared/ui/table/types';
 import { PotentialRole } from '../../storybook/types';
 
 export const projectHeadersEmp: Headers[] = [
-  { header: 'Proyecto', key: 'projects' },
-  { header: 'Rol', key: 'Rol' },
-  { header: 'Inicio', key: 'name' },
-  { header: 'Fin', key: 'name' },
+  { header: 'Proyecto', key: 'name' },
+  { header: 'Rol', key: 'role' },
+  { header: 'Inicio', key: 'startDate' },
+  { header: 'Fin', key: 'endDate' },
 ];
 
 export const seniority = [
