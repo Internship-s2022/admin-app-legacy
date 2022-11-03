@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Outlet } from 'react-router-dom';
 
@@ -9,11 +9,13 @@ import { Header } from '../shared/common';
 import { Loader } from '../shared/ui';
 import styles from './layout.module.css';
 
-const Layout = (props: PropsWithChildren): JSX.Element => {
+const Layout = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
   const role = localStorage.getItem('role');
 
-  useEffect(() => tokenListener(), []);
+  useEffect(() => {
+    tokenListener();
+  }, []);
 
   return (
     <div className={styles.container}>

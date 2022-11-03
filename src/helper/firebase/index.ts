@@ -1,3 +1,4 @@
+import 'firebase/compat/auth';
 import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
@@ -36,6 +37,12 @@ export const tokenListener = () => {
         );
         localStorage.setItem('token', token);
         localStorage.setItem('role', role);
+      } else {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        store.dispatch(
+          setAuthentication({ token: '', accessRoleType: '', email: '', name: '', photo: '' }),
+        );
       }
     } catch (error: any) {
       return console.error(error);
