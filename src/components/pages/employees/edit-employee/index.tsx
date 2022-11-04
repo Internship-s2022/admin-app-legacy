@@ -93,7 +93,6 @@ const EditEmployee = () => {
 
   const onSubmit = (data) => {
     const { id, user, projectHistory, ...rest } = data;
-    console.log(data);
     dispatch(editEmployee({ body: rest, id: id }));
     handleNavigation('/admin/employees');
   };
