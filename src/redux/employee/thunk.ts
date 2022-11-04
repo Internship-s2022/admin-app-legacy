@@ -35,7 +35,7 @@ export const getEmployees: AppThunk = () => {
   };
 };
 
-export const editEmployee = (options: { body: Employee; id: string }) => {
+export const editEmployee: AppThunk = (options: { body: Employee; id: string }) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(editEmployeePending());
