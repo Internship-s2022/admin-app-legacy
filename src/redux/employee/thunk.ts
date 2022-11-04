@@ -35,15 +35,15 @@ export const getEmployees: AppThunk = () => {
   };
 };
 
-export const editEmployee: AppThunk = (options: { body: Employee; id: string }) => {
+export const editEmployee = (options: { body: Employee; id: string }) => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(editEmployeePending());
       dispatch(setLoaderOn());
       const response = await editEmployeeRequest(options);
       if (!response.error) {
-        dispatch(editEmployeeSuccess(response.data, options.id));
         dispatch(setLoaderOff());
+        return dispatch(editEmployeeSuccess(response.data, options.id));
       }
     } catch (error) {
       if (error.code !== 'ERR_NETWORK') {
