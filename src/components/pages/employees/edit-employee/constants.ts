@@ -1,6 +1,6 @@
 import { Headers } from 'src/components/shared/ui/table/types';
 
-import { PotentialRole } from '../../storybook/types';
+import { PotentialRole, RoleType } from '../../storybook/types';
 
 export const projectHeadersEmp: Headers[] = [
   { header: 'Proyecto', key: 'name' },
@@ -18,9 +18,9 @@ export const seniority = [
 export const arraySkills: string[] = ['React', 'Redux', 'CSS', 'Vue'];
 
 export const checkboxData: PotentialRole[] = [
-  { label: 'TL', value: 'TL' },
-  { label: 'PM', value: 'PM' },
-  { label: 'DEV', value: 'DEV' },
-  { label: 'QA', value: 'QA' },
-  { label: 'UXUI', value: 'UXUI' },
+  { label: 'TL', value: RoleType.TL },
+  { label: 'PM', value: RoleType.PM },
+  { label: 'DEV', value: RoleType.DEV },
+  { label: 'QA', value: RoleType.QA },
+  { label: 'UXUI', value: RoleType.UI_UX },
 ];
