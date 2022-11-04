@@ -34,7 +34,7 @@ export type FormValues = {
   skills: string[];
   potentialRole: string[];
   availability: boolean;
-  projectHistory: Projects[];
+  projectHistory?: Projects[];
   careerPlan: string;
   notes: string;
 };

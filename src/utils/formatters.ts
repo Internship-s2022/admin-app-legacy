@@ -6,13 +6,15 @@ export const capitalizeFirstLetter = (text: string) => {
 };
 
 export const formattedTableData = <T>(list: T[], firstField: string, secondField?: string) => {
-  let result = '-';
+  let result = ' - ';
   if (list?.length > 1) {
     result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} y ${
       list?.length - 1
     } más`;
   } else if (list?.length == 1) {
     result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} `;
+  } else if (list?.length == 0) {
+    return result;
   }
   return result;
 };
