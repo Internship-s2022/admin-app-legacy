@@ -29,24 +29,24 @@ const EditEmployee = () => {
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
       reset({
-        id: matchedEmployee._id,
+        id: matchedEmployee?._id,
         user: {
-          _id: matchedEmployee.user._id,
-          firstName: matchedEmployee.user.firstName,
-          lastName: matchedEmployee.user.lastName,
-          email: matchedEmployee.user.email,
-          birthDate: matchedEmployee.user.birthDate,
+          _id: matchedEmployee?.user?._id,
+          firstName: matchedEmployee?.user?.firstName,
+          lastName: matchedEmployee?.user?.lastName,
+          email: matchedEmployee?.user?.email,
+          birthDate: matchedEmployee?.user?.birthDate,
         },
         seniority: matchedEmployee?.seniority as Seniority,
         skills: matchedEmployee?.skills || [],
-        potentialRole: matchedEmployee.potentialRole,
+        potentialRole: matchedEmployee?.potentialRole,
         availability: false,
         projectHistory: [],
-        careerPlan: '',
-        notes: '',
+        careerPlan: matchedEmployee?.careerPlan,
+        notes: matchedEmployee?.notes,
       });
     } else {
-      navigate('/employees');
+      navigate('/admin/employees');
     }
   }, []);
 
@@ -95,7 +95,7 @@ const EditEmployee = () => {
     const { id, user, projectHistory, ...rest } = data;
     console.log(data);
     dispatch(editEmployee({ body: rest, id: id }));
-    handleNavigation('/employees');
+    handleNavigation('/admin/employees');
   };
 
   return (
@@ -279,7 +279,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/employees')}
+              onClick={() => handleNavigation('/admin/employees')}
               label="Cancelar"
             />
           </div>

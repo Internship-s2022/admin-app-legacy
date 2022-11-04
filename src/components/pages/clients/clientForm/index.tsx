@@ -150,7 +150,7 @@ const ClientForm = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/clients')}
+              onClick={() => handleNavigation('/admin/clients')}
               label="Cancelar"
             />
           </div>

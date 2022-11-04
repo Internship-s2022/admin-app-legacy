@@ -23,8 +23,8 @@ const Employees = () => {
   const employeeError = useAppSelector((state: RootState) => state.employee?.error);
 
   const matchedEmployee = listEmployee.map((employee) => ({
-    id: employee._id,
-    name: `${employee.user.firstName} ${employee.user.lastName}`,
+    id: employee?._id,
+    name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
     projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
   }));
 
@@ -38,7 +38,7 @@ const Employees = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => navigate(`/employees/edit/${row.id}`),
+      onClick: (row) => navigate(`/admin/employees/edit/${row.id}`),
     },
   ];
 

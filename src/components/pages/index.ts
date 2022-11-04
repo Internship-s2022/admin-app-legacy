@@ -1,7 +1,10 @@
 export { default as Clients } from './clients';
+export { default as AddClients } from './clients/clientForm';
 export { default as Employees } from './employees';
+export { default as EditEmployee } from './employees/edit-employee';
 export { default as Home } from './home';
 export { default as Login } from './login';
 export { default as Projects } from './projects';
+export { default as AddProjects } from './projects/projectForm';
 export { default as Storybook } from './storybook';
 export { default as Users } from './users';
