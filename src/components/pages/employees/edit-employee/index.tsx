@@ -1,37 +1,70 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
+import { FormValues, Seniority } from 'src/components/pages/employees/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
-import { RootState } from 'src/redux/store';
-import { formattedTableData } from 'src/utils/formatters';
+import { editEmployee } from 'src/redux/employee/thunk';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { AppDispatch } from 'src/types';
 
-import { projects } from '../constants';
-import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constans';
+import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
 import editEmployeeValidations from './validations';
 
 const EditEmployee = () => {
   const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useAppDispatch();
+  const params = useParams();
+
+  const [selected, setSelected] = React.useState(false);
+  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+
+  useEffect(() => {
+    if (listEmployee.length && matchedEmployee?._id) {
+      reset({
+        id: matchedEmployee?._id,
+        user: {
+          _id: matchedEmployee?.user?._id,
+          firstName: matchedEmployee?.user?.firstName,
+          lastName: matchedEmployee?.user?.lastName,
+          email: matchedEmployee?.user?.email,
+          birthDate: matchedEmployee?.user?.birthDate,
+        },
+        seniority: matchedEmployee?.seniority as Seniority,
+        skills: matchedEmployee?.skills || [],
+        potentialRole: matchedEmployee?.potentialRole,
+        availability: false,
+        projectHistory: [],
+        careerPlan: matchedEmployee?.careerPlan,
+        notes: matchedEmployee?.notes,
+      });
+    } else {
+      navigate('/admin/employees');
+    }
+  }, []);
+
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      dateOfBirth: '',
+      id: '',
+      user: {
+        birthDate: new Date(Date.now()),
+        email: '',
+        firstName: '',
+        lastName: '',
+        _id: '',
+      },
       seniority: Seniority.JR,
       skills: [],
       potentialRole: [],
       availability: false,
-      historyProjects: [],
+      projectHistory: [],
       careerPlan: '',
       notes: '',
     },
@@ -39,8 +72,16 @@ const EditEmployee = () => {
     resolver: joiResolver(editEmployeeValidations),
   });
 
-  const [selected, setSelected] = React.useState(false);
-  const listEmployee = useSelector((state: RootState) => state.employee?.list);
+  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
+
+  const formattedProjects = latestProjects?.map((item) => ({
+    id: item?.project?._id ? item?.project?._id : '-',
+    name: item?.project?.projectName ? item?.project?.projectName : '-',
+    role: item?.role ? item?.role : '-',
+    startDate: item?.startDate ? item?.startDate : '-',
+    endDate: item?.endDate ? item?.endDate : '-',
+  }));
 
   const handleToggleChange = (checked: boolean): void => {
     setSelected(checked);
@@ -50,16 +91,10 @@ const EditEmployee = () => {
     navigate(path);
   };
 
-  const matchedEmployee = listEmployee.map((employee) => ({
-    id: employee._id,
-    name: `${employee.user.firstName} ${employee.user.lastName}`,
-    projects: formattedTableData<Projects>(projects, 'name'),
-  }));
-
-  const lastestEmployees = matchedEmployee.slice(-2);
-
-  const onSubmit = () => {
-    console.log('test');
+  const onSubmit = (data) => {
+    const { id, user, projectHistory, ...rest } = data;
+    dispatch(editEmployee({ body: rest, id: id }));
+    handleNavigation('/admin/employees');
   };
 
   return (
@@ -70,7 +105,7 @@ const EditEmployee = () => {
           <BellIcon />
         </div>
       </div>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.formContainer}>
           <div className={styles.leftSide}>
             <div className={styles.firstColumn}>
@@ -79,7 +114,7 @@ const EditEmployee = () => {
                   control={control}
                   testId={'firstNameInput'}
                   label="Nombre"
-                  name="firstName"
+                  name="user.firstName"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -90,8 +125,10 @@ const EditEmployee = () => {
                 <DatePicker
                   label={'Fecha de cumpleaños'}
                   testId={'datePickerTestId'}
-                  name="dateOfBirth"
+                  name="user.birthDate"
                   control={control}
+                  disabled
+                  disableFuture
                 />
               </div>
               <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
@@ -110,7 +147,7 @@ const EditEmployee = () => {
                   control={control}
                   testId={'lastNameInput'}
                   label="Apellido"
-                  name="lastName"
+                  name="user.lastName"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -156,7 +193,7 @@ const EditEmployee = () => {
                   control={control}
                   testId={'emailInput'}
                   label="Email"
-                  name="email"
+                  name="user.email"
                   type={'text'}
                   variant="outlined"
                   disabled
@@ -172,7 +209,7 @@ const EditEmployee = () => {
               <table className={styles.table}>
                 <thead>
                   <tr>
-                    {projectHeadersEmp.map((header, index) => {
+                    {projectHeadersEmp?.map((header, index) => {
                       return (
                         <th className={styles.header} key={index}>
                           {header.header}
@@ -182,7 +219,7 @@ const EditEmployee = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {lastestEmployees.map((data) => {
+                  {formattedProjects?.map((data) => {
                     return (
                       <tr key={data.id}>
                         {projectHeadersEmp.map((header, index) => {
@@ -241,7 +278,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/employees')}
+              onClick={() => handleNavigation('/admin/employees')}
               label="Cancelar"
             />
           </div>
@@ -249,7 +286,7 @@ const EditEmployee = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={() => handleSubmit(onSubmit)}
+              onClick={handleSubmit(onSubmit)}
               label="Confirmar"
             />
           </div>

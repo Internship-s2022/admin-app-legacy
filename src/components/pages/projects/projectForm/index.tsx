@@ -44,7 +44,7 @@ const ProjectForm = () => {
           <Button
             testId="cancelButton"
             materialVariant={Variant.OUTLINED}
-            onClick={() => handleNavigation('/projects')}
+            onClick={() => handleNavigation('/admin/projects')}
             label="Cancelar"
           />
         </div>

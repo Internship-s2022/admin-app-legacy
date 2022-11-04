@@ -5,4 +5,6 @@ export type DPickerProps<Form extends FieldValues> = {
   testId: string;
   styles?: string;
   error?: boolean;
+  disabled?: boolean;
+  disableFuture?: boolean;
 } & UseControllerProps<Form>;

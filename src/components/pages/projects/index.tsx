@@ -87,7 +87,7 @@ const Projects = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => handleNavigation('/projects/add')}
+          onClick={() => handleNavigation('/admin/projects/add')}
           label={'+ Agregar proyecto'}
           testId={'addProjectButton'}
           styles={'addButton'}

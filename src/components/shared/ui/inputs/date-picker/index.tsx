@@ -12,7 +12,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
     fieldState: { error },
   } = useController(props);
 
-  const { label, testId, styles } = props;
+  const { label, testId, styles, disabled, disableFuture } = props;
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
@@ -20,6 +20,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
         value={value}
         label={label}
         className={styles}
+        disabled={disableFuture}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -28,6 +29,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
             onBlur={onBlur}
             error={Boolean(error)}
             helperText={error?.message || ' '}
+            disabled={disabled}
           />
         )}
         inputFormat={'yyyy/MM/dd'}

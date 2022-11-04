@@ -7,12 +7,11 @@ import { CheckProps } from './types';
 const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.Element => {
   const { control, name, options, testId, className } = props;
   const {
-    field: { ref, onChange },
+    field: { ref, onChange, value },
   } = useController({
     name,
     control,
   });
-
   const checkboxValues = useWatch({ control, name: name }) || [];
 
   const handleChange = (changedValues) => {
@@ -37,11 +36,13 @@ const CheckboxInput = <Form extends FieldValues>(props: CheckProps<Form>): JSX.E
         <FormGroup>
           {options.map((option) => (
             <FormControlLabel
+              value={value['value']}
               control={
                 <Checkbox
                   inputRef={ref}
                   onChange={() => handleChange(option['value'])}
                   data-testid={option['value']}
+                  checked={value.some((item) => item === option['value'])}
                 />
               }
               label={<p>{option['label']}</p>}

@@ -1,13 +1,18 @@
-import { PotentialRole } from '../storybook/types';
-
 export interface EmployeeData {
   id: string;
   name: string;
   projects: Projects[];
 }
 
+interface Project {
+  _id: string;
+  projectName: string;
+}
 export interface Projects {
-  name: string;
+  project: Project;
+  role: string;
+  startDate?: Date;
+  endDate?: Date;
 }
 
 export interface User {
@@ -23,15 +28,13 @@ export interface MappedEmployeeData extends Omit<EmployeeData, 'projects'> {
 }
 
 export type FormValues = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  dateOfBirth: string;
+  id: string;
+  user: User;
   seniority: Seniority;
   skills: string[];
-  potentialRole: PotentialRole[];
+  potentialRole: string[];
   availability: boolean;
-  historyProjects: Projects[];
+  projectHistory?: Projects[];
   careerPlan: string;
   notes: string;
 };

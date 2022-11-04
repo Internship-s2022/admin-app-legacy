@@ -103,7 +103,7 @@ const AddNewProject = () => {
                 <Button
                   testId="saveButton"
                   materialVariant={Variant.CONTAINED}
-                  onClick={() => handleNavigation('/projects')}
+                  onClick={() => handleNavigation('/admin/projects')}
                   label="Guardar"
                 />
               </div>

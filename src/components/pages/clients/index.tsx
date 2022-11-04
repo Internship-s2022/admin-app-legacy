@@ -78,7 +78,7 @@ const Clients = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => handleNavigation('/clients/add')}
+          onClick={() => handleNavigation('/admin/clients/add')}
           label={'+ Agregar cliente'}
           testId={'addClientButton'}
           styles={'addButton'}
