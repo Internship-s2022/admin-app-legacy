@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Button, Table } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getProjects } from 'src/redux/project/thunk';
@@ -16,7 +17,7 @@ import { MappedProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) => state.project.projects);
+  const listProjects = useSelector((state: RootState) => state.project.list);
   const projectError = useSelector((state: RootState) => state.project?.error);
 
   const formattedMember = membersArray.map((member) => {
@@ -38,6 +39,11 @@ const Projects = () => {
   useEffect(() => {
     dispatch(getProjects());
   }, []);
+
+  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
@@ -81,7 +87,7 @@ const Projects = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => undefined}
+          onClick={() => handleNavigation('/admin/projects/add')}
           label={'+ Agregar proyecto'}
           testId={'addProjectButton'}
           styles={'addButton'}

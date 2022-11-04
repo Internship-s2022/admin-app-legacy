@@ -1,36 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
+import { tokenListener } from 'src/helper/firebase';
 import { RootState } from 'src/redux/store';
 
-import { Home, Login, Users } from '../pages';
-import Clients from '../pages/clients';
-import Employees from '../pages/employees';
-import Projects from '../pages/projects';
-import StoryBook from '../pages/storybook';
 import { Header } from '../shared/common';
 import { Loader } from '../shared/ui';
 import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
+  const role = localStorage.getItem('role');
+
+  useEffect(() => {
+    tokenListener();
+  }, []);
 
   return (
     <div className={styles.container}>
       {isLoading && <Loader />}
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="login/*" element={<Login />} />
-          <Route path="storybook/*" element={<StoryBook />} />
-          <Route path="users/*" element={<Users />} />
-          <Route path="employees/*" element={<Employees />} />
-          <Route path="projects/*" element={<Projects />} />
-          <Route path="clients/*" element={<Clients />} />
-        </Routes>
-      </BrowserRouter>
+      {role && <Header />}
+      <Outlet />
     </div>
   );
 };

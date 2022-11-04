@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -5,7 +6,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
@@ -32,10 +33,11 @@ const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
+  const superAdmin = useSelector((state: RootState) => state.auth.authUser);
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
-    state.user?.users.filter((item) => item.isActive),
+    state.user?.list.filter((item) => item.isActive),
   );
   const userError = useSelector((state: RootState) => state.user?.error);
 
@@ -51,10 +53,10 @@ const Users = () => {
       firstName: '',
       lastName: '',
       location: '',
-      birthDate: undefined,
+      birthDate: new Date(Date.now()),
       isActive: true,
     },
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
 
@@ -67,6 +69,10 @@ const Users = () => {
   });
 
   const onSubmit = (data) => {
+    data = {
+      ...data,
+      birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
+    };
     dispatch(addUser(data));
     onClose();
   };
@@ -116,7 +122,7 @@ const Users = () => {
     <>
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido S.Admin!</Typography>
+          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
           <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
         </div>
         <div className={styles.topTableContainer}>

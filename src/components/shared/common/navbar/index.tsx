@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
@@ -14,18 +14,16 @@ const Navbar = () => {
     setValue(value);
   };
 
+  const userRole = localStorage.getItem('role');
+
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  useEffect(() => {
-    handleNavigation('/');
-  }, []);
-
   return (
     <Box>
       <Tabs textColor="secondary" indicatorColor="primary" value={value} onChange={handleChange}>
-        {navbarItems.map((item) => {
+        {navbarItems[userRole]?.map((item) => {
           return (
             <LinkTab
               handleNavigation={handleNavigation}

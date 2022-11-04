@@ -12,3 +12,14 @@ export interface ContactData {
   name: string;
   email: string;
 }
+
+export type FormValues = {
+  name: string;
+  localContact: string;
+  localEmail: string;
+  clientContact: string;
+  clientEmail: string;
+  notes?: string;
+  relationshipStart?: Date;
+  relationshipEnd?: Date;
+};

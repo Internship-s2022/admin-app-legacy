@@ -4,7 +4,7 @@ import { Actions } from './constants';
 import { ActionsType, State } from './types';
 
 const initialState: State = {
-  projects: [],
+  list: [],
   isLoading: false,
   error: undefined,
 };
@@ -19,7 +19,7 @@ const projectReducer: Reducer<State, ActionsType> = (state = initialState, actio
     case Actions.GET_PROJECTS_SUCCESS:
       return {
         ...state,
-        projects: action.payload,
+        list: action.payload,
         isLoading: false,
       };
     case Actions.GET_PROJECTS_ERROR:

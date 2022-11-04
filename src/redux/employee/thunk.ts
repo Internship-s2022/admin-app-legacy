@@ -2,8 +2,16 @@ import { Dispatch } from 'redux';
 
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
-import { getEmployeeError, getEmployeePending, getEmployeeSuccess } from './actions';
-import { getEmployeesRequest } from './api';
+import {
+  editEmployeeError,
+  editEmployeePending,
+  editEmployeeSuccess,
+  getEmployeeError,
+  getEmployeePending,
+  getEmployeeSuccess,
+} from './actions';
+import { editEmployeeRequest, getEmployeesRequest } from './api';
+import { Employee } from './types';
 
 export const getEmployees: AppThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -21,6 +29,28 @@ export const getEmployees: AppThunk = () => {
         dispatch(setLoaderOff());
       } else {
         dispatch(getEmployeeError(error.message));
+        dispatch(setLoaderOff());
+      }
+    }
+  };
+};
+
+export const editEmployee: AppThunk = (options: { body: Employee; id: string }) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(editEmployeePending());
+      dispatch(setLoaderOn());
+      const response = await editEmployeeRequest(options);
+      if (!response.error) {
+        dispatch(setLoaderOff());
+        return dispatch(editEmployeeSuccess(response.data, options.id));
+      }
+    } catch (error) {
+      if (error.code !== 'ERR_NETWORK') {
+        dispatch(editEmployeeError(error.response.data.message));
+        dispatch(setLoaderOff());
+      } else {
+        dispatch(editEmployeeError(error.message));
         dispatch(setLoaderOff());
       }
     }

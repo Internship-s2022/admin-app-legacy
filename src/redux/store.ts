@@ -1,7 +1,9 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunk from 'redux-thunk';
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { composeWithDevTools } from '@redux-devtools/extension';
 
+import authReducer from './auth/reducer';
 import clientReducer from './client/reducer';
 import employeeReducer from './employee/reducer';
 import projectReducer from './project/reducer';
@@ -14,6 +16,7 @@ const rootReducer = combineReducers({
   project: projectReducer,
   client: clientReducer,
   ui: uiReducer,
+  auth: authReducer,
 });
 
 const configureStore = () => {
@@ -25,3 +28,7 @@ const store = configureStore();
 
 export default store;
 export type RootState = ReturnType<typeof rootReducer>;
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+export const useAppDispatch: () => AppDispatch = useDispatch;

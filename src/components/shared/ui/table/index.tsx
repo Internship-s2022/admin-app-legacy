@@ -30,7 +30,7 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {value.map((row) => (
+          {value?.map((row) => (
             <TableRow className={styles.rows} key={row['id']} hover={true}>
               {profileIcon && <Avatar className={styles.icon}></Avatar>}
               {headers.map((header, index) => (

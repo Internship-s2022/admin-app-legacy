@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import { Button, Table } from 'src/components/shared/ui';
-import { Variant } from 'src/components/shared/ui/button/types';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
@@ -17,9 +18,10 @@ import { ClientsData } from './types';
 const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const activeClients = useSelector((state: RootState) =>
-    state.client?.clients.filter((item) => item.isActive),
+    state.client?.list.filter((item) => item.isActive),
   );
   const clientError = useSelector((state: RootState) => state.client?.error);
+  const navigate = useNavigate();
 
   const listClientsData = activeClients.map((item): ClientsData => {
     return {
@@ -43,6 +45,10 @@ const Clients = () => {
       },
     },
   ];
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   useEffect(() => {
     dispatch(getClients());
@@ -72,7 +78,7 @@ const Clients = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => undefined}
+          onClick={() => handleNavigation('/admin/clients/add')}
           label={'+ Agregar cliente'}
           testId={'addClientButton'}
           styles={'addButton'}

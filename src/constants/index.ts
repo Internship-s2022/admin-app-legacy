@@ -3,35 +3,21 @@ export enum ApiRoutes {
   EMPLOYEE = '/employees',
   PROJECTS = '/projects',
   CLIENT = '/clients',
+  AUTH = '/auth',
 }
 
 //Navbar
-export const navbarItems = [
-  {
-    path: '/',
-    name: 'Dashboard',
-  },
-  {
-    path: '/projects',
-    name: 'Proyectos',
-  },
-  {
-    path: '/employees',
-    name: 'Empleados',
-  },
-  {
-    path: '/clients',
-    name: 'Clientes',
-  },
-  {
-    path: '/storybook',
-    name: 'Storybook',
-  },
-  {
-    path: '/users',
-    name: 'Users',
-  },
+
+export const adminNavbar = [
+  { path: '/admin/', name: 'Dashboard' },
+  { path: '/admin/employees', name: 'Employees' },
+  { path: '/admin/projects', name: 'Projects' },
+  { path: '/admin/clients', name: 'Clients' },
 ];
+
+export const navbarItems = {
+  ADMIN: adminNavbar,
+};
 
 export const formattedRoleType = {
   SUPER_ADMIN: 'Super Admin',

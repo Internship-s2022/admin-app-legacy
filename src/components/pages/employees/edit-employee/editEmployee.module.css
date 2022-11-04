@@ -1,0 +1,195 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 52px 20px;
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.leftSide {
+  display: flex;
+  flex-direction: row;
+  width: 65%;
+}
+
+.rightSide {
+  width: 35%;
+}
+
+.bellIcon {
+  cursor: pointer;
+}
+
+.firstColumn,
+.middleColumn,
+.thirdColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 33%;
+  padding-right: 30px;
+}
+
+.elementContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.lastRowOfContainer {
+  margin: 0;
+}
+
+.tableContainer {
+  margin: 20px 0;
+}
+
+.addAbsenceContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.textInputContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  margin-bottom: 47px;
+}
+
+.secondWrapperContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-left: 3%;
+}
+
+.checkboxContainer {
+  width: 34%;
+}
+
+.rightContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 34%;
+  margin-top: 6.3%;
+  margin-left: 34px;
+}
+
+.rightInputs {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.welcomeMessage {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 21px;
+  margin: 0;
+  font-size: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.messageContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  margin-block: 1%;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.header {
+  padding: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #373867;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.rows {
+  padding: 13px;
+  font-size: 12px;
+  color: #373867;
+  border: none;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.viewMore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 7px;
+}
+
+.rightInputs > div {
+  width: 100%;
+}
+
+.titles {
+  font-weight: 500;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.availability {
+  font-weight: 500;
+}
+
+.absence {
+  display: flex;
+  flex-direction: column;
+}
+
+.absenceTitle {
+  display: flex;
+  align-items: center;
+}
+
+.noAbsences {
+  display: flex;
+  justify-content: center;
+  margin-top: 70px;
+  font-style: italic;
+  color: #8d8d8d;
+}
+
+.buttonAbsences {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonText {
+  font-size: 0.8vw;
+}
