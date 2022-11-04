@@ -12,14 +12,14 @@ const AutocompleteInput = <Form extends FieldValues>(
   props: AutocompleteProps<Form>,
 ): JSX.Element => {
   const { control, name, skills } = props;
-  const handleDelete = (chipToDelete: string) => {
-    onChange((value) => value.filter((value) => value !== chipToDelete));
-  };
-
   const {
     field: { value, onChange },
     fieldState: { error },
   } = useController({ name, control });
+
+  const handleDelete = (chipToDelete: string) => {
+    onChange(value.filter((options) => options !== chipToDelete));
+  };
 
   return (
     <div>
@@ -30,6 +30,7 @@ const AutocompleteInput = <Form extends FieldValues>(
         options={skills.map((option) => option)}
         freeSolo
         renderTags={() => null}
+        defaultValue={value}
         renderInput={(params) => (
           <TextField
             {...params}

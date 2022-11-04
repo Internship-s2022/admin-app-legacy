@@ -4,7 +4,7 @@ import { RoleType } from '../../storybook/types';
 import { Seniority } from '../types';
 
 const editEmployeeValidations = Joi.object({
-  skills: Joi.array().items(Joi.string().min(3).max(35)).messages({
+  skills: Joi.array().items(Joi.string().min(1).max(35)).messages({
     'string.min': 'Las skills deben contener mas de 3 letras',
     'string.max': 'Las skills deben contener menos de 35 letras',
     'string.base': 'Las skills deben ser una cadena de caracteres',

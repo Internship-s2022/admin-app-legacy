@@ -42,8 +42,8 @@ export const editEmployee: AppThunk = (options: { body: Employee; id: string }) 
       dispatch(setLoaderOn());
       const response = await editEmployeeRequest(options);
       if (!response.error) {
-        dispatch(editEmployeeSuccess(response.data, options.id));
         dispatch(setLoaderOff());
+        return dispatch(editEmployeeSuccess(response.data, options.id));
       }
     } catch (error) {
       if (error.code !== 'ERR_NETWORK') {
