@@ -39,7 +39,7 @@ const Users = () => {
   const activeUsers = useSelector((state: RootState) =>
     state.user?.list.filter((item) => item.isActive),
   );
-  const userError = useSelector((state: RootState) => state.user?.error);
+  const userError = useSelector((state: RootState) => state.user?.error?.message);
 
   useEffect(() => {
     dispatch(getUsers());

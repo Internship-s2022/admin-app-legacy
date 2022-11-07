@@ -1,8 +1,10 @@
 import { Dispatch } from 'redux';
 
+import { getResourceRequest } from 'src/config/api';
+import { ApiRoutes } from 'src/constants';
+
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
 import { getProjectsError, getProjectsPending, getProjectsSuccess } from './actions';
-import { getProjectsRequest } from './api';
 import { AppThunk } from './types';
 
 export const getProjects: AppThunk = () => {
@@ -10,19 +12,14 @@ export const getProjects: AppThunk = () => {
     try {
       dispatch(getProjectsPending());
       dispatch(setLoaderOn());
-      const response = await getProjectsRequest();
+      const response = await getResourceRequest(ApiRoutes.PROJECTS);
       if (response.data?.length) {
         dispatch(getProjectsSuccess(response.data));
         dispatch(setLoaderOff());
       }
     } catch (error: any) {
-      if (error.code !== 'ERR_NETWORK') {
-        dispatch(getProjectsError({ message: error.response.data.message, networkError: false }));
-        dispatch(setLoaderOff());
-      } else {
-        dispatch(getProjectsError({ message: error.message, networkError: true }));
-        dispatch(setLoaderOff());
-      }
+      dispatch(getProjectsError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
     }
   };
 };

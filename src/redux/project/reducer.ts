@@ -31,7 +31,7 @@ const projectReducer: Reducer<State<Project>, ActionsType> = (
       return {
         ...state,
         isLoading: false,
-        error: { message: action.payload.message, networkError: action.payload.networkError },
+        error: { ...action.payload },
       };
     default:
       return state;

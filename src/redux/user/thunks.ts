@@ -1,5 +1,13 @@
 import { Dispatch } from 'redux';
 
+import {
+  addResourceRequest,
+  deleteResourceRequest,
+  editResourceRequest,
+  getResourceRequest,
+} from 'src/config/api';
+import { ApiRoutes } from 'src/constants';
+
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
 import {
@@ -16,7 +24,6 @@ import {
   getUsersPending,
   getUsersSuccess,
 } from './actions';
-import { addUserRequest, deleteUserRequest, editUserRequest, getUsersRequest } from './api';
 import { User } from './types';
 
 export const getUsers: AppThunk = () => {
@@ -24,19 +31,14 @@ export const getUsers: AppThunk = () => {
     try {
       dispatch(getUsersPending());
       dispatch(setLoaderOn());
-      const response = await getUsersRequest();
+      const response = await getResourceRequest(ApiRoutes.USER);
       if (response.data?.length) {
         dispatch(getUsersSuccess(response.data));
-        dispatch(setLoaderOff());
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      if (error.code !== 'ERR_NETWORK') {
-        dispatch(getUsersError(error.response.data.message));
-        dispatch(setLoaderOff());
-      } else {
-        dispatch(getUsersError(error.message));
-        dispatch(setLoaderOff());
-      }
+      dispatch(getUsersError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
     }
   };
 };
@@ -46,13 +48,13 @@ export const addUser: AppThunk = (data) => {
     try {
       dispatch(addUserPending());
       dispatch(setLoaderOn());
-      const response = await addUserRequest(data);
+      const response = await addResourceRequest(ApiRoutes.USER, data);
       if (!response.error) {
         dispatch(addUserSuccess(response.data));
-        dispatch(setLoaderOff());
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      dispatch(addUsersError(error));
+      dispatch(addUsersError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };
@@ -63,13 +65,13 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
     try {
       dispatch(editUserPending());
       dispatch(setLoaderOn());
-      const response = await editUserRequest(options);
+      const response = await editResourceRequest(ApiRoutes.USER, options);
       if (!response.error) {
         dispatch(editUserSuccess(response.data.accessRoleType, options.id));
-        dispatch(setLoaderOff());
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      dispatch(editUserError(error));
+      dispatch(editUserError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };
@@ -80,13 +82,13 @@ export const deleteUser: AppThunk = (id) => {
     try {
       dispatch(deleteUserPending());
       dispatch(setLoaderOn());
-      const response = await deleteUserRequest(id);
+      const response = await deleteResourceRequest(ApiRoutes.USER, id);
       if (!response.error) {
         dispatch(deleteUserSuccess(id));
-        dispatch(setLoaderOff());
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      dispatch(deleteUserError(error));
+      dispatch(deleteUserError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };

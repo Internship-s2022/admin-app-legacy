@@ -32,7 +32,7 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
       return {
         ...state,
         isLoading: false,
-        error: { message: action.payload.message, networkError: action.payload.networkError },
+        error: { ...action.payload },
       };
     case Actions.EDIT_EMPLOYEE_PENDING:
       return {
