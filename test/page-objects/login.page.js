@@ -1,33 +1,45 @@
 /* eslint-disable no-undef */
 import Page from './page';
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
 class LoginPage extends Page {
   /**
-   * define selectors using getter methods
+   * GETTERS
    */
-  get inputUsername() {
-    return $('#username');
+  get radiumAdminLogo() {
+    return $('[alt="radium logo"]');
   }
-
-  get inputPassword() {
-    return $('#password');
+  get googleButton() {
+    return $('[test-id="google-button"]');
   }
-
-  get btnSubmit() {
-    return $('button[type="submit"]');
+  get emailInput() {
+    return $('#identifierId');
   }
-
+  get emailNextBtn() {
+    return $('#identifierNext');
+  }
+  get passwordInput() {
+    return $('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input');
+  }
+  get passwordNextBtn() {
+    return $('#passwordNext');
+  }
   /**
-   * a method to encapsule automation code to interact with the page
-   * e.g. to login using username and password
+   * SETTERS
    */
-  async login(username, password) {
-    await this.inputUsername.setValue(username);
-    await this.inputPassword.setValue(password);
-    await this.btnSubmit.click();
+  async setEmail(email) {
+    await this.emailInput.setValue(email);
+  }
+  async setPassword(password) {
+    await this.passwordInput.setValue(password);
+  }
+  /**
+   * METHODS
+   */
+  async login(email, password) {
+    await this.setEmail(email);
+    await this.emailNextBtn.click();
+    await this.setPassword(password);
+    await this.passwordNextBtn.click();
   }
 
   /**
