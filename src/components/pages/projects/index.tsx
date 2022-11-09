@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
@@ -65,16 +66,15 @@ const Projects = () => {
     };
   });
 
-  return !listProjects.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          {/* <p className={styles.error}>Error: {projectError}</p> */}
-        </div>
-      </div>
-    </div>
+  const showErrorMessage = projectError || !listProjectsData.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource="Proyectos"
+      handleAdd={() => handleNavigation('/admin/projects/add')}
+      handleReload={() => handleNavigation('/admin/projects')}
+      error={projectError}
+    />
   ) : (
     <div className={styles.container}>
       <h1>Lista de proyectos</h1>

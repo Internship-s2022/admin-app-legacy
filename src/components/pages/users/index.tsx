@@ -2,9 +2,11 @@ import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
@@ -34,12 +36,13 @@ const Users = () => {
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
+  const navigate = useNavigate();
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
     state.user?.list.filter((item) => item.isActive),
   );
-  const userError = useSelector((state: RootState) => state.user?.error?.message);
+  const userError = useSelector((state: RootState) => state.user?.error);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -58,6 +61,10 @@ const Users = () => {
     mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
+
+  const handleModal = () => {
+    dispatch(openFormModal());
+  };
 
   const listUserData = activeUsers.map((item): UserData => {
     return {
@@ -107,47 +114,52 @@ const Users = () => {
     },
   ];
 
-  return !activeUsers.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Usuarios</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Usuarios</p>
-          <p className={styles.error}>Error: {userError}</p>
-        </div>
-      </div>
-    </div>
-  ) : (
+  const showErrorMessage = userError || !listUserData.length;
+
+  return (
     <>
-      <div className={styles.container}>
-        <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
-        </div>
-        <div className={styles.topTableContainer}>
-          <div className={styles.searchInputContainer}>
-            <div className={styles.iconContainer}>
-              <SearchIcon />
-            </div>
-            <input className={styles.searchInput} placeholder="Busqueda por palabra clave"></input>
+      {showErrorMessage && (
+        <EmptyDataHandler
+          resource="Usuarios"
+          handleAdd={handleModal}
+          handleReload={() => navigate('/super-admin')}
+          error={userError}
+        />
+      )}
+      {!showErrorMessage && (
+        <div className={styles.container}>
+          <div className={styles.welcomeMessage}>
+            <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
+            <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
           </div>
-          <Button
-            materialVariant={Variant.CONTAINED}
-            onClick={() => dispatch(openFormModal())}
-            label={'+ Agregar un nuevo usuario'}
-            testId={'addUserButton'}
-          />
+          <div className={styles.topTableContainer}>
+            <div className={styles.searchInputContainer}>
+              <div className={styles.iconContainer}>
+                <SearchIcon />
+              </div>
+              <input
+                className={styles.searchInput}
+                placeholder="Busqueda por palabra clave"
+              ></input>
+            </div>
+            <Button
+              materialVariant={Variant.CONTAINED}
+              onClick={() => dispatch(openFormModal())}
+              label={'+ Agregar un nuevo usuario'}
+              testId={'addUserButton'}
+            />
+          </div>
+          <div className={styles.tableContainer}>
+            <Table<UserData>
+              showButtons={true}
+              testId={'userTable'}
+              headers={userHeaders}
+              value={listUserData}
+              buttons={buttonsArray}
+            />
+          </div>
         </div>
-        <div className={styles.tableContainer}>
-          <Table<UserData>
-            showButtons={true}
-            testId={'userTable'}
-            headers={userHeaders}
-            value={listUserData}
-            buttons={buttonsArray}
-          />
-        </div>
-      </div>
+      )}
       <div className={styles.modalContainer}>
         <Modal
           onClose={() => dispatch(closeFormModal())}
@@ -230,9 +242,15 @@ const Users = () => {
           </div>
         </Modal>
       </div>
-      <Modal testId={'User-access-modal'} isOpen={showModal} onClose={() => dispatch(closeModal())}>
-        <AccessRoleModal row={row} open={showModal} />
-      </Modal>
+      {!showErrorMessage && (
+        <Modal
+          testId={'User-access-modal'}
+          isOpen={showModal}
+          onClose={() => dispatch(closeModal())}
+        >
+          <AccessRoleModal row={row} open={showModal} />
+        </Modal>
+      )}
     </>
   );
 };

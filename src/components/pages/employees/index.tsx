@@ -22,7 +22,6 @@ const Employees = () => {
 
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
   const employeeError = useAppSelector((state: RootState) => state.employee?.error);
-  console.log(listEmployee);
 
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee?._id,
@@ -44,11 +43,14 @@ const Employees = () => {
     },
   ];
 
-  return employeeError || !listEmployee.length ? (
+  const showErrorMessage = employeeError || !matchedEmployee.length;
+
+  return showErrorMessage ? (
     <EmptyDataHandler
       isEmployee={true}
       resource="Empleados"
       handleReload={() => navigate('admin/employees')}
+      error={employeeError}
     />
   ) : (
     <>

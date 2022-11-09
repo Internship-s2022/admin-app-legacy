@@ -9,26 +9,25 @@ import styles from './emptyList.module.css';
 
 const EmptyList = (props: EmptyDataProps) => {
   const { resource, isEmployee, handleAdd } = props;
-  return !isEmployee ? (
+  return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
         <span>Aún no hay {resource}</span>
-        <p> Para agregar uno clickea en el siguiente botón</p>
+        <p>
+          {isEmployee
+            ? 'Para agregar uno contactate con el Super Admin'
+            : 'Para agregar uno clickea en el siguiente botón'}
+        </p>
       </div>
-      <Button
-        materialVariant={Variant.CONTAINED}
-        testId="reloadButton"
-        onClick={handleAdd}
-        styles={'addButton'}
-        label={`+ Agregar ${cutLastLetter(resource)}`}
-      />
-    </div>
-  ) : (
-    <div className={styles.container}>
-      <div className={styles.textContainer}>
-        <span>Aún no hay {resource}</span>
-        <p> Para agregar uno contactate con el Super Admin</p>
-      </div>
+      {!isEmployee && (
+        <Button
+          materialVariant={Variant.CONTAINED}
+          testId="reloadButton"
+          onClick={handleAdd}
+          styles={'addButton'}
+          label={`+ Agregar ${cutLastLetter(resource)}`}
+        />
+      )}
     </div>
   );
 };

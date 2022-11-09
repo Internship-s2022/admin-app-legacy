@@ -25,18 +25,16 @@ const Clients = () => {
   console.log(clientError);
   const navigate = useNavigate();
 
-  // const listClientsData = activeClients.map((item): ClientsData => {
-  //   return {
-  //     id: item._id,
-  //     name: item.name,
-  //     projects: formattedTableData(item.projects, 'projectName'),
-  //     clientContact: item.clientContact?.name,
-  //     email: item.clientContact?.email,
-  //     localContact: item.localContact?.name,
-  //   };
-  // });
-
-  const listClientsData = [];
+  const listClientsData = activeClients.map((item): ClientsData => {
+    return {
+      id: item._id,
+      name: item.name,
+      projects: formattedTableData(item.projects, 'projectName'),
+      clientContact: item.clientContact?.name,
+      email: item.clientContact?.email,
+      localContact: item.localContact?.name,
+    };
+  });
 
   const buttonsArray = [
     {
@@ -58,7 +56,9 @@ const Clients = () => {
     dispatch(getClients());
   }, []);
 
-  return clientError || !listClientsData.length ? (
+  const showErrorMessage = clientError || !listClientsData.length;
+
+  return showErrorMessage ? (
     <EmptyDataHandler
       resource="Clientes"
       handleReload={() => handleNavigation('/admin/clients')}
