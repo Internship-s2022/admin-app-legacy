@@ -29,4 +29,5 @@ export const projectArray = [
   'description',
   'active',
   'members',
+  'criticality',
 ];

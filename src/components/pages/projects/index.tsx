@@ -30,7 +30,7 @@ const Projects = () => {
         endDate: project?.endDate.toString(),
         criticality: project?.isCritic,
         description: project?.description,
-        active: project?.isActive,
+        active: project?.isActive.toString(),
         members: formattedTableData(project?.members, 'fullName'),
       };
     }),
@@ -104,15 +104,6 @@ const Projects = () => {
           <div>No encontró nada</div>
         </>
       )}
-      <div className={styles.tableContainer}>
-        <Table<MappedProjectData>
-          showButtons={true}
-          testId={'projectsTable'}
-          headers={projectHeaders}
-          value={filteredList}
-          buttons={buttonsArray}
-        />
-      </div>
     </div>
   );
 };
