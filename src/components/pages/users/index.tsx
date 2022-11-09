@@ -47,7 +47,6 @@ const Users = () => {
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
-      firebaseUid: '1a12sdas3',
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
       firstName: '',
