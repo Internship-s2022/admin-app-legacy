@@ -1,11 +1,10 @@
 import { Dispatch } from 'redux';
 
-import { getResourceRequest } from 'src/config/api';
+import { editResourceRequest, getResourceRequest } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
-<<<<<<< HEAD
 import {
   editEmployeeError,
   editEmployeePending,
@@ -14,11 +13,7 @@ import {
   getEmployeePending,
   getEmployeeSuccess,
 } from './actions';
-import { editEmployeeRequest, getEmployeesRequest } from './api';
 import { Employee } from './types';
-=======
-import { getEmployeeError, getEmployeePending, getEmployeeSuccess } from './actions';
->>>>>>> RA-156: Changed redux flow to make generic requests functions
 
 export const getEmployees: AppThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -42,19 +37,14 @@ export const editEmployee: AppThunk = (options: { body: Employee; id: string }) 
     try {
       dispatch(editEmployeePending());
       dispatch(setLoaderOn());
-      const response = await editEmployeeRequest(options);
+      const response = await editResourceRequest(ApiRoutes.EMPLOYEE, options);
       if (!response.error) {
-        dispatch(setLoaderOff());
         return dispatch(editEmployeeSuccess(response.data, options.id));
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      if (error.code !== 'ERR_NETWORK') {
-        dispatch(editEmployeeError(error.response.data.message));
-        dispatch(setLoaderOff());
-      } else {
-        dispatch(editEmployeeError(error.message));
-        dispatch(setLoaderOff());
-      }
+      dispatch(editEmployeeError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
     }
   };
 };

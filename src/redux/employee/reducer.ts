@@ -54,7 +54,7 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     default:
       return state;

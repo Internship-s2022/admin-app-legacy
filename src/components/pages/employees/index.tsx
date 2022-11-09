@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
 import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
@@ -21,6 +22,7 @@ const Employees = () => {
 
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
   const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  console.log(listEmployee);
 
   const matchedEmployee = listEmployee.map((employee) => ({
     id: employee?._id,
@@ -42,16 +44,12 @@ const Employees = () => {
     },
   ];
 
-  return !listEmployee.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          {/* <p className={styles.error}>Error: {employeeError}</p> */}
-        </div>
-      </div>
-    </div>
+  return employeeError || !listEmployee.length ? (
+    <EmptyDataHandler
+      isEmployee={true}
+      resource="Empleados"
+      handleReload={() => navigate('admin/employees')}
+    />
   ) : (
     <>
       <div className={styles.tableContainer}>

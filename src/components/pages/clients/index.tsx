@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
@@ -21,18 +22,21 @@ const Clients = () => {
     state.client?.list.filter((item) => item.isActive),
   );
   const clientError = useSelector((state: RootState) => state.client?.error);
+  console.log(clientError);
   const navigate = useNavigate();
 
-  const listClientsData = activeClients.map((item): ClientsData => {
-    return {
-      id: item._id,
-      name: item.name,
-      projects: formattedTableData(item.projects, 'projectName'),
-      clientContact: item.clientContact?.name,
-      email: item.clientContact?.email,
-      localContact: item.localContact?.name,
-    };
-  });
+  // const listClientsData = activeClients.map((item): ClientsData => {
+  //   return {
+  //     id: item._id,
+  //     name: item.name,
+  //     projects: formattedTableData(item.projects, 'projectName'),
+  //     clientContact: item.clientContact?.name,
+  //     email: item.clientContact?.email,
+  //     localContact: item.localContact?.name,
+  //   };
+  // });
+
+  const listClientsData = [];
 
   const buttonsArray = [
     {
@@ -54,16 +58,13 @@ const Clients = () => {
     dispatch(getClients());
   }, []);
 
-  return !activeClients.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Clientes</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Clientes</p>
-          {/* <p className={styles.error}>Error: {clientError}</p> */}
-        </div>
-      </div>
-    </div>
+  return clientError || !listClientsData.length ? (
+    <EmptyDataHandler
+      resource="Clientes"
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={clientError}
+    />
   ) : (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
@@ -78,7 +79,9 @@ const Clients = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => handleNavigation('/admin/clients/add')}
+          onClick={() => {
+            handleNavigation('/admin/clients/add');
+          }}
           label={'+ Agregar cliente'}
           testId={'addClientButton'}
           styles={'addButton'}
