@@ -39,3 +39,19 @@ export const dropdownAccessRoles = [
   { value: 'SUPER_ADMIN', label: 'Super Admin' },
   { value: 'EMPLOYEE', label: 'Employee' },
 ];
+
+//ROUTES
+
+export enum UiRoutes {
+  LOGIN = '/login',
+  STORYBOOK = '/storybook',
+  NOT_ALLOWED = '/not-allowed',
+  ADMIN = '/admin/*',
+  SUPER_ADMIN = '/super-admin/*',
+  GET_EMPLOYEES = '/employees',
+  EDIT_EMPLOYEES = '/employees/edit/:id',
+  GET_PROJECTS = '/projects',
+  ADD_PROJECTS = '/projects/add',
+  GET_CLIENTS = '/clients',
+  ADD_CLIENTS = '/clients/add',
+}
