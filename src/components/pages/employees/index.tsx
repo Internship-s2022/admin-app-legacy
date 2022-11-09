@@ -49,7 +49,7 @@ const Employees = () => {
     <EmptyDataHandler
       isEmployee={true}
       resource="Empleados"
-      handleReload={() => navigate('admin/employees')}
+      handleReload={() => navigate('/admin/employees')}
       error={employeeError}
     />
   ) : (

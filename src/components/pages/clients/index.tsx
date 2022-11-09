@@ -22,7 +22,6 @@ const Clients = () => {
     state.client?.list.filter((item) => item.isActive),
   );
   const clientError = useSelector((state: RootState) => state.client?.error);
-  console.log(clientError);
   const navigate = useNavigate();
 
   const listClientsData = activeClients.map((item): ClientsData => {
