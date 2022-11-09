@@ -73,6 +73,7 @@ const EditEmployee = () => {
   });
 
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
 
   const formattedProjects = latestProjects?.map((item) => ({
