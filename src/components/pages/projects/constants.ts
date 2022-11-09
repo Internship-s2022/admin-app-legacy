@@ -19,3 +19,14 @@ export const membersArray: Member[] = [
   { firstName: 'Juan Cruz', lastName: 'Moreira' },
   { firstName: 'Karen Agustina', lastName: 'Soto' },
 ];
+
+export const projectArray = [
+  'projectName',
+  'clientName',
+  'projectType',
+  'startDate',
+  'endDate',
+  'description',
+  'active',
+  'members',
+];

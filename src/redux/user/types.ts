@@ -11,6 +11,7 @@ export interface User {
   lastName?: string;
   location?: string;
   workedHours?: number;
+  birthDate?: Date;
   isActive?: boolean;
 }
 

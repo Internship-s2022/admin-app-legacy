@@ -12,7 +12,7 @@ import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
-import { header } from './constants';
+import { employeeArray, header } from './constants';
 import styles from './employee.module.css';
 import { MappedEmployeeData, Projects } from './types';
 
@@ -50,8 +50,6 @@ const Employees = () => {
     },
   ];
 
-  console.log('list', listEmployee);
-
   return !listEmployee.length ? (
     <div className={styles.noList}>
       <div className={styles.noListTitle}>
@@ -68,7 +66,13 @@ const Employees = () => {
         <div className={styles.welcomeMessage}>
           <Typography variant="h1">Lista de Empleados</Typography>
         </div>
-        <SearchBar setFilteredList={setFilteredList} details={listEmployee} />
+        <div className={styles.searchInput}>
+          <SearchBar
+            setFilteredList={setFilteredList}
+            details={listEmployee}
+            mainArray={employeeArray}
+          />
+        </div>
         {filteredList.length ? (
           <Table<MappedEmployeeData>
             showButtons={true}

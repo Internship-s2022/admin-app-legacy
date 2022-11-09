@@ -5,24 +5,13 @@ import { SearchBarProps } from './constants';
 import styles from './searchbar.module.css';
 
 const SearchBar = (props: SearchBarProps): JSX.Element => {
-  const { details, setFilteredList } = props;
+  const { details, setFilteredList, mainArray } = props;
   const [filter, setFilter] = useState('');
   const [inputValue, setInputValue] = useState('');
 
-  const userArray = [
-    'name',
-    'email',
-    'projects',
-    'notes',
-    'careerPlan',
-    'skills',
-    'potentialRole',
-    'active',
-  ];
-
   useMemo(() => {
     const filterList = details.filter((d) =>
-      userArray.some((field) => d[field]?.toLowerCase().includes(filter.toLowerCase())),
+      mainArray.some((field) => d[field]?.toLowerCase().includes(filter.toLowerCase())),
     );
     console.log('filteredList', filterList);
     setFilteredList(filterList);

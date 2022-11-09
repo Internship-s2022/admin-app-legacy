@@ -39,24 +39,8 @@
   justify-content: space-around;
 }
 
-.searchInputContainer {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: 65%;
-  height: 38px;
-  padding: 2px;
-  margin-bottom: 34px;
-  border: 1px solid rgb(55 56 103 / 40%);
-  border-radius: 5px;
-}
-
 .searchInput {
   width: 50%;
-  width: 100%;
-  padding: 10px;
-  font-size: 15px;
-  border: none;
 }
 
 input:focus {

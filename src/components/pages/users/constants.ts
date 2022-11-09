@@ -11,3 +11,12 @@ export const accessRoles = [
   { value: 'SUPER_ADMIN', label: 'Super Admin' },
   { value: 'EMPLOYEE', label: 'Employee' },
 ];
+export const userArray = [
+  'name',
+  'email',
+  'firebaseUid',
+  'location',
+  'birthDate',
+  'accessRoleType',
+  'active',
+];
