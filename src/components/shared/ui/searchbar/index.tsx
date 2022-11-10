@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
-import SearchIcon from '../icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
+
 import styles from './searchbar.module.css';
 import { SearchBarProps, SearchData } from './types';
 

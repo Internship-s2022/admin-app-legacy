@@ -58,16 +58,15 @@ const Projects = () => {
     },
   ];
 
-  return !listProjects.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          <p className={styles.error}>Error: {projectError}</p>
-        </div>
-      </div>
-    </div>
+  const showErrorMessage = projectError?.networkError || !listProjects.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Proyectos}
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={projectError}
+    />
   ) : (
     <div className={styles.container}>
       <h1>Lista de proyectos</h1>

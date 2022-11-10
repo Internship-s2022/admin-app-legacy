@@ -19,6 +19,7 @@ import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
+
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
       _id: employee?._id,
@@ -33,8 +34,14 @@ const Employees = () => {
     })),
   );
 
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   const employeeError = useAppSelector((state: RootState) => state.employee?.error);
   const [filteredList, setFilteredList] = useState(listEmployee);
+
+  const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -50,16 +57,13 @@ const Employees = () => {
     },
   ];
 
-  return !listEmployee.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          <p className={styles.error}>Error: {employeeError}</p>
-        </div>
-      </div>
-    </div>
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Empleados}
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={employeeError}
+    />
   ) : (
     <>
       <div className={styles.tableContainer}>

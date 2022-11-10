@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { userArray, userHeaders } from './constants';
+import { accessRoles, userArray, userHeaders } from './constants';
 import { FormValues, SearchUserData, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
@@ -105,9 +105,20 @@ const Users = () => {
     },
   ];
 
-  const showErrorMessage = userError?.networkError || !listUserData.length;
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
-  return (
+  const showErrorMessage = userError?.networkError || !activeUsers.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Usuarios}
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={userError}
+    />
+  ) : (
     <>
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
