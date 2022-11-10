@@ -39,8 +39,8 @@ const Clients = () => {
     };
   });
 
-  const handleDelete = (id) => {
-    dispatch(deleteClient(id));
+  const handleDelete = async (id) => {
+    await dispatch(deleteClient(id));
     dispatch(closeModal());
   };
 
