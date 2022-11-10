@@ -2,16 +2,6 @@ import Joi from 'joi';
 
 import { AccessRoleType } from 'src/constants';
 export const userValidation = Joi.object({
-  firebaseUid: Joi.string()
-    .min(3)
-    .max(35)
-    .messages({
-      'string.pattern': 'Tienes que utilizar un firebaseUid válido',
-      'string.empty': 'FirebaseUid es un campo requerido',
-      'string.min': 'FirebaseUid debe contener al menos 3 caracteres',
-    })
-    .required(),
-
   accessRoleType: Joi.string()
     .valid(
       AccessRoleType.ADMIN,
