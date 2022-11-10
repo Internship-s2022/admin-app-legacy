@@ -9,7 +9,7 @@ export const storybookHeaders: Headers[] = [
 ];
 
 export const tableValues: MappedUserList[] = [
-  { _id: '1', firstName: 'Nicolas Lobos', accessRoleType: formattedRoleType.SUPER_ADMIN },
+  { _id: '1', firstName: 'Coco Lobos', accessRoleType: formattedRoleType.SUPER_ADMIN },
   { _id: '2', firstName: 'Samuel Trillo', accessRoleType: formattedRoleType.ADMIN },
   { _id: '3', firstName: 'Karen Soto', accessRoleType: formattedRoleType.EMPLOYEE },
   { _id: '4', firstName: 'Luciano Alarcon', accessRoleType: formattedRoleType.EMPLOYEE },

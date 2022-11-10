@@ -14,33 +14,30 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
     const filterList = details.filter((d) =>
       mainArray.some((field) => d[field]?.toLowerCase().includes(filter.toLowerCase())),
     );
-    console.log('filteredList', filterList);
     setFilteredList(filterList);
   }, [filter]);
 
   return (
-    <>
-      <div>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            setFilter(inputValue);
-          }}
-        >
-          <div className={styles.searchInputContainer}>
-            <div className={styles.iconContainer}>
-              <SearchIcon />
-            </div>
-            <input
-              className={styles.searchInput}
-              placeholder="Búsqueda por palabra clave"
-              onChange={(e) => setInputValue(e.target.value)}
-              value={inputValue}
-            />
+    <div>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          setFilter(inputValue);
+        }}
+      >
+        <div className={styles.searchInputContainer}>
+          <div className={styles.iconContainer}>
+            <SearchIcon />
           </div>
-        </form>
-      </div>
-    </>
+          <input
+            className={styles.searchInput}
+            placeholder="Búsqueda por palabra clave"
+            onChange={(e) => setInputValue(e.target.value)}
+            value={inputValue}
+          />
+        </div>
+      </form>
+    </div>
   );
 };
 
