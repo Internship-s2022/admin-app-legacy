@@ -7,3 +7,15 @@ export const header: Headers[] = [
   { header: 'Email', key: 'email' },
   { header: 'Contacto Radium', key: 'localContact' },
 ];
+
+export const clientArray = [
+  'name',
+  'projects',
+  'clientContact',
+  'email',
+  'localContact',
+  'localContactEmail',
+  'relationshipEnd',
+  'relationshipStart',
+  'notes',
+];

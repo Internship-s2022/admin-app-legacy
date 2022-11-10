@@ -89,7 +89,7 @@ const Projects = () => {
           />
         </div>
       </div>
-      {filteredList ? (
+      {filteredList.length ? (
         <div className={styles.tableContainer}>
           <Table<MappedProjectData>
             showButtons={true}
