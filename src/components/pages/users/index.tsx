@@ -20,7 +20,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
 import { userArray, userHeaders } from './constants';
-import { FormValues, UserData } from './types';
+import { FormValues, SearchUserData, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
 
@@ -34,7 +34,7 @@ const Users = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
     state.user?.list.map((item) => ({
-      id: item?._id,
+      _id: item?._id,
       firebaseUid: item?.firebaseUid,
       accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
       email: item?.email,
@@ -116,7 +116,7 @@ const Users = () => {
         </div>
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>
-            <SearchBar
+            <SearchBar<SearchUserData>
               setFilteredList={setFilteredList}
               details={activeUsers}
               mainArray={userArray}
@@ -134,7 +134,7 @@ const Users = () => {
         <div className={styles.tableContainer}>
           {filteredList.length ? (
             <Table<UserData>
-              showButtons={true}
+              showButtons
               testId={'userTable'}
               headers={userHeaders}
               value={filteredList}

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getProjects } from 'src/redux/project/thunk';
@@ -13,16 +12,16 @@ import { RootState } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
-import { formattedProjectType, membersArray, projectArray, projectHeaders } from './constants';
+import { formattedProjectType, projectArray, projectHeaders } from './constants';
 import styles from './projects.module.css';
-import { MappedProjectData, ProjectData } from './types';
+import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listProjects = useSelector((state: RootState) =>
     state.project.list.map((project) => {
       return {
-        id: project?._id,
+        _id: project?._id,
         projectName: `${capitalizeFirstLetter(project.projectName)}`,
         clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
         projectType: project?.projectType && formattedProjectType[project.projectType],
@@ -32,6 +31,7 @@ const Projects = () => {
         description: project?.description,
         active: project?.isActive.toString(),
         members: formattedTableData(project?.members, 'fullName'),
+        notes: project?.notes,
       };
     }),
   );
@@ -73,7 +73,7 @@ const Projects = () => {
       <h1>Lista de proyectos</h1>
       <div className={styles.topTableContainer}>
         <div className={styles.searchBar}>
-          <SearchBar
+          <SearchBar<SearchProjectData>
             setFilteredList={setFilteredList}
             details={listProjects}
             mainArray={projectArray}
@@ -92,7 +92,7 @@ const Projects = () => {
       {filteredList.length ? (
         <div className={styles.tableContainer}>
           <Table<MappedProjectData>
-            showButtons={true}
+            showButtons
             testId={'projectsTable'}
             headers={projectHeaders}
             value={filteredList}

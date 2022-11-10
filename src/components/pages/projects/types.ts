@@ -9,7 +9,7 @@ interface Client {
 }
 
 export interface ProjectData {
-  id?: string;
+  _id?: string;
   projectName: string;
   projectType: string;
   clientName: Client;
@@ -44,3 +44,17 @@ export type ProjectFormValues = {
   description: string;
   notes: string;
 };
+
+export interface SearchProjectData {
+  _id: string;
+  projectName: string;
+  projectType: string;
+  clientName: string;
+  startDate: string;
+  endDate: string;
+  criticality: string;
+  description: string;
+  notes: string;
+  active: string;
+  members: string;
+}

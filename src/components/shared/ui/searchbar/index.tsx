@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from 'react';
 
 import SearchIcon from '../icons/searchIcon/searchIcon';
-import { SearchBarProps } from './constants';
 import styles from './searchbar.module.css';
+import { SearchBarProps, SearchData } from './types';
 
-const SearchBar = (props: SearchBarProps): JSX.Element => {
+const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element => {
   const { details, setFilteredList, mainArray } = props;
   const [filter, setFilter] = useState('');
   const [inputValue, setInputValue] = useState('');

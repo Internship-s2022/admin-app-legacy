@@ -17,7 +17,7 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
 import { clientArray, header } from './constants';
-import { ClientsData } from './types';
+import { ClientsData, SearchClientData } from './types';
 
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
@@ -31,7 +31,7 @@ const Clients = () => {
 
   const listClientsData = activeClients.map((item) => {
     return {
-      id: item?._id,
+      _id: item?._id,
       name: item?.name,
       projects: formattedTableData(item.projects, 'projectName'),
       clientContact: item?.clientContact?.name,
@@ -97,7 +97,7 @@ const Clients = () => {
       </div>
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
-          <SearchBar
+          <SearchBar<SearchClientData>
             setFilteredList={setFilteredList}
             details={listClientsData}
             mainArray={clientArray}
@@ -116,7 +116,7 @@ const Clients = () => {
       <div className={styles.tableContainer}>
         {filteredList.length ? (
           <Table<ClientsData>
-            showButtons={true}
+            showButtons
             testId={'clientsTable'}
             headers={header}
             value={filteredList}

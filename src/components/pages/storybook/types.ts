@@ -10,7 +10,7 @@ export type FormValues = {
   potentialRole: PotentialRole[];
 };
 export interface MappedUserList {
-  id?: string;
+  _id?: string;
   firstName: string;
   accessRoleType: string;
 }

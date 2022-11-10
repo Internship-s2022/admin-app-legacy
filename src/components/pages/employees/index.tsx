@@ -14,14 +14,14 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { employeeArray, header } from './constants';
 import styles from './employee.module.css';
-import { MappedEmployeeData, Projects } from './types';
+import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
-      id: employee?._id,
+      _id: employee?._id,
       name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
       projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
       email: employee?.user?.email,
@@ -46,7 +46,7 @@ const Employees = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => navigate(`/admin/employees/edit/${row.id}`),
+      onClick: (row) => navigate(`/admin/employees/edit/${row._id}`),
     },
   ];
 
@@ -67,7 +67,7 @@ const Employees = () => {
           <Typography variant="h1">Lista de Empleados</Typography>
         </div>
         <div className={styles.searchInput}>
-          <SearchBar
+          <SearchBar<SearchEmployeeData>
             setFilteredList={setFilteredList}
             details={listEmployee}
             mainArray={employeeArray}
@@ -75,7 +75,7 @@ const Employees = () => {
         </div>
         {filteredList.length ? (
           <Table<MappedEmployeeData>
-            showButtons={true}
+            showButtons
             testId={'userTable'}
             headers={header}
             value={filteredList}
