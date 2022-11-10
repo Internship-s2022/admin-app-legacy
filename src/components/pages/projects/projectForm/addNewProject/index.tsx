@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { ProjectFormValues } from 'src/components/pages/projects/types';
+import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { openModal } from 'src/redux/ui/actions';
@@ -19,8 +19,8 @@ const AddNewProject = () => {
       clientName: '',
       startDate: Date.now().toString(),
       endDate: Date.now().toString(),
-      projectType: null,
-      criticality: null,
+      projectType: ProjectType.StaffAugmentation,
+      criticality: Criticality.Baja,
       description: '',
       notes: '',
       members: [],
