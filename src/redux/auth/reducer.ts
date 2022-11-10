@@ -1,7 +1,5 @@
 import { Reducer } from 'redux';
 
-import { UserData } from 'src/components/pages/users/types';
-
 import { Actions } from './constants';
 import { ActionsType, State } from './types';
 

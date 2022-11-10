@@ -6,30 +6,23 @@ import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
-import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { userHeaders } from './constants';
+import { accessRoles, userHeaders } from './constants';
 import { FormValues, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
-
-export const accessRoles = [
-  { value: 'MANAGER', label: 'Manager' },
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'SUPER_ADMIN', label: 'Super Admin' },
-  { value: 'EMPLOYEE', label: 'Employee' },
-];
 
 const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
@@ -114,13 +107,13 @@ const Users = () => {
     },
   ];
 
-  const showErrorMessage = userError || !listUserData.length;
+  const showErrorMessage = userError?.networkError || !listUserData.length;
 
   return (
     <>
       {showErrorMessage && (
         <EmptyDataHandler
-          resource="Usuarios"
+          resource={Resources.Usuarios}
           handleAdd={handleModal}
           handleReload={() => navigate('/super-admin')}
           error={userError}

@@ -2,14 +2,14 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
 import { formattedProjectType, membersArray, projectHeaders } from './constants';
@@ -66,11 +66,11 @@ const Projects = () => {
     };
   });
 
-  const showErrorMessage = projectError || !listProjectsData.length;
+  const showErrorMessage = projectError?.networkError || !listProjectsData.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
-      resource="Proyectos"
+      resource={Resources.Proyectos}
       handleAdd={() => handleNavigation('/admin/projects/add')}
       handleReload={() => handleNavigation('/admin/projects')}
       error={projectError}

@@ -4,7 +4,7 @@ import { Button } from 'src/components/shared/ui';
 
 import { Variant } from '../../ui/buttons/button/types';
 import styles from './emptyDataHandler.module.css';
-import EmptyList from './emptyList/emptyList';
+import EmptyList from './emptyList';
 import { EmptyDataProps } from './types';
 
 const EmptyDataHandler = (props: EmptyDataProps) => {

@@ -8,7 +8,7 @@ import { closeModal } from 'src/redux/ui/actions';
 import { editUser } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
 
-import { accessRoles } from '../index';
+import { accessRoles } from '../constants';
 import { AccessRoleModalProps } from './types';
 
 const AccessRoleModal = (props: AccessRoleModalProps) => {

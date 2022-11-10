@@ -16,6 +16,7 @@ const api = axios.create({
 const responseBody = (response: AxiosResponse) => response.data;
 
 const parseError = (error) => {
+  console.log(error);
   if (error.code !== 'ERR_NETWORK') {
     throw {
       message: error.response.data,

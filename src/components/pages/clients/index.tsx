@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
-import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler/emptyDataHandler';
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
@@ -55,11 +55,11 @@ const Clients = () => {
     dispatch(getClients());
   }, []);
 
-  const showErrorMessage = clientError || !listClientsData.length;
+  const showErrorMessage = clientError?.networkError || !listClientsData.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
-      resource="Clientes"
+      resource={Resources.Clientes}
       handleReload={() => handleNavigation('/admin/clients')}
       handleAdd={() => handleNavigation('/admin/clients/add')}
       error={clientError}

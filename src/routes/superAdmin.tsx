@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-import { Home, Users } from 'src/components/pages';
+import { Users } from 'src/components/pages';
 
 const SuperAdmin = (): JSX.Element => {
   return (
