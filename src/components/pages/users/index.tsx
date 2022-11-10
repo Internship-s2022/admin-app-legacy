@@ -2,38 +2,34 @@ import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { userHeaders } from './constants';
+import { accessRoles, userHeaders } from './constants';
 import { FormValues, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
-
-export const accessRoles = [
-  { value: 'MANAGER', label: 'Manager' },
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'SUPER_ADMIN', label: 'Super Admin' },
-  { value: 'EMPLOYEE', label: 'Employee' },
-];
 
 const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
+  const navigate = useNavigate();
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
@@ -58,6 +54,10 @@ const Users = () => {
     mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
+
+  const handleModal = () => {
+    dispatch(openFormModal());
+  };
 
   const listUserData = activeUsers.map((item): UserData => {
     return {
@@ -107,47 +107,52 @@ const Users = () => {
     },
   ];
 
-  return !activeUsers.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Usuarios</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Usuarios</p>
-          <p className={styles.error}>Error: {userError}</p>
-        </div>
-      </div>
-    </div>
-  ) : (
+  const showErrorMessage = userError?.networkError || !listUserData.length;
+
+  return (
     <>
-      <div className={styles.container}>
-        <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
-        </div>
-        <div className={styles.topTableContainer}>
-          <div className={styles.searchInputContainer}>
-            <div className={styles.iconContainer}>
-              <SearchIcon />
-            </div>
-            <input className={styles.searchInput} placeholder="Busqueda por palabra clave"></input>
+      {showErrorMessage && (
+        <EmptyDataHandler
+          resource={Resources.Usuarios}
+          handleAdd={handleModal}
+          handleReload={() => navigate('/super-admin')}
+          error={userError}
+        />
+      )}
+      {!showErrorMessage && (
+        <div className={styles.container}>
+          <div className={styles.welcomeMessage}>
+            <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
+            <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
           </div>
-          <Button
-            materialVariant={Variant.CONTAINED}
-            onClick={() => dispatch(openFormModal())}
-            label={'+ Agregar un nuevo usuario'}
-            testId={'addUserButton'}
-          />
+          <div className={styles.topTableContainer}>
+            <div className={styles.searchInputContainer}>
+              <div className={styles.iconContainer}>
+                <SearchIcon />
+              </div>
+              <input
+                className={styles.searchInput}
+                placeholder="Busqueda por palabra clave"
+              ></input>
+            </div>
+            <Button
+              materialVariant={Variant.CONTAINED}
+              onClick={() => dispatch(openFormModal())}
+              label={'+ Agregar un nuevo usuario'}
+              testId={'addUserButton'}
+            />
+          </div>
+          <div className={styles.tableContainer}>
+            <Table<UserData>
+              showButtons={true}
+              testId={'userTable'}
+              headers={userHeaders}
+              value={listUserData}
+              buttons={buttonsArray}
+            />
+          </div>
         </div>
-        <div className={styles.tableContainer}>
-          <Table<UserData>
-            showButtons={true}
-            testId={'userTable'}
-            headers={userHeaders}
-            value={listUserData}
-            buttons={buttonsArray}
-          />
-        </div>
-      </div>
+      )}
       <div className={styles.modalContainer}>
         <Modal
           onClose={() => dispatch(closeFormModal())}
@@ -230,9 +235,15 @@ const Users = () => {
           </div>
         </Modal>
       </div>
-      <Modal testId={'User-access-modal'} isOpen={showModal} onClose={() => dispatch(closeModal())}>
-        <AccessRoleModal row={row} open={showModal} />
-      </Modal>
+      {!showErrorMessage && (
+        <Modal
+          testId={'User-access-modal'}
+          isOpen={showModal}
+          onClose={() => dispatch(closeModal())}
+        >
+          <AccessRoleModal row={row} open={showModal} />
+        </Modal>
+      )}
     </>
   );
 };

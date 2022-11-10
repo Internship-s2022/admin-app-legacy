@@ -1,15 +1,21 @@
 import { Reducer } from 'redux';
 
-import { Actions } from './constants';
-import { ActionsType, State } from './types';
+import { Client } from 'src/redux/client/types';
+import { State } from 'src/redux/types';
 
-const initialState: State = {
+import { Actions } from './constants';
+import { ActionsType } from './types';
+
+const initialState: State<Client> = {
   list: [],
   isLoading: false,
   error: undefined,
 };
 
-const clientReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
+const clientReducer: Reducer<State<Client>, ActionsType> = (
+  state = initialState,
+  action,
+): State<Client> => {
   switch (action.type) {
     case Actions.GET_CLIENTS_PENDING:
       return {
@@ -27,7 +33,7 @@ const clientReducer: Reducer<State, ActionsType> = (state = initialState, action
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     default:
       return state;

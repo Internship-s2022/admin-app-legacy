@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
 import { header } from './constants';
@@ -42,16 +43,15 @@ const Employees = () => {
     },
   ];
 
-  return !listEmployee.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          <p className={styles.error}>Error: {employeeError}</p>
-        </div>
-      </div>
-    </div>
+  const showErrorMessage = employeeError?.networkError || !matchedEmployee.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      isEmployee
+      resource={Resources.Empleados}
+      handleReload={() => navigate('/admin/employees')}
+      error={employeeError}
+    />
   ) : (
     <>
       <div className={styles.tableContainer}>

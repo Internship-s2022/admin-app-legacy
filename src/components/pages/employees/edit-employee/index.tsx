@@ -8,7 +8,7 @@ import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/u
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
-import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
@@ -92,7 +92,7 @@ const EditEmployee = () => {
   };
 
   const onSubmit = async (data) => {
-    const { id, user, projectHistory, ...rest } = data;
+    const { id, ...rest } = data;
     await dispatch(editEmployee({ body: rest, id: id }));
     navigate('/admin/employees');
   };

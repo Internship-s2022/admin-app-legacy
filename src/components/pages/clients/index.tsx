@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
@@ -54,16 +55,15 @@ const Clients = () => {
     dispatch(getClients());
   }, []);
 
-  return !activeClients.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de Clientes</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Clientes</p>
-          <p className={styles.error}>Error: {clientError}</p>
-        </div>
-      </div>
-    </div>
+  const showErrorMessage = clientError?.networkError || !listClientsData.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Clientes}
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={clientError}
+    />
   ) : (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
@@ -78,7 +78,9 @@ const Clients = () => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          onClick={() => handleNavigation('/admin/clients/add')}
+          onClick={() => {
+            handleNavigation('/admin/clients/add');
+          }}
           label={'+ Agregar cliente'}
           testId={'addClientButton'}
           styles={'addButton'}

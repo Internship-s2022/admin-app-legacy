@@ -18,3 +18,5 @@ export const formattedTableData = <T>(list: T[], firstField: string, secondField
   }
   return result;
 };
+
+export const cutLastLetter = (string) => string.slice(0, string.length - 1);

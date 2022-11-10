@@ -24,11 +24,5 @@ export interface Project {
   isActive: boolean;
 }
 
-export interface State {
-  list: Project[];
-  isLoading: boolean;
-  error: string;
-}
-
 export type ActionsType = ActionType<typeof actions>;
 export type AppThunk = ActionCreator<ThunkAction<void, RootState, null, Action<null>>>;
