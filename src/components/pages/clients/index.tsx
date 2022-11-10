@@ -4,11 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Table } from 'src/components/shared/ui';
+import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
+import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -17,6 +19,8 @@ import { header } from './constants';
 import { ClientsData } from './types';
 
 const Clients = () => {
+  const [row, setRow] = React.useState({} as ClientsData);
+  const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const activeClients = useSelector((state: RootState) =>
     state.client?.list.filter((item) => item.isActive),
@@ -35,8 +39,9 @@ const Clients = () => {
     };
   });
 
-  const handleDelete = (data) => {
-    dispatch(deleteClient(data.id));
+  const handleDelete = (id) => {
+    dispatch(deleteClient(id));
+    dispatch(closeModal());
   };
 
   const buttonsArray = [
@@ -45,8 +50,8 @@ const Clients = () => {
       label: 'Editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: () => {
-        undefined;
+      onClick: (data) => {
+        console.log(data);
       },
     },
     {
@@ -55,7 +60,8 @@ const Clients = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        handleDelete(data);
+        dispatch(openModal());
+        setRow(data);
       },
     },
   ];
@@ -108,6 +114,15 @@ const Clients = () => {
           buttons={buttonsArray}
         />
       </div>
+      <Modal testId="deleteModal" isOpen={showModal} onClose={() => dispatch(closeModal())}>
+        <DeleteConfirmation
+          resource={Resources.Clientes}
+          id={row.id}
+          name={row.name}
+          handleDelete={handleDelete}
+          onClose={() => dispatch(closeModal())}
+        />
+      </Modal>
     </div>
   );
 };
