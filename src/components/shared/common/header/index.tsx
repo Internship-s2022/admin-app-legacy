@@ -28,7 +28,7 @@ const Header = () => {
         <nav className={styles.navbarContainer}>
           <Navbar />
         </nav>
-        <div className={styles.logout}>
+        <div data-testid="logout-btn" className={styles.logout}>
           <span>Salir</span>
           <LogOutIcon onClick={() => handleLogout()} />
         </div>
