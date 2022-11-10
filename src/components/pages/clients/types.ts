@@ -15,13 +15,12 @@ export interface ContactData {
 
 export type FormValues = {
   name: string;
-  localContact: string;
-  localEmail: string;
-  clientContact: string;
-  clientEmail: string;
+  localContact: ContactData;
+  clientContact: ContactData;
   notes?: string;
   relationshipStart?: Date;
   relationshipEnd?: Date;
+  isActive: boolean;
 };
 
 export interface SearchClientData {

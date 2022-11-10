@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
@@ -9,29 +10,41 @@ import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import { UiRoutes } from 'src/constants';
+import { addClient } from 'src/redux/client/thunks';
+import { AppDispatch } from 'src/types';
 
 import { FormValues } from '../types';
 
 const ClientForm = () => {
-  const { control } = useForm<FormValues>({
+  const { handleSubmit, control } = useForm<FormValues>({
     defaultValues: {
       name: '',
-      localContact: '',
-      localEmail: '',
-      clientContact: '',
-      clientEmail: '',
-      relationshipEnd: '2000-07-03T00:00:00.000Z' as unknown as Date,
+      localContact: {
+        name: '',
+        email: '',
+      },
+      clientContact: {
+        name: '',
+        email: '',
+      },
       relationshipStart: new Date(Date.now()),
       notes: '',
+      isActive: true,
     },
     mode: 'onBlur',
     resolver: joiResolver(validations.createClientValidation),
   });
 
   const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useDispatch();
 
-  const handleSubmit = () => {
-    console.log('holi');
+  const onSubmit = (data) => {
+    dispatch(addClient(data));
+    onClose();
+  };
+
+  const onClose = () => {
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`);
   };
 
   const handleNavigation = (path) => {
@@ -47,7 +60,7 @@ const ClientForm = () => {
         </div>
       </div>
       <div className={styles.formContainer}>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.leftContainer}>
             <div className={styles.leftColumns}>
               <div className={styles.inputs}>
@@ -67,7 +80,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'clientEmailInput'}
                   label="Email contacto cliente"
-                  name="clientEmail"
+                  name="clientContact.email"
                   type={'text'}
                   variant="outlined"
                   placeholder="Email de contacto de cliente"
@@ -79,7 +92,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'localEmailInput'}
                   label="Email contacto Radium Rocket"
-                  name="localEmail"
+                  name="localContact.email"
                   type={'text'}
                   variant="outlined"
                   placeholder="Email de contacto de Radium Rocket"
@@ -94,7 +107,7 @@ const ClientForm = () => {
                   testId={'clientContactInput'}
                   label="Contacto cliente"
                   placeholder="Nombre del contacto del ciente"
-                  name="clientContact"
+                  name="clientContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -106,7 +119,7 @@ const ClientForm = () => {
                   testId={'localContactInput'}
                   label="Contacto Radium Rocket"
                   placeholder="Nombre del contacto del Radium Rocket"
-                  name="localContact"
+                  name="localContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -151,7 +164,7 @@ const ClientForm = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
+              onClick={() => onClose()}
               label="Cancelar"
             />
           </div>
@@ -159,7 +172,7 @@ const ClientForm = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={() => handleSubmit()}
+              onClick={handleSubmit(onSubmit)}
               label="Confirmar"
             />
           </div>

@@ -40,6 +40,11 @@ const clientReducer: Reducer<State<Client>, ActionsType> = (
         ...state,
         isLoading: true,
       };
+    case Actions.ADD_CLIENT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case Actions.DELETE_CLIENT_SUCCESS:
       return {
         ...state,
@@ -52,6 +57,19 @@ const clientReducer: Reducer<State<Client>, ActionsType> = (
         ...state,
         error: { ...action.payload },
         isLoading: false,
+      };
+    case Actions.ADD_CLIENT_SUCCESS:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.ADD_CLIENT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: { ...action.payload },
       };
     default:
       return state;

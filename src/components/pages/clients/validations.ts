@@ -7,45 +7,46 @@ const createClientValidation = Joi.object({
     'string.empty': 'Nombre del cliente es un campo requerido',
   }),
 
-  localContact: Joi.string()
-    .min(3)
-    .max(35)
-    .messages({
-      'string.base': 'El contacto de Radium Rocket debe ser un string',
-      'string.min': 'El contacto de Radium Rocket debe contener al menos tres letras',
-      'string.empty': 'Es requerido ingresar un contacto de Radium Rocket',
-    })
-    .required(),
+  localContact: Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(35)
+      .messages({
+        'string.base': 'Our local contact name must be a string',
+        'string.min': 'Our local contact name must contain more than 3 letters',
+        'string.empty': 'Es requerido ingresar un contacto de Radium Rocket',
+      })
+      .required(),
+    email: Joi.string()
+      .regex(/^[a-zA-Z]+\.+[a-zA-Z]+@(radiumrocket.com)$/)
+      .min(20)
+      .trim()
+      .messages({
+        'string.pattern.base': 'Utilice un email válido',
+        'string.empty': 'Debes completar este campo para crear un cliente',
+        'string.min': 'El email debe contener al menos 3 letras',
+      })
+      .required(),
+  }),
 
-  localEmail: Joi.string()
-    .regex(/^[a-zA-Z.]+@radiumrocket.com/)
-    .min(20)
-    .messages({
-      'string.pattern.base': 'Email no válido.',
-      'string.empty': 'Email es un campo requerido',
-      'string.min': 'Email debe contener al menos tres caracteres.',
-    })
-    .required(),
-
-  clientContact: Joi.string()
-    .min(3)
-    .max(35)
-    .messages({
-      'string.base': 'El contacto del cliente debe ser un string',
-      'string.min': 'El contacto del cliente debe tener al menos 3 letras',
-      'string.empty': 'Es requerido ingresar un contacto del cliente',
-    })
-    .required(),
-
-  clientEmail: Joi.string()
-    .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-    .min(20)
-    .messages({
-      'string.pattern.base': 'Email no válido.',
-      'string.empty': 'Email es un campo requerido',
-      'string.min': 'Email debe contener al menos tres caracteres.',
-    })
-    .required(),
+  clientContact: Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(35)
+      .messages({
+        'string.base': 'El contacto del cliente debe ser un string',
+        'string.min': 'El contacto del cliente debe tener al menos 3 letras',
+        'string.empty': 'Es requerido ingresar un contacto del cliente',
+      })
+      .required(),
+    email: Joi.string()
+      .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
+      .messages({
+        'string.pattern.base': 'Utilice un email válido',
+        'string.empty': 'Debes completar este campo para crear un cliente',
+      })
+      .required(),
+  }),
 
   relationshipStart: Joi.date().less('now').messages({
     'date.less': 'La fecha de inicio debe ser menor que la fecha actual',
@@ -55,10 +56,13 @@ const createClientValidation = Joi.object({
     'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
   }),
 
-  notes: Joi.string().min(0).max(35).messages({
+  notes: Joi.string().min(3).max(35).messages({
     'string.base': 'Notas tiene que ser un string',
-    'string.min': 'Notes no debe contener más de  3 letras',
+    'string.min': 'Notes debe contener más de  3 letras',
+    'string.max': 'Notes debe contener menos de  35 letras',
   }),
+
+  isActive: Joi.boolean().required(),
 });
 
 const updateClientValidation = Joi.object({
@@ -73,11 +77,13 @@ const updateClientValidation = Joi.object({
   }),
 
   localEmail: Joi.string()
-    .regex(/^[a-zA-Z.]+@radiumrocket.com/)
+    .regex(/^[a-zA-Z]+\.+[a-zA-Z]+@(radiumrocket.com)$/)
     .min(20)
+    .trim()
     .messages({
-      'string.pattern.base': 'Email no válido.',
-      'string.min': 'Email debe contener al menos tres caracteres.',
+      'string.pattern.base': 'Utilice un email válido',
+      'string.empty': 'Debes completar este campo para crear un cliente',
+      'string.min': 'El email debe contener al menos 3 letras',
     }),
 
   clientContact: Joi.string().min(3).max(35).messages({
@@ -101,10 +107,13 @@ const updateClientValidation = Joi.object({
     'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
   }),
 
-  notes: Joi.string().min(0).max(35).messages({
+  notes: Joi.string().min(3).max(35).messages({
     'string.base': 'Notas tiene que ser un string',
-    'string.min': 'Notes no debe contener más de  3 letras',
+    'string.min': 'Notes debe contener más de  3 letras',
+    'string.max': 'Notes no debe contener más de  35 letras',
   }),
+
+  isActive: Joi.boolean(),
 });
 
 export default {
