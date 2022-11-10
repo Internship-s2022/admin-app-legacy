@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 import LoginPage from './login.page';
 
-class HeaderPage extends LoginPage {
+class HeaderPage {
   // GETTERS
   get radiumAdminHeaderBrand() {
     return $('.header_brand__mLo60');
@@ -19,7 +19,7 @@ class HeaderPage extends LoginPage {
     return $('=Clients');
   }
   get logoutBtn() {
-    return $('.header_logout__tj6A7 > svg');
+    return $('[data-testid=logout-btn] svg');
   }
 
   // METHODS
