@@ -11,16 +11,12 @@ import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
-<<<<<<< HEAD
   const role = localStorage.getItem('role');
 
   useEffect(() => {
     tokenListener();
   }, []);
 
-=======
-  console.log(process.env.REACT_APP_USER);
->>>>>>> 9114dd7 (RA-XX: Adding logic to e2e)
   return (
     <div className={styles.container}>
       {isLoading && <Loader />}

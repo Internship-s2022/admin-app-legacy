@@ -9,17 +9,17 @@ const adminPassword = process.env.REACT_APP_ADMIN_PASSWORD;
 describe('Login page elements', () => {
   it('Testing browser URL', async () => {
     await LoginPage.open();
-    await expect(browser).toHaveUrl('https://test.admin.app.radiumrocket.com/login');
+    await expect(browser).toHaveUrlContaining('login');
   });
-  it('Testing browser URL', async () => {
+  it('Testing browser title', async () => {
     await LoginPage.open();
-    await expect(browser).toHaveTitle('React App');
+    await expect(browser).toHaveTitle('Radium Admin');
   });
-  it('Testing display of Radium Admin', async () => {
+  it('Testing display of Radium Admin Logo', async () => {
     await LoginPage.open();
     await expect(LoginPage.radiumAdminLogo).toBeDisplayed();
   });
-  it('Testing display of Google Button ', async () => {
+  it('Testing display and state of Google Button ', async () => {
     await LoginPage.open();
     await expect(LoginPage.googleButton).toBeEnabled();
   });
@@ -32,9 +32,9 @@ describe('Login functionality with Google Account', () => {
     await browser.switchWindow('Acceso: Cuentas de Google');
     await expect(browser).toHaveTitle('Acceso: Cuentas de Google');
   });
-  it('Testing login with valid credentials', async () => {
+  it('Testing Admin role login with valid credentials', async () => {
     await LoginPage.login(adminEmail, adminPassword);
     await browser.switchWindow('React App');
-    await expect(browser).toHaveTitle('React App');
+    await expect(browser).toHaveUrlContaining('admin');
   });
 });

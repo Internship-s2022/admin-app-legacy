@@ -21,7 +21,7 @@ class LoginPage extends Page {
     return $('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input');
   }
   get passwordNextBtn() {
-    return $('#passwordNext');
+    return $('#passwordNext'); // SELECTOR CSS
   }
   /**
    * SETTERS
