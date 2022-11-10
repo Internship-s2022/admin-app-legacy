@@ -88,7 +88,17 @@ const Employees = () => {
           />
         ) : (
           <>
-            <div>No encontró nada</div>
+            <div className={styles.notFound}>
+              <div className={styles.notFoundTitle}>
+                No han encontrado resultados que coincidan con tu búsqueda
+              </div>
+              <div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                  alt="Not found"
+                ></img>
+              </div>
+            </div>
           </>
         )}
       </div>

@@ -67,3 +67,15 @@ h1 {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.notFound {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.notFoundTitle {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 300;
+}

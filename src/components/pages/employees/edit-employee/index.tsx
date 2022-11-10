@@ -93,7 +93,7 @@ const EditEmployee = () => {
   };
 
   const onSubmit = async (data) => {
-    const { id, ...rest } = data;
+    const { id, user, projectHistory, ...rest } = data;
     await dispatch(editEmployee({ body: rest, id: id }));
     navigate('/admin/employees');
   };
