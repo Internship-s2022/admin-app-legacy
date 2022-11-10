@@ -7,7 +7,7 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
-import { getClients } from 'src/redux/client/thunks';
+import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
@@ -35,6 +35,10 @@ const Clients = () => {
     };
   });
 
+  const handleDelete = (data) => {
+    dispatch(deleteClient(data.id));
+  };
+
   const buttonsArray = [
     {
       active: true,
@@ -43,6 +47,15 @@ const Clients = () => {
       variant: Variant.CONTAINED,
       onClick: () => {
         undefined;
+      },
+    },
+    {
+      active: true,
+      label: 'X',
+      testId: 'deleteButton',
+      variant: Variant.CONTAINED,
+      onClick: (data) => {
+        handleDelete(data);
       },
     },
   ];
