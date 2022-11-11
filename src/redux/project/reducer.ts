@@ -33,6 +33,24 @@ const projectReducer: Reducer<State<Project>, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.CREATE_PROJECT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.CREATE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.CREATE_PROJECT_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
     default:
       return state;
   }
