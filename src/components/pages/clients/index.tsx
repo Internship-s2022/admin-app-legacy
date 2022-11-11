@@ -16,7 +16,7 @@ import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
 import styles from './clients.module.css';
-import { clientArray, header } from './constants';
+import { clientFilterOptions, header } from './constants';
 import { ClientsData, SearchClientData } from './types';
 
 const Clients = () => {
@@ -100,7 +100,7 @@ const Clients = () => {
           <SearchBar<SearchClientData>
             setFilteredList={setFilteredList}
             details={listClientsData}
-            mainArray={clientArray}
+            mainArray={clientFilterOptions}
           />
         </div>
         <div className={styles.addUserButton}>
@@ -130,7 +130,7 @@ const Clients = () => {
               </div>
               <div>
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                  src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound`}
                   alt="Not found"
                 ></img>
               </div>

@@ -12,7 +12,7 @@ import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
-import { employeeArray, header } from './constants';
+import { employeeFilterData, header } from './constants';
 import styles from './employee.module.css';
 import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 
@@ -74,7 +74,7 @@ const Employees = () => {
           <SearchBar<SearchEmployeeData>
             setFilteredList={setFilteredList}
             details={listEmployee}
-            mainArray={employeeArray}
+            mainArray={employeeFilterData}
           />
         </div>
         {filteredList.length ? (
@@ -94,7 +94,7 @@ const Employees = () => {
               </div>
               <div>
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                  src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
                   alt="Not found"
                 ></img>
               </div>

@@ -5,7 +5,7 @@ export const header: Headers[] = [
   { header: 'Proyectos', key: 'projects' },
 ];
 
-export const employeeArray = [
+export const employeeFilterData = [
   'name',
   'email',
   'projects',

@@ -11,7 +11,7 @@ export const accessRoles = [
   { value: 'SUPER_ADMIN', label: 'Super Admin' },
   { value: 'EMPLOYEE', label: 'Employee' },
 ];
-export const userArray = [
+export const userFilterData = [
   'name',
   'email',
   'firebaseUid',
