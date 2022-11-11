@@ -13,7 +13,7 @@ import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
-import { employeeFilterData, header } from './constants';
+import { employeeFilterOptions, header } from './constants';
 import styles from './employee.module.css';
 import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 
@@ -75,7 +75,7 @@ const Employees = () => {
           <SearchBar<SearchEmployeeData>
             setFilteredList={setFilteredList}
             details={listEmployee}
-            mainArray={employeeFilterData}
+            mainArray={employeeFilterOptions}
           />
         </div>
         {filteredList.length ? (

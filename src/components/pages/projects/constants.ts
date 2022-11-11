@@ -20,7 +20,7 @@ export const membersArray: Member[] = [
   { firstName: 'Karen Agustina', lastName: 'Soto' },
 ];
 
-export const projectFilterData = [
+export const projectFilterOptions = [
   'projectName',
   'clientName',
   'projectType',

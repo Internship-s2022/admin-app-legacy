@@ -7,7 +7,6 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
@@ -147,7 +146,7 @@ const Clients = () => {
       >
         <DeleteConfirmation
           resource={Resources.Clientes}
-          id={row.id}
+          id={row._id}
           name={row.name}
           handleDelete={handleDelete}
           onClose={() => dispatch(closeModal())}

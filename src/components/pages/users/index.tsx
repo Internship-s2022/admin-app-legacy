@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { accessRoles, userFilterData, userHeaders } from './constants';
+import { accessRoles, userFilterOptions, userHeaders } from './constants';
 import { FormValues, SearchUserData, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
@@ -130,7 +130,7 @@ const Users = () => {
             <SearchBar<SearchUserData>
               setFilteredList={setFilteredList}
               details={activeUsers}
-              mainArray={userFilterData}
+              mainArray={userFilterOptions}
             />
           </div>
           <div className={styles.addUserButton}>

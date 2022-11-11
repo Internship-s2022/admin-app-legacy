@@ -13,7 +13,7 @@ import { RootState } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
-import { formattedProjectType, projectFilterData, projectHeaders } from './constants';
+import { formattedProjectType, projectFilterOptions, projectHeaders } from './constants';
 import styles from './projects.module.css';
 import { MappedProjectData, SearchProjectData } from './types';
 
@@ -76,7 +76,7 @@ const Projects = () => {
           <SearchBar<SearchProjectData>
             setFilteredList={setFilteredList}
             details={listProjects}
-            mainArray={projectFilterData}
+            mainArray={projectFilterOptions}
           />
         </div>
         <div className={styles.addUserButton}>
