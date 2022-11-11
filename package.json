@@ -40,7 +40,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --forceExit",
     "test:watch": "jest --watch",
     "type-check": "tsc --noEmit",
     "lint": "eslint \"./**/*.{ts,tsx,test.ts,test.tsx}\" && stylelint \"./src/**/*.css\"",

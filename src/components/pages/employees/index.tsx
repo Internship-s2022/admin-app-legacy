@@ -1,33 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
+import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
+import { UiRoutes } from 'src/constants';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
-import { header } from './constants';
+import { employeeFilterOptions, header } from './constants';
 import styles from './employee.module.css';
-import { MappedEmployeeData, Projects } from './types';
+import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
 
-  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
-  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  const listEmployee = useAppSelector((state: RootState) =>
+    state.employee?.list.map((employee) => ({
+      _id: employee?._id,
+      name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
+      projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
+      email: employee?.user?.email,
+      active: employee?.user?.isActive.toString(),
+      careerPlan: employee?.careerPlan,
+      notes: employee?.notes,
+      skills: employee?.skills?.join('-'),
+      potentialRole: employee?.potentialRole?.join('-'),
+    })),
+  );
 
-  const matchedEmployee = listEmployee.map((employee) => ({
-    id: employee?._id,
-    name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
-    projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
-  }));
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  const [filteredList, setFilteredList] = useState(listEmployee);
+
+  const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -39,17 +54,15 @@ const Employees = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => navigate(`/admin/employees/edit/${row.id}`),
+      onClick: (row) => navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`),
     },
   ];
 
-  const showErrorMessage = employeeError?.networkError || !matchedEmployee.length;
-
   return showErrorMessage ? (
     <EmptyDataHandler
-      isEmployee
       resource={Resources.Empleados}
-      handleReload={() => navigate('/admin/employees')}
+      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
       error={employeeError}
     />
   ) : (
@@ -58,20 +71,37 @@ const Employees = () => {
         <div className={styles.welcomeMessage}>
           <Typography variant="h1">Lista de Empleados</Typography>
         </div>
-        <div className={styles.searchInputContainer}>
-          <div className={styles.iconContainer}>
-            <SearchIcon />
-          </div>
-          <input className={styles.searchInput} placeholder="Búsqueda por palabra clave" />
+        <div className={styles.searchInput}>
+          <SearchBar<SearchEmployeeData>
+            setFilteredList={setFilteredList}
+            details={listEmployee}
+            mainArray={employeeFilterOptions}
+          />
         </div>
-        <Table<MappedEmployeeData>
-          showButtons={true}
-          testId={'userTable'}
-          headers={header}
-          value={matchedEmployee}
-          profileIcon={true}
-          buttons={buttonsArray}
-        />
+        {filteredList.length ? (
+          <Table<MappedEmployeeData>
+            showButtons
+            testId={'userTable'}
+            headers={header}
+            value={filteredList}
+            profileIcon={true}
+            buttons={buttonsArray}
+          />
+        ) : (
+          <>
+            <div className={styles.notFound}>
+              <div className={styles.notFoundTitle}>
+                No han encontrado resultados que coincidan con tu búsqueda
+              </div>
+              <div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
+                  alt="Not found"
+                ></img>
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <div></div>
     </>

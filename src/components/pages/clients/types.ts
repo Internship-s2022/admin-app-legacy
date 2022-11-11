@@ -1,5 +1,5 @@
 export interface ClientsData {
-  id?: string;
+  _id?: string;
   name: string;
   projects: string;
   clientContact: string;
@@ -23,3 +23,17 @@ export type FormValues = {
   relationshipStart?: Date;
   relationshipEnd?: Date;
 };
+
+export interface SearchClientData {
+  _id: string;
+  name: string;
+  projects: string;
+  clientContact: string;
+  email: string;
+  localContact: string;
+  localEmail: string;
+  relationshipStart: string;
+  relationshipEnd: string;
+  notes: string;
+  active: string;
+}

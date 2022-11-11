@@ -6,6 +6,7 @@ import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
+import { UiRoutes } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -44,7 +45,7 @@ const ProjectForm = () => {
           <Button
             testId="cancelButton"
             materialVariant={Variant.OUTLINED}
-            onClick={() => handleNavigation('/admin/projects')}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
             label="Cancelar"
           />
         </div>

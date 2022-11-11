@@ -17,7 +17,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const options = {
-    id: row.id,
+    id: row._id,
     body: {
       accessRoleType: accessRole,
     },

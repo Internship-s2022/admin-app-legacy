@@ -8,6 +8,7 @@ import validations from 'src/components/pages/clients/validations';
 import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import { UiRoutes } from 'src/constants';
 
 import { FormValues } from '../types';
 
@@ -150,7 +151,7 @@ const ClientForm = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/admin/clients')}
+              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
               label="Cancelar"
             />
           </div>

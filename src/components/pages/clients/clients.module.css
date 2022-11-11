@@ -2,8 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 25px;
-  padding: 0 12% 5%;
-  margin: auto;
+  padding: 3% 12%;
 }
 
 .noList {
@@ -28,6 +27,8 @@
 
 h1 {
   margin-bottom: 2%;
+  font-size: 24px;
+  font-weight: 500;
 }
 
 .inputsContainer {
@@ -40,7 +41,13 @@ h1 {
 }
 
 .searchBar {
-  width: 40%;
+  width: 100%;
+}
+
+.addUserButton {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
 }
 
 .tableContainer {
@@ -93,4 +100,16 @@ input:focus {
 .welcomeMessage h1 {
   font-size: 24px;
   font-weight: 500;
+}
+
+.notFound {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.notFoundTitle {
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 300;
 }

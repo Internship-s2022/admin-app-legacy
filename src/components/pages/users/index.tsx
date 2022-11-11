@@ -9,7 +9,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
+import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
@@ -19,8 +19,8 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { accessRoles, userHeaders } from './constants';
-import { FormValues, UserData } from './types';
+import { accessRoles, userFilterOptions, userHeaders } from './constants';
+import { FormValues, SearchUserData, UserData } from './types';
 import styles from './users.module.css';
 import { userValidation } from './validations';
 
@@ -33,8 +33,18 @@ const Users = () => {
 
   const dispatch: AppDispatch<null> = useDispatch();
   const activeUsers = useSelector((state: RootState) =>
-    state.user?.list.filter((item) => item.isActive),
+    state.user?.list.map((item) => ({
+      _id: item?._id,
+      firebaseUid: item?.firebaseUid,
+      accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
+      email: item?.email,
+      name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
+      location: item?.location,
+      birthDate: item?.birthDate.toString(),
+      active: item?.isActive.toString(),
+    })),
   );
+  const [filteredList, setFilteredList] = React.useState(activeUsers);
   const userError = useSelector((state: RootState) => state.user?.error);
 
   useEffect(() => {
@@ -53,18 +63,6 @@ const Users = () => {
     },
     mode: 'onBlur',
     resolver: joiResolver(userValidation),
-  });
-
-  const handleModal = () => {
-    dispatch(openFormModal());
-  };
-
-  const listUserData = activeUsers.map((item): UserData => {
-    return {
-      id: item?._id,
-      name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
-      accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
-    };
   });
 
   const onSubmit = (data) => {
@@ -107,34 +105,35 @@ const Users = () => {
     },
   ];
 
-  const showErrorMessage = userError?.networkError || !listUserData.length;
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
-  return (
+  const showErrorMessage = userError?.networkError || !activeUsers.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Usuarios}
+      handleReload={() => handleNavigation('/admin/clients')}
+      handleAdd={() => handleNavigation('/admin/clients/add')}
+      error={userError}
+    />
+  ) : (
     <>
-      {showErrorMessage && (
-        <EmptyDataHandler
-          resource={Resources.Usuarios}
-          handleAdd={handleModal}
-          handleReload={() => navigate('/super-admin')}
-          error={userError}
-        />
-      )}
-      {!showErrorMessage && (
-        <div className={styles.container}>
-          <div className={styles.welcomeMessage}>
-            <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-            <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
+      <div className={styles.container}>
+        <div className={styles.welcomeMessage}>
+          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
+          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
+        </div>
+        <div className={styles.topTableContainer}>
+          <div className={styles.searchBar}>
+            <SearchBar<SearchUserData>
+              setFilteredList={setFilteredList}
+              details={activeUsers}
+              mainArray={userFilterOptions}
+            />
           </div>
-          <div className={styles.topTableContainer}>
-            <div className={styles.searchInputContainer}>
-              <div className={styles.iconContainer}>
-                <SearchIcon />
-              </div>
-              <input
-                className={styles.searchInput}
-                placeholder="Busqueda por palabra clave"
-              ></input>
-            </div>
+          <div className={styles.addUserButton}>
             <Button
               materialVariant={Variant.CONTAINED}
               onClick={() => dispatch(openFormModal())}
@@ -142,17 +141,33 @@ const Users = () => {
               testId={'addUserButton'}
             />
           </div>
-          <div className={styles.tableContainer}>
+        </div>
+        <div className={styles.tableContainer}>
+          {filteredList.length ? (
             <Table<UserData>
-              showButtons={true}
+              showButtons
               testId={'userTable'}
               headers={userHeaders}
-              value={listUserData}
+              value={filteredList}
               buttons={buttonsArray}
             />
-          </div>
+          ) : (
+            <>
+              <div className={styles.notFound}>
+                <div className={styles.notFoundTitle}>
+                  No han encontrado resultados que coincidan con tu búsqueda
+                </div>
+                <div>
+                  <img
+                    src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                    alt="Not found"
+                  ></img>
+                </div>
+              </div>
+            </>
+          )}
         </div>
-      )}
+      </div>
       <div className={styles.modalContainer}>
         <Modal
           onClose={() => dispatch(closeFormModal())}
