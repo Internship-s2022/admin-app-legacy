@@ -114,7 +114,12 @@ const Clients = () => {
           buttons={buttonsArray}
         />
       </div>
-      <Modal testId="deleteModal" isOpen={showModal} onClose={() => dispatch(closeModal())}>
+      <Modal
+        testId="deleteModal"
+        styles={styles.modal}
+        isOpen={showModal}
+        onClose={() => dispatch(closeModal())}
+      >
         <DeleteConfirmation
           resource={Resources.Clientes}
           id={row.id}
