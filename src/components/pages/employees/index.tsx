@@ -7,6 +7,7 @@ import { Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
+import { UiRoutes } from 'src/constants';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
@@ -53,15 +54,15 @@ const Employees = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => navigate(`/admin/employees/edit/${row._id}`),
+      onClick: (row) => navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`),
     },
   ];
 
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Empleados}
-      handleReload={() => handleNavigation('/admin/clients')}
-      handleAdd={() => handleNavigation('/admin/clients/add')}
+      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
       error={employeeError}
     />
   ) : (

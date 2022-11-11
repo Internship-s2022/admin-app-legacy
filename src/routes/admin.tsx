@@ -16,11 +16,11 @@ const Admin = (): JSX.Element => {
   return (
     <Routes>
       <Route path={'/'} element={<Home />} />
-      <Route path={UiRoutes.GET_EMPLOYEES} element={<Employees />} />
-      <Route path={UiRoutes.EDIT_EMPLOYEES} element={<EditEmployee />} />
-      <Route path={UiRoutes.GET_CLIENTS} element={<Clients />} />
+      <Route path={UiRoutes.EMPLOYEES} element={<Employees />} />
+      <Route path={`${UiRoutes.EDIT_EMPLOYEES}/:id`} element={<EditEmployee />} />
+      <Route path={UiRoutes.CLIENTS} element={<Clients />} />
       <Route path={UiRoutes.ADD_CLIENTS} element={<AddClients />} />
-      <Route path={UiRoutes.GET_PROJECTS} element={<Projects />} />
+      <Route path={UiRoutes.PROJECTS} element={<Projects />} />
       <Route path={UiRoutes.ADD_PROJECTS} element={<AddProjects />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>

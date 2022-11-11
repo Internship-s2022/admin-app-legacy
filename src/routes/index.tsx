@@ -49,7 +49,7 @@ const AppRoutes = (): JSX.Element => {
           <Route path={UiRoutes.LOGIN} element={<Login />} />
           <Route path={UiRoutes.STORYBOOK} element={<Storybook />} />
           <Route element={<PrivateRoute role={AccessRoleType.ADMIN} />}>
-            <Route path={UiRoutes.ADMIN} element={<Admin />} />
+            <Route path={`${UiRoutes.ADMIN}/*`} element={<Admin />} />
           </Route>
           <Route element={<PrivateRoute role={AccessRoleType.SUPER_ADMIN} />}>
             <Route path={UiRoutes.SUPER_ADMIN} element={<SuperAdmin />} />

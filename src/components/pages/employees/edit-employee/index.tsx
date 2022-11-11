@@ -10,6 +10,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
+import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
@@ -46,7 +47,7 @@ const EditEmployee = () => {
         notes: matchedEmployee?.notes,
       });
     } else {
-      navigate('/admin/employees');
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
     }
   }, []);
 
@@ -95,7 +96,7 @@ const EditEmployee = () => {
   const onSubmit = async (data) => {
     const { id, user, projectHistory, ...rest } = data;
     await dispatch(editEmployee({ body: rest, id: id }));
-    navigate('/admin/employees');
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
 
   return (
@@ -279,7 +280,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/admin/employees')}
+              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`)}
               label="Cancelar"
             />
           </div>

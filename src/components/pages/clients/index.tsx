@@ -9,6 +9,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
+import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
@@ -86,8 +87,8 @@ const Clients = () => {
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Clientes}
-      handleReload={() => handleNavigation('/admin/clients')}
-      handleAdd={() => handleNavigation('/admin/clients/add')}
+      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
       error={clientError}
     />
   ) : (
@@ -106,7 +107,7 @@ const Clients = () => {
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation('/admin/clients/add')}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
             label={'+ Agregar cliente'}
             testId={'addClientButton'}
             styles={'addButton'}
