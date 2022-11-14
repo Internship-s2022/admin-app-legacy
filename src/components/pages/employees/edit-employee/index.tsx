@@ -25,11 +25,11 @@ const EditEmployee = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const params = useParams();
 
-  const [selected, setSelected] = React.useState(false);
-  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
-
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(null);
+  const [selected, setSelected] = React.useState(false);
+
+  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
 
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
@@ -88,6 +88,14 @@ const EditEmployee = () => {
     startDate: item?.startDate ? item?.startDate : '-',
     endDate: item?.endDate ? item?.endDate : '-',
   }));
+
+  const handleStartDate = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDate = (date) => {
+    setEndDate(date);
+  };
 
   const handleToggleChange = (checked: boolean): void => {
     setSelected(checked);
@@ -280,8 +288,8 @@ const EditEmployee = () => {
           </div>
         </div>
         <DateIntervalPicker
-          setStart={setStartDate}
-          setEnd={setEndDate}
+          setStart={handleStartDate}
+          setEnd={handleEndDate}
           startDate={startDate}
           endDate={endDate}
         />
