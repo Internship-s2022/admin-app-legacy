@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
@@ -7,7 +7,6 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { clearData, setSelectedClient } from 'src/redux/client/actions';
@@ -25,33 +24,64 @@ const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
-  const activeClients = useSelector((state: RootState) =>
-    state.client?.list.filter((item) => item.isActive),
+  // const activeClients = useSelector((state: RootState) =>
+  //   state.client?.list.filter((item) => item.isActive),
+  // );
+
+  const activeClientsList = useSelector((state: RootState) =>
+    state.client?.list.reduce((acc, item) => {
+      if (item.isActive) {
+        acc.push({
+          _id: item?._id,
+          name: item?.name,
+          projects: formattedTableData(item.projects, 'projectName'),
+          clientContact: item?.clientContact?.name,
+          email: item?.clientContact?.email,
+          localContact: item?.localContact?.name,
+          localEmail: item?.localContact?.name,
+          relationshipEnd: item?.relationshipEnd?.toString(),
+          relationshipStart: item?.relationshipStart?.toString(),
+          notes: item?.notes,
+          active: item?.isActive.toString(),
+        });
+      }
+      return acc;
+    }, []),
   );
+
+  console.log('length', activeClientsList.length);
+
   const clientError = useSelector((state: RootState) => state.client?.error);
   const navigate = useNavigate();
 
-  const listClientsData = activeClients.map((item) => {
-    return {
-      _id: item?._id,
-      name: item?.name,
-      projects: formattedTableData(item.projects, 'projectName'),
-      clientContact: item?.clientContact?.name,
-      email: item?.clientContact?.email,
-      localContact: item?.localContact?.name,
-      localEmail: item?.localContact?.name,
-      relationshipEnd: item?.relationshipEnd?.toString(),
-      relationshipStart: item?.relationshipStart?.toString(),
-      notes: item?.notes,
-      active: item?.isActive.toString(),
-    };
-  });
+  // const listClientsData = useMemo(
+  //   () =>
+  //     activeClients.map((item) => {
+  //       return {
+  //         _id: item?._id,
+  //         name: item?.name,
+  //         projects: formattedTableData(item.projects, 'projectName'),
+  //         clientContact: item?.clientContact?.name,
+  //         email: item?.clientContact?.email,
+  //         localContact: item?.localContact?.name,
+  //         localEmail: item?.localContact?.name,
+  //         relationshipEnd: item?.relationshipEnd?.toString(),
+  //         relationshipStart: item?.relationshipStart?.toString(),
+  //         notes: item?.notes,
+  //         active: item?.isActive.toString(),
+  //       };
+  //     }),
+  //   [activeClients],
+  // );
+
+  const [filteredList, setFilteredList] = useState(activeClientsList);
+
+  useEffect(() => setFilteredList(activeClientsList), [activeClientsList.length]);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
     dispatch(closeModal());
   };
-  const [filteredList, setFilteredList] = useState(listClientsData);
 
   const buttonsArray = [
     {
@@ -60,8 +90,8 @@ const Clients = () => {
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: async (row) => {
-        await dispatch(setSelectedClient(row.id));
-        navigate('/admin/clients/form');
+        await dispatch(setSelectedClient(row._id));
+        navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`);
       },
     },
     {
@@ -80,16 +110,20 @@ const Clients = () => {
     navigate(path);
   };
 
+  const handleFilteredList = (data) => {
+    setFilteredList(data);
+  };
+
   const onClick = () => {
     dispatch(clearData());
-    handleNavigation('/admin/clients/form');
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`);
   };
 
   useEffect(() => {
     dispatch(getClients());
   }, []);
 
-  const showErrorMessage = clientError?.networkError || !listClientsData.length;
+  const showErrorMessage = clientError?.networkError || !activeClientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -106,15 +140,15 @@ const Clients = () => {
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchClientData>
-            setFilteredList={setFilteredList}
-            details={listClientsData}
+            setFilteredList={handleFilteredList}
+            details={activeClientsList}
             mainArray={clientFilterOptions}
           />
         </div>
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
+            onClick={() => onClick()}
             label={'+ Agregar cliente'}
             testId={'addClientButton'}
             styles={'addButton'}

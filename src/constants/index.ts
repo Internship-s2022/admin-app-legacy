@@ -53,5 +53,5 @@ export enum UiRoutes {
   PROJECTS = '/projects',
   ADD_PROJECTS = '/projects/add',
   CLIENTS = '/clients',
-  CLIENTS_FORM = '/clients/add',
+  CLIENTS_FORM = '/clients/form',
 }

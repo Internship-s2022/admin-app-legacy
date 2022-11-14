@@ -33,28 +33,10 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
-    case Actions.DELETE_CLIENT_PENDING:
-      return {
-        ...state,
-        isLoading: true,
-      };
     case Actions.ADD_CLIENT_PENDING:
       return {
         ...state,
         isLoading: true,
-      };
-    case Actions.DELETE_CLIENT_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        list: state.list.filter((client) => client._id !== action.payload),
-        error: undefined,
-      };
-    case Actions.DELETE_CLIENT_ERROR:
-      return {
-        ...state,
-        error: { ...action.payload },
-        isLoading: false,
       };
     case Actions.ADD_CLIENT_SUCCESS:
       return {
@@ -89,6 +71,29 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
         ...state,
         isLoading: false,
         error: { ...action.payload },
+      };
+    case Actions.DELETE_CLIENT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.DELETE_CLIENT_SUCCESS:
+      console.log('action payload', action.payload);
+      console.log(
+        'filter',
+        state.list.filter((client) => client._id !== action.payload),
+      );
+      return {
+        ...state,
+        list: state.list.filter((client) => client._id !== action.payload),
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.DELETE_CLIENT_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
       };
     case Actions.SET_SELECTED_CLIENT:
       return {
