@@ -26,9 +26,6 @@ export const editProjectSuccess = (project: Project, id: string) =>
 
 export const editProjectError = (error: ErrorFormat) => action(Actions.EDIT_PROJECT_ERROR, error);
 
-// export const getSelectedProject = (id: string) => action(Actions.GET_SELECTED_PROJECT, id);
-// //cambiar a set
-// export const cleanSelectedProject = () => action(Actions.CLEAN_SELECTED_PROJECT);
 export const getProjectByIdPending = () => action(Actions.GET_PROJECT_BY_ID_PENDING);
 
 export const getProjectByIdSuccess = (project: Project) =>
@@ -36,3 +33,5 @@ export const getProjectByIdSuccess = (project: Project) =>
 
 export const getProjectByIdError = (error: ErrorFormat) =>
   action(Actions.GET_PROJECT_BY_ID_ERROR, error);
+
+export const cleanSelectedProject = () => action(Actions.CLEAN_SELECTED_PROJECT);

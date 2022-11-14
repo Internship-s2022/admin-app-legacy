@@ -7,6 +7,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedProject } from 'src/redux/project/actions';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';

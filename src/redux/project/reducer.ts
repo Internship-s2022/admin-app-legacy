@@ -7,7 +7,7 @@ const initialState: ProjectState = {
   list: [],
   isLoading: false,
   error: undefined,
-  selectedProject: '',
+  selectedProject: {},
 };
 
 const projectReducer: Reducer<ProjectState, ActionsType> = (
@@ -88,6 +88,11 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         ...state,
         error: { ...action.payload },
         isLoading: false,
+      };
+    case Actions.CLEAN_SELECTED_PROJECT:
+      return {
+        ...state,
+        selectedProject: {},
       };
     default:
       return state;

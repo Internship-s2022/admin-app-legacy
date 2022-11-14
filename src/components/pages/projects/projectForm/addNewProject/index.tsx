@@ -8,6 +8,7 @@ import { Criticality, ProjectFormValues, ProjectType } from 'src/components/page
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { openModal } from 'src/redux/ui/actions';
@@ -19,23 +20,26 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
+  const dispatch: AppDispatch<null> = useDispatch();
   const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
 
-  const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
-    defaultValues: {
-      projectName: '',
-      clientName: '',
-      startDate: new Date(Date.now()),
-      endDate: new Date(Date.now()),
-      projectType: ProjectType.STAFF_AUMENTATION,
-      isCritic: Criticality.HIGH,
-      description: '',
-      notes: '',
+  const { control, reset, handleSubmit } = useForm<ProjectFormValues>(
+    {
+      defaultValues: {
+        projectName: '',
+        clientName: '',
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now()),
+        projectType: ProjectType.STAFF_AUMENTATION,
+        isCritic: Criticality.HIGH,
+        description: '',
+        notes: '',
+      },
+      mode: 'onBlur',
+      resolver: joiResolver(projectValidation),
     },
-    mode: 'onBlur',
-    resolver: joiResolver(projectValidation),
-  });
-  }, [selectedProject]);
+    [selectedProject],
+  );
 
   const onSubmit = (data) => {
     const options = {
@@ -53,6 +57,7 @@ const AddNewProject = () => {
     };
 
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
+    dispatch(cleanSelectedProject());
   };
 
   useEffect(() => {
@@ -77,7 +82,6 @@ const AddNewProject = () => {
   const handleNavigation = (path) => {
     navigate(path);
   };
-  const dispatch: AppDispatch<null> = useDispatch();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
