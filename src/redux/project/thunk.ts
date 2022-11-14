@@ -11,6 +11,9 @@ import {
   editProjectError,
   editProjectPending,
   editProjectSuccess,
+  getProjectByIdError,
+  getProjectByIdPending,
+  getProjectByIdSuccess,
   getProjectsError,
   getProjectsPending,
   getProjectsSuccess,
@@ -29,6 +32,24 @@ export const getProjects: AppThunk = () => {
       }
     } catch (error: any) {
       dispatch(getProjectsError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getProjectById: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(getProjectByIdPending());
+      dispatch(setLoaderOn());
+      const response = await getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`);
+      console.log('response data', response);
+      if (response.data) {
+        dispatch(getProjectByIdSuccess(response.data));
+        dispatch(setLoaderOff());
+      }
+    } catch (error: any) {
+      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };

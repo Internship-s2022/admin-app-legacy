@@ -1,20 +1,19 @@
 import { Reducer } from 'react';
 
-import { State } from 'src/redux/types';
-
 import { Actions } from './constants';
-import { ActionsType, Project } from './types';
+import { ActionsType, ProjectState } from './types';
 
-const initialState: State<Project> = {
+const initialState: ProjectState = {
   list: [],
   isLoading: false,
   error: undefined,
+  selectedProject: '',
 };
 
-const projectReducer: Reducer<State<Project>, ActionsType> = (
+const projectReducer: Reducer<ProjectState, ActionsType> = (
   state = initialState,
   action,
-): State<Project> => {
+): ProjectState => {
   switch (action.type) {
     case Actions.GET_PROJECTS_PENDING:
       return {
@@ -46,6 +45,45 @@ const projectReducer: Reducer<State<Project>, ActionsType> = (
         error: undefined,
       };
     case Actions.CREATE_PROJECT_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
+    case Actions.EDIT_PROJECT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.EDIT_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) => {
+          if (project._id === action.payload.id) {
+            return action.payload.project;
+          }
+          return project;
+        }),
+        isLoading: false,
+      };
+    case Actions.EDIT_PROJECT_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
+    case Actions.GET_PROJECT_BY_ID_SUCCESS:
+      console.log('action payload', action.payload);
+      return {
+        ...state,
+        selectedProject: action.payload,
+      };
+    case Actions.GET_PROJECT_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_PROJECT_BY_ID_ERROR:
       return {
         ...state,
         error: { ...action.payload },

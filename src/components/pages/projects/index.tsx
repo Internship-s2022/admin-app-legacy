@@ -19,24 +19,22 @@ import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) =>
-    state.project.list.map((project) => {
-      return {
-        _id: project?._id,
-        projectName: `${capitalizeFirstLetter(project.projectName)}`,
-        clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
-        projectType: project?.projectType && formattedProjectType[project.projectType],
-        startDate: project?.startDate.toString(),
-        endDate: project?.endDate.toString(),
-        criticality: project?.isCritic,
-        description: project?.description,
-        active: project?.isActive.toString(),
-        members: formattedTableData(project?.members, 'fullName'),
-        notes: project?.notes,
-      };
-    }),
-  );
+  const listProjects = useSelector((state: RootState) => state.project.list);
   const projectError = useSelector((state: RootState) => state.project?.error);
+  // const [row, setRow] = React.useState({} as ProjectData);
+  // const selectedProject = useSelector((state: RootState) => state.project.selectedProjectId);
+  // const selectedProjectData = listProjects.filter((project) => project._id === selectedProject);
+  // console.log('probando', selectedProject);
+  // console.log('algoss', selectedProjectData);
+
+  const formattedMember = membersArray.map((member) => {
+    const fullNameMember = `${capitalizeFirstLetter(member.firstName)} ${capitalizeFirstLetter(
+      member.lastName,
+    )}`;
+    return {
+      fullName: fullNameMember,
+    };
+  });
 
   const [filteredList, setFilteredList] = useState(listProjects);
 
@@ -49,13 +47,21 @@ const Projects = () => {
     navigate(path);
   };
 
+  const handleEdit = (row) => {
+    // dispatch(getSelectedProject(row.id));
+    // console.log('projectId', selectedProject);
+    handleNavigation(`/admin/projects/form/${row.id}`);
+  };
+
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
       active: true,
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: () => undefined,
+      onClick: (row) => {
+        return handleEdit(row);
+      },
     },
   ];
 
@@ -82,7 +88,7 @@ const Projects = () => {
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation('/admin/projects/add')}
+            onClick={() => handleNavigation('/admin/projects/form')}
             label={'+ Agregar proyecto'}
             testId={'addProjectButton'}
             styles={'addButton'}

@@ -1,10 +1,10 @@
 export const criticalityOptions = [
-  { value: 'Alta', label: 'Alta' },
-  { value: 'Media', label: 'Media' },
-  { value: 'Baja', label: 'Baja' },
+  { value: 'HIGH', label: 'Alta' },
+  { value: 'MEDIUM', label: 'Media' },
+  { value: 'LOW', label: 'Baja' },
 ];
 
 export const projectTypeOptions = [
-  { value: 'Product Building', label: 'Product Building' },
-  { value: 'Staff Augmentation', label: 'Staff Augmentation' },
+  { value: 'PROJECT_BUILDING', label: 'Product Building' },
+  { value: 'STAFF_AUMENTATION', label: 'Staff Augmentation' },
 ];

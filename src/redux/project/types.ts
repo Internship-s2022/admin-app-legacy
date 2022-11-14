@@ -2,6 +2,9 @@ import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { ActionType } from 'typesafe-actions';
 
+import { Criticality, ProjectType } from 'src/components/pages/projects/types';
+import { State } from 'src/redux/types';
+
 import { RootState } from '../store';
 import * as actions from './actions';
 
@@ -10,6 +13,7 @@ interface Client {
   name: string;
 }
 export interface Project {
+  isCritic: Criticality;
   _id?: string;
   clientName: Client;
   projectName: string;
@@ -18,10 +22,13 @@ export interface Project {
   startDate: Date;
   endDate: Date;
   members: string[];
-  isCritic: string;
   isUpdated: boolean;
-  projectType: string;
+  projectType: ProjectType;
   isActive: boolean;
+}
+
+export interface ProjectState extends State<Project> {
+  selectedProject?: any;
 }
 
 export type ActionsType = ActionType<typeof actions>;

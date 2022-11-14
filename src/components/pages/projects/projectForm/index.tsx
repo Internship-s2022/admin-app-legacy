@@ -53,7 +53,7 @@ const ProjectForm = () => {
           <Button
             testId="confirmButton"
             materialVariant={Variant.CONTAINED}
-            onClick={() => console.log('TODO')}
+            onClick={() => console.log('pum')}
             label="Confirmar"
           />
         </div>
