@@ -10,6 +10,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
+import DateIntervalPicker from 'src/components/shared/ui/inputs/date-picker-interval';
 import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
@@ -26,6 +27,9 @@ const EditEmployee = () => {
 
   const [selected, setSelected] = React.useState(false);
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+
+  const [startDate, setStartDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(null);
 
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
@@ -275,6 +279,12 @@ const EditEmployee = () => {
             </div>
           </div>
         </div>
+        <DateIntervalPicker
+          setStart={setStartDate}
+          setEnd={setEndDate}
+          startDate={startDate}
+          endDate={endDate}
+        />
         <div className={styles.buttonContainer}>
           <div>
             <Button
