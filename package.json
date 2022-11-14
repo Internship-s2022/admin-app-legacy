@@ -17,7 +17,9 @@
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "axios": "^0.27.2",
+    "babel-register": "^6.26.0",
     "date-fns": "^2.29.3",
+    "dotenv": "^16.0.3",
     "firebase": "^9.12.1",
     "jest": "^29.1.2",
     "joi": "^17.6.2",
@@ -51,7 +53,8 @@
     "set:dev": "vercel env pull .env.dev",
     "prepare": "husky install",
     "pretest": "rimraf allure-results && rimraf allure-report && rimraf test-screenshots && rimraf wdio-logs",
-    "allure-report": "yarn allure generate --clean allure-results && yarn allure open"
+    "allure-report": "yarn allure generate --clean allure-results && yarn allure open",
+    "wdio": "npx wdio run ./wdio.conf.js"
   },
   "eslintConfig": {
     "extends": [
