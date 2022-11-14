@@ -26,6 +26,11 @@ export const addClientError = (error: ErrorFormat) => action(Actions.ADD_CLIENT_
 
 export const editClientPending = () => action(Actions.EDIT_CLIENT_PENDING);
 
-export const editClientSuccess = (client: Client) => action(Actions.EDIT_CLIENT_SUCCESS, client);
+export const editClientSuccess = (client: Client, id: string) =>
+  action(Actions.EDIT_CLIENT_SUCCESS, { client, id });
 
 export const editClientError = (error: ErrorFormat) => action(Actions.EDIT_CLIENT_ERROR, error);
+
+export const setSelectedClient = (id: string) => action(Actions.SET_SELECTED_CLIENT, id);
+
+export const clearData = () => action(Actions.CLEAR_DATA);

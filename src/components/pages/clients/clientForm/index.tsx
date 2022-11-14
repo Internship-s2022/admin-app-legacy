@@ -1,7 +1,8 @@
-import React from 'react';
+import { format } from 'date-fns';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
@@ -10,13 +11,42 @@ import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import { UiRoutes } from 'src/constants';
-import { addClient } from 'src/redux/client/thunks';
+import { addClient, editClient } from 'src/redux/client/thunks';
+import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
 import { FormValues } from '../types';
+import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
-  const { handleSubmit, control } = useForm<FormValues>({
+  const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useDispatch();
+  const selectedClientId = useSelector((state: RootState) => state.client?.selectedClientId);
+  const selectedClient = useSelector((state: RootState) =>
+    state.client?.list.find((item) => item?._id === selectedClientId),
+  );
+
+  useEffect(() => {
+    if (selectedClient) {
+      reset({
+        name: selectedClient.name,
+        localContact: {
+          name: selectedClient.localContact.name,
+          email: selectedClient.localContact.email,
+        },
+        clientContact: {
+          name: selectedClient.clientContact.name,
+          email: selectedClient.clientContact.email,
+        },
+        relationshipStart: selectedClient.relationshipStart,
+        relationshipEnd: selectedClient.relationshipEnd,
+        notes: selectedClient.notes,
+        isActive: true,
+      });
+    }
+  }, []);
+
+  const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       name: '',
       localContact: {
@@ -32,14 +62,23 @@ const ClientForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.createClientValidation),
+    resolver: joiResolver(validations.clientValidation),
   });
 
-  const navigate = useNavigate();
-  const dispatch: AppDispatch<null> = useDispatch();
+  const projectsList = selectedClient?.projects;
+
+  const formattedProjects = projectsList?.map((item) => ({
+    id: item?._id ?? '-',
+    name: item?.projectName ?? '-',
+    isCritic: item?.isCritic ?? '-',
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+  }));
 
   const onSubmit = (data) => {
-    dispatch(addClient(data));
+    selectedClient
+      ? dispatch(editClient({ body: data, id: selectedClient?._id }))
+      : dispatch(addClient(data));
     onClose();
   };
 
@@ -54,7 +93,7 @@ const ClientForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Crear un cliente</div>
+        <div>{selectedClient ? `Update ${selectedClient.name}'s data` : 'Add Client'}</div>
         <div className={styles.bellIcon}>
           <BellIcon />
         </div>
@@ -146,6 +185,38 @@ const ClientForm = () => {
             </div>
           </div>
           <div className={styles.rightContainer}>
+            {selectedClient && (
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      {clientsProjectsHeaders?.map((header, index) => {
+                        return (
+                          <th className={styles.header} key={index}>
+                            {header.header}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formattedProjects?.map((data) => {
+                      return (
+                        <tr key={data.id}>
+                          {clientsProjectsHeaders.map((header, index) => {
+                            return (
+                              <td className={styles.rows} key={index}>
+                                {data[header.key]}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
             <TextInput
               control={control}
               testId={'notesInput'}

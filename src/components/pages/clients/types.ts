@@ -2,9 +2,17 @@ export interface ClientsData {
   _id?: string;
   name: string;
   projects: string;
-  clientContact: string;
-  email: string;
   localContact: string;
+  clientContact: string;
+}
+
+export interface Project {
+  _id: string;
+  projectName: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  isCritic: string;
 }
 
 export interface ContactData {
@@ -14,6 +22,7 @@ export interface ContactData {
 }
 
 export type FormValues = {
+  id: string;
   name: string;
   localContact: ContactData;
   clientContact: ContactData;
