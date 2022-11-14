@@ -57,12 +57,15 @@ const AddNewProject = () => {
     };
 
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    dispatch(cleanSelectedProject());
+    // dispatch(cleanSelectedProject());
   };
 
   useEffect(() => {
     console.log('inside firs use effect', id);
     dispatch(getProjectById(id));
+    return () => {
+      dispatch(cleanSelectedProject());
+    };
   }, []);
 
   useEffect(() => {
