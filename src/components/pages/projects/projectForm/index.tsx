@@ -46,7 +46,7 @@ const ProjectForm = () => {
           <Button
             testId="cancelButton"
             materialVariant={Variant.OUTLINED}
-            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.GET_PROJECTS}`)}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
             label="Cancelar"
           />
         </div>
