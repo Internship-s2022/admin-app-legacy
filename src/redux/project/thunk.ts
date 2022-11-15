@@ -59,7 +59,7 @@ export const createProject: AppThunk = (data) => {
     try {
       dispatch(createProjectPending());
       dispatch(setLoaderOn());
-      const response = await addResourceRequest(ApiRoutes.PROJECTS, data);
+      const response = await addResourceRequest(ApiRoutes.PROJECTS, data.body);
       if (!response.error) {
         dispatch(createProjectSuccess(response.data));
       }
@@ -77,7 +77,7 @@ export const editProject: AppThunk = (options: { id: string; body: Project }) =>
       dispatch(editProjectPending());
       dispatch(setLoaderOn());
       const response = await editResourceRequest(ApiRoutes.PROJECTS, options);
-      if (response.error) {
+      if (!response.error) {
         dispatch(editProjectSuccess(response.data, options.id));
       }
       dispatch(setLoaderOff());

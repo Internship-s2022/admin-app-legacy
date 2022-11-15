@@ -3,12 +3,6 @@ import Joi from 'joi';
 import { CriticalType, ProjectType } from './types';
 
 export const projectValidation = Joi.object({
-  clientName: Joi.string().min(3).max(35).required().trim().messages({
-    'string.min': 'El nombre del cliente debe tener al menos 3 caracteres',
-    'string.max': 'El nombre del cliente debe tener máximo 35 caracteres',
-    'string.empty': 'Este campo es requerido',
-  }),
-
   projectName: Joi.string()
     .min(3)
     .max(35)
@@ -20,9 +14,12 @@ export const projectValidation = Joi.object({
     })
     .required(),
 
-  description: Joi.string().max(100).messages({
-    'string.max': 'La descripción no debe contener más de 100 caracteres',
-  }),
+  description: Joi.string()
+    .max(100)
+    .messages({
+      'string.max': 'La descripción no debe contener más de 100 caracteres',
+    })
+    .allow(''),
 
   startDate: Joi.date(),
 

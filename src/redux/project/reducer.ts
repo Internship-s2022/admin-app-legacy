@@ -58,11 +58,11 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
     case Actions.EDIT_PROJECT_SUCCESS:
       return {
         ...state,
-        list: state.list.map((project) => {
-          if (project._id === action.payload.id) {
+        list: state.list.map((item) => {
+          if (item._id === action.payload.id) {
             return action.payload.project;
           }
-          return project;
+          return item;
         }),
         isLoading: false,
       };

@@ -7,6 +7,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
@@ -21,6 +22,14 @@ const AddNewProject = () => {
   const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
+  const clientList = useSelector((state: RootState) =>
+    state.client.list?.reduce((acc, item) => {
+      if (item.isActive) {
+        acc.push({ value: item._id, label: item.name });
+      }
+      return acc;
+    }, []),
+  );
 
   const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
     defaultValues: {
@@ -42,7 +51,7 @@ const AddNewProject = () => {
       id: id,
       body: JSON.stringify({
         projectName: data.projectName,
-        clientName: data.clientName.id,
+        clientName: data.clientName,
         startDate: data.startDate,
         endDate: data.endDate,
         projectType: data.projectType,
@@ -51,11 +60,11 @@ const AddNewProject = () => {
         notes: data.notes,
       }),
     };
-
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
   };
 
   useEffect(() => {
+    dispatch(getClients());
     id && dispatch(getProjectById(id));
     return () => {
       dispatch(cleanSelectedProject());
@@ -65,7 +74,7 @@ const AddNewProject = () => {
   useEffect(() => {
     reset({
       projectName: selectedProject.projectName,
-      clientName: selectedProject.clientName?.name,
+      clientName: selectedProject.clientName?._id,
       startDate: selectedProject.startDate,
       endDate: selectedProject.endDate,
       projectType: selectedProject.projectType as ProjectType,
@@ -105,13 +114,12 @@ const AddNewProject = () => {
             </div>
             <div className={styles.middleColumn}>
               <div className={styles.elementContainer}>
-                <TextInput
+                <Dropdown
                   control={control}
                   testId={'clientName'}
-                  label="Cliente"
+                  label={'Cliente'}
                   name="clientName"
-                  type={'text'}
-                  variant="outlined"
+                  options={clientList}
                   fullWidth
                 />
               </div>
