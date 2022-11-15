@@ -2,9 +2,17 @@ export interface ClientsData {
   _id?: string;
   name: string;
   projects: string;
-  clientContact: string;
-  email: string;
   localContact: string;
+  clientContact: string;
+}
+
+export interface Project {
+  _id: string;
+  projectName: string;
+  description: string;
+  startDate: Date;
+  endDate: Date;
+  isCritic: string;
 }
 
 export interface ContactData {
@@ -14,14 +22,14 @@ export interface ContactData {
 }
 
 export type FormValues = {
+  id: string;
   name: string;
-  localContact: string;
-  localEmail: string;
-  clientContact: string;
-  clientEmail: string;
+  localContact: ContactData;
+  clientContact: ContactData;
   notes?: string;
   relationshipStart?: Date;
   relationshipEnd?: Date;
+  isActive: boolean;
 };
 
 export interface SearchClientData {

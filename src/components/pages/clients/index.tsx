@@ -23,33 +23,43 @@ const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
-  const activeClients = useSelector((state: RootState) =>
-    state.client?.list.filter((item) => item.isActive),
+
+  const activeClientsList = useSelector((state: RootState) =>
+    state.client?.list.reduce((acc, item) => {
+      if (item.isActive) {
+        acc.push({
+          _id: item?._id,
+          name: item?.name,
+          projects: formattedTableData(item.projects, 'projectName'),
+          clientContact: item?.clientContact?.name,
+          email: item?.clientContact?.email,
+          localContact: item?.localContact?.name,
+          localEmail: item?.localContact?.name,
+          relationshipEnd: item?.relationshipEnd?.toString(),
+          relationshipStart: item?.relationshipStart?.toString(),
+          notes: item?.notes,
+          active: item?.isActive.toString(),
+        });
+      }
+      return acc;
+    }, []),
   );
+
   const clientError = useSelector((state: RootState) => state.client?.error);
   const navigate = useNavigate();
 
-  const listClientsData = activeClients.map((item) => {
-    return {
-      _id: item?._id,
-      name: item?.name,
-      projects: formattedTableData(item.projects, 'projectName'),
-      clientContact: item?.clientContact?.name,
-      email: item?.clientContact?.email,
-      localContact: item?.localContact?.name,
-      localEmail: item?.localContact?.name,
-      relationshipEnd: item?.relationshipEnd?.toString(),
-      relationshipStart: item?.relationshipStart?.toString(),
-      notes: item?.notes,
-      active: item?.isActive.toString(),
-    };
-  });
+  const [filteredList, setFilteredList] = useState(activeClientsList);
+
+  useEffect(() => setFilteredList(activeClientsList), [activeClientsList.length]);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
     dispatch(closeModal());
   };
-  const [filteredList, setFilteredList] = useState(listClientsData);
+
+  const handleEdit = (row) => {
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
+  };
 
   const buttonsArray = [
     {
@@ -57,8 +67,8 @@ const Clients = () => {
       label: 'Editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (data) => {
-        console.log(data);
+      onClick: (row) => {
+        return handleEdit(row);
       },
     },
     {
@@ -77,17 +87,21 @@ const Clients = () => {
     navigate(path);
   };
 
+  const handleFilteredList = (data) => {
+    setFilteredList(data);
+  };
+
   useEffect(() => {
     dispatch(getClients());
   }, []);
 
-  const showErrorMessage = clientError?.networkError || !listClientsData.length;
+  const showErrorMessage = clientError?.networkError || !activeClientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Clientes}
       handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
-      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
       error={clientError}
     />
   ) : (
@@ -98,15 +112,15 @@ const Clients = () => {
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchClientData>
-            setFilteredList={setFilteredList}
-            details={listClientsData}
+            setFilteredList={handleFilteredList}
+            details={activeClientsList}
             mainArray={clientFilterOptions}
           />
         </div>
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_CLIENTS}`)}
+            onClick={() => navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
             label={'+ Agregar cliente'}
             testId={'addClientButton'}
             styles={'addButton'}

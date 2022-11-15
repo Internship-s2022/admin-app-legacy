@@ -66,3 +66,35 @@
   width: 100%;
   margin-top: 20px;
 }
+
+.tableContainer {
+  margin-bottom: 20px;
+}
+
+.table {
+  width: 100%;
+  margin-block: 1%;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.header {
+  padding: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #373867;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.rows {
+  padding: 13px;
+  font-size: 12px;
+  color: #373867;
+  border: none;
+  border-bottom: #d4d4df 2px solid;
+}

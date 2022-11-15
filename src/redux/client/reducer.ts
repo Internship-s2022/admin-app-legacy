@@ -1,21 +1,19 @@
 import { Reducer } from 'redux';
 
-import { Client } from 'src/redux/client/types';
-import { State } from 'src/redux/types';
-
 import { Actions } from './constants';
-import { ActionsType } from './types';
+import { ActionsType, Client, ClientState } from './types';
 
-const initialState: State<Client> = {
+const initialState: ClientState = {
   list: [],
   isLoading: false,
   error: undefined,
+  selectedClient: {} as Client,
 };
 
-const clientReducer: Reducer<State<Client>, ActionsType> = (
+const clientReducer: Reducer<ClientState, ActionsType> = (
   state = initialState,
   action,
-): State<Client> => {
+): ClientState => {
   switch (action.type) {
     case Actions.GET_CLIENTS_PENDING:
       return {
@@ -35,6 +33,45 @@ const clientReducer: Reducer<State<Client>, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.ADD_CLIENT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.ADD_CLIENT_SUCCESS:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.ADD_CLIENT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: { ...action.payload },
+      };
+    case Actions.EDIT_CLIENT_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.EDIT_CLIENT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((item) => {
+          if (item._id === action.payload.id) {
+            return { ...item, ...action.payload.client };
+          }
+          return item;
+        }),
+      };
+    case Actions.EDIT_CLIENT_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: { ...action.payload },
+      };
     case Actions.DELETE_CLIENT_PENDING:
       return {
         ...state,
@@ -43,8 +80,8 @@ const clientReducer: Reducer<State<Client>, ActionsType> = (
     case Actions.DELETE_CLIENT_SUCCESS:
       return {
         ...state,
-        isLoading: false,
         list: state.list.filter((client) => client._id !== action.payload),
+        isLoading: false,
         error: undefined,
       };
     case Actions.DELETE_CLIENT_ERROR:
@@ -52,6 +89,27 @@ const clientReducer: Reducer<State<Client>, ActionsType> = (
         ...state,
         error: { ...action.payload },
         isLoading: false,
+      };
+    case Actions.GET_CLIENT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        selectedClient: action.payload,
+      };
+    case Actions.GET_CLIENT_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_CLIENT_BY_ID_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
+    case Actions.CLEAR_SELECTED_CLIENT:
+      return {
+        ...state,
+        selectedClient: {} as Client,
       };
     default:
       return state;

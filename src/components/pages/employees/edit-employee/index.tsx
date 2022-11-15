@@ -106,7 +106,7 @@ const EditEmployee = () => {
   };
 
   const onSubmit = async (data) => {
-    const { id, user, projectHistory, ...rest } = data;
+    const { id, ...rest } = data;
     await dispatch(editEmployee({ body: rest, id: id }));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
