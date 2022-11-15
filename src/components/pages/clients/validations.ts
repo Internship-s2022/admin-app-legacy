@@ -1,11 +1,16 @@
 import Joi from 'joi';
 
 const clientValidation = Joi.object({
-  name: Joi.string().min(3).max(35).required().trim().messages({
-    'string.min': 'El nombre debe tener al menos 3 caracteres',
-    'string.max': 'El nombre debe tener máximo 35 caracteres',
-    'string.empty': 'Este campo es requerido',
-  }),
+  name: Joi.string()
+    .min(3)
+    .max(35)
+    .trim()
+    .messages({
+      'string.min': 'El nombre debe tener al menos 3 caracteres',
+      'string.max': 'El nombre debe tener máximo 35 caracteres',
+      'string.empty': 'Este campo es requerido',
+    })
+    .required(),
 
   localContact: Joi.object({
     name: Joi.string()

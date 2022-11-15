@@ -77,8 +77,8 @@ const ClientForm = () => {
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
-    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
-    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
   const onSubmit = async (data) => {
@@ -189,7 +189,7 @@ const ClientForm = () => {
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {selectedClient && (
+            {id && (
               <div className={styles.tableContainer}>
                 <table className={styles.table}>
                   <thead>
