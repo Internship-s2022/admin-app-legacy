@@ -51,7 +51,7 @@ const EditEmployee = () => {
         notes: matchedEmployee?.notes,
       });
     } else {
-      navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.GET_EMPLOYEES}`);
     }
   }, []);
 
@@ -108,7 +108,7 @@ const EditEmployee = () => {
   const onSubmit = async (data) => {
     const { id, ...rest } = data;
     await dispatch(editEmployee({ body: rest, id: id }));
-    navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.GET_EMPLOYEES}`);
   };
 
   return (
@@ -298,7 +298,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`)}
+              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.GET_EMPLOYEES}`)}
               label="Cancelar"
             />
           </div>

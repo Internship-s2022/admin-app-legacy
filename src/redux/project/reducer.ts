@@ -1,13 +1,13 @@
 import { Reducer } from 'react';
 
 import { Actions } from './constants';
-import { ActionsType, ProjectState } from './types';
+import { ActionsType, Project, ProjectState } from './types';
 
 const initialState: ProjectState = {
   list: [],
   isLoading: false,
   error: undefined,
-  selectedProject: {},
+  selectedProject: {} as Project,
 };
 
 const projectReducer: Reducer<ProjectState, ActionsType> = (
@@ -73,7 +73,6 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         isLoading: false,
       };
     case Actions.GET_PROJECT_BY_ID_SUCCESS:
-      console.log('action payload', action.payload);
       return {
         ...state,
         selectedProject: action.payload,
@@ -92,7 +91,7 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
     case Actions.CLEAN_SELECTED_PROJECT:
       return {
         ...state,
-        selectedProject: {},
+        selectedProject: {} as Project,
       };
     default:
       return state;

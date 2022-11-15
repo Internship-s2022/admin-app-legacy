@@ -7,7 +7,6 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import { UiRoutes } from 'src/constants';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
@@ -57,8 +56,7 @@ const AddNewProject = () => {
   };
 
   useEffect(() => {
-    console.log('inside firs use effect', id);
-    dispatch(getProjectById(id));
+    id && dispatch(getProjectById(id));
     return () => {
       dispatch(cleanSelectedProject());
     };

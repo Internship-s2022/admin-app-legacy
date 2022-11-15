@@ -28,7 +28,7 @@ export interface Project {
 }
 
 export interface ProjectState extends State<Project> {
-  selectedProject?: any;
+  selectedProject?: Project;
 }
 
 export type ActionsType = ActionType<typeof actions>;

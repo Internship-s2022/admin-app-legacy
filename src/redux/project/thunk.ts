@@ -43,7 +43,6 @@ export const getProjectById: AppThunk = (id) => {
       dispatch(getProjectByIdPending());
       dispatch(setLoaderOn());
       const response = await getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`);
-      console.log('response data', response);
       if (response.data) {
         dispatch(getProjectByIdSuccess(response.data));
         dispatch(setLoaderOff());

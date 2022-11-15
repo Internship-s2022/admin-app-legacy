@@ -19,17 +19,24 @@ import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) => state.project.list);
+  const listProjects = useSelector((state: RootState) =>
+    state.project.list.map((project) => {
+      return {
+        _id: project?._id,
+        projectName: `${capitalizeFirstLetter(project.projectName)}`,
+        clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
+        projectType: project?.projectType && formattedProjectType[project.projectType],
+        startDate: project?.startDate.toString(),
+        endDate: project?.endDate.toString(),
+        criticality: project?.isCritic,
+        description: project?.description,
+        active: project?.isActive.toString(),
+        members: formattedTableData(project?.members, 'fullName'),
+        notes: project?.notes,
+      };
+    }),
+  );
   const projectError = useSelector((state: RootState) => state.project?.error);
-
-  const formattedMember = membersArray.map((member) => {
-    const fullNameMember = `${capitalizeFirstLetter(member.firstName)} ${capitalizeFirstLetter(
-      member.lastName,
-    )}`;
-    return {
-      fullName: fullNameMember,
-    };
-  });
 
   const [filteredList, setFilteredList] = useState(listProjects);
 
@@ -37,13 +44,21 @@ const Projects = () => {
     dispatch(getProjects());
   }, []);
 
+  useEffect(() => {
+    setFilteredList(listProjects);
+  }, [listProjects.length]);
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
   };
 
   const handleEdit = (row) => {
-    handleNavigation(`/admin/projects/form/${row.id}`);
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_PROJECTS}/${row._id}`);
+  };
+
+  const handleFilteredList = (data) => {
+    setFilteredList(data);
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -58,17 +73,7 @@ const Projects = () => {
     },
   ];
 
-  const listProjectsData = filteredProjects.map((project): MappedProjectData => {
-    return {
-      id: project?._id,
-      projectName: `${capitalizeFirstLetter(project.projectName)}`,
-      clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
-      projectType: project?.projectType && formattedProjectType[project.projectType],
-      members: formattedTableData(project.members, 'fullName'),
-    };
-  });
-
-  const showErrorMessage = projectError?.networkError || !listProjectsData.length;
+  const showErrorMessage = projectError?.networkError || !listProjects.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -83,7 +88,7 @@ const Projects = () => {
       <div className={styles.topTableContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchProjectData>
-            setFilteredList={setFilteredList}
+            setFilteredList={handleFilteredList}
             details={listProjects}
             mainArray={projectFilterOptions}
           />
