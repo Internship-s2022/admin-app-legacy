@@ -97,7 +97,7 @@ const ClientForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>{id ? `Update ${selectedClient?.name}'s data` : 'Add Client'}</div>
+        <div>{id ? `Editar ${selectedClient?.name}` : 'Nuevo Cliente'}</div>
         <div className={styles.bellIcon}>
           <BellIcon />
         </div>
