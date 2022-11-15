@@ -11,7 +11,8 @@ import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import { UiRoutes } from 'src/constants';
-import { addClient, editClient } from 'src/redux/client/thunks';
+import { clearSelectedClient } from 'src/redux/client/actions';
+import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 
@@ -20,14 +21,19 @@ import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
-  const selectedClientId = useSelector((state: RootState) => state.client?.selectedClientId);
-  const selectedClient = useSelector((state: RootState) =>
-    state.client?.list.find((item) => item?._id === selectedClientId),
-  );
+  const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
 
   useEffect(() => {
-    if (selectedClient) {
+    id && dispatch(getClientsById(id));
+    return () => {
+      dispatch(clearSelectedClient());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedClient).length) {
       reset({
         name: selectedClient.name,
         localContact: {
@@ -44,7 +50,7 @@ const ClientForm = () => {
         isActive: true,
       });
     }
-  }, []);
+  }, [selectedClient]);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -75,10 +81,8 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
-  const onSubmit = (data) => {
-    selectedClient
-      ? dispatch(editClient({ body: data, id: selectedClient?._id }))
-      : dispatch(addClient(data));
+  const onSubmit = async (data) => {
+    id ? await dispatch(editClient({ body: data, id: id })) : await dispatch(addClient(data));
     onClose();
   };
 
@@ -93,7 +97,7 @@ const ClientForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>{selectedClient ? `Update ${selectedClient.name}'s data` : 'Add Client'}</div>
+        <div>{id ? `Update ${selectedClient?.name}'s data` : 'Add Client'}</div>
         <div className={styles.bellIcon}>
           <BellIcon />
         </div>

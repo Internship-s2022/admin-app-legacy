@@ -20,6 +20,9 @@ import {
   editClientError,
   editClientPending,
   editClientSuccess,
+  getClientByIdError,
+  getClientByIdPending,
+  getClientByIdSuccess,
   getClientsError,
   getClientsPending,
   getClientsSuccess,
@@ -38,6 +41,23 @@ export const getClients: AppThunk = () => {
       }
     } catch (error) {
       dispatch(getClientsError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getClientsById: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(getClientByIdPending());
+      dispatch(setLoaderOn());
+      const response = await getResourceRequest(`${ApiRoutes.CLIENT}/${id}`);
+      if (response.data) {
+        dispatch(getClientByIdSuccess(response.data));
+        dispatch(setLoaderOff());
+      }
+    } catch (error) {
+      dispatch(getClientByIdError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };

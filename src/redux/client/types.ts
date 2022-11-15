@@ -18,7 +18,7 @@ export interface Client {
 }
 
 export interface ClientState extends State<Client> {
-  selectedClientId: string;
+  selectedClient: Client;
 }
 
 export type ActionsType = ActionType<typeof actions>;

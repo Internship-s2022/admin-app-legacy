@@ -12,6 +12,14 @@ export const getClientsSuccess = (clients: Client[]) =>
 
 export const getClientsError = (error: ErrorFormat) => action(Actions.GET_CLIENTS_ERROR, error);
 
+export const getClientByIdPending = () => action(Actions.GET_CLIENT_BY_ID_PENDING);
+
+export const getClientByIdSuccess = (client: Client) =>
+  action(Actions.GET_CLIENT_BY_ID_SUCCESS, client);
+
+export const getClientByIdError = (error: ErrorFormat) =>
+  action(Actions.GET_CLIENT_BY_ID_ERROR, error);
+
 export const deleteClientPending = () => action(Actions.DELETE_CLIENT_PENDING);
 
 export const deleteClientSuccess = (id: string) => action(Actions.DELETE_CLIENT_SUCCESS, id);
@@ -31,6 +39,4 @@ export const editClientSuccess = (client: Client, id: string) =>
 
 export const editClientError = (error: ErrorFormat) => action(Actions.EDIT_CLIENT_ERROR, error);
 
-export const setSelectedClient = (id: string) => action(Actions.SET_SELECTED_CLIENT, id);
-
-export const clearData = () => action(Actions.CLEAR_DATA);
+export const clearSelectedClient = () => action(Actions.CLEAR_SELECTED_CLIENT);
