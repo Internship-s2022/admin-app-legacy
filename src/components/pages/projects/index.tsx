@@ -21,11 +21,6 @@ const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const listProjects = useSelector((state: RootState) => state.project.list);
   const projectError = useSelector((state: RootState) => state.project?.error);
-  // const [row, setRow] = React.useState({} as ProjectData);
-  // const selectedProject = useSelector((state: RootState) => state.project.selectedProjectId);
-  // const selectedProjectData = listProjects.filter((project) => project._id === selectedProject);
-  // console.log('probando', selectedProject);
-  // console.log('algoss', selectedProjectData);
 
   const formattedMember = membersArray.map((member) => {
     const fullNameMember = `${capitalizeFirstLetter(member.firstName)} ${capitalizeFirstLetter(
@@ -48,8 +43,6 @@ const Projects = () => {
   };
 
   const handleEdit = (row) => {
-    // dispatch(getSelectedProject(row.id));
-    // console.log('projectId', selectedProject);
     handleNavigation(`/admin/projects/form/${row.id}`);
   };
 
@@ -65,7 +58,17 @@ const Projects = () => {
     },
   ];
 
-  const showErrorMessage = projectError?.networkError || !listProjects.length;
+  const listProjectsData = filteredProjects.map((project): MappedProjectData => {
+    return {
+      id: project?._id,
+      projectName: `${capitalizeFirstLetter(project.projectName)}`,
+      clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
+      projectType: project?.projectType && formattedProjectType[project.projectType],
+      members: formattedTableData(project.members, 'fullName'),
+    };
+  });
+
+  const showErrorMessage = projectError?.networkError || !listProjectsData.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler

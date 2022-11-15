@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
@@ -23,23 +23,20 @@ const AddNewProject = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
 
-  const { control, reset, handleSubmit } = useForm<ProjectFormValues>(
-    {
-      defaultValues: {
-        projectName: '',
-        clientName: '',
-        startDate: new Date(Date.now()),
-        endDate: new Date(Date.now()),
-        projectType: ProjectType.STAFF_AUMENTATION,
-        isCritic: Criticality.HIGH,
-        description: '',
-        notes: '',
-      },
-      mode: 'onBlur',
-      resolver: joiResolver(projectValidation),
+  const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
+    defaultValues: {
+      projectName: '',
+      clientName: '',
+      startDate: new Date(Date.now()),
+      endDate: new Date(Date.now()),
+      projectType: ProjectType.STAFF_AUGMENTATION,
+      isCritic: Criticality.ALTA,
+      description: '',
+      notes: '',
     },
-    [selectedProject],
-  );
+    mode: 'onBlur',
+    resolver: joiResolver(projectValidation),
+  });
 
   const onSubmit = (data) => {
     const options = {
@@ -57,7 +54,6 @@ const AddNewProject = () => {
     };
 
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    // dispatch(cleanSelectedProject());
   };
 
   useEffect(() => {
@@ -80,11 +76,6 @@ const AddNewProject = () => {
       notes: selectedProject.notes,
     });
   }, [selectedProject]);
-
-  const navigate = useNavigate();
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

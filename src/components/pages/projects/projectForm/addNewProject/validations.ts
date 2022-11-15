@@ -31,7 +31,7 @@ export const projectValidation = Joi.object({
   }),
 
   isCritic: Joi.string()
-    .valid(CriticalType.HIGH, CriticalType.MEDIUM, CriticalType.LOW)
+    .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
     .messages({
       'any.only': 'La criticidad debe ser Alta, Media o Baja',
       'any.required': 'Este campo es requerido',
@@ -39,10 +39,10 @@ export const projectValidation = Joi.object({
     .required(),
 
   projectType: Joi.string()
-    .valid(ProjectType.PROJECT_BUILDING, ProjectType.STAFF_AUMENTATION)
+    .valid(ProjectType.PRODUCT_BUILDING, ProjectType.STAFF_AUGMENTATION)
     .required()
     .messages({
-      'any.only': 'El tipo de proyecto debe ser Project Building o Staff Augmentation',
+      'any.only': 'El tipo de proyecto debe ser Product Building o Staff Augmentation',
       'any.required': 'Este campo es requerido',
     }),
 }).options({ allowUnknown: true });

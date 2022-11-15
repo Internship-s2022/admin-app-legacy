@@ -3,8 +3,8 @@ import { Headers } from 'src/components/shared/ui/table/types';
 import { Member } from './types';
 
 export const formattedProjectType = {
-  PROJECT_BUILDING: 'Product building',
-  STAFF_AUMENTATION: 'Staff augmentation',
+  PRODUCT_BUILDING: 'Product Building',
+  STAFF_AUGMENTATION: 'Staff Augmentation',
 };
 
 export const projectHeaders: Headers[] = [

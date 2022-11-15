@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -24,11 +24,12 @@ const ProjectForm = () => {
 
   const dispatch: AppDispatch<null> = useDispatch();
   const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const { id } = useParams();
 
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Nuevo Proyecto</div>
+        <div> {id ? 'Editar Proyecto' : 'Nuevo Proyecto'}</div>
         <div className={styles.iconGroup}>
           <div className={styles.iconContainer}>
             <ClockIcon />

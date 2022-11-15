@@ -22,16 +22,14 @@ export interface MappedProjectData extends Omit<ProjectData, 'members' | 'client
 }
 
 export enum ProjectType {
-  PROJECT_BUILDING = 'PROJECT_BUILDING',
-  STAFF_AUMENTATION = 'STAFF_AUMENTATION',
-  //ARREGLAR EN EL BACK Y LUEGO ACÁ AUGMENTATION
-  //CAMBIAR PRODUCT POR PROJECT EN BACK
+  PRODUCT_BUILDING = 'PRODUCT_BUILDING',
+  STAFF_AUGMENTATION = 'STAFF_AUGMENTATION',
 }
 
 export enum Criticality {
-  HIGH = 'HIGH',
-  MEDIUM = 'MEDIUM',
-  LOW = 'LOW',
+  ALTA = 'ALTA',
+  MEDIA = 'MEDIA',
+  BAJA = 'BAJA',
 }
 
 export type ProjectFormValues = {
