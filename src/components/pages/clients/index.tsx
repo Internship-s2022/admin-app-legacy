@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
@@ -24,32 +24,36 @@ const Clients = () => {
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const activeClientsList = useSelector((state: RootState) =>
-    state.client?.list.reduce((acc, item) => {
-      if (item.isActive) {
-        acc.push({
-          _id: item?._id,
-          name: item?.name,
-          projects: formattedTableData(item.projects, 'projectName'),
-          clientContact: item?.clientContact?.name,
-          email: item?.clientContact?.email,
-          localContact: item?.localContact?.name,
-          localEmail: item?.localContact?.name,
-          relationshipEnd: item?.relationshipEnd?.toString(),
-          relationshipStart: item?.relationshipStart?.toString(),
-          notes: item?.notes,
-          active: item?.isActive.toString(),
-        });
-      }
-      return acc;
-    }, []),
+  const clientsList = useSelector((state: RootState) => state.client?.list);
+
+  const activeClientsList = useMemo(
+    () =>
+      clientsList.reduce((acc, item) => {
+        if (item.isActive) {
+          acc.push({
+            _id: item?._id,
+            name: item?.name,
+            projects: formattedTableData(item.projects, 'projectName'),
+            clientContact: item?.clientContact?.name,
+            email: item?.clientContact?.email,
+            localContact: item?.localContact?.name,
+            localEmail: item?.localContact?.name,
+            relationshipEnd: item?.relationshipEnd?.toString(),
+            relationshipStart: item?.relationshipStart?.toString(),
+            notes: item?.notes,
+            active: item?.isActive.toString(),
+          });
+        }
+        return acc;
+      }, []),
+    [clientsList],
   );
 
   const clientError = useSelector((state: RootState) => state.client?.error);
   const navigate = useNavigate();
 
   const [filteredList, setFilteredList] = useState(activeClientsList);
-  useEffect(() => setFilteredList(activeClientsList), [activeClientsList.length]);
+  useEffect(() => setFilteredList(activeClientsList), [clientsList]);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
