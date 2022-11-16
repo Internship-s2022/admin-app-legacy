@@ -1,11 +1,24 @@
 import { Dispatch } from 'redux';
 
-import { getResourceRequest } from 'src/config/api';
+import { addResourceRequest, editResourceRequest, getResourceRequest } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
-import { getProjectsError, getProjectsPending, getProjectsSuccess } from './actions';
-import { AppThunk } from './types';
+import {
+  createProjectError,
+  createProjectPending,
+  createProjectSuccess,
+  editProjectError,
+  editProjectPending,
+  editProjectSuccess,
+  getProjectByIdError,
+  getProjectByIdPending,
+  getProjectByIdSuccess,
+  getProjectsError,
+  getProjectsPending,
+  getProjectsSuccess,
+} from './actions';
+import { AppThunk, Project } from './types';
 
 export const getProjects: AppThunk = () => {
   return async (dispatch: Dispatch) => {
@@ -19,6 +32,57 @@ export const getProjects: AppThunk = () => {
       }
     } catch (error: any) {
       dispatch(getProjectsError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getProjectById: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(getProjectByIdPending());
+      dispatch(setLoaderOn());
+      const response = await getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`);
+      if (response.data) {
+        dispatch(getProjectByIdSuccess(response.data));
+        dispatch(setLoaderOff());
+      }
+    } catch (error: any) {
+      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const createProject: AppThunk = (data) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(createProjectPending());
+      dispatch(setLoaderOn());
+      const response = await addResourceRequest(ApiRoutes.PROJECTS, data.body);
+      if (!response.error) {
+        dispatch(createProjectSuccess(response.data));
+      }
+      dispatch(setLoaderOff());
+    } catch (error) {
+      dispatch(createProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const editProject: AppThunk = (options: { id: string; body: Project }) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(editProjectPending());
+      dispatch(setLoaderOn());
+      const response = await editResourceRequest(ApiRoutes.PROJECTS, options);
+      if (!response.error) {
+        dispatch(editProjectSuccess(response.data, options.id));
+      }
+      dispatch(setLoaderOff());
+    } catch (error) {
+      dispatch(editProjectError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };

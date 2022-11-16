@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
@@ -19,34 +19,51 @@ import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) =>
-    state.project.list.map((project) => {
-      return {
-        _id: project?._id,
-        projectName: `${capitalizeFirstLetter(project.projectName)}`,
-        clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
-        projectType: project?.projectType && formattedProjectType[project.projectType],
-        startDate: project?.startDate.toString(),
-        endDate: project?.endDate.toString(),
-        criticality: project?.isCritic,
-        description: project?.description,
-        active: project?.isActive.toString(),
-        members: formattedTableData(project?.members, 'fullName'),
-        notes: project?.notes,
-      };
-    }),
+  const projectList = useSelector((state: RootState) => state.project.list);
+  const mappedProjectList = useMemo(
+    () =>
+      projectList.map((project) => {
+        return {
+          _id: project?._id,
+          projectName: project?.projectName && `${capitalizeFirstLetter(project.projectName)}`,
+          clientName:
+            project?.clientName.name && `${capitalizeFirstLetter(project.clientName.name)}`,
+          projectType: project?.projectType && formattedProjectType[project.projectType],
+          startDate: project?.startDate.toString(),
+          endDate: project?.endDate.toString(),
+          criticality: project?.isCritic,
+          description: project?.description,
+          active: project?.isActive?.toString(),
+          members: formattedTableData(project?.members, 'fullName'),
+          notes: project?.notes,
+        };
+      }),
+    [projectList],
   );
+
   const projectError = useSelector((state: RootState) => state.project?.error);
 
-  const [filteredList, setFilteredList] = useState(listProjects);
+  const [filteredList, setFilteredList] = useState(mappedProjectList);
 
   useEffect(() => {
     dispatch(getProjects());
   }, []);
 
+  useEffect(() => {
+    setFilteredList(mappedProjectList);
+  }, [projectList]);
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleEdit = (row) => {
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
+  };
+
+  const handleFilteredList = (data) => {
+    setFilteredList(data);
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -55,17 +72,19 @@ const Projects = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: () => undefined,
+      onClick: (row) => {
+        return handleEdit(row);
+      },
     },
   ];
 
-  const showErrorMessage = projectError?.networkError || !listProjects.length;
+  const showErrorMessage = projectError?.networkError || !mappedProjectList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Proyectos}
       handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
-      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_PROJECTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
       error={projectError}
     />
   ) : (
@@ -74,15 +93,15 @@ const Projects = () => {
       <div className={styles.topTableContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchProjectData>
-            setFilteredList={setFilteredList}
-            details={listProjects}
+            setFilteredList={handleFilteredList}
+            details={mappedProjectList}
             mainArray={projectFilterOptions}
           />
         </div>
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation('/admin/projects/add')}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
             label={'+ Agregar proyecto'}
             testId={'addProjectButton'}
             styles={'addButton'}

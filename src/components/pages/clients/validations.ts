@@ -37,44 +37,39 @@ const clientValidation = Joi.object({
       .required(),
   }),
 
-  clientContact: Joi.object({
-    name: Joi.string()
-      .min(3)
-      .max(35)
-      .regex(/^[a-zA-Z\s]*$/)
-      .trim()
-      .messages({
-        'string.min': 'El nombre debe contener al menos 3 letras',
-        'string.empty': 'Este campo es requerido',
-        'string.max': 'El nombre debe tener máximo 35 letras',
-        'string.pattern.base': 'El nombre debe contener solo letras',
-      })
-      .required(),
-    email: Joi.string()
-      .regex(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/)
-      .trim()
-      .messages({
-        'string.empty': 'Este campo es requerido',
-        'string.min': 'El email debe contener al menos 3 letras',
-        'string.pattern.base': 'Formato de email no es válido',
-      })
-      .required(),
+  clientContact: Joi.string()
+    .min(3)
+    .max(35)
+    .messages({
+      'string.base': 'El contacto del cliente debe ser un string',
+      'string.min': 'El contacto del cliente debe tener al menos 3 letras',
+      'string.empty': 'Es requerido ingresar un contacto del cliente',
+    })
+    .required(),
+
+  clientEmail: Joi.string()
+    .regex(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
+    .min(20)
+    .messages({
+      'string.pattern.base': 'Email no válido.',
+      'string.empty': 'Email es un campo requerido',
+      'string.min': 'Email debe contener al menos tres caracteres.',
+    })
+    .required(),
+
+  relationshipStart: Joi.date().less('now').messages({
+    'date.less': 'La fecha de inicio debe ser menor que la fecha actual',
   }),
 
-  relationshipStart: Joi.date()
-    .less('now')
-    .messages({
-      'date.less': 'La fecha de inicio debe ser anterior a la fecha actual',
-    })
-    .allow(null),
+  relationshipEnd: Joi.date().greater(Joi.ref('relationshipStart')).messages({
+    'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
+  }),
 
-  relationshipEnd: Joi.date()
-    .greater(Joi.ref('relationshipStart'))
-    .messages({
-      'date.greater': 'Fecha de fin debe ser posterior a la fecha de inicio',
-    })
-    .allow(null), //TO DO: revisar componente. Tira error -en inglés- cuando el campo esta vacío.
-}).options({ allowUnknown: true });
+  notes: Joi.string().min(0).max(35).messages({
+    'string.base': 'Notas tiene que ser un string',
+    'string.min': 'Notes no debe contener más de  3 letras',
+  }),
+});
 
 export default {
   clientValidation,

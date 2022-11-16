@@ -13,7 +13,7 @@ export interface ProjectData {
   projectName: string;
   projectType: string;
   clientName: Client;
-  members: Member[];
+  members?: Member[];
 }
 
 export interface MappedProjectData extends Omit<ProjectData, 'members' | 'clientName'> {
@@ -22,14 +22,14 @@ export interface MappedProjectData extends Omit<ProjectData, 'members' | 'client
 }
 
 export enum ProjectType {
-  ProductBuilding = 'Product Building',
-  StaffAugmentation = 'Staff Augmentation',
+  PRODUCT_BUILDING = 'PRODUCT_BUILDING',
+  STAFF_AUGMENTATION = 'STAFF_AUGMENTATION',
 }
 
 export enum Criticality {
-  Alta = 'Alta',
-  Media = 'Media',
-  Baja = 'Baja',
+  ALTA = 'ALTA',
+  MEDIA = 'MEDIA',
+  BAJA = 'BAJA',
 }
 
 export type ProjectFormValues = {
@@ -37,10 +37,10 @@ export type ProjectFormValues = {
   projectName: string;
   projectType: ProjectType;
   clientName: string;
-  startDate: string;
-  endDate?: string;
-  criticality: Criticality;
-  members: Member[];
+  startDate: Date;
+  endDate?: Date;
+  isCritic: Criticality;
+  members?: Member[];
   description: string;
   notes: string;
 };

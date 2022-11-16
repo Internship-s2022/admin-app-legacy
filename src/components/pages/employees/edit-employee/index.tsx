@@ -18,7 +18,7 @@ import { AppDispatch } from 'src/types';
 
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
-import editEmployeeValidations from './validations';
+import employeeValidations from './validations';
 
 const EditEmployee = () => {
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ const EditEmployee = () => {
       notes: '',
     },
     mode: 'onBlur',
-    resolver: joiResolver(editEmployeeValidations),
+    resolver: joiResolver(employeeValidations),
   });
 
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);

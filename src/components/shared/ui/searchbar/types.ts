@@ -5,5 +5,5 @@ export interface SearchBarProps<T> {
 }
 
 export interface SearchData {
-  _id: string;
+  _id?: string;
 }

@@ -1,42 +1,98 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { UiRoutes } from 'src/constants';
+import { getClients } from 'src/redux/client/thunks';
+import { cleanSelectedProject } from 'src/redux/project/actions';
+import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
+import { RootState } from 'src/redux/store';
 import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import styles from './addNewProject.module.css';
 import { criticalityOptions, projectTypeOptions } from './constants';
+import { projectValidation } from './validations';
 
 const AddNewProject = () => {
-  const { control } = useForm<ProjectFormValues>({
-    defaultValues: {
-      projectName: '',
-      clientName: '',
-      startDate: Date.now().toString(),
-      endDate: Date.now().toString(),
-      projectType: ProjectType.StaffAugmentation,
-      criticality: Criticality.Baja,
-      description: '',
-      notes: '',
-      members: [],
-    },
-    mode: 'onBlur',
-  });
-
+  const { id } = useParams();
+  const dispatch: AppDispatch<null> = useDispatch();
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
   };
-  const dispatch: AppDispatch<null> = useDispatch();
+
+  const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
+  const clientList = useSelector((state: RootState) =>
+    state.client.list?.reduce((acc, item) => {
+      if (item.isActive) {
+        acc.push({ value: item._id, label: item.name });
+      }
+      return acc;
+    }, []),
+  );
+
+  const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
+    defaultValues: {
+      projectName: '',
+      clientName: '',
+      startDate: new Date(Date.now()),
+      endDate: new Date(Date.now()),
+      projectType: ProjectType.STAFF_AUGMENTATION,
+      isCritic: Criticality.ALTA,
+      description: '',
+      notes: '',
+    },
+    mode: 'onBlur',
+    resolver: joiResolver(projectValidation),
+  });
+
+  const onSubmit = (data) => {
+    const options = {
+      id: id,
+      body: JSON.stringify({
+        projectName: data.projectName,
+        clientName: data.clientName,
+        startDate: data.startDate,
+        endDate: data.endDate,
+        projectType: data.projectType,
+        isCritic: data.isCritic,
+        description: data.description,
+        notes: data.notes,
+      }),
+    };
+    id ? dispatch(editProject(options)) : dispatch(createProject(options));
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
+  };
+
+  useEffect(() => {
+    dispatch(getClients());
+    id && dispatch(getProjectById(id));
+    return () => {
+      dispatch(cleanSelectedProject());
+    };
+  }, []);
+
+  useEffect(() => {
+    reset({
+      projectName: selectedProject.projectName,
+      clientName: selectedProject.clientName?._id,
+      startDate: selectedProject.startDate,
+      endDate: selectedProject.endDate,
+      projectType: selectedProject.projectType as ProjectType,
+      isCritic: selectedProject.isCritic as Criticality,
+      description: selectedProject.description,
+      notes: selectedProject.notes,
+    });
+  }, [selectedProject]);
 
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className={styles.formContainer}>
         <div className={styles.handleLeftContainer}>
           <div className={styles.leftSide}>
@@ -65,13 +121,12 @@ const AddNewProject = () => {
             </div>
             <div className={styles.middleColumn}>
               <div className={styles.elementContainer}>
-                <TextInput
+                <Dropdown
                   control={control}
                   testId={'clientName'}
-                  label="Cliente"
+                  label={'Cliente'}
                   name="clientName"
-                  type={'text'}
-                  variant="outlined"
+                  options={clientList}
                   fullWidth
                 />
               </div>
@@ -80,7 +135,7 @@ const AddNewProject = () => {
                   control={control}
                   testId={'criticality'}
                   label="Criticidad"
-                  name="criticality"
+                  name="isCritic"
                   options={criticalityOptions}
                   fullWidth
                 />
@@ -104,7 +159,7 @@ const AddNewProject = () => {
                 <Button
                   testId="saveButton"
                   materialVariant={Variant.CONTAINED}
-                  onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
+                  onClick={handleSubmit(onSubmit)}
                   label="Guardar"
                 />
               </div>
