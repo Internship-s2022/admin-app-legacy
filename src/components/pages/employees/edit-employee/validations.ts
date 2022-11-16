@@ -1,5 +1,6 @@
 import Joi from 'joi';
 
+import { RoleType } from '../../storybook/types';
 import { Seniority } from '../types';
 
 const employeeValidations = Joi.object({
