@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
-import { AbsencesData } from 'src/components/pages/employees/Edit-employee/AbsencesModal/types';
+import { AbsencesData } from 'src/components/pages/employees/edit-employee/absencesModal/types';
 import { Projects, User } from 'src/components/pages/employees/types';
 
 import * as actions from './actions';

@@ -1,7 +1,7 @@
 export { default as Clients } from './clients';
 export { default as ClientsForm } from './clients/clientForm';
 export { default as Employees } from './employees';
-export { default as EditEmployee } from './employees/Edit-employee';
+export { default as EditEmployee } from './employees/edit-employee';
 export { default as Home } from './home';
 export { default as Login } from './login';
 export { default as Projects } from './projects';

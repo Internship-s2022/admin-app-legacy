@@ -17,7 +17,7 @@ import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
-import AbsencesModal from './AbsencesModal';
+import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
 import employeeValidations from './validations';
@@ -34,11 +34,11 @@ const EditEmployee = () => {
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
 
   const formattedProjects = latestProjects?.map((item) => ({
-    id: item?.project?._id ? item?.project?._id : '-',
-    name: item?.project?.projectName ? item?.project?.projectName : '-',
+    id: item?.project?._id || '-',
+    name: item?.project?.projectName || '-',
     role: item?.role ? item?.role : '-',
-    startDate: item?.startDate ? item?.startDate : '-',
-    endDate: item?.endDate ? item?.endDate : '-',
+    startDate: item?.startDate || '-',
+    endDate: item?.endDate || '-',
   }));
 
   const [absences, setAbsences] = React.useState(matchedEmployee?.absences || []);

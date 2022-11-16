@@ -1,5 +1,5 @@
-import { Motives } from './Edit-employee/AbsencesModal/constants';
-import { AbsencesData } from './Edit-employee/AbsencesModal/types';
+import { Motives } from './edit-employee/absencesModal/constants';
+import { AbsencesData } from './edit-employee/absencesModal/types';
 
 export interface EmployeeData {
   _id: string;
