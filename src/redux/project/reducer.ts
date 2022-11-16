@@ -25,12 +25,29 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
+        error: undefined,
       };
     case Actions.GET_PROJECTS_ERROR:
       return {
         ...state,
         isLoading: false,
         error: { ...action.payload },
+      };
+    case Actions.GET_PROJECT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        selectedProject: action.payload,
+      };
+    case Actions.GET_PROJECT_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_PROJECT_BY_ID_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
       };
     case Actions.CREATE_PROJECT_PENDING:
       return {
@@ -72,22 +89,25 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         error: { ...action.payload },
         isLoading: false,
       };
-    case Actions.GET_PROJECT_BY_ID_SUCCESS:
-      return {
-        ...state,
-        selectedProject: action.payload,
-      };
-    case Actions.GET_PROJECT_BY_ID_PENDING:
+    case Actions.DELETE_PROJECT_PENDING:
       return {
         ...state,
         isLoading: true,
       };
-    case Actions.GET_PROJECT_BY_ID_ERROR:
+    case Actions.DELETE_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter((project) => project._id !== action.payload),
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.DELETE_PROJECT_ERROR:
       return {
         ...state,
         error: { ...action.payload },
         isLoading: false,
       };
+
     case Actions.CLEAN_SELECTED_PROJECT:
       return {
         ...state,

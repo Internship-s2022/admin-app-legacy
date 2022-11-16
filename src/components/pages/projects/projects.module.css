@@ -11,7 +11,18 @@ h1 {
   font-weight: 500;
 }
 
-.topTableContainer {
+.welcomeMessage {
+  display: flex;
+  justify-content: flex-start;
+  margin: 69px 0 34px;
+}
+
+.welcomeMessage h1 {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.inputsContainer {
   display: flex;
   align-self: center;
   justify-content: space-between;

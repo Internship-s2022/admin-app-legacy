@@ -1,15 +1,18 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Table } from 'src/components/shared/ui';
+import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
-import { getProjects } from 'src/redux/project/thunk';
+import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
+import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -18,39 +21,45 @@ import styles from './projects.module.css';
 import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
+  const [row, setRow] = React.useState({} as any);
+
+  const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
-  const mappedProjectList = useMemo(
+
+  const activeProjectsList = useMemo(
     () =>
-      projectList.map((project) => {
-        return {
-          _id: project?._id,
-          projectName: project?.projectName && `${capitalizeFirstLetter(project.projectName)}`,
-          clientName:
-            project?.clientName.name && `${capitalizeFirstLetter(project.clientName.name)}`,
-          projectType: project?.projectType && formattedProjectType[project.projectType],
-          startDate: project?.startDate.toString(),
-          endDate: project?.endDate.toString(),
-          criticality: project?.isCritic,
-          description: project?.description,
-          active: project?.isActive?.toString(),
-          members: formattedTableData(project?.members, 'fullName'),
-          notes: project?.notes,
-        };
-      }),
+      projectList.reduce((acc, item) => {
+        if (item.isActive) {
+          acc.push({
+            _id: item?._id,
+            projectName: item?.projectName && `${capitalizeFirstLetter(item.projectName)}`,
+            clientName: item?.clientName.name && `${capitalizeFirstLetter(item.clientName.name)}`,
+            projectType: item?.projectType && formattedProjectType[item.projectType],
+            startDate: item?.startDate.toString(),
+            endDate: item?.endDate.toString(),
+            criticality: item?.isCritic,
+            description: item?.description,
+            active: item?.isActive?.toString(),
+            members: formattedTableData(item?.members, 'fullName'),
+            notes: item?.notes,
+          });
+        }
+        return acc;
+      }, []),
     [projectList],
   );
 
   const projectError = useSelector((state: RootState) => state.project?.error);
 
-  const [filteredList, setFilteredList] = useState(mappedProjectList);
+  const [filteredList, setFilteredList] = useState(activeProjectsList);
 
   useEffect(() => {
     dispatch(getProjects());
   }, []);
 
   useEffect(() => {
-    setFilteredList(mappedProjectList);
+    setFilteredList(activeProjectsList);
   }, [projectList]);
 
   const navigate = useNavigate();
@@ -65,6 +74,10 @@ const Projects = () => {
   const handleFilteredList = (data) => {
     setFilteredList(data);
   };
+  const handleDelete = async (id) => {
+    await dispatch(deleteProject(id));
+    dispatch(closeModal());
+  };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
@@ -76,9 +89,19 @@ const Projects = () => {
         return handleEdit(row);
       },
     },
+    {
+      active: true,
+      label: 'X',
+      testId: 'deleteButton',
+      variant: Variant.CONTAINED,
+      onClick: (data) => {
+        dispatch(openModal());
+        setRow(data);
+      },
+    },
   ];
 
-  const showErrorMessage = projectError?.networkError || !mappedProjectList.length;
+  const showErrorMessage = projectError?.networkError || !activeProjectsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -89,12 +112,14 @@ const Projects = () => {
     />
   ) : (
     <div className={styles.container}>
-      <h1>Lista de proyectos</h1>
-      <div className={styles.topTableContainer}>
+      <div className={styles.welcomeMessage}>
+        <Typography variant="h1">Lista de proyectos</Typography>
+      </div>
+      <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchProjectData>
             setFilteredList={handleFilteredList}
-            details={mappedProjectList}
+            details={activeProjectsList}
             mainArray={projectFilterOptions}
           />
         </div>
@@ -108,8 +133,8 @@ const Projects = () => {
           />
         </div>
       </div>
-      {filteredList.length ? (
-        <div className={styles.tableContainer}>
+      <div className={styles.tableContainer}>
+        {filteredList.length ? (
           <Table<MappedProjectData>
             showButtons
             testId={'projectsTable'}
@@ -117,19 +142,36 @@ const Projects = () => {
             value={filteredList}
             buttons={buttonsArray}
           />
-        </div>
-      ) : (
-        <>
-          <div className={styles.notFound}>
-            <div className={styles.notFoundTitle}>
-              No han encontrado resultados que coincidan con tu búsqueda
+        ) : (
+          <>
+            <div className={styles.notFound}>
+              <div className={styles.notFoundTitle}>
+                No han encontrado resultados que coincidan con tu búsqueda
+              </div>
+              <div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                  alt="Not found"
+                ></img>
+              </div>
             </div>
-            <div>
-              <img src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`} alt="Not found"></img>
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
+      <Modal
+        testId="deleteModal"
+        styles={styles.modal}
+        isOpen={showModal}
+        onClose={() => dispatch(closeModal())}
+      >
+        <DeleteConfirmation
+          resource={Resources.Proyectos}
+          id={row._id}
+          name={row.name}
+          handleDelete={handleDelete}
+          onClose={() => dispatch(closeModal())}
+        />
+      </Modal>
     </div>
   );
 };
