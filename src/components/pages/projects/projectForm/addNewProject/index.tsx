@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import { UiRoutes } from 'src/constants';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
@@ -21,6 +22,10 @@ import { projectValidation } from './validations';
 const AddNewProject = () => {
   const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
+  const navigate = useNavigate();
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
 
   const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
   const clientList = useSelector((state: RootState) =>
@@ -62,6 +67,7 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
 
   useEffect(() => {
