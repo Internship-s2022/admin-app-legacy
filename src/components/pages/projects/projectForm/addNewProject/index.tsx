@@ -21,6 +21,7 @@ import { projectValidation } from './validations';
 const AddNewProject = () => {
   const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
+
   const selectedProject = useSelector((state: RootState) => state.project?.selectedProject);
   const clientList = useSelector((state: RootState) =>
     state.client.list?.reduce((acc, item) => {
