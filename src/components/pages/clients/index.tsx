@@ -49,7 +49,6 @@ const Clients = () => {
   const navigate = useNavigate();
 
   const [filteredList, setFilteredList] = useState(activeClientsList);
-
   useEffect(() => setFilteredList(activeClientsList), [activeClientsList.length]);
 
   const handleDelete = async (id) => {

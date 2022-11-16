@@ -22,8 +22,8 @@ const Admin = (): JSX.Element => {
       <Route path={UiRoutes.CLIENTS_FORM} element={<ClientsForm />} />
       <Route path={`${UiRoutes.CLIENTS_FORM}/:id`} element={<ClientsForm />} />
       <Route path={UiRoutes.PROJECTS} element={<Projects />} />
-      <Route path={UiRoutes.ADD_PROJECTS} element={<AddProjects />} />
-      <Route path={`${UiRoutes.ADD_PROJECTS}/:id`} element={<AddProjects />} />
+      <Route path={UiRoutes.PROJECTS_FORM} element={<AddProjects />} />
+      <Route path={`${UiRoutes.PROJECTS_FORM}/:id`} element={<AddProjects />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

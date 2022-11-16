@@ -59,7 +59,7 @@ const Projects = () => {
   };
 
   const handleEdit = (row) => {
-    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_PROJECTS}/${row._id}`);
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
   const handleFilteredList = (data) => {
@@ -84,7 +84,7 @@ const Projects = () => {
     <EmptyDataHandler
       resource={Resources.Proyectos}
       handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
-      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.ADD_PROJECTS}`)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
       error={projectError}
     />
   ) : (
@@ -101,7 +101,7 @@ const Projects = () => {
         <div className={styles.addUserButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation('/admin/projects/form')}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
             label={'+ Agregar proyecto'}
             testId={'addProjectButton'}
             styles={'addButton'}

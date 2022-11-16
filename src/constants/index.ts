@@ -51,7 +51,7 @@ export enum UiRoutes {
   EMPLOYEES = '/employees',
   EDIT_EMPLOYEES = '/employees/edit',
   PROJECTS = '/projects',
-  ADD_PROJECTS = '/projects/add',
+  PROJECTS_FORM = '/projects/form',
   CLIENTS = '/clients',
   CLIENTS_FORM = '/clients/form',
 }
