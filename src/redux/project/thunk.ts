@@ -8,6 +8,7 @@ import {
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
+import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
 import {
   createProjectError,
@@ -26,7 +27,7 @@ import {
   getProjectsPending,
   getProjectsSuccess,
 } from './actions';
-import { AppThunk, Project } from './types';
+import { Project } from './types';
 
 export const getProjects: AppThunk = () => {
   return async (dispatch: Dispatch) => {
