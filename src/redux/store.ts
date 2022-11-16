@@ -6,6 +6,7 @@ import { composeWithDevTools } from '@redux-devtools/extension';
 import authReducer from './auth/reducer';
 import clientReducer from './client/reducer';
 import employeeReducer from './employee/reducer';
+import memberReducer from './member/reducer';
 import projectReducer from './project/reducer';
 import uiReducer from './ui/reducer';
 import userReducer from './user/reducer';
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   client: clientReducer,
   ui: uiReducer,
   auth: authReducer,
+  member: memberReducer,
 });
 
 const configureStore = () => {
