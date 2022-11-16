@@ -1,7 +1,8 @@
+import { FieldValues, UseControllerProps } from 'react-hook-form';
 import { SwitchProps } from '@mui/material';
 
-export type ToggleButtonProps = {
+export type ToggleButtonProps<Form extends FieldValues> = {
   testId: string;
-  handleChange: (checked: boolean) => void;
   styles?: string;
-} & SwitchProps;
+} & UseControllerProps<Form> &
+  SwitchProps;

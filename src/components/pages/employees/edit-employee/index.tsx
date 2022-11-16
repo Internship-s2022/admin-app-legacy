@@ -1,21 +1,23 @@
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { FormValues, Seniority } from 'src/components/pages/employees/types';
-import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import { Absences, FormValues, Seniority } from 'src/components/pages/employees/types';
+import { Button, DatePicker, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
-import DateIntervalPicker from 'src/components/shared/ui/inputs/date-picker-interval';
 import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
+import AbsencesModal from './AbsencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
 import employeeValidations from './validations';
@@ -25,11 +27,13 @@ const EditEmployee = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const params = useParams();
 
-  const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(null);
-  const [selected, setSelected] = React.useState(false);
-
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+  const [absences, setAbsences] = React.useState(
+    matchedEmployee?.absences ? matchedEmployee?.absences : [],
+  );
+
+  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
 
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
@@ -45,10 +49,11 @@ const EditEmployee = () => {
         seniority: matchedEmployee?.seniority as Seniority,
         skills: matchedEmployee?.skills || [],
         potentialRole: matchedEmployee?.potentialRole,
-        availability: false,
+        availability: matchedEmployee?.availability,
         projectHistory: [],
         careerPlan: matchedEmployee?.careerPlan,
         notes: matchedEmployee?.notes,
+        absences: matchedEmployee?.absences,
       });
     } else {
       navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
@@ -72,12 +77,11 @@ const EditEmployee = () => {
       projectHistory: [],
       careerPlan: '',
       notes: '',
+      absences: [],
     },
     mode: 'onBlur',
     resolver: joiResolver(employeeValidations),
   });
-
-  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
 
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
 
@@ -89,24 +93,32 @@ const EditEmployee = () => {
     endDate: item?.endDate ? item?.endDate : '-',
   }));
 
-  const handleStartDate = (date) => {
-    setStartDate(date);
-  };
-
-  const handleEndDate = (date) => {
-    setEndDate(date);
-  };
-
-  const handleToggleChange = (checked: boolean): void => {
-    setSelected(checked);
-  };
-
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  const handleAbsence = (data) => {
+    setAbsences(data);
+  };
+
+  const handleAbsenceDelete = (e, indexToDelete) => {
+    e.preventDefault();
+    const newData = absences.filter((_, index) => index !== indexToDelete);
+    setAbsences(newData);
+  };
+
   const onSubmit = async (data) => {
-    const { id, ...rest } = data;
+    const body = {
+      ...data,
+      absences: absences.map((item) => {
+        return {
+          startDate: item.startDate,
+          endDate: item.endDate,
+          motive: item.motive,
+        };
+      }),
+    };
+    const { id, user, projectHistory, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
@@ -180,25 +192,45 @@ const EditEmployee = () => {
               </div>
               <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
                 <div className={styles.availability}>Disponibilidad</div>
-                <ToggleButton
-                  handleChange={handleToggleChange}
-                  testId="toggleButtonTestId"
-                  checked={selected}
-                  name="availability"
-                />
+                <ToggleButton control={control} testId="toggleButtonTestId" name="availability" />
                 <div className={styles.addAbsenceContainer}>
-                  <div className={styles.absenceTitle}>Ausencias</div>
-                  <div className={styles.buttonAbsences}>
-                    <Button
-                      testId="absencesButton"
-                      materialVariant={Variant.CONTAINED}
-                      onClick={() => undefined}
-                      label="+ Agregar ausencias"
-                      styles={styles.buttonText}
-                    />
+                  <div className={styles.absencesButton}>
+                    <div className={styles.absenceTitle}>Ausencias</div>
+                    <div className={styles.buttonAbsences}>
+                      <Button
+                        testId="absencesButton"
+                        materialVariant={Variant.CONTAINED}
+                        onClick={() => dispatch(openModal())}
+                        label="+ Agregar ausencias"
+                        styles={styles.buttonText}
+                      />
+                    </div>
                   </div>
+                  <>
+                    <div className={styles.absencesContainer}>
+                      {absences.length ? (
+                        absences.map((item, index) => {
+                          return (
+                            <div key={index} className={styles.newAbsences}>
+                              {`${item?.motive}: ${format(
+                                new Date(item?.startDate),
+                                'MM/dd/yyyy',
+                              )} - ${format(new Date(item?.endDate), 'MM/dd/yyyy')}`}
+                              <button
+                                className={styles.deleteAbsence}
+                                onClick={(e) => handleAbsenceDelete(e, index)}
+                              >
+                                X
+                              </button>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className={styles.noAbsences}>No hay ausencias programadas</div>
+                      )}
+                    </div>
+                  </>
                 </div>
-                <div className={styles.noAbsences}>No hay ausencias programadas</div>
               </div>
             </div>
             <div className={styles.thirdColumn}>
@@ -287,12 +319,6 @@ const EditEmployee = () => {
             </div>
           </div>
         </div>
-        <DateIntervalPicker
-          setStart={handleStartDate}
-          setEnd={handleEndDate}
-          startDate={startDate}
-          endDate={endDate}
-        />
         <div className={styles.buttonContainer}>
           <div>
             <Button
@@ -312,6 +338,15 @@ const EditEmployee = () => {
           </div>
         </div>
       </form>
+      <div>
+        <Modal
+          testId={'employee-absences-modal'}
+          isOpen={showModal}
+          onClose={() => dispatch(closeModal())}
+        >
+          <AbsencesModal setAbsence={handleAbsence} open={showModal} absences={absences} />
+        </Modal>
+      </div>
     </div>
   );
 };
