@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Absences, FormValues, Seniority } from 'src/components/pages/employees/types';
+import { FormValues, Seniority } from 'src/components/pages/employees/types';
 import { Button, DatePicker, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -27,13 +27,44 @@ const EditEmployee = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const params = useParams();
 
+  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
-  const [absences, setAbsences] = React.useState(
-    matchedEmployee?.absences ? matchedEmployee?.absences : [],
-  );
 
-  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
+  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
+
+  const formattedProjects = latestProjects?.map((item) => ({
+    id: item?.project?._id ? item?.project?._id : '-',
+    name: item?.project?.projectName ? item?.project?.projectName : '-',
+    role: item?.role ? item?.role : '-',
+    startDate: item?.startDate ? item?.startDate : '-',
+    endDate: item?.endDate ? item?.endDate : '-',
+  }));
+
+  const [absences, setAbsences] = React.useState(matchedEmployee?.absences || []);
+
+  const { handleSubmit, control, reset } = useForm<FormValues>({
+    defaultValues: {
+      id: '',
+      user: {
+        birthDate: new Date(Date.now()),
+        email: '',
+        firstName: '',
+        lastName: '',
+        _id: '',
+      },
+      seniority: Seniority.JR,
+      skills: [],
+      potentialRole: [],
+      availability: true,
+      projectHistory: [],
+      careerPlan: '',
+      notes: '',
+      absences: [],
+    },
+    mode: 'onBlur',
+    resolver: joiResolver(employeeValidations),
+  });
 
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
@@ -59,39 +90,6 @@ const EditEmployee = () => {
       navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
     }
   }, []);
-
-  const { handleSubmit, control, reset } = useForm<FormValues>({
-    defaultValues: {
-      id: '',
-      user: {
-        birthDate: new Date(Date.now()),
-        email: '',
-        firstName: '',
-        lastName: '',
-        _id: '',
-      },
-      seniority: Seniority.JR,
-      skills: [],
-      potentialRole: [],
-      availability: false,
-      projectHistory: [],
-      careerPlan: '',
-      notes: '',
-      absences: [],
-    },
-    mode: 'onBlur',
-    resolver: joiResolver(employeeValidations),
-  });
-
-  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
-
-  const formattedProjects = latestProjects?.map((item) => ({
-    id: item?.project?._id ? item?.project?._id : '-',
-    name: item?.project?.projectName ? item?.project?.projectName : '-',
-    role: item?.role ? item?.role : '-',
-    startDate: item?.startDate ? item?.startDate : '-',
-    endDate: item?.endDate ? item?.endDate : '-',
-  }));
 
   const handleNavigation = (path) => {
     navigate(path);

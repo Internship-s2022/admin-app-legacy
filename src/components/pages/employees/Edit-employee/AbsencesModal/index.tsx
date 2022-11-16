@@ -16,12 +16,12 @@ import { AbsencesModalProps, FormAbsencesValue } from './types';
 import { absencesValidations } from './validations';
 
 const AbsencesModal = (props: AbsencesModalProps) => {
+  const { setAbsence, absences } = props;
+
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
 
   const dispatch: AppDispatch<null> = useDispatch();
-
-  const { setAbsence, absences } = props;
 
   const { handleSubmit, control, reset } = useForm<FormAbsencesValue>({
     defaultValues: {
@@ -33,6 +33,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
     resolver: joiResolver(absencesValidations),
   });
 
+  useEffect(() => {
+    reset({
+      startDate: format(new Date(startDate), 'MM/dd/yyyy'),
+      endDate: format(new Date(endDate), 'MM/dd/yyyy'),
+    });
+  }, [startDate, endDate]);
+
   const handleStartDate = (date) => {
     setStartDate(date);
   };
@@ -41,20 +48,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
     setEndDate(date);
   };
 
-  useEffect(() => {
-    reset({
-      startDate: format(new Date(startDate), 'MM/dd/yyyy'),
-      endDate: format(new Date(endDate), 'MM/dd/yyyy'),
-    });
-  }, [startDate, endDate]);
-
   const onClose = () => {
     reset();
     dispatch(closeModal());
   };
 
   const onSubmit = (data) => {
-    setAbsence(() => [...absences, { ...data }]);
+    setAbsence([...absences, { ...data }]);
     onClose();
   };
 

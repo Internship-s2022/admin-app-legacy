@@ -1,6 +1,6 @@
 import React from 'react';
 
-import EditEmployee from 'src/components/pages/employees/edit-employee';
+import EditEmployee from 'src/components/pages/employees/Edit-employee';
 import customRender from 'src/utils/customRender';
 
 describe('Edit Employee page - Unit Testing', () => {
