@@ -1,8 +1,4 @@
-export enum Motives {
-  VACATIONS = 'VACATIONS',
-  LICENSE = 'LICENSE',
-  STUDY = 'STUDY',
-}
+import { Motives } from './types';
 
 export const motiveOptions = [
   { value: Motives.VACATIONS, label: 'Vacaciones' },

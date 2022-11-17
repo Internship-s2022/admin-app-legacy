@@ -11,8 +11,8 @@ import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import styles from './absences.module.css';
-import { motiveOptions, Motives } from './constants';
-import { AbsencesModalProps, FormAbsencesValue } from './types';
+import { motiveOptions } from './constants';
+import { AbsencesModalProps, FormAbsencesValue, Motives } from './types';
 import { absencesValidations } from './validations';
 
 const AbsencesModal = (props: AbsencesModalProps) => {
@@ -23,7 +23,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const { handleSubmit, control, reset } = useForm<FormAbsencesValue>({
+  const { handleSubmit, control, reset, getValues } = useForm<FormAbsencesValue>({
     defaultValues: {
       motive: '' as Motives,
       startDate: '',
@@ -35,6 +35,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
 
   useEffect(() => {
     reset({
+      motive: getValues('motive'),
       startDate: format(new Date(startDate), 'dd/MM/yyyy'),
       endDate: format(new Date(endDate), 'dd/MM/yyyy'),
     });

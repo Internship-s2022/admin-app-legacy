@@ -15,3 +15,9 @@ export interface FormAbsencesValue {
   startDate: string;
   endDate: string;
 }
+
+export enum Motives {
+  VACATIONS = 'VACATIONS',
+  LICENSE = 'LICENSE',
+  STUDY = 'STUDY',
+}

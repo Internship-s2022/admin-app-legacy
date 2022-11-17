@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
+import { Motives } from 'src/components/pages/employees/edit-employee/absencesModal/types';
 import { FormValues, Seniority } from 'src/components/pages/employees/types';
 import { Button, DatePicker, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
@@ -103,6 +104,17 @@ const EditEmployee = () => {
     e.preventDefault();
     const newData = absences.filter((_, index) => index !== indexToDelete);
     setAbsences(newData);
+  };
+
+  const motiveLabel = (item) => {
+    switch (item) {
+      case Motives.LICENSE:
+        return 'Licencia';
+      case Motives.STUDY:
+        return 'Estudio';
+      case Motives.VACATIONS:
+        return 'Vacaciones';
+    }
   };
 
   const onSubmit = async (data) => {
@@ -210,10 +222,10 @@ const EditEmployee = () => {
                         absences.map((item, index) => {
                           return (
                             <div key={index} className={styles.newAbsences}>
-                              {`${item?.motive}: ${format(
+                              {`${motiveLabel(item.motive)}: ${format(
                                 new Date(item?.startDate),
-                                'MM/dd/yyyy',
-                              )} - ${format(new Date(item?.endDate), 'MM/dd/yyyy')}`}
+                                'dd/MM/yyyy',
+                              )} - ${format(new Date(item?.endDate), 'dd/MM/yyyy')}`}
                               <button
                                 className={styles.deleteAbsence}
                                 onClick={(e) => handleAbsenceDelete(e, index)}
