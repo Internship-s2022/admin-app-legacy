@@ -17,13 +17,14 @@ import styles from './projectForm.module.css';
 
 const ProjectForm = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const handleNavigation = (path) => {
     navigate(path);
   };
 
   const dispatch: AppDispatch<null> = useDispatch();
   const showModal = useSelector((state: RootState) => state.ui.showModal);
-  const { id } = useParams();
 
   return (
     <div className={styles.container}>

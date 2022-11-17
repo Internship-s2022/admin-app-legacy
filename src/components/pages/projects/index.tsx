@@ -27,9 +27,21 @@ const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
 
+  const formattedProjectList = useMemo(
+    () =>
+      projectList.map((project) => ({
+        ...project,
+        members: project.members?.map((member) => ({
+          ...member,
+          fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
+        })),
+      })),
+    [projectList],
+  );
+
   const activeProjectsList = useMemo(
     () =>
-      projectList.reduce((acc, item) => {
+      formattedProjectList.reduce((acc, item) => {
         if (item.isActive) {
           acc.push({
             _id: item?._id,
@@ -150,7 +162,7 @@ const Projects = () => {
               </div>
               <div>
                 <img
-                  src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                  src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
                   alt="Not found"
                 ></img>
               </div>
@@ -172,12 +184,6 @@ const Projects = () => {
           onClose={() => dispatch(closeModal())}
         />
       </Modal>
-      <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
-          alt="Not found"
-        ></img>
-      </div>
     </div>
   );
 };
