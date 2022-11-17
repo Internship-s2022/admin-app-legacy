@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { TextField } from '@mui/material';
 
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -153,7 +152,6 @@ const AddMemberForm = () => {
             </div>
           </form>
         </div>
-        {/* <div className={styles.calendarContainer}></div> */}
       </div>
     </div>
   );
