@@ -35,8 +35,8 @@ const AbsencesModal = (props: AbsencesModalProps) => {
 
   useEffect(() => {
     reset({
-      startDate: format(new Date(startDate), 'MM/dd/yyyy'),
-      endDate: format(new Date(endDate), 'MM/dd/yyyy'),
+      startDate: format(new Date(startDate), 'dd/MM/yyyy'),
+      endDate: format(new Date(endDate), 'dd/MM/yyyy'),
     });
   }, [startDate, endDate]);
 
@@ -54,7 +54,12 @@ const AbsencesModal = (props: AbsencesModalProps) => {
   };
 
   const onSubmit = (data) => {
-    setAbsence([...absences, { ...data }]);
+    const body = {
+      ...data,
+      startDate: format(new Date(startDate), 'MM/dd/yyyy'),
+      endDate: format(new Date(endDate), 'MM/dd/yyyy'),
+    };
+    setAbsence([...absences, { ...body }]);
     onClose();
   };
 
