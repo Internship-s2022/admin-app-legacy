@@ -1,3 +1,4 @@
+import { max, min } from 'date-fns';
 import React from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
@@ -6,11 +7,23 @@ import { InputProps } from './types';
 
 const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element => {
   const {
+    label,
+    type,
+    variant,
+    styles,
+    testId,
+    multiline,
+    rows,
+    color = 'info',
+    disabled,
+    inputProps,
+  } = props;
+
+  const {
     field,
     fieldState: { error },
   } = useController(props);
 
-  const { label, type, variant, styles, testId, multiline, rows, color = 'info', disabled } = props;
   return (
     <div>
       <TextField
@@ -27,6 +40,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         rows={rows}
         disabled={disabled}
         color={color}
+        inputProps={inputProps}
       />
     </div>
   );
