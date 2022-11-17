@@ -167,7 +167,7 @@ const Projects = () => {
         <DeleteConfirmation
           resource={Resources.Proyectos}
           id={row._id}
-          name={row.name}
+          name={row.projectName}
           handleDelete={handleDelete}
           onClose={() => dispatch(closeModal())}
         />
