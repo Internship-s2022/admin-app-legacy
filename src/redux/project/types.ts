@@ -21,12 +21,27 @@ export interface Project {
   notes: string;
   startDate: Date;
   endDate: Date;
-  members: string[];
+  members: Member[];
   isUpdated: boolean;
   projectType: ProjectType;
   isActive: boolean;
 }
 
+export interface Member {
+  _id: string;
+  employee: Employee;
+}
+
+export interface Employee {
+  _id: string;
+  user: User;
+}
+
+export interface User {
+  _id: string;
+  firstName: string;
+  lastName: string;
+}
 export interface ProjectState extends State<Project> {
   selectedProject?: Project;
 }

@@ -27,9 +27,17 @@ const Projects = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
 
+  const formattedProjectList = projectList.map((project) => ({
+    ...project,
+    members: project.members?.map((member) => ({
+      ...member,
+      fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
+    })),
+  }));
+
   const activeProjectsList = useMemo(
     () =>
-      projectList.reduce((acc, item) => {
+      formattedProjectList.reduce((acc, item) => {
         if (item.isActive) {
           acc.push({
             _id: item?._id,

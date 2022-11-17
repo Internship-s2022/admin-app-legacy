@@ -1,6 +1,8 @@
+import { Employee } from 'src/redux/employee/types';
+
 export interface Member {
-  firstName: string;
-  lastName: string;
+  _id;
+  fullName: string;
 }
 
 interface Client {
