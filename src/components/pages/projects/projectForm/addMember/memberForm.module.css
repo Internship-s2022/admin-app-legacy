@@ -1,7 +1,7 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
-  width: 500px;
+  width: 659px;
   height: 518px;
 }
 
@@ -20,8 +20,26 @@
 
 .memberForm {
   display: flex;
-  flex-direction: column;
+  align-self: center;
   justify-content: center;
-  width: 50%;
+  width: 90%;
   text-align: center;
+}
+
+.inputsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inputsContainer > div {
+  width: 50%;
+}
+
+.bottomContainer {
+  display: flex;
+  gap: 40px;
+}
+
+.buttonsContainer {
+  display: flex;
 }

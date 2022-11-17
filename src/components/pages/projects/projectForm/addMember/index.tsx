@@ -1,16 +1,159 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { TextField } from '@mui/material';
 
+import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import { getEmployees } from 'src/redux/employee/thunk';
+import { RootState } from 'src/redux/store';
+import { closeModal } from 'src/redux/ui/actions';
+import { AppDispatch } from 'src/types';
+
+import { roles } from './constants';
 import styles from './memberForm.module.css';
+import { FormValues, Role } from './types';
+import { memberValidations } from './validations';
 
 const AddMemberForm = () => {
+  const employeeList = useSelector((state: RootState) => state.employee.list);
+
+  const dispatch: AppDispatch<null> = useDispatch();
+
+  const employeeDropdown = employeeList.reduce((acc, item) => {
+    if (item.user.isActive) {
+      acc.push({ value: item._id, label: `${item.user.firstName} ${item.user.lastName}` });
+    }
+    return acc;
+  }, []);
+
+  const { handleSubmit, control } = useForm<FormValues>({
+    defaultValues: {
+      employee: '',
+      role: Role.DEV,
+      memberDedication: 0,
+      helper: '',
+      dependency: 0,
+      helperDedication: 0,
+      startDate: new Date(Date.now()),
+      isActive: true,
+    },
+    mode: 'onBlur',
+    resolver: joiResolver(memberValidations),
+  });
+
+  const onSubmit = (data) => {
+    console.log(data);
+  };
+
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, []);
+
   return (
     <div className={styles.modalContainer}>
       <div className={styles.headerAddMember} data-testid={'headerMessage'}>
         Agregar miembro al proyecto
       </div>
       <div className={styles.contentContainer}>
-        <div className={styles.memberForm}>TO DO Formulario</div>
-        <div className={styles.memberForm}>TO DO Calendario</div>
+        <div className={styles.memberForm}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={styles.inputsContainer}>
+              <div className={styles.memberData}>
+                <div className={styles.topContainer}>
+                  <Dropdown
+                    control={control}
+                    testId={'employeeDropdown'}
+                    label={'Empleado'}
+                    name="employee"
+                    options={employeeDropdown}
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.bottomContainer}>
+                  <Dropdown
+                    control={control}
+                    testId={'rolesDropdown'}
+                    label={'Rol'}
+                    name="role"
+                    options={roles}
+                    fullWidth
+                  />
+                  <TextInput
+                    control={control}
+                    testId={'memberDedication'}
+                    label="Dedicacion"
+                    name="memberDedication"
+                    type={'number'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+              </div>
+              <div className={styles.helperData}>
+                <div className={styles.topContainer}>
+                  <Dropdown
+                    control={control}
+                    testId={'helper'}
+                    label={'Ayudante'}
+                    name="helper"
+                    options={employeeDropdown}
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.bottomContainer}>
+                  <TextInput
+                    control={control}
+                    testId={'dependency'}
+                    label="Dependencia"
+                    name="dependency"
+                    type={'number'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                  <TextInput
+                    control={control}
+                    testId={'helperDedication'}
+                    label="Dedicacion"
+                    name="helperDedication"
+                    type={'number'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.datePickers}>
+              <DatePicker
+                label={'Inicio'}
+                testId={'startDate'}
+                name="startDate"
+                control={control}
+              />
+              <DatePicker label={'Fin'} testId={'endDate'} name="endDate" control={control} />
+            </div>
+            <div className={styles.buttonsContainer}>
+              <div>
+                <Button
+                  testId="cancelButton"
+                  materialVariant={Variant.OUTLINED}
+                  onClick={() => dispatch(closeModal())}
+                  label="Cancelar"
+                />
+              </div>
+              <div>
+                <Button
+                  testId="confirmButton"
+                  materialVariant={Variant.CONTAINED}
+                  onClick={handleSubmit(onSubmit)}
+                  label="Confirmar"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        {/* <div className={styles.calendarContainer}></div> */}
       </div>
     </div>
   );
