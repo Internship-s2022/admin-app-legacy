@@ -184,12 +184,6 @@ const Projects = () => {
           onClose={() => dispatch(closeModal())}
         />
       </Modal>
-      <div>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
-          alt="Not found"
-        ></img>
-      </div>
     </div>
   );
 };
