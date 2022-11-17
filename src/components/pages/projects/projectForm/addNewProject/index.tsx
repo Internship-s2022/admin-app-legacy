@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import { UiRoutes } from 'src/constants';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { openModal } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import MemberTable from '../memberTable';
 import styles from './addNewProject.module.css';
@@ -22,11 +22,8 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
+  const [open, setOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
-  const navigate = useNavigate();
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
 
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
 
@@ -38,6 +35,8 @@ const AddNewProject = () => {
       return acc;
     }, []),
   );
+  const projectError = useSelector((state: RootState) => state.project?.error);
+  const operation = id ? 'editado' : 'agregado';
 
   const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
     defaultValues: {
@@ -69,7 +68,7 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
+    setOpen(true);
   };
 
   useEffect(() => {
@@ -219,6 +218,13 @@ const AddNewProject = () => {
             </div>
           </div>
         </div>
+        <ConfirmationMessage
+          open={open}
+          setOpen={setOpen}
+          error={projectError}
+          resource={Resources.Proyectos}
+          operation={operation}
+        />
       </form>
     </>
   );

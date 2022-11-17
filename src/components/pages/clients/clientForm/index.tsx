@@ -9,12 +9,13 @@ import styles from 'src/components/pages/clients/clientForm/clientsForm.module.c
 import validations from 'src/components/pages/clients/validations';
 import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
@@ -22,9 +23,11 @@ import { clientsProjectsHeaders } from './constants';
 const ClientForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [open, setOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
-
+  const clientError = useSelector((state: RootState) => state.client.error);
+  const operation = id ? 'editado' : 'agregado';
   useEffect(() => {
     id && dispatch(getClientsById(id));
     return () => {
@@ -81,9 +84,10 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
-  const onSubmit = async (data) => {
-    id ? await dispatch(editClient({ body: data, id: id })) : await dispatch(addClient(data));
-    onClose();
+  const onSubmit = (data) => {
+    id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
+    // onClose();
+    setOpen(true);
   };
 
   const onClose = () => {
@@ -233,6 +237,13 @@ const ClientForm = () => {
               rows={5}
             />
           </div>
+          <ConfirmationMessage
+            open={open}
+            setOpen={setOpen}
+            error={clientError}
+            resource={Resources.Clientes}
+            operation={operation}
+          />
         </form>
         <div className={styles.buttonContainer}>
           <div>
