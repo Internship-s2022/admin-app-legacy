@@ -1,6 +1,11 @@
 import { Dispatch } from 'redux';
 
-import { addResourceRequest, editResourceRequest, getResourceRequest } from 'src/config/api';
+import {
+  addResourceRequest,
+  deleteResourceRequest,
+  editResourceRequest,
+  getResourceRequest,
+} from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
@@ -8,6 +13,9 @@ import {
   createProjectError,
   createProjectPending,
   createProjectSuccess,
+  deleteProjectError,
+  deleteProjectPending,
+  deleteProjectSuccess,
   editProjectError,
   editProjectPending,
   editProjectSuccess,
@@ -83,6 +91,23 @@ export const editProject: AppThunk = (options: { id: string; body: Project }) =>
       dispatch(setLoaderOff());
     } catch (error) {
       dispatch(editProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const deleteProject: AppThunk = (id: string) => {
+  return async (dispatch: Dispatch) => {
+    try {
+      dispatch(deleteProjectPending());
+      dispatch(setLoaderOn());
+      const response = await deleteResourceRequest(ApiRoutes.PROJECTS, id);
+      if (!response.error) {
+        dispatch(deleteProjectSuccess(id));
+      }
+      dispatch(setLoaderOff());
+    } catch (error: any) {
+      dispatch(deleteProjectError({ message: error.message, networkError: error.networkError }));
       dispatch(setLoaderOff());
     }
   };

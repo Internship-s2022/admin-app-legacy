@@ -12,6 +12,14 @@ export const getProjectsSuccess = (projects: Project[]) =>
 
 export const getProjectsError = (error: ErrorFormat) => action(Actions.GET_PROJECTS_ERROR, error);
 
+export const getProjectByIdPending = () => action(Actions.GET_PROJECT_BY_ID_PENDING);
+
+export const getProjectByIdSuccess = (project: Project) =>
+  action(Actions.GET_PROJECT_BY_ID_SUCCESS, project);
+
+export const getProjectByIdError = (error: ErrorFormat) =>
+  action(Actions.GET_PROJECT_BY_ID_ERROR, error);
+
 export const createProjectPending = () => action(Actions.CREATE_PROJECT_PENDING);
 
 export const createProjectSuccess = (project: Project) =>
@@ -27,12 +35,11 @@ export const editProjectSuccess = (project: Project, id: string) =>
 
 export const editProjectError = (error: ErrorFormat) => action(Actions.EDIT_PROJECT_ERROR, error);
 
-export const getProjectByIdPending = () => action(Actions.GET_PROJECT_BY_ID_PENDING);
+export const deleteProjectPending = () => action(Actions.DELETE_PROJECT_PENDING);
 
-export const getProjectByIdSuccess = (project: Project) =>
-  action(Actions.GET_PROJECT_BY_ID_SUCCESS, project);
+export const deleteProjectSuccess = (id: string) => action(Actions.DELETE_PROJECT_SUCCESS, id);
 
-export const getProjectByIdError = (error: ErrorFormat) =>
-  action(Actions.GET_PROJECT_BY_ID_ERROR, error);
+export const deleteProjectError = (error: ErrorFormat) =>
+  action(Actions.DELETE_PROJECT_ERROR, error);
 
 export const cleanSelectedProject = () => action(Actions.CLEAN_SELECTED_PROJECT);
