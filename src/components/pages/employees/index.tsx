@@ -39,8 +39,8 @@ const Employees = () => {
     navigate(path);
   };
 
-  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
   const [filteredList, setFilteredList] = useState(listEmployee);
+  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
@@ -102,7 +102,6 @@ const Employees = () => {
           </>
         )}
       </div>
-      <div></div>
     </>
   );
 };

@@ -53,9 +53,15 @@
 
 .addAbsenceContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
-  margin-top: 50px;
+  margin-top: 100px;
+}
+
+.absencesButton {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
 
 .textInputContainer {
@@ -192,4 +198,30 @@
 
 .buttonText {
   font-size: 0.8vw;
+}
+
+.absencesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 40px;
+  font-size: 12px;
+  font-style: italic;
+  color: #8d8d8d;
+}
+
+.deleteAbsence {
+  margin-left: 10px;
+  font-size: 13px;
+  color: #8d8d8d;
+  text-align: center;
+  background-color: #ffffff;
+  border: none;
+}
+
+.deleteAbsence:hover {
+  color: #525252;
+  cursor: pointer;
+  background-color: #c9c9c972;
+  border-radius: 10px;
 }

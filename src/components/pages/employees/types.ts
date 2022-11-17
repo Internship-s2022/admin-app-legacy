@@ -1,3 +1,5 @@
+import { AbsencesData, Motives } from './edit-employee/absencesModal/types';
+
 export interface EmployeeData {
   _id: string;
   name: string;
@@ -38,7 +40,14 @@ export type FormValues = {
   projectHistory?: Projects[];
   careerPlan: string;
   notes: string;
+  absences?: AbsencesData[];
 };
+
+export interface Absences {
+  motive: Motives;
+  start: string;
+  end: string;
+}
 
 export enum Seniority {
   JR = 'JR',
