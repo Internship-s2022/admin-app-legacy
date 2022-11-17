@@ -61,7 +61,7 @@ const Employees = () => {
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Empleados}
-      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`)}
+      handleReload={() => handleNavigation(0)}
       error={employeeError}
     />
   ) : (
