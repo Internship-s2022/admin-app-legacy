@@ -2,6 +2,7 @@ import { Action, ActionCreator } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 import { ActionType } from 'typesafe-actions';
 
+import { Role } from 'src/components/pages/projects/projectForm/addMember/types';
 import { Criticality, ProjectType } from 'src/components/pages/projects/types';
 import { State } from 'src/redux/types';
 
@@ -28,10 +29,24 @@ export interface Project {
 }
 
 export interface Member {
-  _id: string;
+  _id?: string;
   employee: Employee;
+  project?: Project;
+  role?: Role;
+  dedication?: number;
+  startDate?: Date;
+  endDate?: Date;
+  hasHelper?: boolean;
+  helper?: Helper;
+  active?: boolean;
 }
 
+export interface Helper {
+  helperReference?: Employee;
+  dependency?: number;
+  dedication?: number;
+  isActive?: boolean;
+}
 export interface Employee {
   _id: string;
   user: User;

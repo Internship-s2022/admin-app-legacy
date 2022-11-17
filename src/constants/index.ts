@@ -4,6 +4,7 @@ export enum ApiRoutes {
   PROJECTS = '/projects',
   CLIENT = '/clients',
   AUTH = '/auth',
+  MEMBER = '/members',
 }
 
 //Navbar
