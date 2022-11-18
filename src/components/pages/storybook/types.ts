@@ -8,9 +8,10 @@ export type FormValues = {
   date: Date;
   skills: [];
   potentialRole: PotentialRole[];
+  availability: boolean;
 };
 export interface MappedUserList {
-  id?: string;
+  _id?: string;
   firstName: string;
   accessRoleType: string;
 }

@@ -1,48 +1,94 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Typography } from '@mui/material';
 
-import { Button, Table } from 'src/components/shared/ui';
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
+import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SearchIcon from 'src/components/shared/ui/icons/searchIcon/searchIcon';
+import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
+import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
-import { getProjects } from 'src/redux/project/thunk';
+import { UiRoutes } from 'src/constants';
+import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { closeModal, openModal } from 'src/redux/ui/actions';
+import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
-import { formattedProjectType, membersArray, projectHeaders } from './constants';
+import { formattedProjectType, projectFilterOptions, projectHeaders } from './constants';
 import styles from './projects.module.css';
-import { MappedProjectData } from './types';
+import { MappedProjectData, SearchProjectData } from './types';
 
 const Projects = () => {
+  const [row, setRow] = React.useState({} as any);
+
+  const showModal = useSelector((state: RootState) => state.ui.showModal);
   const dispatch: AppDispatch<null> = useDispatch();
-  const listProjects = useSelector((state: RootState) => state.project.list);
+  const projectList = useSelector((state: RootState) => state.project.list);
+
+  const formattedProjectList = useMemo(
+    () =>
+      projectList.map((project) => ({
+        ...project,
+        members: project.members?.map((member) => ({
+          ...member,
+          fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
+        })),
+      })),
+    [projectList],
+  );
+
+  const activeProjectsList = useMemo(
+    () =>
+      formattedProjectList.reduce((acc, item) => {
+        if (item.isActive) {
+          acc.push({
+            _id: item?._id,
+            projectName: item?.projectName && `${capitalizeFirstLetter(item.projectName)}`,
+            clientName: item?.clientName.name && `${capitalizeFirstLetter(item.clientName.name)}`,
+            projectType: item?.projectType && formattedProjectType[item.projectType],
+            startDate: item?.startDate.toString(),
+            endDate: item?.endDate.toString(),
+            criticality: item?.isCritic,
+            description: item?.description,
+            active: item?.isActive?.toString(),
+            members: formattedTableData(item?.members, 'fullName'),
+            notes: item?.notes,
+          });
+        }
+        return acc;
+      }, []),
+    [projectList],
+  );
+
   const projectError = useSelector((state: RootState) => state.project?.error);
 
-  const formattedMember = membersArray.map((member) => {
-    const fullNameMember = `${capitalizeFirstLetter(member.firstName)} ${capitalizeFirstLetter(
-      member.lastName,
-    )}`;
-    return {
-      fullName: fullNameMember,
-    };
-  });
-
-  const mockedList = listProjects.map((project) => ({
-    ...project,
-    members: formattedMember,
-  }));
-
-  const filteredProjects = mockedList.filter((project) => project.isActive);
+  const [filteredList, setFilteredList] = useState(activeProjectsList);
 
   useEffect(() => {
     dispatch(getProjects());
   }, []);
 
+  useEffect(() => {
+    setFilteredList(activeProjectsList);
+  }, [projectList]);
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleEdit = (row) => {
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
+  };
+
+  const handleFilteredList = (data) => {
+    setFilteredList(data);
+  };
+  const handleDelete = async (id) => {
+    await dispatch(deleteProject(id));
+    dispatch(closeModal());
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -51,57 +97,93 @@ const Projects = () => {
       label: 'editar',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: () => undefined,
+      onClick: (row) => {
+        return handleEdit(row);
+      },
+    },
+    {
+      active: true,
+      label: 'X',
+      testId: 'deleteButton',
+      variant: Variant.CONTAINED,
+      onClick: (data) => {
+        dispatch(openModal());
+        setRow(data);
+      },
     },
   ];
 
-  const listProjectsData = filteredProjects.map((project): MappedProjectData => {
-    return {
-      id: project?._id,
-      projectName: `${capitalizeFirstLetter(project.projectName)}`,
-      clientName: `${capitalizeFirstLetter(project.clientName.name)}`,
-      projectType: project?.projectType && formattedProjectType[project.projectType],
-      members: formattedTableData(project.members, 'fullName'),
-    };
-  });
+  const showErrorMessage = projectError?.networkError || !activeProjectsList.length;
 
-  return !listProjects.length ? (
-    <div className={styles.noList}>
-      <div className={styles.noListTitle}>
-        <span>Lista de empleados</span>
-        <div className={styles.noListMessage}>
-          <p>No se ha podido cargar la lista de Empleados</p>
-          <p className={styles.error}>Error: {projectError}</p>
-        </div>
-      </div>
-    </div>
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Proyectos}
+      handleReload={() => handleNavigation(0)}
+      handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
+      error={projectError}
+    />
   ) : (
     <div className={styles.container}>
-      <h1>Lista de proyectos</h1>
-      <div className={styles.topTableContainer}>
-        <div className={styles.searchInputContainer}>
-          <div className={styles.iconContainer}>
-            <SearchIcon />
-          </div>
-          <input className={styles.searchInput} placeholder="Búsqueda por palabra clave" />
+      <div className={styles.welcomeMessage}>
+        <Typography variant="h1">Lista de proyectos</Typography>
+      </div>
+      <div className={styles.inputsContainer}>
+        <div className={styles.searchBar}>
+          <SearchBar<SearchProjectData>
+            setFilteredList={handleFilteredList}
+            details={activeProjectsList}
+            mainArray={projectFilterOptions}
+          />
         </div>
-        <Button
-          materialVariant={Variant.CONTAINED}
-          onClick={() => handleNavigation('/admin/projects/add')}
-          label={'+ Agregar proyecto'}
-          testId={'addProjectButton'}
-          styles={'addButton'}
-        />
+        <div className={styles.addUserButton}>
+          <Button
+            materialVariant={Variant.CONTAINED}
+            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
+            label={'+ Agregar proyecto'}
+            testId={'addProjectButton'}
+            styles={'addButton'}
+          />
+        </div>
       </div>
       <div className={styles.tableContainer}>
-        <Table<MappedProjectData>
-          showButtons={true}
-          testId={'projectsTable'}
-          headers={projectHeaders}
-          value={listProjectsData}
-          buttons={buttonsArray}
-        />
+        {filteredList.length ? (
+          <Table<MappedProjectData>
+            showButtons
+            testId={'projectsTable'}
+            headers={projectHeaders}
+            value={filteredList}
+            buttons={buttonsArray}
+          />
+        ) : (
+          <>
+            <div className={styles.notFound}>
+              <div className={styles.notFoundTitle}>
+                No han encontrado resultados que coincidan con tu búsqueda
+              </div>
+              <div>
+                <img
+                  src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
+                  alt="Not found"
+                ></img>
+              </div>
+            </div>
+          </>
+        )}
       </div>
+      <Modal
+        testId="deleteModal"
+        styles={styles.modal}
+        isOpen={showModal}
+        onClose={() => dispatch(closeModal())}
+      >
+        <DeleteConfirmation
+          resource={Resources.Proyectos}
+          id={row._id}
+          name={row.projectName}
+          handleDelete={handleDelete}
+          onClose={() => dispatch(closeModal())}
+        />
+      </Modal>
     </div>
   );
 };

@@ -1,15 +1,20 @@
 import { Reducer } from 'redux';
 
-import { Actions } from './constants';
-import { ActionsType, State } from './types';
+import { State } from 'src/redux/types';
 
-const initialState: State = {
+import { Actions } from './constants';
+import { ActionsType, Employee } from './types';
+
+const initialState: State<Employee> = {
   list: [],
   isLoading: false,
   error: undefined,
 };
 
-const employeeReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
+const employeeReducer: Reducer<State<Employee>, ActionsType> = (
+  state = initialState,
+  action,
+): State<Employee> => {
   switch (action.type) {
     case Actions.GET_EMPLOYEE_PENDING:
       return {
@@ -27,7 +32,7 @@ const employeeReducer: Reducer<State, ActionsType> = (state = initialState, acti
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     case Actions.EDIT_EMPLOYEE_PENDING:
       return {
@@ -49,7 +54,7 @@ const employeeReducer: Reducer<State, ActionsType> = (state = initialState, acti
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     default:
       return state;

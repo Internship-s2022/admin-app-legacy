@@ -22,6 +22,7 @@ const Dropdown = <Form extends FieldValues>(props: DropdownProps<Form>): JSX.Ele
       select
       fullWidth
       color="info"
+      error={Boolean(error)}
     >
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>

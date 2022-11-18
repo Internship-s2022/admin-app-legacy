@@ -1,7 +1,8 @@
 import { ActionType } from 'typesafe-actions';
 
-import { ContactData } from 'src/components/pages/clients/types';
+import { ContactData, Project } from 'src/components/pages/clients/types';
 
+import { State } from '../types';
 import * as actions from './actions';
 export interface Client {
   _id: string;
@@ -9,16 +10,15 @@ export interface Client {
   name: string;
   localContact: ContactData;
   clientContact: ContactData;
-  projects?: string[];
+  projects?: Project[];
   relationshipStart?: Date;
   relationshipEnd?: Date;
   notes?: string;
   isActive: boolean;
 }
-export interface State {
-  list: Client[];
-  isLoading: boolean;
-  error: string;
+
+export interface ClientState extends State<Client> {
+  selectedClient: Client;
 }
 
 export type ActionsType = ActionType<typeof actions>;

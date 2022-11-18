@@ -1,5 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
+import { AbsencesData } from 'src/components/pages/employees/edit-employee/absencesModal/types';
 import { Projects, User } from 'src/components/pages/employees/types';
 
 import * as actions from './actions';
@@ -9,17 +10,12 @@ export interface Employee {
   skills?: string[];
   seniority: string;
   projectHistory?: Projects[];
-  absences?: string[];
+  absences?: AbsencesData[];
   potentialRole?: string[];
   notes?: string;
   careerPlan: string;
   user: User;
-}
-
-export interface State {
-  list: Employee[];
-  isLoading: boolean;
-  error: string;
+  availability: boolean;
 }
 
 export type ActionsType = ActionType<typeof actions>;

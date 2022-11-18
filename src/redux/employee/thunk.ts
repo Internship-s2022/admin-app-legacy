@@ -1,5 +1,8 @@
 import { Dispatch } from 'redux';
 
+import { editResourceRequest, getResourceRequest } from 'src/config/api';
+import { ApiRoutes } from 'src/constants';
+
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn } from '../ui/actions';
 import {
@@ -10,7 +13,6 @@ import {
   getEmployeePending,
   getEmployeeSuccess,
 } from './actions';
-import { editEmployeeRequest, getEmployeesRequest } from './api';
 import { Employee } from './types';
 
 export const getEmployees: AppThunk = () => {
@@ -18,19 +20,14 @@ export const getEmployees: AppThunk = () => {
     try {
       dispatch(getEmployeePending());
       dispatch(setLoaderOn());
-      const response = await getEmployeesRequest();
+      const response = await getResourceRequest(ApiRoutes.EMPLOYEE);
       if (response.data?.length) {
         dispatch(getEmployeeSuccess(response.data));
-        dispatch(setLoaderOff());
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      if (error.code !== 'ERR_NETWORK') {
-        dispatch(getEmployeeError(error.response.data.message));
-        dispatch(setLoaderOff());
-      } else {
-        dispatch(getEmployeeError(error.message));
-        dispatch(setLoaderOff());
-      }
+      dispatch(getEmployeeError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
     }
   };
 };
@@ -40,19 +37,14 @@ export const editEmployee: AppThunk = (options: { body: Employee; id: string }) 
     try {
       dispatch(editEmployeePending());
       dispatch(setLoaderOn());
-      const response = await editEmployeeRequest(options);
+      const response = await editResourceRequest(ApiRoutes.EMPLOYEE, options);
       if (!response.error) {
-        dispatch(setLoaderOff());
         return dispatch(editEmployeeSuccess(response.data, options.id));
       }
+      dispatch(setLoaderOff());
     } catch (error) {
-      if (error.code !== 'ERR_NETWORK') {
-        dispatch(editEmployeeError(error.response.data.message));
-        dispatch(setLoaderOff());
-      } else {
-        dispatch(editEmployeeError(error.message));
-        dispatch(setLoaderOff());
-      }
+      dispatch(editEmployeeError({ message: error.message, networkError: error.networkError }));
+      dispatch(setLoaderOff());
     }
   };
 };

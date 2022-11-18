@@ -4,6 +4,7 @@ export enum ApiRoutes {
   PROJECTS = '/projects',
   CLIENT = '/clients',
   AUTH = '/auth',
+  MEMBER = '/members',
 }
 
 //Navbar
@@ -39,3 +40,19 @@ export const dropdownAccessRoles = [
   { value: 'SUPER_ADMIN', label: 'Super Admin' },
   { value: 'EMPLOYEE', label: 'Employee' },
 ];
+
+//ROUTES
+
+export enum UiRoutes {
+  LOGIN = '/login',
+  STORYBOOK = '/storybook',
+  NOT_ALLOWED = '/not-allowed',
+  ADMIN = '/admin',
+  SUPER_ADMIN = '/super-admin/*',
+  EMPLOYEES = '/employees',
+  EDIT_EMPLOYEES = '/employees/edit',
+  PROJECTS = '/projects',
+  PROJECTS_FORM = '/projects/form',
+  CLIENTS = '/clients',
+  CLIENTS_FORM = '/clients/form',
+}

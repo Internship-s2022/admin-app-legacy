@@ -3,20 +3,15 @@ import Joi from 'joi';
 import { RoleType } from '../../storybook/types';
 import { Seniority } from '../types';
 
-const editEmployeeValidations = Joi.object({
+const employeeValidations = Joi.object({
   skills: Joi.array().items(Joi.string().min(1).max(35)).messages({
-    'string.min': 'Las skills deben contener mas de 3 letras',
-    'string.max': 'Las skills deben contener menos de 35 letras',
-    'string.base': 'Las skills deben ser una cadena de caracteres',
+    'string.min': 'Las skills deben contener al menos un caracter',
+    'string.max': 'Las skills deben contener menos de 35 caracteres',
   }),
 
   seniority: Joi.string().valid(Seniority.JR, Seniority.SR, Seniority.SSR).messages({
     'any.only': 'El seniority debe ser JR, SR, SSR or TRAINEE',
   }),
-
-  absences: Joi.array()
-    .items(Joi.string())
-    .messages({ 'string.base': 'Los items del array deben ser una cadena de caracteres' }),
 
   potentialRole: Joi.array().items(
     Joi.string()
@@ -37,4 +32,4 @@ const editEmployeeValidations = Joi.object({
   }),
 }).options({ allowUnknown: true });
 
-export default editEmployeeValidations;
+export default employeeValidations;

@@ -9,7 +9,7 @@ export interface TableProps<Data> {
 }
 
 export interface RowData {
-  id?: string;
+  _id?: string;
 }
 
 export interface Headers {

@@ -2,8 +2,9 @@ import React from 'react';
 import { SvgIcon } from '@mui/material';
 
 import styles from './logOutIcon.module.css';
+import { LogOutIconProps } from './types';
 
-const LogOutIcon = (props: any): JSX.Element => {
+const LogOutIcon = (props: LogOutIconProps): JSX.Element => {
   return (
     <SvgIcon className={styles.logOutIcon} onClick={props.onClick} color="secondary">
       <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">

@@ -1,10 +1,9 @@
 import React, { lazy, Suspense, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Layout from 'src/components/layout';
 import { Loader } from 'src/components/shared/ui';
-import { AccessRoleType } from 'src/constants';
+import { AccessRoleType, UiRoutes } from 'src/constants';
 import { tokenListener } from 'src/helper/firebase';
 
 const Login = lazy(() => import('src/components/pages/login'));
@@ -47,15 +46,15 @@ const AppRoutes = (): JSX.Element => {
     <Suspense fallback={<Loader />}>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/storybook" element={<Storybook />} />
+          <Route path={UiRoutes.LOGIN} element={<Login />} />
+          <Route path={UiRoutes.STORYBOOK} element={<Storybook />} />
           <Route element={<PrivateRoute role={AccessRoleType.ADMIN} />}>
-            <Route path="/admin/*" element={<Admin />} />
+            <Route path={`${UiRoutes.ADMIN}/*`} element={<Admin />} />
           </Route>
           <Route element={<PrivateRoute role={AccessRoleType.SUPER_ADMIN} />}>
-            <Route path="/super-admin/*" element={<SuperAdmin />} />
+            <Route path={UiRoutes.SUPER_ADMIN} element={<SuperAdmin />} />
           </Route>
-          <Route path="/not-allowed" element={<NotAllowed />} />
+          <Route path={UiRoutes.NOT_ALLOWED} element={<NotAllowed />} />
           <Route path="/*" element={<Navigate to={redirectPath(role)} />} />
         </Route>
       </Routes>

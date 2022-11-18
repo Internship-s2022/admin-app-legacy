@@ -35,6 +35,7 @@ const StoryBook = (): JSX.Element => {
       date: undefined,
       skills: [],
       potentialRole: [],
+      availability: false,
     },
     mode: 'all',
     resolver: joiResolver(storybookValidation),
@@ -54,11 +55,6 @@ const StoryBook = (): JSX.Element => {
   }, []);
 
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState(false);
-
-  const handleToggleChange = (checked: boolean): void => {
-    setSelected(checked);
-  };
 
   const onSubmit = (data) => console.log('data', data);
 
@@ -76,11 +72,7 @@ const StoryBook = (): JSX.Element => {
         </div>
         <div>
           <h3>Toggle button</h3>
-          <ToggleButton
-            handleChange={handleToggleChange}
-            testId="toggleButtonTestId"
-            checked={selected}
-          />
+          <ToggleButton control={control} name="availability" testId="toggleButtonTestId" />
         </div>
         <div>
           <h3>Contained button</h3>

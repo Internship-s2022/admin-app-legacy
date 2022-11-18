@@ -1,30 +1,71 @@
+import { format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
+import { Motives } from 'src/components/pages/employees/edit-employee/absencesModal/types';
 import { FormValues, Seniority } from 'src/components/pages/employees/types';
-import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import { Button, DatePicker, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
-import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
+import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
+import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
-import editEmployeeValidations from './validations';
+import employeeValidations from './validations';
 
 const EditEmployee = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useAppDispatch();
   const params = useParams();
 
-  const [selected, setSelected] = React.useState(false);
+  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
   const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+
+  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
+
+  const formattedProjects = latestProjects?.map((item) => ({
+    id: item?.project?._id || '-',
+    name: item?.project?.projectName || '-',
+    role: item?.role ? item?.role : '-',
+    startDate: item?.startDate || '-',
+    endDate: item?.endDate || '-',
+  }));
+
+  const [absences, setAbsences] = React.useState(matchedEmployee?.absences || []);
+
+  const { handleSubmit, control, reset } = useForm<FormValues>({
+    defaultValues: {
+      id: '',
+      user: {
+        birthDate: new Date(Date.now()),
+        email: '',
+        firstName: '',
+        lastName: '',
+        _id: '',
+      },
+      seniority: Seniority.JR,
+      skills: [],
+      potentialRole: [],
+      availability: true,
+      projectHistory: [],
+      careerPlan: '',
+      notes: '',
+      absences: [],
+    },
+    mode: 'onBlur',
+    resolver: joiResolver(employeeValidations),
+  });
 
   useEffect(() => {
     if (listEmployee.length && matchedEmployee?._id) {
@@ -40,61 +81,56 @@ const EditEmployee = () => {
         seniority: matchedEmployee?.seniority as Seniority,
         skills: matchedEmployee?.skills || [],
         potentialRole: matchedEmployee?.potentialRole,
-        availability: false,
+        availability: matchedEmployee?.availability,
         projectHistory: [],
         careerPlan: matchedEmployee?.careerPlan,
         notes: matchedEmployee?.notes,
+        absences: matchedEmployee?.absences,
       });
     } else {
-      navigate('/admin/employees');
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
     }
   }, []);
-
-  const { handleSubmit, control, reset } = useForm<FormValues>({
-    defaultValues: {
-      id: '',
-      user: {
-        birthDate: new Date(Date.now()),
-        email: '',
-        firstName: '',
-        lastName: '',
-        _id: '',
-      },
-      seniority: Seniority.JR,
-      skills: [],
-      potentialRole: [],
-      availability: false,
-      projectHistory: [],
-      careerPlan: '',
-      notes: '',
-    },
-    mode: 'onBlur',
-    resolver: joiResolver(editEmployeeValidations),
-  });
-
-  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
-  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
-
-  const formattedProjects = latestProjects?.map((item) => ({
-    id: item?.project?._id ? item?.project?._id : '-',
-    name: item?.project?.projectName ? item?.project?.projectName : '-',
-    role: item?.role ? item?.role : '-',
-    startDate: item?.startDate ? item?.startDate : '-',
-    endDate: item?.endDate ? item?.endDate : '-',
-  }));
-
-  const handleToggleChange = (checked: boolean): void => {
-    setSelected(checked);
-  };
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  const handleAbsence = (data) => {
+    setAbsences(data);
+  };
+
+  const handleAbsenceDelete = (e, indexToDelete) => {
+    e.preventDefault();
+    const newData = absences.filter((_, index) => index !== indexToDelete);
+    setAbsences(newData);
+  };
+
+  const motiveLabel = (item) => {
+    switch (item) {
+      case Motives.LICENSE:
+        return 'Licencia';
+      case Motives.STUDY:
+        return 'Estudio';
+      case Motives.VACATIONS:
+        return 'Vacaciones';
+    }
+  };
+
   const onSubmit = async (data) => {
-    const { id, user, projectHistory, ...rest } = data;
+    const body = {
+      ...data,
+      absences: absences.map((item) => {
+        return {
+          startDate: item.startDate,
+          endDate: item.endDate,
+          motive: item.motive,
+        };
+      }),
+    };
+    const { id, user, projectHistory, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
-    navigate('/admin/employees');
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
 
   return (
@@ -166,25 +202,45 @@ const EditEmployee = () => {
               </div>
               <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
                 <div className={styles.availability}>Disponibilidad</div>
-                <ToggleButton
-                  handleChange={handleToggleChange}
-                  testId="toggleButtonTestId"
-                  checked={selected}
-                  name="availability"
-                />
+                <ToggleButton control={control} testId="toggleButtonTestId" name="availability" />
                 <div className={styles.addAbsenceContainer}>
-                  <div className={styles.absenceTitle}>Ausencias</div>
-                  <div className={styles.buttonAbsences}>
-                    <Button
-                      testId="absencesButton"
-                      materialVariant={Variant.CONTAINED}
-                      onClick={() => undefined}
-                      label="+ Agregar ausencias"
-                      styles={styles.buttonText}
-                    />
+                  <div className={styles.absencesButton}>
+                    <div className={styles.absenceTitle}>Ausencias</div>
+                    <div className={styles.buttonAbsences}>
+                      <Button
+                        testId="absencesButton"
+                        materialVariant={Variant.CONTAINED}
+                        onClick={() => dispatch(openModal())}
+                        label="+ Agregar ausencias"
+                        styles={styles.buttonText}
+                      />
+                    </div>
                   </div>
+                  <>
+                    <div className={styles.absencesContainer}>
+                      {absences.length ? (
+                        absences.map((item, index) => {
+                          return (
+                            <div key={index} className={styles.newAbsences}>
+                              {`${motiveLabel(item.motive)}: ${format(
+                                new Date(item?.startDate),
+                                'dd/MM/yyyy',
+                              )} - ${format(new Date(item?.endDate), 'dd/MM/yyyy')}`}
+                              <button
+                                className={styles.deleteAbsence}
+                                onClick={(e) => handleAbsenceDelete(e, index)}
+                              >
+                                X
+                              </button>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className={styles.noAbsences}>No hay ausencias programadas</div>
+                      )}
+                    </div>
+                  </>
                 </div>
-                <div className={styles.noAbsences}>No hay ausencias programadas</div>
               </div>
             </div>
             <div className={styles.thirdColumn}>
@@ -278,7 +334,7 @@ const EditEmployee = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/admin/employees')}
+              onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`)}
               label="Cancelar"
             />
           </div>
@@ -292,6 +348,15 @@ const EditEmployee = () => {
           </div>
         </div>
       </form>
+      <div>
+        <Modal
+          testId={'employee-absences-modal'}
+          isOpen={showModal}
+          onClose={() => dispatch(closeModal())}
+        >
+          <AbsencesModal setAbsence={handleAbsence} open={showModal} absences={absences} />
+        </Modal>
+      </div>
     </div>
   );
 };

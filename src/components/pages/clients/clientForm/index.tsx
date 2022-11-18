@@ -1,36 +1,97 @@
-import React from 'react';
+import { format } from 'date-fns';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
 import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import { UiRoutes } from 'src/constants';
+import { clearSelectedClient } from 'src/redux/client/actions';
+import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
+import { RootState } from 'src/redux/store';
+import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
+import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
-  const { control } = useForm<FormValues>({
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const dispatch: AppDispatch<null> = useDispatch();
+  const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
+  const clientError = useSelector((state: RootState) => state.client.error);
+  const operation = id ? 'editado' : 'agregado';
+
+  useEffect(() => {
+    id && dispatch(getClientsById(id));
+    return () => {
+      dispatch(clearSelectedClient());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (Object.keys(selectedClient).length) {
+      reset({
+        name: selectedClient.name,
+        localContact: {
+          name: selectedClient.localContact.name,
+          email: selectedClient.localContact.email,
+        },
+        clientContact: {
+          name: selectedClient.clientContact.name,
+          email: selectedClient.clientContact.email,
+        },
+        relationshipStart: selectedClient.relationshipStart,
+        relationshipEnd: selectedClient.relationshipEnd,
+        notes: selectedClient.notes,
+        isActive: true,
+      });
+    }
+  }, [selectedClient]);
+
+  const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       name: '',
-      localContact: '',
-      localEmail: '',
-      clientContact: '',
-      clientEmail: '',
-      relationshipEnd: '2000-07-03T00:00:00.000Z' as unknown as Date,
+      localContact: {
+        name: '',
+        email: '',
+      },
+      clientContact: {
+        name: '',
+        email: '',
+      },
       relationshipStart: new Date(Date.now()),
       notes: '',
+      isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.createClientValidation),
+    resolver: joiResolver(validations.clientValidation),
   });
 
-  const navigate = useNavigate();
+  const projectsList = selectedClient?.projects;
 
-  const handleSubmit = () => {
-    console.log('holi');
+  const formattedProjects = projectsList?.map((item) => ({
+    id: item?._id ?? '-',
+    name: item?.projectName ?? '-',
+    isCritic: item?.isCritic ?? '-',
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+  }));
+
+  const onSubmit = (data) => {
+    id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
+    setConfirmationMsgOpen(true);
+  };
+
+  const onClose = () => {
+    handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`);
   };
 
   const handleNavigation = (path) => {
@@ -40,13 +101,13 @@ const ClientForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Crear un cliente</div>
+        <div>{id ? `Editar ${selectedClient?.name}` : 'Nuevo Cliente'}</div>
         <div className={styles.bellIcon}>
           <BellIcon />
         </div>
       </div>
       <div className={styles.formContainer}>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className={styles.leftContainer}>
             <div className={styles.leftColumns}>
               <div className={styles.inputs}>
@@ -66,7 +127,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'clientEmailInput'}
                   label="Email contacto cliente"
-                  name="clientEmail"
+                  name="clientContact.email"
                   type={'text'}
                   variant="outlined"
                   placeholder="Email de contacto de cliente"
@@ -78,7 +139,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'localEmailInput'}
                   label="Email contacto Radium Rocket"
-                  name="localEmail"
+                  name="localContact.email"
                   type={'text'}
                   variant="outlined"
                   placeholder="Email de contacto de Radium Rocket"
@@ -93,7 +154,7 @@ const ClientForm = () => {
                   testId={'clientContactInput'}
                   label="Contacto cliente"
                   placeholder="Nombre del contacto del ciente"
-                  name="clientContact"
+                  name="clientContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -105,7 +166,7 @@ const ClientForm = () => {
                   testId={'localContactInput'}
                   label="Contacto Radium Rocket"
                   placeholder="Nombre del contacto del Radium Rocket"
-                  name="localContact"
+                  name="localContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
@@ -132,6 +193,38 @@ const ClientForm = () => {
             </div>
           </div>
           <div className={styles.rightContainer}>
+            {id && (
+              <div className={styles.tableContainer}>
+                <table className={styles.table}>
+                  <thead>
+                    <tr>
+                      {clientsProjectsHeaders?.map((header, index) => {
+                        return (
+                          <th className={styles.header} key={index}>
+                            {header.header}
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formattedProjects?.map((data) => {
+                      return (
+                        <tr key={data.id}>
+                          {clientsProjectsHeaders.map((header, index) => {
+                            return (
+                              <td className={styles.rows} key={index}>
+                                {data[header.key]}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
             <TextInput
               control={control}
               testId={'notesInput'}
@@ -150,7 +243,7 @@ const ClientForm = () => {
             <Button
               testId="cancelButton"
               materialVariant={Variant.OUTLINED}
-              onClick={() => handleNavigation('/admin/clients')}
+              onClick={() => onClose()}
               label="Cancelar"
             />
           </div>
@@ -158,12 +251,19 @@ const ClientForm = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={() => handleSubmit()}
+              onClick={handleSubmit(onSubmit)}
               label="Confirmar"
             />
           </div>
         </div>
       </div>
+      <ConfirmationMessage
+        open={openConfirmationMsg}
+        setOpen={setConfirmationMsgOpen}
+        error={clientError}
+        resource={Resources.Clientes}
+        operation={operation}
+      />
     </div>
   );
 };

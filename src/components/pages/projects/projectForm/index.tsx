@@ -1,11 +1,12 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import BellIcon from 'src/components/shared/ui/icons/bellIcon/bellIcon';
-import ClockIcon from 'src/components/shared/ui/icons/clockIcon/clockIcon';
+import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
+import { UiRoutes } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -16,6 +17,8 @@ import styles from './projectForm.module.css';
 
 const ProjectForm = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const handleNavigation = (path) => {
     navigate(path);
   };
@@ -26,7 +29,7 @@ const ProjectForm = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Nuevo Proyecto</div>
+        <div> {id ? 'Editar Proyecto' : 'Nuevo Proyecto'}</div>
         <div className={styles.iconGroup}>
           <div className={styles.iconContainer}>
             <ClockIcon />
@@ -40,22 +43,12 @@ const ProjectForm = () => {
         <AddNewProject />
       </div>
       <div className={styles.buttonContainer}>
-        <div>
-          <Button
-            testId="cancelButton"
-            materialVariant={Variant.OUTLINED}
-            onClick={() => handleNavigation('/admin/projects')}
-            label="Cancelar"
-          />
-        </div>
-        <div>
-          <Button
-            testId="confirmButton"
-            materialVariant={Variant.CONTAINED}
-            onClick={() => console.log('TODO')}
-            label="Confirmar"
-          />
-        </div>
+        <Button
+          testId="cancelButton"
+          materialVariant={Variant.OUTLINED}
+          onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
+          label="Volver"
+        />
       </div>
       <div>
         <Modal
@@ -63,7 +56,7 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm />
+          <AddMemberForm projectId={id} />
         </Modal>
       </div>
     </div>

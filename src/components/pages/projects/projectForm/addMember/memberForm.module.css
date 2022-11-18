@@ -1,8 +1,7 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
-  width: 500px;
-  height: 518px;
+  margin: 5%;
 }
 
 .headerAddMember {
@@ -20,8 +19,37 @@
 
 .memberForm {
   display: flex;
-  flex-direction: column;
+  align-self: center;
   justify-content: center;
-  width: 50%;
   text-align: center;
+}
+
+.topContainer {
+  margin-bottom: 15px;
+}
+
+.inputsContainer {
+  display: flex;
+  gap: 40px;
+}
+
+.inputsContainer > div {
+  width: 50%;
+}
+
+.bottomContainer {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 15px;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+}
+
+.datePickers {
+  display: flex;
+  gap: 40px;
 }

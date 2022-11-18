@@ -3,7 +3,7 @@ import GoogleButton from 'react-google-button';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import RadiumLogo from 'src/components/shared/ui/icons/radiumLogo/radiumLogo';
+import RadiumLogo from 'src/components/shared/ui/icons/radiumLogo';
 import { login } from 'src/redux/auth/thunk';
 import { AppDispatch } from 'src/types';
 

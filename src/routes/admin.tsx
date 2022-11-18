@@ -2,25 +2,28 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  AddClients,
   AddProjects,
   Clients,
+  ClientsForm,
   EditEmployee,
   Employees,
   Home,
   Projects,
 } from 'src/components/pages';
+import { UiRoutes } from 'src/constants';
 
 const Admin = (): JSX.Element => {
   return (
     <Routes>
       <Route path={'/'} element={<Home />} />
-      <Route path={'/employees'} element={<Employees />} />
-      <Route path={'/employees/edit/:id'} element={<EditEmployee />} />
-      <Route path={'/clients'} element={<Clients />} />
-      <Route path={'/clients/add'} element={<AddClients />} />
-      <Route path={'/projects'} element={<Projects />} />
-      <Route path={'/projects/add'} element={<AddProjects />} />
+      <Route path={UiRoutes.EMPLOYEES} element={<Employees />} />
+      <Route path={`${UiRoutes.EDIT_EMPLOYEES}/:id`} element={<EditEmployee />} />
+      <Route path={UiRoutes.CLIENTS} element={<Clients />} />
+      <Route path={UiRoutes.CLIENTS_FORM} element={<ClientsForm />} />
+      <Route path={`${UiRoutes.CLIENTS_FORM}/:id`} element={<ClientsForm />} />
+      <Route path={UiRoutes.PROJECTS} element={<Projects />} />
+      <Route path={UiRoutes.PROJECTS_FORM} element={<AddProjects />} />
+      <Route path={`${UiRoutes.PROJECTS_FORM}/:id`} element={<AddProjects />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

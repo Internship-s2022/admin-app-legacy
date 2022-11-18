@@ -1,15 +1,20 @@
 import { Reducer } from 'redux';
 
-import { Actions } from './constants';
-import { ActionsType, State } from './types';
+import { State } from 'src/redux/types';
 
-const initialState: State = {
+import { Actions } from './constants';
+import { ActionsType, User } from './types';
+
+const initialState: State<User> = {
   list: [],
   isLoading: false,
   error: undefined,
 };
 
-const userReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
+const userReducer: Reducer<State<User>, ActionsType> = (
+  state = initialState,
+  action,
+): State<User> => {
   switch (action.type) {
     case Actions.GET_USERS_PENDING:
       return {
@@ -27,7 +32,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     case Actions.ADD_USER_PENDING:
       return {
@@ -45,7 +50,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     case Actions.EDIT_USER_PENDING:
       return {
@@ -67,7 +72,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
       return {
         ...state,
         isLoading: false,
-        error: action.payload,
+        error: { ...action.payload },
       };
     case Actions.DELETE_USER_PENDING:
       return {
@@ -84,7 +89,7 @@ const userReducer: Reducer<State, ActionsType> = (state = initialState, action):
     case Actions.DELETE_USER_ERROR:
       return {
         ...state,
-        error: action.payload,
+        error: { ...action.payload },
         isLoading: false,
       };
     default:
