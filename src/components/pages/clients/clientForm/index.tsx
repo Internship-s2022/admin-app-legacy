@@ -23,7 +23,7 @@ import { clientsProjectsHeaders } from './constants';
 const ClientForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [open, setOpen] = React.useState(false);
+  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
@@ -87,7 +87,7 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    setOpen(true);
+    setConfirmationMsgOpen(true);
   };
 
   const onClose = () => {
@@ -258,8 +258,8 @@ const ClientForm = () => {
         </div>
       </div>
       <ConfirmationMessage
-        open={open}
-        setOpen={setOpen}
+        open={openConfirmationMsg}
+        setOpen={setConfirmationMsgOpen}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}

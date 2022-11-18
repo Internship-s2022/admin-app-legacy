@@ -22,7 +22,7 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
-  const [open, setOpen] = React.useState(false);
+  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
 
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
@@ -69,7 +69,7 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    setOpen(true);
+    setConfirmationMsgOpen(true);
   };
 
   useEffect(() => {
@@ -220,8 +220,8 @@ const AddNewProject = () => {
           </div>
         </div>
         <ConfirmationMessage
-          open={open}
-          setOpen={setOpen}
+          open={openConfirmationMsg}
+          setOpen={setConfirmationMsgOpen}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}

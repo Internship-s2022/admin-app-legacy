@@ -13,10 +13,10 @@ import { AppDispatch } from 'src/types';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
-import { FormValues, Role } from './types';
+import { AddMemberFormProps, FormValues, Role } from './types';
 import { memberValidations } from './validations';
 
-const AddMemberForm = (props: any) => {
+const AddMemberForm = (props: AddMemberFormProps) => {
   const { projectId } = props;
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const dispatch: AppDispatch<null> = useDispatch();

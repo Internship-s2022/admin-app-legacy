@@ -7,9 +7,10 @@ import { cutLastLetter } from 'src/utils/formatters';
 
 import { ConfirmationMessageProps } from './types';
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(props, ref) {
+const AlertMsg = (props, ref) => {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+};
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(AlertMsg);
 
 const ConfirmationMessage = (props: ConfirmationMessageProps) => {
   const { error, open, setOpen, resource, operation } = props;

@@ -14,6 +14,7 @@ export interface FormValues {
   startDate: Date;
   endDate: Date;
   isActive: boolean;
+  projectId?: string;
 }
 
 export enum Role {
@@ -22,4 +23,8 @@ export enum Role {
   UX_UI = 'UX/UI',
   TL = 'TL',
   PM = 'PM',
+}
+
+export interface AddMemberFormProps {
+  projectId: string;
 }
