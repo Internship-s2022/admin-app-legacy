@@ -105,7 +105,7 @@ export const editClient: AppThunk = (options: { body: Client; id: string }) => {
 
       const response = await editResourceRequest(ApiRoutes.CLIENT, options);
       if (!response.error) {
-        return dispatch(editClientSuccess(response.data, options.id));
+        dispatch(editClientSuccess(response.data, options.id));
       }
       dispatch(setLoaderOff());
     } catch (error: any) {

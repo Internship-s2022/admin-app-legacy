@@ -5,20 +5,25 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import { getEmployees } from 'src/redux/employee/thunk';
+import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
-import { FormValues, Role } from './types';
+import { AddMemberFormProps, FormValues, Role } from './types';
 import { memberValidations } from './validations';
 
-const AddMemberForm = () => {
+const AddMemberForm = (props: AddMemberFormProps) => {
+  const { projectId } = props;
   const employeeList = useSelector((state: RootState) => state.employee.list);
+  const memberError = useSelector((state: RootState) => state.member.error);
 
   const dispatch: AppDispatch<null> = useDispatch();
+  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
 
   const employeeDropdown = employeeList.reduce((acc, item) => {
     if (item.user.isActive) {
@@ -32,9 +37,12 @@ const AddMemberForm = () => {
       employee: '',
       role: Role.DEV,
       memberDedication: 0,
-      helper: '',
-      dependency: 0,
-      helperDedication: 0,
+      helper: {
+        helperReference: '',
+        dependency: 0,
+        dedication: 0,
+        isActive: true,
+      },
       startDate: new Date(Date.now()),
       isActive: true,
     },
@@ -43,7 +51,15 @@ const AddMemberForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { helper, ...rest } = data;
+    const formattedData = {
+      ...rest,
+      project: projectId,
+      helper: helper,
+    };
+    dispatch(addMember(formattedData));
+    dispatch(closeModal());
+    setConfirmationMsgOpen(true);
   };
 
   useEffect(() => {
@@ -96,7 +112,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'helper'}
                     label={'Ayudante'}
-                    name="helper"
+                    name="helper.helperReference"
                     options={employeeDropdown}
                     fullWidth
                   />
@@ -106,7 +122,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'dependency'}
                     label="Dependencia"
-                    name="dependency"
+                    name="helper.dependency"
                     type={'number'}
                     variant="outlined"
                     fullWidth
@@ -115,7 +131,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'helperDedication'}
                     label="Dedicacion"
-                    name="helperDedication"
+                    name="helper.dedication"
                     type={'number'}
                     variant="outlined"
                     fullWidth
@@ -150,6 +166,13 @@ const AddMemberForm = () => {
                 />
               </div>
             </div>
+            <ConfirmationMessage
+              open={openConfirmationMsg}
+              setOpen={setConfirmationMsgOpen}
+              error={memberError}
+              resource={Resources.Miembros}
+              operation={'agregado'}
+            />
           </form>
         </div>
       </div>

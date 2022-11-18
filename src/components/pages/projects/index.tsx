@@ -118,7 +118,7 @@ const Projects = () => {
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Proyectos}
-      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
+      handleReload={() => handleNavigation(0)}
       handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
       error={projectError}
     />

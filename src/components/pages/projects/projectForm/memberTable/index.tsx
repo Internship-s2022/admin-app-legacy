@@ -5,6 +5,7 @@ import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
+import { dateFormatter } from 'src/utils/formatters';
 
 import { headerMemberTable } from './constants';
 import styles from './memberTable.module.css';
@@ -19,9 +20,9 @@ const MemberTable = (props: MemberTableProps) => {
       id: item._id,
       employee: `${item?.employee?.user?.firstName} ${item?.employee?.user?.lastName}` || '-',
       role: item?.role || '-',
-      dedication: item?.dedication || '-',
-      helper: item.helper?.helperReference || '-',
-      date: item?.startDate || '-',
+      dedication: item?.memberDedication || '-',
+      helper: '-',
+      date: dateFormatter(item?.startDate, item?.endDate),
     };
   });
 

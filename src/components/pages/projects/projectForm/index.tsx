@@ -43,22 +43,12 @@ const ProjectForm = () => {
         <AddNewProject />
       </div>
       <div className={styles.buttonContainer}>
-        <div>
-          <Button
-            testId="cancelButton"
-            materialVariant={Variant.OUTLINED}
-            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
-            label="Cancelar"
-          />
-        </div>
-        <div>
-          <Button
-            testId="confirmButton"
-            materialVariant={Variant.CONTAINED}
-            onClick={() => undefined}
-            label="Confirmar"
-          />
-        </div>
+        <Button
+          testId="cancelButton"
+          materialVariant={Variant.OUTLINED}
+          onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`)}
+          label="Volver"
+        />
       </div>
       <div>
         <Modal
@@ -66,7 +56,7 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm />
+          <AddMemberForm projectId={id} />
         </Modal>
       </div>
     </div>

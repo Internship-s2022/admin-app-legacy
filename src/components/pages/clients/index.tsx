@@ -103,7 +103,7 @@ const Clients = () => {
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Clientes}
-      handleReload={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`)}
+      handleReload={() => handleNavigation(0)}
       handleAdd={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
       error={clientError}
     />

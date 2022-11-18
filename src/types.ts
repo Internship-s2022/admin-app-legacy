@@ -10,4 +10,5 @@ export enum Resources {
   Proyectos = 'Proyectos',
   Usuarios = 'Usuarios',
   Empleados = 'Empleados',
+  Miembros = 'Miembros',
 }
