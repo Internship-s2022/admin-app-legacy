@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -29,27 +29,42 @@ const Users = () => {
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
+  const userList = useSelector((state: RootState) => state.user.list);
+
   const navigate = useNavigate();
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const activeUsers = useSelector((state: RootState) =>
-    state.user?.list.map((item) => ({
-      _id: item?._id,
-      firebaseUid: item?.firebaseUid,
-      accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
-      email: item?.email,
-      name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
-      location: item?.location,
-      birthDate: item?.birthDate.toString(),
-      active: item?.isActive.toString(),
-    })),
-  );
+
+  const activeUsers = useMemo(() => {
+    return userList.reduce((acc, item) => {
+      if (item.isActive) {
+        acc.push({
+          _id: item?._id,
+          firebaseUid: item?.firebaseUid,
+          accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
+          email: item?.email,
+          name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(
+            item?.lastName,
+          )}`,
+          location: item?.location,
+          birthDate: item?.birthDate.toString(),
+          active: item?.isActive.toString(),
+        });
+      }
+      return acc;
+    }, []);
+  }, [userList]);
+
   const [filteredList, setFilteredList] = React.useState(activeUsers);
   const userError = useSelector((state: RootState) => state.user?.error);
 
   useEffect(() => {
     dispatch(getUsers());
   }, []);
+
+  useEffect(() => {
+    setFilteredList(activeUsers);
+  }, [userList]);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -80,7 +95,7 @@ const Users = () => {
   };
 
   const handleDelete = (data) => {
-    dispatch(deleteUser(data.id));
+    dispatch(deleteUser(data._id));
   };
 
   const buttonsArray: TableButton<UserData>[] = [
