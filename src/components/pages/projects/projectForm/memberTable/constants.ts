@@ -4,4 +4,5 @@ export const headerMemberTable = [
   { header: 'Dedicacion', key: 'dedication' },
   { header: 'Ayudante', key: 'helper' },
   { header: 'Fecha', key: 'date' },
+  { header: '', key: 'buttons' },
 ];
