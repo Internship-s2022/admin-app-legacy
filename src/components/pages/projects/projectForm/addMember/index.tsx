@@ -7,7 +7,6 @@ import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/u
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
-import { getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -59,7 +58,6 @@ const AddMemberForm = (props: any) => {
 
   useEffect(() => {
     dispatch(getEmployees());
-    // dispatch(getProjectById(projectId));
   }, []);
 
   return (

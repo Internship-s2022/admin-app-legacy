@@ -86,7 +86,6 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    // onClose();
     setOpen(true);
   };
 
