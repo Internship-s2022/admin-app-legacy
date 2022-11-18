@@ -6,6 +6,8 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { getEmployees } from 'src/redux/employee/thunk';
+import { addMember } from 'src/redux/member/thunk';
+import { getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -15,9 +17,9 @@ import styles from './memberForm.module.css';
 import { FormValues, Role } from './types';
 import { memberValidations } from './validations';
 
-const AddMemberForm = () => {
+const AddMemberForm = (props: any) => {
+  const { projectId } = props;
   const employeeList = useSelector((state: RootState) => state.employee.list);
-
   const dispatch: AppDispatch<null> = useDispatch();
 
   const employeeDropdown = employeeList.reduce((acc, item) => {
@@ -32,9 +34,12 @@ const AddMemberForm = () => {
       employee: '',
       role: Role.DEV,
       memberDedication: 0,
-      helper: '',
-      dependency: 0,
-      helperDedication: 0,
+      helper: {
+        helperReference: '',
+        dependency: 0,
+        dedication: 0,
+        isActive: true,
+      },
       startDate: new Date(Date.now()),
       isActive: true,
     },
@@ -43,11 +48,18 @@ const AddMemberForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
+    const { helper, ...rest } = data;
+    const formattedData = {
+      ...rest,
+      project: projectId,
+      helper: helper,
+    };
+    dispatch(addMember(formattedData));
   };
 
   useEffect(() => {
     dispatch(getEmployees());
+    // dispatch(getProjectById(projectId));
   }, []);
 
   return (
@@ -96,7 +108,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'helper'}
                     label={'Ayudante'}
-                    name="helper"
+                    name="helper.helperReference"
                     options={employeeDropdown}
                     fullWidth
                   />
@@ -106,7 +118,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'dependency'}
                     label="Dependencia"
-                    name="dependency"
+                    name="helper.dependency"
                     type={'number'}
                     variant="outlined"
                     fullWidth
@@ -115,7 +127,7 @@ const AddMemberForm = () => {
                     control={control}
                     testId={'helperDedication'}
                     label="Dedicacion"
-                    name="helperDedication"
+                    name="helper.dedication"
                     type={'number'}
                     variant="outlined"
                     fullWidth

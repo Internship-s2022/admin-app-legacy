@@ -16,12 +16,11 @@ export interface Helper {
 
 export interface Member {
   _id: string;
-  hasHelper: boolean;
   helper: Helper;
   employee: Employee;
   project: Project;
   role: RoleType;
-  dedication: number;
+  memberDedication: number;
   startDate: Date;
   endDate: Date;
   active: boolean;

@@ -30,10 +30,9 @@ export interface Member {
   employee: Employee;
   project?: Project;
   role?: Role;
-  dedication?: number;
+  memberDedication?: number;
   startDate?: Date;
   endDate?: Date;
-  hasHelper?: boolean;
   helper?: Helper;
   active?: boolean;
 }

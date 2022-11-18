@@ -26,6 +26,7 @@ const AddNewProject = () => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
+  const membersList = useSelector((state: RootState) => state.member.list);
 
   const clientList = useSelector((state: RootState) =>
     state.client.list?.reduce((acc, item) => {
@@ -77,7 +78,7 @@ const AddNewProject = () => {
     return () => {
       dispatch(cleanSelectedProject());
     };
-  }, []);
+  }, [membersList]);
 
   useEffect(() => {
     reset({

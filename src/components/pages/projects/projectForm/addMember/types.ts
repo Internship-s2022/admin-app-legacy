@@ -1,10 +1,16 @@
+export interface Helper {
+  helperReference: string;
+  dependency: number;
+  dedication: number;
+  isActive: boolean;
+}
+
 export interface FormValues {
   employee: string;
+  project: string;
   role: Role;
   memberDedication: number;
-  helper: string;
-  dependency: number;
-  helperDedication: number;
+  helper: Helper;
   startDate: Date;
   endDate: Date;
   isActive: boolean;

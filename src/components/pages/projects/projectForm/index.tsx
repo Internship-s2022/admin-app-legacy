@@ -56,7 +56,7 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm />
+          <AddMemberForm projectId={id} />
         </Modal>
       </div>
     </div>
