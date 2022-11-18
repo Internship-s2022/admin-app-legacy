@@ -174,7 +174,7 @@ const Users = () => {
                 </div>
                 <div>
                   <img
-                    src={`${process.env.PUBLIC_URL}/assets/images/rafiki.png`}
+                    src={`${process.env.PUBLIC_URL}/assets/images/searchNotFound.png`}
                     alt="Not found"
                   ></img>
                 </div>
