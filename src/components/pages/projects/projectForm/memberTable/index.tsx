@@ -17,7 +17,7 @@ const MemberTable = (props: MemberTableProps) => {
 
   const { list } = props;
 
-  const filteredList = list.filter((item) => item?.active === true);
+  const filteredList = list.filter((item) => item?.active);
 
   const newList = filteredList.map((item) => {
     return {
