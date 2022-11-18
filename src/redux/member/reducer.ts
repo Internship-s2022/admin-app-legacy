@@ -33,6 +33,24 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         error: { ...action.payload },
         isLoading: false,
       };
+    case Actions.DELETE_MEMBER_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.DELETE_MEMBER_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
+    case Actions.DELETE_MEMBER_SUCCESS:
+      return {
+        ...state,
+        list: state.list.filter((member) => member._id !== action.payload),
+        isLoading: false,
+        error: undefined,
+      };
     default:
       return state;
   }

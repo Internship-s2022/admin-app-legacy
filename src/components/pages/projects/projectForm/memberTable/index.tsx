@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import { deleteMember } from 'src/redux/member/thunk';
 import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
@@ -13,9 +14,12 @@ import { MemberTableProps } from './types';
 
 const MemberTable = (props: MemberTableProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
+
   const { list } = props;
 
-  const newList = list.map((item) => {
+  const filteredList = list.filter((item) => item?.active === true);
+
+  const newList = filteredList.map((item) => {
     return {
       id: item._id,
       employee: `${item?.employee?.user?.firstName} ${item?.employee?.user?.lastName}` || '-',
@@ -48,6 +52,7 @@ const MemberTable = (props: MemberTableProps) => {
                   </th>
                 );
               })}
+              <th className={styles.header}></th>
             </tr>
           </thead>
           <tbody>
@@ -61,6 +66,14 @@ const MemberTable = (props: MemberTableProps) => {
                       </td>
                     );
                   })}
+                  <td className={`${styles.buttons} ${styles.rows}`}>
+                    <Button
+                      testId="deleteButton"
+                      materialVariant={Variant.OUTLINED}
+                      onClick={() => dispatch(deleteMember(data.id))}
+                      label="X"
+                    />
+                  </td>
                 </tr>
               );
             })}

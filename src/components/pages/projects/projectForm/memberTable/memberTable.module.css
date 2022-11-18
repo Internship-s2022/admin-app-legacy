@@ -40,3 +40,9 @@
   font-size: 24px;
   font-weight: 500;
 }
+
+.buttons > button {
+  min-width: 30px;
+  min-height: 15px;
+  padding: 4px;
+}
