@@ -28,6 +28,7 @@ const ClientForm = () => {
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
   const operation = id ? 'editado' : 'agregado';
+
   useEffect(() => {
     id && dispatch(getClientsById(id));
     return () => {
@@ -236,13 +237,6 @@ const ClientForm = () => {
               rows={5}
             />
           </div>
-          <ConfirmationMessage
-            open={open}
-            setOpen={setOpen}
-            error={clientError}
-            resource={Resources.Clientes}
-            operation={operation}
-          />
         </form>
         <div className={styles.buttonContainer}>
           <div>
@@ -263,6 +257,13 @@ const ClientForm = () => {
           </div>
         </div>
       </div>
+      <ConfirmationMessage
+        open={open}
+        setOpen={setOpen}
+        error={clientError}
+        resource={Resources.Clientes}
+        operation={operation}
+      />
     </div>
   );
 };
