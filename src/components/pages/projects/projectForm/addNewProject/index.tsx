@@ -7,7 +7,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
+import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
@@ -22,7 +22,7 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
 
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
@@ -69,7 +69,7 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    setConfirmationMsgOpen(true);
+    setSuccessErrorMsgOpen(true);
   };
 
   useEffect(() => {
@@ -219,9 +219,9 @@ const AddNewProject = () => {
             </div>
           </div>
         </div>
-        <ConfirmationMessage
-          open={openConfirmationMsg}
-          setOpen={setConfirmationMsgOpen}
+        <SuccessErrorMessage
+          open={openSuccessErrorMsg}
+          setOpen={setSuccessErrorMsgOpen}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}

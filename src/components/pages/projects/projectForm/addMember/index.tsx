@@ -5,7 +5,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
+import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
@@ -23,7 +23,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   const memberError = useSelector((state: RootState) => state.member.error);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
 
   const employeeDropdown = employeeList.reduce((acc, item) => {
     if (item.user.isActive) {
@@ -59,7 +59,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
     };
     dispatch(addMember(formattedData));
     dispatch(closeModal());
-    setConfirmationMsgOpen(true);
+    setSuccessErrorMsgOpen(true);
   };
 
   useEffect(() => {
@@ -166,9 +166,9 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                 />
               </div>
             </div>
-            <ConfirmationMessage
-              open={openConfirmationMsg}
-              setOpen={setConfirmationMsgOpen}
+            <SuccessErrorMessage
+              open={openSuccessErrorMsg}
+              setOpen={setSuccessErrorMsgOpen}
               error={memberError}
               resource={Resources.Miembros}
               operation={'agregado'}

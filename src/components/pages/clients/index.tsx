@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
@@ -161,12 +161,11 @@ const Clients = () => {
         isOpen={showModal}
         onClose={() => dispatch(closeModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Clientes}
-          id={row._id}
-          name={row.name}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          description={`¿Desea eliminar al cliente ${row.name}?`}
+          title={'Eliminar Cliente'}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeModal())}
         />
       </Modal>
     </div>

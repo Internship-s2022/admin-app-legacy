@@ -6,7 +6,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
@@ -176,12 +176,11 @@ const Projects = () => {
         isOpen={showModal}
         onClose={() => dispatch(closeModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Proyectos}
-          id={row._id}
-          name={row.projectName}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          title={'Eliminar Proyecto'}
+          description={`¿Desea eliminar al proyecto ${row.projectName}?`}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeModal())}
         />
       </Modal>
     </div>

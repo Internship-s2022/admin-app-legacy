@@ -9,8 +9,8 @@ import styles from 'src/components/pages/clients/clientForm/clientsForm.module.c
 import validations from 'src/components/pages/clients/validations';
 import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
@@ -23,7 +23,7 @@ import { clientsProjectsHeaders } from './constants';
 const ClientForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
@@ -87,7 +87,7 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    setConfirmationMsgOpen(true);
+    setSuccessErrorMsgOpen(true);
   };
 
   const onClose = () => {
@@ -257,9 +257,9 @@ const ClientForm = () => {
           </div>
         </div>
       </div>
-      <ConfirmationMessage
-        open={openConfirmationMsg}
-        setOpen={setConfirmationMsgOpen}
+      <SuccessErrorMessage
+        open={openSuccessErrorMsg}
+        setOpen={setSuccessErrorMsgOpen}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}
