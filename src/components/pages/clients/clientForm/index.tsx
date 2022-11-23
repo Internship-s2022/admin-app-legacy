@@ -7,7 +7,13 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
-import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Modal,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
@@ -15,6 +21,7 @@ import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
+import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
@@ -28,6 +35,7 @@ const ClientForm = () => {
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
   const operation = id ? 'editado' : 'agregado';
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -87,6 +95,7 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
+    dispatch(closeConfirmationMsgModal());
     setSuccessErrorMsgOpen(true);
   };
 
@@ -251,7 +260,9 @@ const ClientForm = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={handleSubmit(onSubmit)}
+              onClick={
+                selectedClient ? () => dispatch(openConfirmationMsgModal()) : handleSubmit(onSubmit)
+              }
               label="Confirmar"
             />
           </div>
@@ -264,6 +275,19 @@ const ClientForm = () => {
         resource={Resources.Clientes}
         operation={operation}
       />
+      <Modal
+        testId="editClientModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationMsgModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al cliente ${selectedClient.name}?`}
+          title={'Editar Cliente'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationMsgModal())}
+        />
+      </Modal>
     </div>
   );
 };

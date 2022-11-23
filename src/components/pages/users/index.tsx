@@ -7,12 +7,26 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Dropdown,
+  Modal,
+  Table,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationMsgModal,
+  closeFormModal,
+  closeModal,
+  openConfirmationMsgModal,
+  openFormModal,
+  openModal,
+} from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
@@ -28,6 +42,7 @@ const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
   const userList = useSelector((state: RootState) => state.user.list);
 
@@ -57,6 +72,7 @@ const Users = () => {
 
   const [filteredList, setFilteredList] = React.useState(activeUsers);
   const userError = useSelector((state: RootState) => state.user?.error);
+  console.log(filteredList);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -96,6 +112,7 @@ const Users = () => {
 
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
+    dispatch(closeConfirmationMsgModal());
   };
 
   const buttonsArray: TableButton<UserData>[] = [
@@ -115,7 +132,8 @@ const Users = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        handleDelete(data);
+        dispatch(openConfirmationMsgModal());
+        setRow(data);
       },
     },
   ];
@@ -274,6 +292,19 @@ const Users = () => {
           <AccessRoleModal row={row} open={showModal} />
         </Modal>
       )}
+      <Modal
+        testId="deleteUserModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationMsgModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea eliminar al usuario ${row.name}?`}
+          title={'Eliminar Usuario'}
+          handleConfirm={() => handleDelete(row)}
+          handleClose={() => dispatch(closeConfirmationMsgModal())}
+        />
+      </Modal>
     </>
   );
 };

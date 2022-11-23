@@ -11,7 +11,7 @@ import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -21,7 +21,7 @@ import { ClientsData, SearchClientData } from './types';
 
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
 
   const clientsList = useSelector((state: RootState) => state.client?.list);
@@ -57,7 +57,7 @@ const Clients = () => {
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
-    dispatch(closeModal());
+    dispatch(closeConfirmationMsgModal());
   };
 
   const handleEdit = (row) => {
@@ -80,7 +80,7 @@ const Clients = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationMsgModal());
         setRow(data);
       },
     },
@@ -158,14 +158,14 @@ const Clients = () => {
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationMsgModal())}
       >
         <ConfirmationMessage
           description={`¿Desea eliminar al cliente ${row.name}?`}
           title={'Eliminar Cliente'}
           handleConfirm={() => handleDelete(row._id)}
-          handleClose={() => dispatch(closeModal())}
+          handleClose={() => dispatch(closeConfirmationMsgModal())}
         />
       </Modal>
     </div>

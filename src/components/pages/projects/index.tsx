@@ -12,7 +12,7 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -23,7 +23,7 @@ import { MappedProjectData, SearchProjectData } from './types';
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
 
@@ -88,7 +88,7 @@ const Projects = () => {
   };
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
-    dispatch(closeModal());
+    dispatch(closeConfirmationMsgModal());
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -107,7 +107,7 @@ const Projects = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationMsgModal());
         setRow(data);
       },
     },
@@ -173,14 +173,14 @@ const Projects = () => {
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationMsgModal())}
       >
         <ConfirmationMessage
           title={'Eliminar Proyecto'}
           description={`¿Desea eliminar al proyecto ${row.projectName}?`}
           handleConfirm={() => handleDelete(row._id)}
-          handleClose={() => dispatch(closeModal())}
+          handleClose={() => dispatch(closeConfirmationMsgModal())}
         />
       </Modal>
     </div>
