@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { openModal, showMessageModal } from 'src/redux/ui/actions';
+import { openModal, setOpenMessageModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
@@ -32,8 +32,7 @@ const MemberTable = (props: MemberTableProps) => {
 
   const handleDelete = (id) => {
     dispatch(deleteMember(id));
-    console.log('se borro el member');
-    dispatch(showMessageModal());
+    dispatch(setOpenMessageModal());
   };
 
   return (

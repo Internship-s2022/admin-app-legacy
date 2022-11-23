@@ -14,7 +14,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, showMessageModal } from 'src/redux/ui/actions';
+import { closeModal, setOpenMessageModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -27,7 +27,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
-  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
+  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -58,14 +58,17 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const onSubmit = (data) => {
     const { helper, ...rest } = data;
-    const formattedData = {
-      ...rest,
-      project: projectId,
-      helper: helper,
-    };
+    const formattedData = helper.helperReference
+      ? {
+          ...rest,
+          project: projectId,
+          helper: helper,
+        }
+      : { ...rest, project: projectId };
+
     dispatch(addMember(formattedData));
     dispatch(closeModal());
-    dispatch(showMessageModal());
+    dispatch(setOpenMessageModal());
   };
 
   useEffect(() => {

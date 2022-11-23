@@ -30,6 +30,7 @@ export const memberValidations = Joi.object({
 
   helper: Joi.object({
     helperReference: Joi.string()
+      .allow('')
       .messages({
         'any.required': 'Este campo es requerido',
         'string.empty': 'Este campo es requerido',

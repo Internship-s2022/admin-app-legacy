@@ -22,7 +22,7 @@ import {
   closeModal,
   openConfirmationModal,
   openModal,
-  showMessageModal,
+  setOpenMessageModal,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
@@ -37,7 +37,7 @@ const Projects = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
-  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
+  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const formattedProjectList = useMemo(
     () =>
@@ -102,7 +102,7 @@ const Projects = () => {
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
     dispatch(closeConfirmationModal());
-    dispatch(showMessageModal());
+    dispatch(setOpenMessageModal());
     dispatch(closeModal());
   };
 

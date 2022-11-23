@@ -24,7 +24,7 @@ import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
   openConfirmationModal,
-  showMessageModal,
+  setOpenMessageModal,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
@@ -39,7 +39,7 @@ const ClientForm = () => {
   const clientError = useSelector((state: RootState) => state.client.error);
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
+  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -100,7 +100,7 @@ const ClientForm = () => {
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
     dispatch(closeConfirmationModal());
-    dispatch(showMessageModal());
+    dispatch(setOpenMessageModal());
   };
 
   const onClose = () => {
