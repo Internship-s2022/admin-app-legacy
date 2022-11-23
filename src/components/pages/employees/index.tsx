@@ -85,7 +85,6 @@ const Employees = () => {
             value={filteredList}
             profileIcon={true}
             buttons={buttonsArray}
-            // onSortChange={onSortChange}
           />
         ) : (
           <>
