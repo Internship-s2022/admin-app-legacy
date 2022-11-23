@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Avatar,
   Table as BasicTable,
@@ -15,28 +15,23 @@ import styles from './table.module.css';
 import { RowData, SortBy, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
-  const { showButtons, headers, value, testId, buttons, profileIcon } = props;
+  const { showButtons, headers, value, testId, buttons, profileIcon, setDataList } = props;
 
-  useEffect(() => {
-    setData(value);
-  }, [value]);
-
-  const [data, setData] = React.useState(value);
   const [order, setOrder] = React.useState<SortBy>({ dir: 'asc' });
 
   const sorting = (col) => {
     if (order.dir === 'asc') {
-      const sorted = [...data].sort((a, b) =>
+      const sorted = [...value].sort((a, b) =>
         a[col]?.toLowerCase() > b[col]?.toLowerCase() ? 1 : -1,
       );
-      setData(sorted);
+      setDataList(sorted);
       setOrder({ dir: 'desc' });
     }
     if (order.dir === 'desc') {
-      const sorted = [...data].sort((a, b) =>
+      const sorted = [...value].sort((a, b) =>
         a[col]?.toLowerCase() < b[col]?.toLowerCase() ? 1 : -1,
       );
-      setData(sorted);
+      setDataList(sorted);
       setOrder({ dir: 'asc' });
     }
 
@@ -60,7 +55,7 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data?.map((row) => (
+          {value?.map((row) => (
             <TableRow className={styles.rows} key={row['id']} hover={true}>
               {profileIcon && <Avatar className={styles.icon}></Avatar>}
               {headers.map((header, index) => (

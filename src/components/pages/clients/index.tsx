@@ -25,6 +25,8 @@ const Clients = () => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const clientsList = useSelector((state: RootState) => state.client?.list);
+  const clientError = useSelector((state: RootState) => state.client?.error);
+  const navigate = useNavigate();
 
   const activeClientsList = useMemo(
     () =>
@@ -49,11 +51,13 @@ const Clients = () => {
     [clientsList],
   );
 
-  const clientError = useSelector((state: RootState) => state.client?.error);
-  const navigate = useNavigate();
+  const [dataList, setDataList] = useState(activeClientsList);
 
-  const [filteredList, setFilteredList] = useState(activeClientsList);
-  useEffect(() => setFilteredList(activeClientsList), [clientsList]);
+  useEffect(() => setDataList(activeClientsList), [clientsList]);
+
+  useEffect(() => {
+    dispatch(getClients());
+  }, []);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
@@ -62,6 +66,14 @@ const Clients = () => {
 
   const handleEdit = (row) => {
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const handleDataList = (data) => {
+    setDataList(data);
   };
 
   const buttonsArray = [
@@ -86,18 +98,6 @@ const Clients = () => {
     },
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
-  const handleFilteredList = (data) => {
-    setFilteredList(data);
-  };
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, []);
-
   const showErrorMessage = clientError?.networkError || !activeClientsList.length;
 
   return showErrorMessage ? (
@@ -115,7 +115,7 @@ const Clients = () => {
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchClientData>
-            setFilteredList={handleFilteredList}
+            setFilteredList={handleDataList}
             details={activeClientsList}
             mainArray={clientFilterOptions}
           />
@@ -131,12 +131,13 @@ const Clients = () => {
         </div>
       </div>
       <div className={styles.tableContainer}>
-        {filteredList.length ? (
+        {dataList.length ? (
           <Table<ClientsData>
             showButtons
             testId={'clientsTable'}
             headers={header}
-            value={filteredList}
+            value={dataList}
+            setDataList={handleDataList}
             buttons={buttonsArray}
           />
         ) : (

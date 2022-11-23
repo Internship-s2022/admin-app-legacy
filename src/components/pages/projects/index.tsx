@@ -48,8 +48,8 @@ const Projects = () => {
             projectName: item?.projectName && `${capitalizeFirstLetter(item.projectName)}`,
             clientName: item?.clientName.name && `${capitalizeFirstLetter(item.clientName.name)}`,
             projectType: item?.projectType && formattedProjectType[item.projectType],
-            startDate: item?.startDate.toString(),
-            endDate: item?.endDate.toString(),
+            startDate: item?.startDate?.toString(),
+            endDate: item?.endDate?.toString(),
             criticality: item?.isCritic,
             description: item?.description,
             active: item?.isActive?.toString(),
@@ -64,14 +64,14 @@ const Projects = () => {
 
   const projectError = useSelector((state: RootState) => state.project?.error);
 
-  const [filteredList, setFilteredList] = useState(activeProjectsList);
+  const [dataList, setDataList] = useState(activeProjectsList);
 
   useEffect(() => {
     dispatch(getProjects());
   }, []);
 
   useEffect(() => {
-    setFilteredList(activeProjectsList);
+    setDataList(activeProjectsList);
   }, [projectList]);
 
   const navigate = useNavigate();
@@ -83,8 +83,8 @@ const Projects = () => {
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
-  const handleFilteredList = (data) => {
-    setFilteredList(data);
+  const handleDataList = (data) => {
+    setDataList(data);
   };
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
@@ -130,7 +130,7 @@ const Projects = () => {
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchProjectData>
-            setFilteredList={handleFilteredList}
+            setFilteredList={handleDataList}
             details={activeProjectsList}
             mainArray={projectFilterOptions}
           />
@@ -146,12 +146,13 @@ const Projects = () => {
         </div>
       </div>
       <div className={styles.tableContainer}>
-        {filteredList.length ? (
+        {dataList.length ? (
           <Table<MappedProjectData>
             showButtons
             testId={'projectsTable'}
             headers={projectHeaders}
-            value={filteredList}
+            value={dataList}
+            setDataList={handleDataList}
             buttons={buttonsArray}
           />
         ) : (
