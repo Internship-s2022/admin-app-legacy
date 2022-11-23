@@ -8,6 +8,7 @@ const initialState: State = {
   showModal: false,
   showFormModal: false,
   showConfirmModal: false,
+  showLogoutModal: false,
 };
 
 const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
@@ -51,6 +52,16 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
       return {
         ...state,
         showConfirmModal: false,
+      };
+    case Actions.OPEN_LOGOUT_MODAL:
+      return {
+        ...state,
+        showLogoutModal: true,
+      };
+    case Actions.CLOSE_LOGOUT_MODAL:
+      return {
+        ...state,
+        showLogoutModal: false,
       };
     default:
       return state;
