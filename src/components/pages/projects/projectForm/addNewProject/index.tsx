@@ -11,15 +11,20 @@ import {
   DatePicker,
   Dropdown,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  openConfirmationModal,
+  openModal,
+  showMessageModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import MemberTable from '../memberTable';
@@ -29,10 +34,10 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
-  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
-  const dispatch: AppDispatch<null> = useDispatch();
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
+  const dispatch: AppDispatch<null> = useDispatch();
+  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
 
@@ -77,8 +82,8 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    setSuccessErrorMsgOpen(true);
     dispatch(closeConfirmationModal());
+    dispatch(showMessageModal());
   };
 
   useEffect(() => {
@@ -229,8 +234,7 @@ const AddNewProject = () => {
           </div>
         </div>
         <SuccessErrorMessage
-          open={openSuccessErrorMsg}
-          setOpen={setSuccessErrorMsgOpen}
+          open={messageModal}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}

@@ -3,13 +3,18 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  DatePicker,
+  Dropdown,
+  SuccessErrorMessage,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal } from 'src/redux/ui/actions';
+import { closeModal, showMessageModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -19,11 +24,12 @@ import { memberValidations } from './validations';
 
 const AddMemberForm = (props: AddMemberFormProps) => {
   const { projectId } = props;
+
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
+  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
 
   const employeeDropdown = employeeList.reduce((acc, item) => {
     if (item?.user?.isActive) {
@@ -59,7 +65,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
     };
     dispatch(addMember(formattedData));
     dispatch(closeModal());
-    setSuccessErrorMsgOpen(true);
+    dispatch(showMessageModal());
   };
 
   useEffect(() => {
@@ -167,8 +173,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
               </div>
             </div>
             <SuccessErrorMessage
-              open={openSuccessErrorMsg}
-              setOpen={setSuccessErrorMsgOpen}
+              open={messageModal}
               error={memberError}
               resource={Resources.Miembros}
               operation={'agregado'}

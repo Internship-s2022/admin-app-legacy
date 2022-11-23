@@ -1,14 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
+import { closeMessageModal } from 'src/redux/ui/actions';
+import { AppDispatch } from 'src/types';
 
 import LinkTab from './linkTab';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [value, setValue] = React.useState<number>(0);
+
+  const dispatch: AppDispatch<null> = useDispatch();
 
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
@@ -18,6 +23,7 @@ const Navbar = () => {
 
   const handleNavigation = (path) => {
     navigate(path);
+    dispatch(closeMessageModal());
   };
 
   return (

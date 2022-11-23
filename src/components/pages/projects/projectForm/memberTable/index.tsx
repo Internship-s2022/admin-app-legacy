@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { openModal } from 'src/redux/ui/actions';
+import { openModal, showMessageModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
@@ -29,6 +29,12 @@ const MemberTable = (props: MemberTableProps) => {
       date: dateFormatter(item?.startDate, item?.endDate),
     };
   });
+
+  const handleDelete = (id) => {
+    dispatch(deleteMember(id));
+    console.log('se borro el member');
+    dispatch(showMessageModal());
+  };
 
   return (
     <div>
@@ -70,7 +76,7 @@ const MemberTable = (props: MemberTableProps) => {
                     <Button
                       testId="deleteButton"
                       materialVariant={Variant.OUTLINED}
-                      onClick={() => dispatch(deleteMember(data.id))}
+                      onClick={() => handleDelete(data.id)}
                       label="X"
                     />
                   </td>

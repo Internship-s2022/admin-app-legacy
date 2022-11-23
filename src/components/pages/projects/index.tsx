@@ -4,15 +4,26 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Modal, Table } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Modal,
+  SuccessErrorMessage,
+  Table,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  closeModal,
+  openConfirmationModal,
+  openModal,
+  showMessageModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -26,6 +37,7 @@ const Projects = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
+  const messageModal = useSelector((state: RootState) => state.ui.showConfirmationModal);
 
   const formattedProjectList = useMemo(
     () =>
@@ -86,9 +98,12 @@ const Projects = () => {
   const handleDataList = (data) => {
     setDataList(data);
   };
+
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
     dispatch(closeConfirmationModal());
+    dispatch(showMessageModal());
+    dispatch(closeModal());
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -170,6 +185,14 @@ const Projects = () => {
             </div>
           </>
         )}
+      </div>
+      <div>
+        <SuccessErrorMessage
+          open={messageModal}
+          error={projectError}
+          resource={Resources.Proyectos}
+          operation={'borrado'}
+        />
       </div>
       <Modal
         testId="deleteModal"

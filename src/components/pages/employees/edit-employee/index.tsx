@@ -12,6 +12,7 @@ import {
   DatePicker,
   Dropdown,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
@@ -27,8 +28,9 @@ import {
   closeModal,
   openConfirmationModal,
   openModal,
+  showMessageModal,
 } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
@@ -145,6 +147,7 @@ const EditEmployee = () => {
     await dispatch(editEmployee({ body: rest, id: id }));
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
+    dispatch(showMessageModal());
   };
 
   return (

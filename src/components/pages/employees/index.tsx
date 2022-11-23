@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Table } from 'src/components/shared/ui';
+import { SuccessErrorMessage, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
@@ -45,6 +45,8 @@ const Employees = () => {
   const handleDataList = (data) => {
     setDataList(data);
   };
+  const [filteredList, setFilteredList] = useState(listEmployee);
+  const messageModal = useAppSelector((state: RootState) => state.ui.showConfirmationModal);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
@@ -82,15 +84,25 @@ const Employees = () => {
           />
         </div>
         {dataList.length ? (
-          <Table<MappedEmployeeData>
-            showButtons
-            testId={'userTable'}
-            headers={header}
-            value={dataList}
-            setDataList={handleDataList}
-            profileIcon={true}
-            buttons={buttonsArray}
-          />
+          <>
+            <Table<MappedEmployeeData>
+              showButtons
+              testId={'userTable'}
+              headers={header}
+              value={dataList}
+              setDataList={handleDataList}
+              profileIcon={true}
+              buttons={buttonsArray}
+            />
+            <div>
+              <SuccessErrorMessage
+                open={messageModal}
+                error={employeeError}
+                resource={Resources.Empleados}
+                operation={'editado'}
+              />
+            </div>
+          </>
         ) : (
           <>
             <div className={styles.notFound}>
