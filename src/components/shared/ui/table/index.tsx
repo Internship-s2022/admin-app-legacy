@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Avatar,
   Table as BasicTable,
@@ -16,6 +16,10 @@ import { RowData, SortBy, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
   const { showButtons, headers, value, testId, buttons, profileIcon } = props;
+
+  useEffect(() => {
+    setData(value);
+  }, [value]);
 
   const [data, setData] = React.useState(value);
   const [order, setOrder] = React.useState<SortBy>({ dir: 'asc' });
