@@ -24,3 +24,6 @@ export interface TableButton<Data> {
   onClick: (row: Data) => void;
   variant: Variant;
 }
+export interface SortBy {
+  dir: 'asc' | 'desc';
+}
