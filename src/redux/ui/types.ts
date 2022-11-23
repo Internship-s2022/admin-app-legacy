@@ -9,6 +9,7 @@ export interface State {
   isLoading: boolean;
   showModal: boolean;
   showFormModal: boolean;
+  showConfirmModal: boolean;
 }
 
 export type ActionsType = ActionType<typeof actions>;

@@ -8,3 +8,5 @@ export const openModal = () => action(Actions.OPEN_MODAL);
 export const closeModal = () => action(Actions.CLOSE_MODAL);
 export const openFormModal = () => action(Actions.OPEN_FORM_MODAL);
 export const closeFormModal = () => action(Actions.CLOSE_FORM_MODAL);
+export const openConfirmationMsgModal = () => action(Actions.OPEN_CONFIRMATION_MSG_MODAL);
+export const closeConfirmationMsgModal = () => action(Actions.CLOSE_CONFIRMATION_MSG_MODAL);
