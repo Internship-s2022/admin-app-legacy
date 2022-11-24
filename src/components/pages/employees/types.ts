@@ -66,3 +66,7 @@ export interface SearchEmployeeData {
   skills: string;
   potentialRole: string;
 }
+
+export interface SortBy {
+  dir: 'asc' | 'desc';
+}

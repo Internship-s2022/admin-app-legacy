@@ -7,14 +7,37 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TableSortLabel,
 } from '@mui/material';
 
 import { Button } from '../index';
 import styles from './table.module.css';
-import { RowData, TableProps } from './types';
+import { RowData, SortBy, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
-  const { showButtons, headers, value, testId, buttons, profileIcon } = props;
+  const { showButtons, headers, value, testId, buttons, profileIcon, setDataList } = props;
+
+  const [order, setOrder] = React.useState<SortBy>({ dir: 'asc' });
+
+  const sorting = (col) => {
+    if (order.dir === 'asc') {
+      const sorted = [...value].sort((a, b) =>
+        a[col]?.toLowerCase() > b[col]?.toLowerCase() ? 1 : -1,
+      );
+      setDataList(sorted);
+      setOrder({ dir: 'desc' });
+    }
+    if (order.dir === 'desc') {
+      const sorted = [...value].sort((a, b) =>
+        a[col]?.toLowerCase() < b[col]?.toLowerCase() ? 1 : -1,
+      );
+      setDataList(sorted);
+      setOrder({ dir: 'asc' });
+    }
+
+    return 0;
+  };
+
   return (
     <TableContainer id={testId}>
       <BasicTable className={styles.table}>
@@ -23,7 +46,9 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
             {profileIcon && <TableCell align="center"></TableCell>}
             {headers.map((row) => (
               <TableCell align="center" key={row.key}>
-                {row.header}
+                <TableSortLabel onClick={() => sorting(row.key)} direction={order.dir}>
+                  {row.header}
+                </TableSortLabel>
               </TableCell>
             ))}
             {showButtons && <TableCell></TableCell>}

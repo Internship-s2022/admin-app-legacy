@@ -20,6 +20,7 @@ import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
+  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
 
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
@@ -35,12 +36,15 @@ const Employees = () => {
     })),
   );
 
+  const [dataList, setDataList] = useState(listEmployee);
+
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  const [filteredList, setFilteredList] = useState(listEmployee);
-  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  const handleDataList = (data) => {
+    setDataList(data);
+  };
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
@@ -72,17 +76,18 @@ const Employees = () => {
         </div>
         <div className={styles.searchInput}>
           <SearchBar<SearchEmployeeData>
-            setFilteredList={setFilteredList}
+            setFilteredList={handleDataList}
             details={listEmployee}
             mainArray={employeeFilterOptions}
           />
         </div>
-        {filteredList.length ? (
+        {dataList.length ? (
           <Table<MappedEmployeeData>
             showButtons
             testId={'userTable'}
             headers={header}
-            value={filteredList}
+            value={dataList}
+            setDataList={handleDataList}
             profileIcon={true}
             buttons={buttonsArray}
           />
