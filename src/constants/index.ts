@@ -11,9 +11,9 @@ export enum ApiRoutes {
 
 export const adminNavbar = [
   { path: '/admin/', name: 'Dashboard' },
-  { path: '/admin/employees', name: 'Employees' },
-  { path: '/admin/projects', name: 'Projects' },
-  { path: '/admin/clients', name: 'Clients' },
+  { path: '/admin/employees', name: 'Empleados' },
+  { path: '/admin/projects', name: 'Proyectos' },
+  { path: '/admin/clients', name: 'Clientes' },
 ];
 
 export const navbarItems = {
