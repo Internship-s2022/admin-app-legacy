@@ -37,7 +37,7 @@ const Users = () => {
 
   const activeUsers = useMemo(() => {
     return userList.reduce((acc, item) => {
-      if (item.isActive) {
+      if (item.isActive && item.accessRoleType !== 'SUPER_ADMIN') {
         acc.push({
           _id: item?._id,
           firebaseUid: item?.firebaseUid,
