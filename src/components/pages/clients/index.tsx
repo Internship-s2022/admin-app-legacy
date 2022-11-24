@@ -63,7 +63,7 @@ const Clients = () => {
   );
 
   const [dataList, setDataList] = useState(activeClientsList);
-  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
 
   useEffect(() => setDataList(activeClientsList), [clientsList]);
 
@@ -170,14 +170,12 @@ const Clients = () => {
           </>
         )}
       </div>
-      <div>
-        <SuccessErrorMessage
-          open={successErrorAlert}
-          error={clientError}
-          resource={Resources.Clientes}
-          operation={'borrado'}
-        />
-      </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={clientError}
+        resource={Resources.Clientes}
+        operation={'borrado'}
+      />
       <Modal
         testId="deleteModal"
         styles={styles.modal}

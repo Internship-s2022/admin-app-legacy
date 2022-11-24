@@ -37,7 +37,7 @@ const AddNewProject = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
 
@@ -234,7 +234,7 @@ const AddNewProject = () => {
           </div>
         </div>
         <SuccessErrorMessage
-          open={successErrorAlert}
+          open={showAlert}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}

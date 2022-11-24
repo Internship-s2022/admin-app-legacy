@@ -37,7 +37,7 @@ const Projects = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
-  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
 
   const formattedProjectList = useMemo(
     () =>
@@ -186,14 +186,12 @@ const Projects = () => {
           </>
         )}
       </div>
-      <div>
-        <SuccessErrorMessage
-          open={successErrorAlert}
-          error={projectError}
-          resource={Resources.Proyectos}
-          operation={'borrado'}
-        />
-      </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={projectError}
+        resource={Resources.Proyectos}
+        operation={'borrado'}
+      />
       <Modal
         testId="deleteModal"
         styles={styles.modal}

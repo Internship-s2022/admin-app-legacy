@@ -46,7 +46,7 @@ const Employees = () => {
     setDataList(data);
   };
   const [filteredList, setFilteredList] = useState(listEmployee);
-  const successErrorAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showshowAlert);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
@@ -94,14 +94,12 @@ const Employees = () => {
               profileIcon={true}
               buttons={buttonsArray}
             />
-            <div>
-              <SuccessErrorMessage
-                open={successErrorAlert}
-                error={employeeError}
-                resource={Resources.Empleados}
-                operation={'editado'}
-              />
-            </div>
+            <SuccessErrorMessage
+              open={showAlert}
+              error={employeeError}
+              resource={Resources.Empleados}
+              operation={'editado'}
+            />
           </>
         ) : (
           <>

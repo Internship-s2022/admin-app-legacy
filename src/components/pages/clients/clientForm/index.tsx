@@ -32,11 +32,15 @@ import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
+
+  const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
+
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
@@ -273,7 +277,7 @@ const ClientForm = () => {
         </div>
       </div>
       <SuccessErrorMessage
-        open={successErrorAlert}
+        open={showAlert}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}

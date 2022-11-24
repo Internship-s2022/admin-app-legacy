@@ -27,7 +27,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
-  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -176,7 +176,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
               </div>
             </div>
             <SuccessErrorMessage
-              open={successErrorAlert}
+              open={showAlert}
               error={memberError}
               resource={Resources.Miembros}
               operation={'agregado'}
