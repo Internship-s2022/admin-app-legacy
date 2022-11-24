@@ -26,7 +26,6 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
   const onSubmit = (data) => {
     dispatch(editUser(data));
     dispatch(closeModal());
-    dispatch(setOpenMessageAlert());
   };
 
   return (

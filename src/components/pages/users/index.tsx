@@ -117,7 +117,6 @@ const Users = () => {
     dispatch(deleteUser(data._id));
     dispatch(closeConfirmationModal());
     setOperation('borrado');
-    dispatch(setOpenMessageAlert());
   };
 
   const handleEdit = (data) => {

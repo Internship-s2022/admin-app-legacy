@@ -17,13 +17,7 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import {
-  closeConfirmationModal,
-  closeModal,
-  openConfirmationModal,
-  openModal,
-  setOpenMessageAlert,
-} from 'src/redux/ui/actions';
+import { closeConfirmationModal, closeModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -102,7 +96,6 @@ const Projects = () => {
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageAlert());
     dispatch(closeModal());
   };
 

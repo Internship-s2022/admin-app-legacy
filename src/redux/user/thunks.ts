@@ -9,7 +9,7 @@ import {
 import { ApiRoutes } from 'src/constants';
 
 import { AppThunk } from '../types';
-import { setLoaderOff, setLoaderOn } from '../ui/actions';
+import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
   addUserPending,
   addUsersError,
@@ -28,16 +28,16 @@ import { User } from './types';
 
 export const getUsers: AppThunk = () => {
   return async (dispatch: Dispatch) => {
+    dispatch(getUsersPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(getUsersPending());
-      dispatch(setLoaderOn());
       const response = await getResourceRequest(ApiRoutes.USER);
       if (response.data?.length) {
         dispatch(getUsersSuccess(response.data));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
       dispatch(getUsersError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
     }
   };
@@ -45,16 +45,16 @@ export const getUsers: AppThunk = () => {
 
 export const addUser: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
+    dispatch(addUserPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(addUserPending());
-      dispatch(setLoaderOn());
       const response = await addResourceRequest(ApiRoutes.USER, data);
       if (!response.error) {
         dispatch(addUserSuccess(response.data));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
       dispatch(addUsersError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
     }
   };
@@ -62,34 +62,36 @@ export const addUser: AppThunk = (data) => {
 
 export const editUser: AppThunk = (options: { id: string; body: User }) => {
   return async (dispatch: Dispatch) => {
+    dispatch(editUserPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(editUserPending());
-      dispatch(setLoaderOn());
       const response = await editResourceRequest(ApiRoutes.USER, options);
       if (!response.error) {
         dispatch(editUserSuccess(response.data.accessRoleType, options.id));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
       dispatch(editUserError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
     }
   };
 };
 
 export const deleteUser: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
+    dispatch(deleteUserPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(deleteUserPending());
-      dispatch(setLoaderOn());
       const response = await deleteResourceRequest(ApiRoutes.USER, id);
       if (!response.error) {
         dispatch(deleteUserSuccess(id));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
       dispatch(deleteUserError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
     }
   };
 };

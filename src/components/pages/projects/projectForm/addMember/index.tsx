@@ -68,7 +68,6 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
     dispatch(addMember(formattedData));
     dispatch(closeModal());
-    dispatch(setOpenMessageAlert());
   };
 
   useEffect(() => {

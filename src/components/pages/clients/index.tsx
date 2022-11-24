@@ -74,7 +74,6 @@ const Clients = () => {
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageAlert());
     dispatch(closeModal());
   };
 

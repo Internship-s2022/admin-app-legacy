@@ -83,7 +83,6 @@ const AddNewProject = () => {
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageAlert());
   };
 
   useEffect(() => {

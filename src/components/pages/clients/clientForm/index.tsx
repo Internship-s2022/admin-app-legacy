@@ -104,7 +104,6 @@ const ClientForm = () => {
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageAlert());
   };
 
   const onClose = () => {

@@ -32,7 +32,6 @@ const MemberTable = (props: MemberTableProps) => {
 
   const handleDelete = (id) => {
     dispatch(deleteMember(id));
-    dispatch(setOpenMessageAlert());
   };
 
   return (

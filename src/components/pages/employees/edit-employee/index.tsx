@@ -147,7 +147,6 @@ const EditEmployee = () => {
     await dispatch(editEmployee({ body: rest, id: id }));
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
-    dispatch(setOpenMessageAlert());
   };
 
   return (
