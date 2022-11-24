@@ -21,7 +21,7 @@ import {
   closeModal,
   openConfirmationModal,
   openModal,
-  setOpenMessageModal,
+  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
@@ -63,7 +63,7 @@ const Clients = () => {
   );
 
   const [dataList, setDataList] = useState(activeClientsList);
-  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   useEffect(() => setDataList(activeClientsList), [clientsList]);
 
@@ -74,7 +74,7 @@ const Clients = () => {
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageModal());
+    dispatch(setOpenMessageAlert());
     dispatch(closeModal());
   };
 
@@ -172,7 +172,7 @@ const Clients = () => {
       </div>
       <div>
         <SuccessErrorMessage
-          open={messageModal}
+          open={successErrorAlert}
           error={clientError}
           resource={Resources.Clientes}
           operation={'borrado'}

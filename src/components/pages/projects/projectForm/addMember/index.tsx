@@ -14,7 +14,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, setOpenMessageModal } from 'src/redux/ui/actions';
+import { closeModal, setOpenMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -27,7 +27,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
-  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -68,7 +68,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
     dispatch(addMember(formattedData));
     dispatch(closeModal());
-    dispatch(setOpenMessageModal());
+    dispatch(setOpenMessageAlert());
   };
 
   useEffect(() => {
@@ -176,7 +176,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
               </div>
             </div>
             <SuccessErrorMessage
-              open={messageModal}
+              open={successErrorAlert}
               error={memberError}
               resource={Resources.Miembros}
               operation={'agregado'}

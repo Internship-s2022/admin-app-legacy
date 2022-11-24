@@ -4,7 +4,7 @@ import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 
-import { closeMessageModal } from 'src/redux/ui/actions';
+import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { cutLastLetter } from 'src/utils/formatters';
 
@@ -22,7 +22,7 @@ const SuccessErrorMessage = (props: SuccessErrorMessageProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
-    dispatch(closeMessageModal());
+    dispatch(closeMessageAlert());
     if (reason === 'clickaway') {
       return;
     }

@@ -28,7 +28,7 @@ import {
   closeModal,
   openConfirmationModal,
   openModal,
-  setOpenMessageModal,
+  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
@@ -147,7 +147,7 @@ const EditEmployee = () => {
     await dispatch(editEmployee({ body: rest, id: id }));
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
-    dispatch(setOpenMessageModal());
+    dispatch(setOpenMessageAlert());
   };
 
   return (

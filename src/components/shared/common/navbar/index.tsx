@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
-import { closeMessageModal } from 'src/redux/ui/actions';
+import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import LinkTab from './linkTab';
@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const handleNavigation = (path) => {
     navigate(path);
-    dispatch(closeMessageModal());
+    dispatch(closeMessageAlert());
   };
 
   return (

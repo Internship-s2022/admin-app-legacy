@@ -65,12 +65,12 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
         showLogoutModal: false,
       };
 
-    case Actions.SET_OPEN_MESSAGE_MODAL:
+    case Actions.SET_OPEN_MESSAGE_ALERT:
       return {
         ...state,
         showSuccessErrorAlert: true,
       };
-    case Actions.CLOSE_MESSAGE_MODAL:
+    case Actions.CLOSE_MESSAGE_ALERT:
       return {
         ...state,
         showSuccessErrorAlert: false,

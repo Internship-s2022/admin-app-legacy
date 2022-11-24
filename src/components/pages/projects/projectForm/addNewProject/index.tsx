@@ -23,7 +23,7 @@ import {
   closeConfirmationModal,
   openConfirmationModal,
   openModal,
-  setOpenMessageModal,
+  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
@@ -37,7 +37,7 @@ const AddNewProject = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const messageModal = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
 
@@ -83,7 +83,7 @@ const AddNewProject = () => {
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
     dispatch(closeConfirmationModal());
-    dispatch(setOpenMessageModal());
+    dispatch(setOpenMessageAlert());
   };
 
   useEffect(() => {
@@ -234,7 +234,7 @@ const AddNewProject = () => {
           </div>
         </div>
         <SuccessErrorMessage
-          open={messageModal}
+          open={successErrorAlert}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}

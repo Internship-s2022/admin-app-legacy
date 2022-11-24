@@ -46,7 +46,7 @@ const Employees = () => {
     setDataList(data);
   };
   const [filteredList, setFilteredList] = useState(listEmployee);
-  const messageModal = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const successErrorAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
@@ -96,7 +96,7 @@ const Employees = () => {
             />
             <div>
               <SuccessErrorMessage
-                open={messageModal}
+                open={successErrorAlert}
                 error={employeeError}
                 resource={Resources.Empleados}
                 operation={'editado'}
