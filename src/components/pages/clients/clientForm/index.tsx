@@ -21,7 +21,7 @@ import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
@@ -95,7 +95,7 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
     setSuccessErrorMsgOpen(true);
   };
 
@@ -261,7 +261,7 @@ const ClientForm = () => {
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
               onClick={
-                selectedClient ? () => dispatch(openConfirmationMsgModal()) : handleSubmit(onSubmit)
+                selectedClient ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)
               }
               label="Confirmar"
             />
@@ -279,13 +279,13 @@ const ClientForm = () => {
         testId="editClientModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           description={`¿Desea editar al cliente ${selectedClient.name}?`}
           title={'Editar Cliente'}
           handleConfirm={handleSubmit(onSubmit)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

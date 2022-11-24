@@ -19,11 +19,7 @@ import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import {
-  closeConfirmationMsgModal,
-  openConfirmationMsgModal,
-  openModal,
-} from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import MemberTable from '../memberTable';
@@ -82,7 +78,7 @@ const AddNewProject = () => {
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
     setSuccessErrorMsgOpen(true);
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
   };
 
   useEffect(() => {
@@ -175,9 +171,7 @@ const AddNewProject = () => {
                   <Button
                     testId="saveButton"
                     materialVariant={Variant.CONTAINED}
-                    onClick={
-                      id ? () => dispatch(openConfirmationMsgModal()) : handleSubmit(onSubmit)
-                    }
+                    onClick={id ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)}
                     label="Guardar"
                   />
                 </div>
@@ -246,13 +240,13 @@ const AddNewProject = () => {
         testId="editProjectModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           description={`¿Desea editar al proyecto ${selectedProject.projectName}?`}
           title={'Editar Proyecto'}
           handleConfirm={handleSubmit(onSubmit)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </>

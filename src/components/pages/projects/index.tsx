@@ -12,7 +12,7 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -88,7 +88,7 @@ const Projects = () => {
   };
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -107,7 +107,7 @@ const Projects = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openConfirmationMsgModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
@@ -174,13 +174,13 @@ const Projects = () => {
         testId="deleteModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           title={'Eliminar Proyecto'}
           description={`¿Desea eliminar al proyecto ${row.projectName}?`}
           handleConfirm={() => handleDelete(row._id)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

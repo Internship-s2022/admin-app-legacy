@@ -20,10 +20,10 @@ import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import {
-  closeConfirmationMsgModal,
+  closeConfirmationModal,
   closeFormModal,
   closeModal,
-  openConfirmationMsgModal,
+  openConfirmationModal,
   openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
@@ -112,7 +112,7 @@ const Users = () => {
 
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
   };
 
   const buttonsArray: TableButton<UserData>[] = [
@@ -132,7 +132,7 @@ const Users = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openConfirmationMsgModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
@@ -296,13 +296,13 @@ const Users = () => {
         testId="deleteUserModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           description={`¿Desea eliminar al usuario ${row.name}?`}
           title={'Eliminar Usuario'}
           handleConfirm={() => handleDelete(row)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </>

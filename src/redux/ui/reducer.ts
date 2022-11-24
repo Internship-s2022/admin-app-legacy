@@ -43,12 +43,12 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
         ...state,
         showFormModal: false,
       };
-    case Actions.OPEN_CONFIRMATION_MSG_MODAL:
+    case Actions.OPEN_CONFIRMATION_MODAL:
       return {
         ...state,
         showConfirmModal: true,
       };
-    case Actions.CLOSE_CONFIRMATION_MSG_MODAL:
+    case Actions.CLOSE_CONFIRMATION_MODAL:
       return {
         ...state,
         showConfirmModal: false,

@@ -11,7 +11,7 @@ import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationMsgModal, openConfirmationMsgModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -57,7 +57,7 @@ const Clients = () => {
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
   };
 
   const handleEdit = (row) => {
@@ -80,7 +80,7 @@ const Clients = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openConfirmationMsgModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
@@ -159,13 +159,13 @@ const Clients = () => {
         testId="deleteModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           description={`¿Desea eliminar al cliente ${row.name}?`}
           title={'Eliminar Cliente'}
           handleConfirm={() => handleDelete(row._id)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

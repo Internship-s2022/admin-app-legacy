@@ -23,9 +23,9 @@ import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
-  closeConfirmationMsgModal,
+  closeConfirmationModal,
   closeModal,
-  openConfirmationMsgModal,
+  openConfirmationModal,
   openModal,
 } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -143,7 +143,7 @@ const EditEmployee = () => {
     };
     const { id, user, projectHistory, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
-    dispatch(closeConfirmationMsgModal());
+    dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
 
@@ -356,7 +356,7 @@ const EditEmployee = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={() => dispatch(openConfirmationMsgModal())}
+              onClick={() => dispatch(openConfirmationModal())}
               label="Confirmar"
             />
           </div>
@@ -375,13 +375,13 @@ const EditEmployee = () => {
         testId="editEmployeeModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationMsgModal())}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
           description={`¿Desea editar al empleado ${matchedEmployee?.user?.firstName} ${matchedEmployee?.user?.lastName}?`}
           title={'Editar Empleado'}
           handleConfirm={handleSubmit(onSubmit)}
-          handleClose={() => dispatch(closeConfirmationMsgModal())}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>
