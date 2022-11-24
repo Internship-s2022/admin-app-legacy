@@ -9,7 +9,7 @@ const initialState: State = {
   showFormModal: false,
   showConfirmModal: false,
   showLogoutModal: false,
-  showshowAlert: false,
+  showSuccessErrorAlert: false,
 };
 
 const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
@@ -68,12 +68,12 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
     case Actions.SET_OPEN_MESSAGE_ALERT:
       return {
         ...state,
-        showshowAlert: true,
+        showSuccessErrorAlert: true,
       };
     case Actions.CLOSE_MESSAGE_ALERT:
       return {
         ...state,
-        showshowAlert: false,
+        showSuccessErrorAlert: false,
       };
     default:
       return state;

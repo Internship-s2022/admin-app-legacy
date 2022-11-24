@@ -12,6 +12,7 @@ import {
   ConfirmationMessage,
   Dropdown,
   Modal,
+  SuccessErrorMessage,
   Table,
   TextInput,
 } from 'src/components/shared/ui';
@@ -26,6 +27,7 @@ import {
   openConfirmationModal,
   openFormModal,
   openModal,
+  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
@@ -45,6 +47,8 @@ const Users = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
   const userList = useSelector((state: RootState) => state.user.list);
+  const userError = useSelector((state: RootState) => state.user?.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const navigate = useNavigate();
 
@@ -71,8 +75,7 @@ const Users = () => {
   }, [userList]);
 
   const [filteredList, setFilteredList] = React.useState(activeUsers);
-  const userError = useSelector((state: RootState) => state.user?.error);
-  console.log(filteredList);
+  const [operation, setOperation] = React.useState('');
 
   useEffect(() => {
     dispatch(getUsers());
@@ -113,6 +116,14 @@ const Users = () => {
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
     dispatch(closeConfirmationModal());
+    setOperation('borrado');
+    dispatch(setOpenMessageAlert());
+  };
+
+  const handleEdit = (data) => {
+    dispatch(openModal());
+    setOperation('editado');
+    setRow(data);
   };
 
   const buttonsArray: TableButton<UserData>[] = [
@@ -122,8 +133,7 @@ const Users = () => {
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
-        setRow(data);
+        handleEdit(data);
       },
     },
     {
@@ -283,6 +293,13 @@ const Users = () => {
           </div>
         </Modal>
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={userError}
+        resource={Resources.Usuarios}
+        operation={operation}
+      />
+
       {!showErrorMessage && (
         <Modal
           testId={'User-access-modal'}

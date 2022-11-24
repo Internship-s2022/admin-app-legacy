@@ -27,7 +27,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const dispatch: AppDispatch<null> = useDispatch();
 

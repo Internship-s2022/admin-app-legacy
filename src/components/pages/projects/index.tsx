@@ -37,7 +37,7 @@ const Projects = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
-  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const formattedProjectList = useMemo(
     () =>

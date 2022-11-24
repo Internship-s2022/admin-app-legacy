@@ -37,7 +37,7 @@ const AddNewProject = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   const dispatch: AppDispatch<null> = useDispatch();
-  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
 

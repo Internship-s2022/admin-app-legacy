@@ -63,7 +63,7 @@ const Clients = () => {
   );
 
   const [dataList, setDataList] = useState(activeClientsList);
-  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   useEffect(() => setDataList(activeClientsList), [clientsList]);
 

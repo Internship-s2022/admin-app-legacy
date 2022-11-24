@@ -46,7 +46,7 @@ const Employees = () => {
     setDataList(data);
   };
   const [filteredList, setFilteredList] = useState(listEmployee);
-  const showAlert = useAppSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 

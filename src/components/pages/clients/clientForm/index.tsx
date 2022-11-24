@@ -39,7 +39,7 @@ const ClientForm = () => {
 
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showshowAlert);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
