@@ -26,7 +26,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
 
   const employeeDropdown = employeeList.reduce((acc, item) => {
-    if (item.user.isActive) {
+    if (item?.user?.isActive) {
       acc.push({ value: item._id, label: `${item.user.firstName} ${item.user.lastName}` });
     }
     return acc;
