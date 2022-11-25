@@ -23,11 +23,11 @@ import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeFormModal,
+  closeMessageAlert,
   closeModal,
   openConfirmationModal,
   openFormModal,
   openModal,
-  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
@@ -79,6 +79,9 @@ const Users = () => {
 
   useEffect(() => {
     dispatch(getUsers());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   useEffect(() => {

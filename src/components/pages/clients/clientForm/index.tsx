@@ -43,7 +43,6 @@ const ClientForm = () => {
 
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const successErrorAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -91,9 +90,9 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation),
   });
 
-  const projectsList = selectedClient?.projects;
+  const latestClientsList = selectedClient?.projects?.slice(-2);
 
-  const formattedProjects = projectsList?.map((item) => ({
+  const formattedProjects = latestClientsList?.map((item) => ({
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
@@ -239,6 +238,14 @@ const ClientForm = () => {
                     })}
                   </tbody>
                 </table>
+                <div className={styles.viewMore}>
+                  <Button
+                    testId="viewMoreButton"
+                    materialVariant={Variant.TEXT}
+                    onClick={() => undefined}
+                    label="Ver más"
+                  />
+                </div>
               </div>
             )}
             <TextInput

@@ -10,6 +10,7 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -20,7 +21,7 @@ import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
-  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  const employeeError = useAppSelector((state: RootState) => state.employee.error);
 
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
@@ -45,13 +46,15 @@ const Employees = () => {
   const handleDataList = (data) => {
     setDataList(data);
   };
-  const [filteredList, setFilteredList] = useState(listEmployee);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
   useEffect(() => {
     dispatch(getEmployees());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   const buttonsArray: TableButton<MappedEmployeeData>[] = [

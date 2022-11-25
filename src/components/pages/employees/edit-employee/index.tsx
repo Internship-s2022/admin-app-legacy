@@ -43,8 +43,8 @@ const EditEmployee = () => {
   const params = useParams();
 
   const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
-  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
-  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+  const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const listEmployee = useAppSelector((state: RootState) => state.employee.list);
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
 
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);

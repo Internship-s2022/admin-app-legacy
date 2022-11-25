@@ -18,6 +18,7 @@ import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
+  closeMessageAlert,
   closeModal,
   openConfirmationModal,
   openModal,
@@ -69,6 +70,9 @@ const Clients = () => {
 
   useEffect(() => {
     dispatch(getClients());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   const handleDelete = async (id) => {
