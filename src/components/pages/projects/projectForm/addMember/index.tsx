@@ -14,7 +14,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, setOpenMessageAlert } from 'src/redux/ui/actions';
+import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';

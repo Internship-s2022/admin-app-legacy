@@ -21,8 +21,6 @@ import {
   closeMessageAlert,
   closeModal,
   openConfirmationModal,
-  openModal,
-  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';

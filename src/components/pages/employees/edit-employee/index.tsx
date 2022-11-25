@@ -12,7 +12,6 @@ import {
   DatePicker,
   Dropdown,
   Modal,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
@@ -28,9 +27,8 @@ import {
   closeModal,
   openConfirmationModal,
   openModal,
-  setOpenMessageAlert,
 } from 'src/redux/ui/actions';
-import { AppDispatch, Resources } from 'src/types';
+import { AppDispatch } from 'src/types';
 
 import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';

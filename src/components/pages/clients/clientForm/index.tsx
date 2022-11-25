@@ -21,11 +21,7 @@ import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import {
-  closeConfirmationModal,
-  openConfirmationModal,
-  setOpenMessageAlert,
-} from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
