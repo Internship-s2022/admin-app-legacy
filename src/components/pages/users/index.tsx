@@ -47,7 +47,7 @@ const Users = () => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
   const userList = useSelector((state: RootState) => state.user.list);
-  const userError = useSelector((state: RootState) => state.user?.error);
+  const userError = useSelector((state: RootState) => state.user.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const navigate = useNavigate();

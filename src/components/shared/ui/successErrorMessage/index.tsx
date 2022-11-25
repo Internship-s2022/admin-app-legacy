@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';

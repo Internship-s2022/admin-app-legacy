@@ -53,6 +53,7 @@ export const addUser: AppThunk = (data) => {
         dispatch(addUserSuccess(response.data));
       }
     } catch (error) {
+      console.log('ERROR EN THUNK:', error);
       dispatch(addUsersError({ message: error.message, networkError: error.networkError }));
     } finally {
       dispatch(setLoaderOff());

@@ -22,6 +22,7 @@ const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
   const employeeError = useAppSelector((state: RootState) => state.employee.error);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
@@ -46,7 +47,6 @@ const Employees = () => {
   const handleDataList = (data) => {
     setDataList(data);
   };
-  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const showErrorMessage = employeeError?.networkError || !listEmployee.length;
 
