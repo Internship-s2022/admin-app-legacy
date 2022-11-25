@@ -20,7 +20,6 @@ const Navbar = () => {
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
   };
-  console.log(userRole);
 
   const handleNavigation = (path) => {
     navigate(path);
