@@ -56,6 +56,7 @@ export const addUser: AppThunk = (data) => {
       dispatch(addUsersError({ message: error.message, networkError: error.networkError }));
     } finally {
       dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
     }
   };
 };
