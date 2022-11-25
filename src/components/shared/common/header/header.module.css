@@ -8,8 +8,18 @@ header {
   justify-content: space-between;
   height: 50px;
   padding: 18px 50px;
-  margin-bottom: 40px;
   background-color: #373867;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand :nth-child(2) {
+  margin-right: 5px;
+  font-weight: bold;
 }
 
 .navbarContainer {
@@ -19,31 +29,40 @@ header {
 
 .logout {
   display: flex;
-  justify-content: flex-end;
-  width: 115px;
+  align-items: center;
+  justify-content: center;
+  width: 5%;
+  height: 24px;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell,
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+  cursor: pointer;
+  background-color: #373867;
+  border: none;
 }
 
-.probando {
-  width: 106px;
-  cursor: pointer;
+.logout:hover {
+  color: #5bc59b;
+}
+
+.logout:hover svg path {
+  fill: #5bc59b;
+}
+
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+}
+
+.iconContainer svg {
+  height: 18px;
+  padding-top: 4px;
 }
 
 .logout span {
   margin-right: 5px;
-}
-
-.bran :first-child {
-  margin-right: 25px;
-}
-
-.brand :nth-child(2) {
-  margin-right: 5px;
-  font-weight: bold;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-
-  /* width: 166px; */
 }
