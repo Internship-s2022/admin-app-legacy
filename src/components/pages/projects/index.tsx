@@ -6,13 +6,13 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
@@ -23,7 +23,7 @@ import { MappedProjectData, SearchProjectData } from './types';
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
   const projectList = useSelector((state: RootState) => state.project.list);
 
@@ -88,7 +88,7 @@ const Projects = () => {
   };
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
-    dispatch(closeModal());
+    dispatch(closeConfirmationModal());
   };
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
@@ -107,7 +107,7 @@ const Projects = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
@@ -174,15 +174,14 @@ const Projects = () => {
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Proyectos}
-          id={row._id}
-          name={row.projectName}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          title={'Eliminar Proyecto'}
+          description={`¿Desea eliminar al proyecto ${row.projectName}?`}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

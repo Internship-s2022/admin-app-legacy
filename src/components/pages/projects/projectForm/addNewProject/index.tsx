@@ -5,14 +5,21 @@ import { useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
-import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Dropdown,
+  Modal,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
+import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { openModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import MemberTable from '../memberTable';
@@ -22,8 +29,9 @@ import { projectValidation } from './validations';
 
 const AddNewProject = () => {
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
@@ -69,7 +77,8 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    setConfirmationMsgOpen(true);
+    setSuccessErrorMsgOpen(true);
+    dispatch(closeConfirmationModal());
   };
 
   useEffect(() => {
@@ -162,7 +171,7 @@ const AddNewProject = () => {
                   <Button
                     testId="saveButton"
                     materialVariant={Variant.CONTAINED}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={id ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)}
                     label="Guardar"
                   />
                 </div>
@@ -219,14 +228,27 @@ const AddNewProject = () => {
             </div>
           </div>
         </div>
-        <ConfirmationMessage
-          open={openConfirmationMsg}
-          setOpen={setConfirmationMsgOpen}
+        <SuccessErrorMessage
+          open={openSuccessErrorMsg}
+          setOpen={setSuccessErrorMsgOpen}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}
         />
       </form>
+      <Modal
+        testId="editProjectModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al proyecto ${selectedProject.projectName}?`}
+          title={'Editar Proyecto'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </>
   );
 };

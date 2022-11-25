@@ -7,14 +7,21 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
-import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Modal,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
@@ -23,11 +30,12 @@ import { clientsProjectsHeaders } from './constants';
 const ClientForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
   const operation = id ? 'editado' : 'agregado';
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -87,7 +95,8 @@ const ClientForm = () => {
 
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    setConfirmationMsgOpen(true);
+    dispatch(closeConfirmationModal());
+    setSuccessErrorMsgOpen(true);
   };
 
   const onClose = () => {
@@ -251,19 +260,34 @@ const ClientForm = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={handleSubmit(onSubmit)}
+              onClick={
+                selectedClient ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)
+              }
               label="Confirmar"
             />
           </div>
         </div>
       </div>
-      <ConfirmationMessage
-        open={openConfirmationMsg}
-        setOpen={setConfirmationMsgOpen}
+      <SuccessErrorMessage
+        open={openSuccessErrorMsg}
+        setOpen={setSuccessErrorMsgOpen}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}
       />
+      <Modal
+        testId="editClientModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al cliente ${selectedClient.name}?`}
+          title={'Editar Cliente'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </div>
   );
 };

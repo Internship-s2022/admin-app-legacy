@@ -6,12 +6,12 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, Modal, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
+import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -21,7 +21,7 @@ import { ClientsData, SearchClientData } from './types';
 
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
 
   const clientsList = useSelector((state: RootState) => state.client?.list);
@@ -61,7 +61,7 @@ const Clients = () => {
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
-    dispatch(closeModal());
+    dispatch(closeConfirmationModal());
   };
 
   const handleEdit = (row) => {
@@ -92,7 +92,7 @@ const Clients = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
@@ -159,15 +159,14 @@ const Clients = () => {
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Clientes}
-          id={row._id}
-          name={row.name}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          description={`¿Desea eliminar al cliente ${row.name}?`}
+          title={'Eliminar Cliente'}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>
