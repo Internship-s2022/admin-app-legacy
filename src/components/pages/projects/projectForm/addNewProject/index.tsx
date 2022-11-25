@@ -43,8 +43,8 @@ const AddNewProject = () => {
     defaultValues: {
       projectName: '',
       clientName: '',
-      startDate: new Date(Date.now()),
-      endDate: new Date(Date.now()),
+      startDate: null,
+      endDate: null,
       projectType: ProjectType.STAFF_AUGMENTATION,
       isCritic: Criticality.ALTA,
       description: '',
