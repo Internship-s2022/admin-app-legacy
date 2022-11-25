@@ -55,9 +55,12 @@ export const memberValidations = Joi.object({
       .required(),
   }),
 
-  startDate: Joi.date(),
+  startDate: Joi.date().allow(null),
 
-  endDate: Joi.date().greater(Joi.ref('startDate')).messages({
-    'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
-  }),
+  endDate: Joi.date()
+    .greater(Joi.ref('startDate'))
+    .messages({
+      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+    })
+    .allow(null),
 }).options({ allowUnknown: true });
