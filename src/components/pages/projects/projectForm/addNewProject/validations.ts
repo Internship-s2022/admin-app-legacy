@@ -34,7 +34,7 @@ export const projectValidation = Joi.object({
   endDate: Joi.date()
     .greater(Joi.ref('startDate'))
     .messages({
-      'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
+      'date.greater': 'Fecha de finalización debe ser posterior a la fecha de inicio',
     })
     .allow(null),
 
