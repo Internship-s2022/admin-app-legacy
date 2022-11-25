@@ -1,7 +1,8 @@
 .logOutIcon {
+  width: 100%;
   cursor: pointer;
 }
 
-.logOutIcon:hover {
-  color: #4ea381;
+.logOutIcon:hover svg {
+  fill: #4ea381;
 }

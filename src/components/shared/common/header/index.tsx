@@ -30,6 +30,7 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.brand}>
+          <HeaderLogo testId="headerLogo" />
           <span>Radium</span>
           <span>Admin</span>
         </div>
