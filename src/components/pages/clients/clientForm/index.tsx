@@ -271,7 +271,9 @@ const ClientForm = () => {
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
               onClick={
-                selectedClient ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)
+                selectedClient._id
+                  ? () => dispatch(openConfirmationModal())
+                  : handleSubmit(onSubmit)
               }
               label="Confirmar"
             />

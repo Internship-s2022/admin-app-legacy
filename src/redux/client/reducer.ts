@@ -33,6 +33,23 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.GET_CLIENT_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_CLIENT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        selectedClient: action.payload,
+        error: undefined,
+      };
+    case Actions.GET_CLIENT_BY_ID_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
     case Actions.ADD_CLIENT_PENDING:
       return {
         ...state,
@@ -65,6 +82,7 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
           }
           return item;
         }),
+        error: undefined,
       };
     case Actions.EDIT_CLIENT_ERROR:
       return {
@@ -85,22 +103,6 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
         error: undefined,
       };
     case Actions.DELETE_CLIENT_ERROR:
-      return {
-        ...state,
-        error: { ...action.payload },
-        isLoading: false,
-      };
-    case Actions.GET_CLIENT_BY_ID_SUCCESS:
-      return {
-        ...state,
-        selectedClient: action.payload,
-      };
-    case Actions.GET_CLIENT_BY_ID_PENDING:
-      return {
-        ...state,
-        isLoading: true,
-      };
-    case Actions.GET_CLIENT_BY_ID_ERROR:
       return {
         ...state,
         error: { ...action.payload },
