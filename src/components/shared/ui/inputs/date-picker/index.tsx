@@ -17,7 +17,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         onChange={onChange}
-        value={value}
+        value={disabled ? null : value}
         label={label}
         className={styles}
         disabled={disableFuture}

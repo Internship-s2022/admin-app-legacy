@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,6 +17,7 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
@@ -39,6 +40,7 @@ const ClientForm = () => {
 
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -161,21 +163,30 @@ const ClientForm = () => {
             </div>
             <div className={styles.leftColumns}>
               <div className={styles.dateContainer}>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Inicio'}
-                    testId={'startDatePickerTestId'}
-                    name="relationshipStart"
-                    control={control}
-                  />
-                </div>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Fin'}
-                    testId={'endDatePickerTestId'}
-                    name="relationshipEnd"
-                    control={control}
-                  />
+                <div className={styles.datePickers}>
+                  <div>
+                    <DatePicker
+                      label={'Inicio'}
+                      testId={'startDatePickerTestId'}
+                      name="relationshipStart"
+                      control={control}
+                    />
+                    <EndDateCheckbox
+                      isDisabled={isDisabled}
+                      setIsDisabled={setIsDisabled}
+                      resource={Resources.Clientes}
+                    />
+                  </div>
+                  <div>
+                    <DatePicker
+                      label={'Fin'}
+                      testId={'endDatePickerTestId'}
+                      name="relationshipEnd"
+                      control={control}
+                      disabled={isDisabled}
+                      disableFuture={isDisabled}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={styles.inputs}>
