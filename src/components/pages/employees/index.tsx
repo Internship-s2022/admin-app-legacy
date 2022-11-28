@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Table } from 'src/components/shared/ui';
+import { SuccessErrorMessage, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -20,7 +21,8 @@ import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
-  const employeeError = useAppSelector((state: RootState) => state.employee?.error);
+  const employeeError = useAppSelector((state: RootState) => state.employee.error);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const listEmployee = useAppSelector((state: RootState) =>
     state.employee?.list.map((employee) => ({
@@ -50,6 +52,9 @@ const Employees = () => {
 
   useEffect(() => {
     dispatch(getEmployees());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   const buttonsArray: TableButton<MappedEmployeeData>[] = [
@@ -82,15 +87,23 @@ const Employees = () => {
           />
         </div>
         {dataList.length ? (
-          <Table<MappedEmployeeData>
-            showButtons
-            testId={'userTable'}
-            headers={header}
-            value={dataList}
-            setDataList={handleDataList}
-            profileIcon={true}
-            buttons={buttonsArray}
-          />
+          <>
+            <Table<MappedEmployeeData>
+              showButtons
+              testId={'userTable'}
+              headers={header}
+              value={dataList}
+              setDataList={handleDataList}
+              profileIcon={true}
+              buttons={buttonsArray}
+            />
+            <SuccessErrorMessage
+              open={showAlert}
+              error={employeeError}
+              resource={Resources.Empleados}
+              operation={'editado'}
+            />
+          </>
         ) : (
           <>
             <div className={styles.notFound}>

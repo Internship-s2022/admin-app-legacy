@@ -12,11 +12,11 @@ import {
   ConfirmationMessage,
   DatePicker,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
-import SuccessErrorMessage from 'src/components/shared/ui/successErrorMessage';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
@@ -28,12 +28,15 @@ import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const [openSuccessErrorMsg, setSuccessErrorMsgOpen] = React.useState(false);
+
+  const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
+
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
 
@@ -83,9 +86,9 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation),
   });
 
-  const projectsList = selectedClient?.projects;
+  const latestClientsList = selectedClient?.projects?.slice(-2);
 
-  const formattedProjects = projectsList?.map((item) => ({
+  const formattedProjects = latestClientsList?.map((item) => ({
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
@@ -96,7 +99,6 @@ const ClientForm = () => {
   const onSubmit = (data) => {
     id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
     dispatch(closeConfirmationModal());
-    setSuccessErrorMsgOpen(true);
   };
 
   const onClose = () => {
@@ -232,6 +234,14 @@ const ClientForm = () => {
                     })}
                   </tbody>
                 </table>
+                <div className={styles.viewMore}>
+                  <Button
+                    testId="viewMoreButton"
+                    materialVariant={Variant.TEXT}
+                    onClick={() => undefined}
+                    label="Ver más"
+                  />
+                </div>
               </div>
             )}
             <TextInput
@@ -261,7 +271,9 @@ const ClientForm = () => {
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
               onClick={
-                selectedClient ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)
+                selectedClient._id
+                  ? () => dispatch(openConfirmationModal())
+                  : handleSubmit(onSubmit)
               }
               label="Confirmar"
             />
@@ -269,8 +281,7 @@ const ClientForm = () => {
         </div>
       </div>
       <SuccessErrorMessage
-        open={openSuccessErrorMsg}
-        setOpen={setSuccessErrorMsgOpen}
+        open={showAlert}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}

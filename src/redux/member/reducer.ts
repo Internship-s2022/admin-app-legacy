@@ -38,12 +38,6 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         ...state,
         isLoading: true,
       };
-    case Actions.DELETE_MEMBER_ERROR:
-      return {
-        ...state,
-        error: { ...action.payload },
-        isLoading: false,
-      };
     case Actions.DELETE_MEMBER_SUCCESS:
       return {
         ...state,
@@ -51,6 +45,13 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         isLoading: false,
         error: undefined,
       };
+    case Actions.DELETE_MEMBER_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
+
     default:
       return state;
   }

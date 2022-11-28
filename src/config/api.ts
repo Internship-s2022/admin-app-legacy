@@ -18,7 +18,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 const parseError = (error) => {
   if (error.code !== 'ERR_NETWORK') {
     throw {
-      message: error.response.data,
+      message: error.response.data.message,
       networkError: false,
     };
   }

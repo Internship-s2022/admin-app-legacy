@@ -12,3 +12,5 @@ export const openConfirmationModal = () => action(Actions.OPEN_CONFIRMATION_MODA
 export const closeConfirmationModal = () => action(Actions.CLOSE_CONFIRMATION_MODAL);
 export const openLogoutModal = () => action(Actions.OPEN_LOGOUT_MODAL);
 export const closeLogoutModal = () => action(Actions.CLOSE_LOGOUT_MODAL);
+export const setOpenMessageAlert = () => action(Actions.SET_OPEN_MESSAGE_ALERT);
+export const closeMessageAlert = () => action(Actions.CLOSE_MESSAGE_ALERT);

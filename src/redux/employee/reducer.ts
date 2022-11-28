@@ -49,6 +49,7 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
           }
           return item;
         }),
+        error: undefined,
       };
     case Actions.EDIT_EMPLOYEE_ERROR:
       return {

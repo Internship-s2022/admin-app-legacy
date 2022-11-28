@@ -4,14 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Modal, Table } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Modal,
+  SuccessErrorMessage,
+  Table,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  closeMessageAlert,
+  closeModal,
+  openConfirmationModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -52,16 +62,21 @@ const Clients = () => {
   );
 
   const [dataList, setDataList] = useState(activeClientsList);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   useEffect(() => setDataList(activeClientsList), [clientsList]);
 
   useEffect(() => {
     dispatch(getClients());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
     dispatch(closeConfirmationModal());
+    dispatch(closeModal());
   };
 
   const handleEdit = (row) => {
@@ -156,6 +171,12 @@ const Clients = () => {
           </>
         )}
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={clientError}
+        resource={Resources.Clientes}
+        operation={'borrado'}
+      />
       <Modal
         testId="deleteModal"
         styles={styles.modal}

@@ -33,15 +33,16 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
-    case Actions.GET_PROJECT_BY_ID_SUCCESS:
-      return {
-        ...state,
-        selectedProject: action.payload,
-      };
     case Actions.GET_PROJECT_BY_ID_PENDING:
       return {
         ...state,
         isLoading: true,
+      };
+    case Actions.GET_PROJECT_BY_ID_SUCCESS:
+      return {
+        ...state,
+        selectedProject: action.payload,
+        error: undefined,
       };
     case Actions.GET_PROJECT_BY_ID_ERROR:
       return {
@@ -82,6 +83,7 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
           return item;
         }),
         isLoading: false,
+        error: undefined,
       };
     case Actions.EDIT_PROJECT_ERROR:
       return {
@@ -107,7 +109,6 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         error: { ...action.payload },
         isLoading: false,
       };
-
     case Actions.CLEAN_SELECTED_PROJECT:
       return {
         ...state,

@@ -11,6 +11,7 @@ export interface State {
   showFormModal: boolean;
   showConfirmModal: boolean;
   showLogoutModal: boolean;
+  showSuccessErrorAlert: boolean;
 }
 
 export type ActionsType = ActionType<typeof actions>;

@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import Stack from '@mui/material/Stack';
 
+import { closeMessageAlert } from 'src/redux/ui/actions';
+import { AppDispatch } from 'src/types';
 import { cutLastLetter } from 'src/utils/formatters';
 
 import { SuccessErrorMessageProps } from './types';
@@ -10,17 +13,19 @@ import { SuccessErrorMessageProps } from './types';
 const AlertMsg = (props, ref) => {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 };
+
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(AlertMsg);
 
 const SuccessErrorMessage = (props: SuccessErrorMessageProps) => {
-  const { error, open, setOpen, resource, operation } = props;
+  const { error, open, resource, operation } = props;
+
+  const dispatch: AppDispatch<null> = useDispatch();
 
   const handleClose = (_?: React.SyntheticEvent | Event, reason?: string) => {
+    dispatch(closeMessageAlert());
     if (reason === 'clickaway') {
       return;
     }
-
-    setOpen(false);
   };
 
   const message = error ? error.message : `${cutLastLetter(resource)} ${operation} con éxito.`;

@@ -1,7 +1,7 @@
 import React from 'react';
 
-import Button from '../buttons/button';
 import { Variant } from '../buttons/button/types';
+import { Button } from '../index';
 import styles from './confirmationMessage.module.css';
 import { ConfirmationMessageProps } from './types';
 
