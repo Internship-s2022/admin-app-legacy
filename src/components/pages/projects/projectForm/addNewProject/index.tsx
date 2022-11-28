@@ -108,6 +108,14 @@ const AddNewProject = () => {
     setEndDateDisabled(!selectedProject.endDate);
   }, [selectedProject]);
 
+  const selectedProjectMemberList = membersList.filter(
+    (member) => member.project === selectedProject?._id,
+  );
+
+  console.log({ membersList });
+  console.log({ selectedProject });
+  console.log(selectedProjectMemberList);
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>

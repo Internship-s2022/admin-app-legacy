@@ -17,8 +17,8 @@ export interface Helper {
 export interface Member {
   _id: string;
   helper: Helper;
-  employee: Employee;
-  project: Project;
+  employee: string;
+  project: string;
   role: RoleType;
   memberDedication: number;
   startDate: Date;
