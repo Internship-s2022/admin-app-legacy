@@ -8,7 +8,8 @@ import { closeLogoutModal, openLogoutModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import { ConfirmationMessage, Modal } from '../../ui';
-import LogOutIcon from '../../ui/icons/logOutIcons';
+import HeaderLogo from '../../ui/icons/headerLogo';
+import LogoutIcon from '../../ui/icons/logoutIcon';
 import Navbar from '../navbar';
 import styles from './header.module.css';
 
@@ -30,16 +31,23 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.brand}>
+          <HeaderLogo testId="headerLogo" />
           <span>Radium</span>
           <span>Admin</span>
         </div>
         <nav className={styles.navbarContainer}>
           <Navbar />
         </nav>
-        <div data-testid="logout-btn" className={styles.logout}>
-          <span>Salir</span>
-          <LogOutIcon onClick={() => dispatch(openLogoutModal())} />
-        </div>
+        <button
+          data-testid="logout-btn"
+          className={styles.logout}
+          onClick={() => dispatch(openLogoutModal())}
+        >
+          Salir
+          <div className={styles.iconContainer}>
+            <LogoutIcon />
+          </div>
+        </button>
       </div>
       <Modal
         testId="confirmLogoutModal"

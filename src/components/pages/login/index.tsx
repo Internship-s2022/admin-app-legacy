@@ -3,7 +3,7 @@ import GoogleButton from 'react-google-button';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import RadiumLogo from 'src/components/shared/ui/icons/radiumLogo';
+import LoginLogo from 'src/components/shared/ui/icons/loginLogo';
 import { login } from 'src/redux/auth/thunk';
 import { AppDispatch } from 'src/types';
 
@@ -26,7 +26,7 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      <RadiumLogo testId="radium-logo" />
+      <LoginLogo testId="radium-logo" />
       <GoogleButton
         label="Continuar con Google"
         className={styles.googleButton}
