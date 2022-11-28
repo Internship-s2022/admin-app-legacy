@@ -32,7 +32,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
             disabled={disabled}
           />
         )}
-        inputFormat={'yyyy/MM/dd'}
+        inputFormat={'dd/MM/yyyy'}
       />
     </LocalizationProvider>
   );

@@ -29,11 +29,14 @@ export const projectValidation = Joi.object({
     })
     .allow(''),
 
-  startDate: Joi.date(),
+  startDate: Joi.date().allow(null),
 
-  endDate: Joi.date().greater(Joi.ref('startDate')).messages({
-    'date.greater': 'La fecha de finalización debe ser posterior a la fecha de inicio',
-  }),
+  endDate: Joi.date()
+    .greater(Joi.ref('startDate'))
+    .messages({
+      'date.greater': 'Fecha de finalización debe ser posterior a la fecha de inicio',
+    })
+    .allow(null),
 
   isCritic: Joi.string()
     .valid(CriticalType.ALTA, CriticalType.MEDIA, CriticalType.BAJA)
