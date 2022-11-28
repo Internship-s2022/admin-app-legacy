@@ -116,7 +116,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'clientNameInput'}
                   label="Cliente"
-                  placeholder="Nombre del ciente"
+                  placeholder="Nombre de la empresa"
                   name="name"
                   type={'text'}
                   variant="outlined"
@@ -126,35 +126,9 @@ const ClientForm = () => {
               <div className={styles.inputs}>
                 <TextInput
                   control={control}
-                  testId={'clientEmailInput'}
-                  label="Email contacto cliente"
-                  name="clientContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email de contacto de cliente"
-                  fullWidth
-                />
-              </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'localEmailInput'}
-                  label="Email contacto Radium Rocket"
-                  name="localContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email de contacto de Radium Rocket"
-                  fullWidth
-                />
-              </div>
-            </div>
-            <div className={styles.leftColumns}>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
                   testId={'clientContactInput'}
                   label="Contacto cliente"
-                  placeholder="Nombre del contacto del ciente"
+                  placeholder="Nombre y apellido del contacto del cliente"
                   name="clientContact.name"
                   type={'text'}
                   variant="outlined"
@@ -166,13 +140,15 @@ const ClientForm = () => {
                   control={control}
                   testId={'localContactInput'}
                   label="Contacto Radium Rocket"
-                  placeholder="Nombre del contacto del Radium Rocket"
+                  placeholder="Nombre del contacto de Radium Rocket"
                   name="localContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
                 />
               </div>
+            </div>
+            <div className={styles.leftColumns}>
               <div className={styles.dateContainer}>
                 <div className={styles.inputs}>
                   <DatePicker
@@ -190,6 +166,30 @@ const ClientForm = () => {
                     control={control}
                   />
                 </div>
+              </div>
+              <div className={styles.inputs}>
+                <TextInput
+                  control={control}
+                  testId={'clientEmailInput'}
+                  label="Email cliente"
+                  name="clientContact.email"
+                  type={'text'}
+                  variant="outlined"
+                  placeholder="Email del contacto del cliente"
+                  fullWidth
+                />
+              </div>
+              <div className={styles.inputs}>
+                <TextInput
+                  control={control}
+                  testId={'localEmailInput'}
+                  label="Email Radium Rocket"
+                  name="localContact.email"
+                  type={'text'}
+                  variant="outlined"
+                  placeholder="Email del contacto de Radium Rocket"
+                  fullWidth
+                />
               </div>
             </div>
           </div>
