@@ -140,7 +140,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'localContactInput'}
                   label="Contacto Radium Rocket"
-                  placeholder="Nombre del contacto de Radium Rocket"
+                  placeholder="Nombre y apellido del contacto de Radium Rocket"
                   name="localContact.name"
                   type={'text'}
                   variant="outlined"
