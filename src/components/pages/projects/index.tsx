@@ -101,7 +101,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getProjects());
-    dispatch(getMembers());
+    dispatch(getMembers()); //TODO: VER DONDE UBICAR ESTE GET
     return () => {
       dispatch(closeMessageAlert());
     };

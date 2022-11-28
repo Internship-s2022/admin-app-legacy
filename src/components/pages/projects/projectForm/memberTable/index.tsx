@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { openModal, setOpenMessageAlert } from 'src/redux/ui/actions';
+import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
@@ -25,7 +25,9 @@ const MemberTable = (props: MemberTableProps) => {
       employee: `${item?.employee?.user?.firstName} ${item?.employee?.user?.lastName}` || '-',
       role: item?.role || '-',
       dedication: item?.memberDedication || '-',
-      helper: '-',
+      helper:
+        `${item?.helper[0]?.helperReference?.user?.firstName} ${item?.helper[0]?.helperReference?.user?.lastName}` || //TODO: PONER PARA QUE SE VEA EL ULTIMO HELPER AGREGADO
+        '-',
       date: dateFormatter(item?.startDate, item?.endDate),
     };
   });
@@ -76,6 +78,12 @@ const MemberTable = (props: MemberTableProps) => {
                       materialVariant={Variant.OUTLINED}
                       onClick={() => handleDelete(data.id)}
                       label="X"
+                    />
+                    <Button
+                      testId="editButton"
+                      materialVariant={Variant.OUTLINED}
+                      onClick={() => undefined} //TODO: ABRIR MODAL DE MIEMBROS --> AGREGARLE LOGICA PARA EDIT
+                      label="E"
                     />
                   </td>
                 </tr>

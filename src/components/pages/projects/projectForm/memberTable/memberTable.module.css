@@ -41,6 +41,12 @@
   font-weight: 500;
 }
 
+/* TODO: ACOMODAR MARGEN INFERIOR */
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
 .buttons > button {
   min-width: 30px;
   min-height: 15px;

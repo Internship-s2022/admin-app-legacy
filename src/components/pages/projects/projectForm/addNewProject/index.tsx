@@ -109,12 +109,8 @@ const AddNewProject = () => {
   }, [selectedProject]);
 
   const selectedProjectMemberList = membersList.filter(
-    (member) => member.project === selectedProject?._id,
+    (member) => member.project._id === selectedProject?._id,
   );
-
-  console.log({ membersList });
-  console.log({ selectedProject });
-  console.log(selectedProjectMemberList);
 
   return (
     <>
@@ -203,7 +199,7 @@ const AddNewProject = () => {
               </div>
             </div>
             {selectedProject?.members?.length ? (
-              <MemberTable list={selectedProject?.members} />
+              <MemberTable list={selectedProjectMemberList} />
             ) : (
               <div className={styles.emptyMember}>
                 <div>Este proyecto no cuenta con miembros asociados</div>
