@@ -178,7 +178,6 @@ const EditEmployee = () => {
                   name="user.birthDate"
                   control={control}
                   disabled
-                  disableFuture
                 />
               </div>
               <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>

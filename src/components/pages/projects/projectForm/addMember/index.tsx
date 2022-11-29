@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
@@ -28,6 +29,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -149,13 +151,28 @@ const AddMemberForm = (props: AddMemberFormProps) => {
               </div>
             </div>
             <div className={styles.datePickers}>
-              <DatePicker
-                label={'Inicio'}
-                testId={'startDate'}
-                name="startDate"
-                control={control}
-              />
-              <DatePicker label={'Fin'} testId={'endDate'} name="endDate" control={control} />
+              <div>
+                <DatePicker
+                  label={'Inicio'}
+                  testId={'startDate'}
+                  name="startDate"
+                  control={control}
+                />
+                <EndDateCheckbox
+                  isDisabled={isDisabled}
+                  setIsDisabled={setIsDisabled}
+                  resource={Resources.Miembros}
+                />
+              </div>
+              <div>
+                <DatePicker
+                  disabled={isDisabled}
+                  label={'Fin'}
+                  testId={'endDate'}
+                  name="endDate"
+                  control={control}
+                />
+              </div>
             </div>
             <div className={styles.buttonsContainer}>
               <div>

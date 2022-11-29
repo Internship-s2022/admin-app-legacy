@@ -184,7 +184,6 @@ const ClientForm = () => {
                       name="relationshipEnd"
                       control={control}
                       disabled={isDisabled}
-                      disableFuture={isDisabled}
                     />
                   </div>
                 </div>

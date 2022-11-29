@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -15,16 +15,12 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import {
-  closeConfirmationModal,
-  openConfirmationModal,
-  openModal,
-  setOpenMessageAlert,
-} from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import MemberTable from '../memberTable';
@@ -40,6 +36,7 @@ const AddNewProject = () => {
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   const clientList = useSelector((state: RootState) =>
     state.client.list?.reduce((acc, item) => {
@@ -166,9 +163,20 @@ const AddNewProject = () => {
                       name="startDate"
                       control={control}
                     />
+                    <EndDateCheckbox
+                      isDisabled={isDisabled}
+                      setIsDisabled={setIsDisabled}
+                      resource={Resources.Proyectos}
+                    />
                   </div>
                   <div className={styles.dateSelection}>
-                    <DatePicker label={'Fin'} testId={'endDate'} name="endDate" control={control} />
+                    <DatePicker
+                      disabled={isDisabled}
+                      label={'Fin'}
+                      testId={'endDate'}
+                      name="endDate"
+                      control={control}
+                    />
                   </div>
                 </div>
                 <div className={styles.saveButton}>

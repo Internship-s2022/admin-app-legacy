@@ -56,8 +56,12 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
         </TableHead>
         <TableBody>
           {value?.map((row) => (
-            <TableRow className={styles.rows} key={row['id']} hover={true}>
-              {profileIcon && <Avatar className={styles.icon}></Avatar>}
+            <TableRow className={styles.rows} key={row['id'] || row['_id']} hover={true}>
+              {profileIcon && (
+                <TableCell>
+                  <Avatar className={styles.icon}></Avatar>
+                </TableCell>
+              )}
               {headers.map((header, index) => (
                 <TableCell align="center" key={index} scope="row">
                   {row[header.key]}
