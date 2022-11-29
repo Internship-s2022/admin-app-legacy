@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
@@ -17,7 +17,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
         onChange={onChange}
-        value={disabled ? null : value}
+        value={value}
         label={label}
         className={styles}
         disabled={disabled}

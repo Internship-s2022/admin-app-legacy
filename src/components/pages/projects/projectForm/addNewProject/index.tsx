@@ -71,7 +71,7 @@ const AddNewProject = () => {
         projectName: data.projectName,
         clientName: data.clientName,
         startDate: data.startDate,
-        endDate: data.endDate,
+        endDate: isDisabled ? null : data.endDate,
         projectType: data.projectType,
         isCritic: data.isCritic,
         description: data.description,
@@ -101,6 +101,7 @@ const AddNewProject = () => {
       description: selectedProject.description,
       notes: selectedProject.notes,
     });
+    setIsDisabled(!selectedProject.endDate);
   }, [selectedProject]);
 
   return (

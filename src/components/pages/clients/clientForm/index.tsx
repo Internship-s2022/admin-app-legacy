@@ -62,10 +62,11 @@ const ClientForm = () => {
           email: selectedClient.clientContact.email,
         },
         relationshipStart: selectedClient.relationshipStart,
-        relationshipEnd: selectedClient.relationshipEnd,
+        relationshipEnd: isDisabled ? null : selectedClient.relationshipEnd,
         notes: selectedClient.notes,
         isActive: true,
       });
+      setIsDisabled(!selectedClient.relationshipEnd);
     }
   }, [selectedClient]);
 
