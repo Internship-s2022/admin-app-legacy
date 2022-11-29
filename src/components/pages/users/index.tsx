@@ -1,9 +1,6 @@
-import { format } from 'date-fns';
 import React, { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
@@ -29,16 +26,16 @@ import {
   openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
-import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
+import { deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
 import { accessRoles, userFilterOptions, userHeaders } from './constants';
-import { FormValues, SearchUserData, UserData } from './types';
+import { SearchUserData, UserData } from './types';
+import UserForm from './userForm';
 import styles from './users.module.css';
-import { userValidation } from './validations';
 
 const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
@@ -56,7 +53,7 @@ const Users = () => {
 
   const activeUsers = useMemo(() => {
     return userList.reduce((acc, item) => {
-      if (item.isActive && item.accessRoleType !== AccessRoleType.SUPER_ADMIN) {
+      if (item.accessRoleType !== AccessRoleType.SUPER_ADMIN) {
         acc.push({
           _id: item?._id,
           firebaseUid: item?.firebaseUid,
@@ -67,14 +64,20 @@ const Users = () => {
           )}`,
           location: item?.location,
           birthDate: item?.birthDate.toString(),
-          active: item?.isActive.toString(),
+          active: item?.isActive,
         });
       }
       return acc;
     }, []);
   }, [userList]);
 
-  const [filteredList, setFilteredList] = React.useState(activeUsers);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    role: '',
+    search: '',
+  });
+
+  const [dataList, setDataList] = React.useState(activeUsers);
   const [operation, setOperation] = React.useState('');
 
   useEffect(() => {
@@ -85,36 +88,8 @@ const Users = () => {
   }, []);
 
   useEffect(() => {
-    setFilteredList(activeUsers);
+    setDataList(activeUsers);
   }, [userList]);
-
-  const { handleSubmit, control, reset } = useForm<FormValues>({
-    defaultValues: {
-      accessRoleType: AccessRoleType.EMPLOYEE,
-      email: '',
-      firstName: '',
-      lastName: '',
-      location: '',
-      birthDate: new Date(Date.now()),
-      isActive: true,
-    },
-    mode: 'onBlur',
-    resolver: joiResolver(userValidation),
-  });
-
-  const onSubmit = (data) => {
-    data = {
-      ...data,
-      birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
-    };
-    dispatch(addUser(data));
-    onClose();
-  };
-
-  const onClose = () => {
-    reset();
-    dispatch(closeFormModal());
-  };
 
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
@@ -127,6 +102,59 @@ const Users = () => {
     setOperation('editado');
     setRow(data);
   };
+
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const filterData = () => {
+    let filterDataList;
+    if (filters.role === 'Manager') {
+      filterDataList = activeUsers.filter((item) => item.accessRoleType === 'Manager');
+    }
+    if (filters.role === 'Admin') {
+      filterDataList = activeUsers.filter((item) => {
+        return item.accessRoleType === 'Admin';
+      });
+    }
+    if (filters.role === 'Employee') {
+      filterDataList = activeUsers.filter((item) => {
+        return item.accessRoleType === 'Employee';
+      });
+    }
+    if (filters.role === 'Super Admin') {
+      filterDataList = activeUsers.filter((item) => {
+        return item.accessRoleType === 'Super Admin';
+      });
+    }
+    if (filters.isActive) {
+      filterDataList = activeUsers.filter((item) => {
+        return item.active;
+      });
+    }
+    if (filters.isActive === false) {
+      filterDataList = activeUsers.filter((item) => {
+        return item.active === false;
+      });
+    }
+
+    if (filters.search) {
+      filterDataList = filterDataList?.filter((d) =>
+        userFilterOptions.some((field) =>
+          d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+        ),
+      );
+    }
+
+    setDataList(filterDataList);
+  };
+
+  console.log('asdsasd', filters);
+  console.log('dataList', dataList);
+
+  useEffect(() => {
+    filterData();
+  }, [filters.isActive, filters.role, filters.search]);
 
   const buttonsArray: TableButton<UserData>[] = [
     {
@@ -150,10 +178,6 @@ const Users = () => {
     },
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
   const showErrorMessage = userError?.networkError || !activeUsers.length;
 
   return showErrorMessage ? (
@@ -173,9 +197,7 @@ const Users = () => {
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>
             <SearchBar<SearchUserData>
-              setFilteredList={setFilteredList}
-              details={activeUsers}
-              mainArray={userFilterOptions}
+              setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
             />
           </div>
           <div className={styles.addUserButton}>
@@ -187,14 +209,34 @@ const Users = () => {
             />
           </div>
         </div>
+        <div className={styles.checkboxInput}>
+          <Button
+            materialVariant={Variant.CONTAINED}
+            onClick={() => setFilters({ ...filters, isActive: !filters.isActive })}
+            label={'Inactivos'}
+            testId={'inactiveButtons'}
+          />
+          <select
+            onChange={(e) => {
+              setFilters({ ...filters, role: formattedRoleType[e.target.value] });
+            }}
+          >
+            {accessRoles.map((item) => (
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className={styles.tableContainer}>
-          {filteredList.length ? (
+          {dataList?.length ? (
             <Table<UserData>
               showButtons
               testId={'userTable'}
               headers={userHeaders}
-              value={filteredList}
+              value={dataList}
               buttons={buttonsArray}
+              setDataList={setDataList}
             />
           ) : (
             <>
@@ -219,80 +261,7 @@ const Users = () => {
           isOpen={showFormModal}
           testId="add-user-modal"
         >
-          <div className={styles.formContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className={styles.inputsContainer}>
-                <Dropdown
-                  control={control}
-                  testId={'access-role-dropdown'}
-                  label="Rol de acceso"
-                  name="accessRoleType"
-                  options={accessRoles}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'email-input'}
-                  label="Email"
-                  name="email"
-                  type={'text'}
-                  variant="outlined"
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'first-name-input'}
-                  label="Nombre"
-                  name="firstName"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'last-name-input'}
-                  label="Apellido"
-                  name="lastName"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'location-input'}
-                  label="Localidad"
-                  name="location"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'date-input'}
-                  name="birthDate"
-                  type="date"
-                  error
-                  fullWidth
-                />
-              </div>
-              <div className={styles.buttonsContainer}>
-                <Button
-                  testId="submit-btn"
-                  materialVariant={Variant.CONTAINED}
-                  label="Confirmar"
-                  onClick={handleSubmit(onSubmit)}
-                />
-                <Button
-                  testId="reset-btn"
-                  materialVariant={Variant.OUTLINED}
-                  label="Cancelar"
-                  onClick={() => onClose()}
-                />
-              </div>
-            </form>
-          </div>
+          <UserForm />
         </Modal>
       </div>
       <SuccessErrorMessage
