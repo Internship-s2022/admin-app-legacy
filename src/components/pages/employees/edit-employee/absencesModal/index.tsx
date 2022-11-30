@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { areIntervalsOverlapping, format, isWithinInterval } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -20,6 +20,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
 
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(new Date());
+  const [error, setError] = React.useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -57,11 +58,22 @@ const AbsencesModal = (props: AbsencesModalProps) => {
   const onSubmit = (data) => {
     const body = {
       ...data,
-      startDate: format(new Date(startDate), 'MM/dd/yyyy'),
-      endDate: format(new Date(endDate), 'MM/dd/yyyy'),
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
     };
-    setAbsence([...absences, { ...body }]);
-    onClose();
+    const mappedAbsences = absences.map((item) =>
+      areIntervalsOverlapping(
+        { start: new Date(startDate), end: new Date(endDate) },
+        { start: new Date(item.startDate), end: new Date(item.endDate) },
+      ),
+    );
+    const a = mappedAbsences.some((item) => item);
+    if (a) {
+      setError(true);
+    } else {
+      setAbsence([...absences, { ...body }]);
+      onClose();
+    }
   };
 
   return (
@@ -117,6 +129,11 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             endDate={endDate}
           />
         </div>
+        {error && (
+          <div className={styles.absenceError}>
+            <span>Error: Ausencia registrada en período indicado</span>
+          </div>
+        )}
       </form>
       <div className={styles.buttonsContainer}>
         <div>

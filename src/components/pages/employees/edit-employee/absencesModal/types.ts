@@ -5,6 +5,7 @@ export interface AbsencesModalProps {
 }
 
 export interface AbsencesData {
+  _id?: string;
   motive: string;
   startDate: string;
   endDate: string;
