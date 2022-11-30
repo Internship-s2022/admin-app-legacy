@@ -61,13 +61,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
     };
-    const absenceExists = absences.some((item) =>
+    const absenceOverlap = absences.some((item) =>
       areIntervalsOverlapping(
         { start: new Date(startDate), end: new Date(endDate) },
         { start: new Date(item.startDate), end: new Date(item.endDate) },
       ),
     );
-    if (absenceExists) {
+    if (absenceOverlap) {
       setError(true);
     } else {
       setAbsence([...absences, { ...body }]);
