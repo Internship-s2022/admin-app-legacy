@@ -1,4 +1,4 @@
-import { areIntervalsOverlapping, format, isWithinInterval } from 'date-fns';
+import { areIntervalsOverlapping, format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -61,14 +61,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
       startDate: new Date(startDate),
       endDate: new Date(endDate),
     };
-    const mappedAbsences = absences.map((item) =>
+    const absenceExists = absences.some((item) =>
       areIntervalsOverlapping(
         { start: new Date(startDate), end: new Date(endDate) },
         { start: new Date(item.startDate), end: new Date(item.endDate) },
       ),
     );
-    const a = mappedAbsences.some((item) => item);
-    if (a) {
+    if (absenceExists) {
       setError(true);
     } else {
       setAbsence([...absences, { ...body }]);
@@ -131,7 +130,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
         </div>
         {error && (
           <div className={styles.absenceError}>
-            <span>Error: Ausencia registrada en período indicado</span>
+            <span>Error: Ausencia registrada en el período indicado</span>
           </div>
         )}
       </form>
