@@ -40,7 +40,7 @@ const ClientForm = () => {
 
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -62,11 +62,11 @@ const ClientForm = () => {
           email: selectedClient.clientContact.email,
         },
         relationshipStart: selectedClient.relationshipStart,
-        relationshipEnd: isDisabled ? null : selectedClient.relationshipEnd,
+        relationshipEnd: selectedClient.relationshipEnd,
         notes: selectedClient.notes,
         isActive: true,
       });
-      setIsDisabled(!selectedClient.relationshipEnd);
+      setEndDateDisabled(!selectedClient.relationshipEnd);
     }
   }, [selectedClient]);
 
@@ -101,7 +101,25 @@ const ClientForm = () => {
   }));
 
   const onSubmit = (data) => {
-    id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
+    const options = {
+      id: id,
+      body: JSON.stringify({
+        name: data.name,
+        localContact: {
+          name: data.localContact.name,
+          email: data.localContact.email,
+        },
+        clientContact: {
+          name: data.clientContact.name,
+          email: data.clientContact.email,
+        },
+        relationshipStart: data.relationshipStart,
+        relationshipEnd: endDateDisabled ? null : data.relationshipEnd,
+        notes: data.notes,
+        isActive: true,
+      }),
+    };
+    id ? dispatch(editClient(options)) : dispatch(addClient(options));
     dispatch(closeConfirmationModal());
   };
 
@@ -111,6 +129,10 @@ const ClientForm = () => {
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  const handleEndDateDisable = (data) => {
+    setEndDateDisabled(data);
   };
 
   return (
@@ -173,8 +195,8 @@ const ClientForm = () => {
                       control={control}
                     />
                     <EndDateCheckbox
-                      isDisabled={isDisabled}
-                      setIsDisabled={setIsDisabled}
+                      endDateDisabled={endDateDisabled}
+                      handleEndDateDisable={handleEndDateDisable}
                       resource={Resources.Clientes}
                     />
                   </div>
@@ -184,7 +206,7 @@ const ClientForm = () => {
                       testId={'endDatePickerTestId'}
                       name="relationshipEnd"
                       control={control}
-                      disabled={isDisabled}
+                      disabled={endDateDisabled}
                     />
                   </div>
                 </div>

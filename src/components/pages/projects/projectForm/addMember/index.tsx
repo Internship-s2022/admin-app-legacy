@@ -29,7 +29,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -66,8 +66,9 @@ const AddMemberForm = (props: AddMemberFormProps) => {
           ...rest,
           project: projectId,
           helper: helper,
+          endDate: endDateDisabled ? null : data.endDate,
         }
-      : { ...rest, project: projectId };
+      : { ...rest, endDate: endDateDisabled ? null : data.endDate, project: projectId };
 
     dispatch(addMember(formattedData));
     dispatch(closeModal());
@@ -76,6 +77,10 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
+
+  const handleEndDateDisable = (data) => {
+    setEndDateDisabled(data);
+  };
 
   return (
     <div className={styles.modalContainer}>
@@ -159,14 +164,14 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                   control={control}
                 />
                 <EndDateCheckbox
-                  isDisabled={isDisabled}
-                  setIsDisabled={setIsDisabled}
+                  endDateDisabled={endDateDisabled}
+                  handleEndDateDisable={handleEndDateDisable}
                   resource={Resources.Miembros}
                 />
               </div>
               <div>
                 <DatePicker
-                  disabled={isDisabled}
+                  disabled={endDateDisabled}
                   label={'Fin'}
                   testId={'endDate'}
                   name="endDate"

@@ -1,5 +1,5 @@
 export interface EndDateCheckboxProps {
-  setIsDisabled: (boolean) => void;
-  isDisabled: boolean;
+  handleEndDateDisable: (boolean) => void;
+  endDateDisabled: boolean;
   resource: string;
 }

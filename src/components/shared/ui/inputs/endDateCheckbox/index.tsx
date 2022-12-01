@@ -6,10 +6,14 @@ import styles from './EndDateCheckbox.module.css';
 import { EndDateCheckboxProps } from './types';
 
 const EndDateCheckbox = (props: EndDateCheckboxProps) => {
-  const { setIsDisabled, isDisabled, resource } = props;
+  const { handleEndDateDisable, endDateDisabled, resource } = props;
   return (
     <div className={styles.container}>
-      <input type="checkbox" checked={isDisabled} onClick={() => setIsDisabled(!isDisabled)} />
+      <input
+        type="checkbox"
+        checked={endDateDisabled}
+        onClick={() => handleEndDateDisable(!endDateDisabled)}
+      />
       <span className={styles.checkboxMsg}>{cutLastLetter(resource)} long term</span>
     </div>
   );
