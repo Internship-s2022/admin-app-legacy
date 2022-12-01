@@ -86,7 +86,7 @@ export const addClient: AppThunk = (data) => {
     dispatch(addClientPending());
     dispatch(setLoaderOn());
     try {
-      const response = await addResourceRequest(ApiRoutes.CLIENT, data);
+      const response = await addResourceRequest(ApiRoutes.CLIENT, data.body);
       if (!response.error) {
         dispatch(addClientSuccess(response.data));
       }

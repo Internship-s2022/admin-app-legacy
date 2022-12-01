@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -17,6 +17,7 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
@@ -39,6 +40,7 @@ const ClientForm = () => {
 
   const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -64,6 +66,7 @@ const ClientForm = () => {
         notes: selectedClient.notes,
         isActive: true,
       });
+      setEndDateDisabled(!selectedClient.relationshipEnd);
     }
   }, [selectedClient]);
 
@@ -98,7 +101,25 @@ const ClientForm = () => {
   }));
 
   const onSubmit = (data) => {
-    id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
+    const options = {
+      id: id,
+      body: JSON.stringify({
+        name: data.name,
+        localContact: {
+          name: data.localContact.name,
+          email: data.localContact.email,
+        },
+        clientContact: {
+          name: data.clientContact.name,
+          email: data.clientContact.email,
+        },
+        relationshipStart: data.relationshipStart,
+        relationshipEnd: endDateDisabled ? null : data.relationshipEnd,
+        notes: data.notes,
+        isActive: true,
+      }),
+    };
+    id ? dispatch(editClient(options)) : dispatch(addClient(options));
     dispatch(closeConfirmationModal());
   };
 
@@ -109,6 +130,12 @@ const ClientForm = () => {
   const handleNavigation = (path) => {
     navigate(path);
   };
+
+  const handleEndDateDisable = (data) => {
+    setEndDateDisabled(data);
+  };
+
+  const styleConsideringTable = formattedProjects ? styles.secondLeftColumn : styles.leftColumns;
 
   return (
     <div className={styles.container}>
@@ -159,23 +186,31 @@ const ClientForm = () => {
                 />
               </div>
             </div>
-            <div className={styles.leftColumns}>
+            <div className={styleConsideringTable}>
               <div className={styles.dateContainer}>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Inicio'}
-                    testId={'startDatePickerTestId'}
-                    name="relationshipStart"
-                    control={control}
-                  />
-                </div>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Fin'}
-                    testId={'endDatePickerTestId'}
-                    name="relationshipEnd"
-                    control={control}
-                  />
+                <div className={styles.datePickers}>
+                  <div>
+                    <DatePicker
+                      label={'Inicio'}
+                      testId={'startDatePickerTestId'}
+                      name="relationshipStart"
+                      control={control}
+                    />
+                    <EndDateCheckbox
+                      endDateDisabled={endDateDisabled}
+                      handleEndDateDisable={handleEndDateDisable}
+                      resource={Resources.Clientes}
+                    />
+                  </div>
+                  <div>
+                    <DatePicker
+                      label={'Fin'}
+                      testId={'endDatePickerTestId'}
+                      name="relationshipEnd"
+                      control={control}
+                      disabled={endDateDisabled}
+                    />
+                  </div>
                 </div>
               </div>
               <div className={styles.inputs}>
