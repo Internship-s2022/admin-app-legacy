@@ -61,7 +61,7 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         ...state,
         list: state.list.map((item) => {
           if (item._id === action.payload.id) {
-            return action.payload.member;
+            return { ...item, ...action.payload.member };
           }
           return item;
         }),

@@ -8,3 +8,7 @@ export enum ProjectType {
   STAFF_AUGMENTATION = 'STAFF_AUGMENTATION',
   PRODUCT_BUILDING = 'PRODUCT_BUILDING',
 }
+
+export interface AddNewProjectProps {
+  children?: JSX.Element;
+}
