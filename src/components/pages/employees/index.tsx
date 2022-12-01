@@ -87,7 +87,7 @@ const Employees = () => {
     setDataList(data);
   };
 
-  const showErrorMessage = employeeError?.networkError || !listEmployee.length;
+  const showErrorMessage = employeeError?.networkError || !employee.length;
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -176,15 +176,23 @@ const Employees = () => {
           </div>
         </div>
         {dataList?.length ? (
-          <Table<MappedEmployeeData>
-            showButtons
-            testId={'userTable'}
-            headers={header}
-            value={dataList}
-            setDataList={handleDataList}
-            profileIcon={true}
-            buttons={buttonsArray}
-          />
+          <>
+            <Table<MappedEmployeeData>
+              showButtons
+              testId={'userTable'}
+              headers={header}
+              value={dataList}
+              setDataList={handleDataList}
+              profileIcon={true}
+              buttons={buttonsArray}
+            />
+            <SuccessErrorMessage
+              open={showAlert}
+              error={employeeError}
+              resource={Resources.Empleados}
+              operation={'editado'}
+            />
+          </>
         ) : (
           <>
             <div className={styles.notFound}>

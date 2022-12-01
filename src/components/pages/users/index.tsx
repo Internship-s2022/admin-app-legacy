@@ -266,13 +266,7 @@ const Users = () => {
           <UserForm />
         </Modal>
       </div>
-      <SuccessErrorMessage
-        open={showAlert}
-        error={userError}
-        resource={Resources.Usuarios}
-        operation={operation}
-      />
-
+      SuccessErrorMessage
       {!showErrorMessage && (
         <Modal
           testId={'User-access-modal'}
