@@ -15,7 +15,7 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
-import { AccessRoleType, formattedRoleType } from 'src/constants';
+import { formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
@@ -37,8 +37,36 @@ import { SearchUserData, UserData } from './types';
 import UserForm from './userForm';
 import styles from './users.module.css';
 
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  filterDataList = filterDataList.filter((item) => item.accessRoleType.includes(filters.role));
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      userFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
+
 const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    role: '',
+    search: '',
+  });
+
+  const [dataList, setDataList] = React.useState([]);
+  const [checked, setChecked] = React.useState(false);
+  const [operation, setOperation] = React.useState('');
+
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
@@ -52,33 +80,22 @@ const Users = () => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const activeUsers = useMemo(() => {
-    return userList.reduce((acc, item) => {
-      if (item.accessRoleType !== AccessRoleType.SUPER_ADMIN) {
-        acc.push({
-          _id: item?._id,
-          firebaseUid: item?.firebaseUid,
-          accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
-          email: item?.email,
-          name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(
-            item?.lastName,
-          )}`,
-          location: item?.location,
-          birthDate: item?.birthDate.toString(),
-          active: item?.isActive,
-        });
-      }
+    const mappedUser = userList.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        firebaseUid: item?.firebaseUid,
+        accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
+        email: item?.email,
+        name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
+        location: item?.location,
+        birthDate: item?.birthDate.toString(),
+        active: item?.isActive,
+      });
       return acc;
     }, []);
-  }, [userList]);
-
-  const [filters, setFilters] = React.useState({
-    isActive: true,
-    role: '',
-    search: '',
-  });
-
-  const [dataList, setDataList] = React.useState(activeUsers);
-  const [operation, setOperation] = React.useState('');
+    const filteredData = filterData(mappedUser, filters);
+    return filteredData;
+  }, [userList, filters.isActive, filters.role, filters.search]);
 
   useEffect(() => {
     dispatch(getUsers());
@@ -89,7 +106,7 @@ const Users = () => {
 
   useEffect(() => {
     setDataList(activeUsers);
-  }, [userList]);
+  }, [userList, filters.isActive, filters.role, filters.search]);
 
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
@@ -106,55 +123,6 @@ const Users = () => {
   const handleNavigation = (path) => {
     navigate(path);
   };
-
-  const filterData = () => {
-    let filterDataList;
-    if (filters.role === 'Manager') {
-      filterDataList = activeUsers.filter((item) => item.accessRoleType === 'Manager');
-    }
-    if (filters.role === 'Admin') {
-      filterDataList = activeUsers.filter((item) => {
-        return item.accessRoleType === 'Admin';
-      });
-    }
-    if (filters.role === 'Employee') {
-      filterDataList = activeUsers.filter((item) => {
-        return item.accessRoleType === 'Employee';
-      });
-    }
-    if (filters.role === 'Super Admin') {
-      filterDataList = activeUsers.filter((item) => {
-        return item.accessRoleType === 'Super Admin';
-      });
-    }
-    if (filters.isActive) {
-      filterDataList = activeUsers.filter((item) => {
-        return item.active;
-      });
-    }
-    if (filters.isActive === false) {
-      filterDataList = activeUsers.filter((item) => {
-        return item.active === false;
-      });
-    }
-
-    if (filters.search) {
-      filterDataList = filterDataList?.filter((d) =>
-        userFilterOptions.some((field) =>
-          d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
-        ),
-      );
-    }
-
-    setDataList(filterDataList);
-  };
-
-  console.log('asdsasd', filters);
-  console.log('dataList', dataList);
-
-  useEffect(() => {
-    filterData();
-  }, [filters.isActive, filters.role, filters.search]);
 
   const buttonsArray: TableButton<UserData>[] = [
     {
@@ -210,23 +178,57 @@ const Users = () => {
           </div>
         </div>
         <div className={styles.checkboxInput}>
-          <Button
-            materialVariant={Variant.CONTAINED}
-            onClick={() => setFilters({ ...filters, isActive: !filters.isActive })}
-            label={'Inactivos'}
-            testId={'inactiveButtons'}
-          />
+          {checked ? (
+            <div className={styles.filterButtonsPressed}>
+              <Button
+                materialVariant={Variant.CONTAINED}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+                color={'warning'}
+              />
+            </div>
+          ) : (
+            <div className={styles.filterButtons}>
+              <Button
+                materialVariant={Variant.TEXT}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+              />
+            </div>
+          )}
           <select
+            className={styles.filterDropdown}
             onChange={(e) => {
               setFilters({ ...filters, role: formattedRoleType[e.target.value] });
             }}
           >
+            <option value={''} disabled selected={filters.role === ''} className={styles.option}>
+              {'Rol de acceso'}
+            </option>
             {accessRoles.map((item) => (
-              <option key={item.value} value={item.value}>
+              <option key={item.value} value={item.value} className={styles.option}>
                 {item.label}
               </option>
             ))}
           </select>
+          <div className={styles.filterButtons}>
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ isActive: true, role: '', search: '' });
+              }}
+              label={'Resetear filtros'}
+              testId={'resetFilter'}
+            />
+          </div>
         </div>
         <div className={styles.tableContainer}>
           {dataList?.length ? (

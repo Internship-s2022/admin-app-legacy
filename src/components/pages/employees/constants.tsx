@@ -13,5 +13,4 @@ export const employeeFilterOptions = [
   'careerPlan',
   'skills',
   'potentialRole',
-  'active',
 ];

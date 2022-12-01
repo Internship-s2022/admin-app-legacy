@@ -11,4 +11,5 @@ export interface ButtonProps {
   type?: string;
   testId: string;
   styles?: string;
+  color?: 'error' | 'inherit' | 'warning' | 'info' | 'primary' | 'secondary' | 'success';
 }

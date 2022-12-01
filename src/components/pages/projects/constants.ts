@@ -1,5 +1,7 @@
 import { Headers } from 'src/components/shared/ui/table/types';
 
+import { CriticalType } from './projectForm/addNewProject/types';
+
 export const formattedProjectType = {
   PRODUCT_BUILDING: 'Product Building',
   STAFF_AUGMENTATION: 'Staff Augmentation',
@@ -12,6 +14,12 @@ export const projectHeaders: Headers[] = [
   { header: 'Involucrados', key: 'members' },
 ];
 
+export const optionsIsCritic = [
+  { value: CriticalType.ALTA, label: 'Alta' },
+  { value: CriticalType.MEDIA, label: 'Media' },
+  { value: CriticalType.BAJA, label: 'Baja' },
+];
+
 export const projectFilterOptions = [
   'projectName',
   'clientName',
@@ -19,7 +27,5 @@ export const projectFilterOptions = [
   'startDate',
   'endDate',
   'description',
-  'active',
   'members',
-  'criticality',
 ];

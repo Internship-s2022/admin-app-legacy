@@ -1,3 +1,5 @@
+@import 'https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -24,6 +26,7 @@ h1 {
 
 .inputsContainer {
   display: flex;
+  flex-direction: row;
   align-self: center;
   justify-content: space-between;
   width: 100%;
@@ -31,13 +34,19 @@ h1 {
 }
 
 .searchBar {
+  display: flex;
   width: 100%;
+  height: 50px;
+}
+
+.searchInput {
+  width: 70%;
 }
 
 .addUserButton {
   display: flex;
   justify-content: flex-end;
-  width: 100%;
+  width: 30%;
 }
 
 .tableContainer {
@@ -89,4 +98,53 @@ h1 {
   font-size: 14px;
   font-style: italic;
   font-weight: 300;
+}
+
+.checkboxInput {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.filterButtons > button {
+  padding: 2px 8px;
+}
+
+.filterButtonsPressed > button {
+  padding: 2px 8px;
+}
+
+.filterButtons {
+  border-radius: 4px;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    0 1px 5px rgb(0 0 0 / 12%);
+}
+
+.filterButtonsPressed {
+  border-radius: 4px;
+}
+
+.filterDropdown {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #373867;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    0 1px 5px rgb(0 0 0 / 12%);
+}
+
+.filterDropdown:focus-visible {
+  outline: none;
+}
+
+.option {
+  font-weight: 500;
+  color: #373867;
 }
