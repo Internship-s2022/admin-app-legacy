@@ -12,4 +12,10 @@ export const accessRoles = [
   { value: AccessRoleType.SUPER_ADMIN, label: 'Super Admin' },
   { value: AccessRoleType.EMPLOYEE, label: 'Employee' },
 ];
+export const optionsAccessRoleType = [
+  { value: AccessRoleType.MANAGER, label: 'Manager' },
+  { value: AccessRoleType.ADMIN, label: 'Admin' },
+  { value: AccessRoleType.EMPLOYEE, label: 'Employee' },
+];
+
 export const userFilterOptions = ['name', 'email', 'firebaseUid', 'location', 'birthDate'];

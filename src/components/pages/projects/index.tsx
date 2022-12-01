@@ -240,6 +240,7 @@ const Projects = () => {
             materialVariant={Variant.TEXT}
             onClick={() => {
               setFilters({ isActive: true, criticality: '', search: '' });
+              setChecked(false);
             }}
             label={'Resetear filtros'}
             testId={'resetFilter'}

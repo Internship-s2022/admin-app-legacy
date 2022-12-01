@@ -169,6 +169,7 @@ const Employees = () => {
               materialVariant={Variant.TEXT}
               onClick={() => {
                 setFilters({ isActive: true, role: '', search: '' });
+                setChecked(false);
               }}
               label={'Resetear filtros'}
               testId={'resetFilter'}

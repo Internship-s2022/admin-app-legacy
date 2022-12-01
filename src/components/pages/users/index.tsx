@@ -7,7 +7,6 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import {
   Button,
   ConfirmationMessage,
-  Dropdown,
   Modal,
   SuccessErrorMessage,
   Table,
@@ -15,7 +14,7 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
-import { formattedRoleType } from 'src/constants';
+import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
@@ -32,7 +31,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { accessRoles, userFilterOptions, userHeaders } from './constants';
+import { accessRoles, optionsAccessRoleType, userFilterOptions, userHeaders } from './constants';
 import { SearchUserData, UserData } from './types';
 import UserForm from './userForm';
 import styles from './users.module.css';
@@ -81,16 +80,20 @@ const Users = () => {
 
   const activeUsers = useMemo(() => {
     const mappedUser = userList.reduce((acc, item) => {
-      acc.push({
-        _id: item?._id,
-        firebaseUid: item?.firebaseUid,
-        accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
-        email: item?.email,
-        name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(item?.lastName)}`,
-        location: item?.location,
-        birthDate: item?.birthDate.toString(),
-        active: item?.isActive,
-      });
+      if (item.accessRoleType !== AccessRoleType.SUPER_ADMIN) {
+        acc.push({
+          _id: item?._id,
+          firebaseUid: item?.firebaseUid,
+          accessRoleType: item?.accessRoleType && formattedRoleType[item.accessRoleType],
+          email: item?.email,
+          name: `${capitalizeFirstLetter(item?.firstName)} ${capitalizeFirstLetter(
+            item?.lastName,
+          )}`,
+          location: item?.location,
+          birthDate: item?.birthDate.toString(),
+          active: item?.isActive,
+        });
+      }
       return acc;
     }, []);
     const filteredData = filterData(mappedUser, filters);
@@ -146,7 +149,7 @@ const Users = () => {
     },
   ];
 
-  const showErrorMessage = userError?.networkError || !activeUsers.length;
+  const showErrorMessage = userError?.networkError || !userList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -213,7 +216,7 @@ const Users = () => {
             <option value={''} disabled selected={filters.role === ''} className={styles.option}>
               {'Rol de acceso'}
             </option>
-            {accessRoles.map((item) => (
+            {optionsAccessRoleType.map((item) => (
               <option key={item.value} value={item.value} className={styles.option}>
                 {item.label}
               </option>
@@ -224,6 +227,7 @@ const Users = () => {
               materialVariant={Variant.TEXT}
               onClick={() => {
                 setFilters({ isActive: true, role: '', search: '' });
+                setChecked(false);
               }}
               label={'Resetear filtros'}
               testId={'resetFilter'}
@@ -266,7 +270,12 @@ const Users = () => {
           <UserForm />
         </Modal>
       </div>
-      SuccessErrorMessage
+      <SuccessErrorMessage
+        open={showAlert}
+        error={userError}
+        resource={Resources.Usuarios}
+        operation={operation}
+      />
       {!showErrorMessage && (
         <Modal
           testId={'User-access-modal'}
