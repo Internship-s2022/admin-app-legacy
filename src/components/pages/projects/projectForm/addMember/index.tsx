@@ -33,14 +33,14 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const employeeDropdown = employeeList.reduce((acc, item) => {
+  const employeeDropdownList = employeeList.reduce((acc, item) => {
     if (item?.user?.isActive) {
       acc.push({ value: item._id, label: `${item.user.firstName} ${item.user.lastName}` });
     }
     return acc;
   }, []);
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
     defaultValues: {
       employee: '',
       role: Role.DEV,
@@ -73,6 +73,12 @@ const AddMemberForm = (props: AddMemberFormProps) => {
         endDate: memberData.endDate,
       });
   }, []);
+
+  const selectedMember = watch('employee');
+
+  const helperDropdownList = employeeDropdownList.filter(
+    (employee) => employee.value !== selectedMember,
+  );
 
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
@@ -125,7 +131,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                     testId={'employeeDropdown'}
                     label={'Empleado'}
                     name="employee"
-                    options={employeeDropdown}
+                    options={employeeDropdownList}
                     fullWidth
                     disabled={memberData ? true : false}
                   />
@@ -157,7 +163,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                     testId={'helper'}
                     label={'Ayudante'}
                     name="helper.helperReference"
-                    options={employeeDropdown}
+                    options={helperDropdownList}
                     fullWidth
                   />
                 </div>
