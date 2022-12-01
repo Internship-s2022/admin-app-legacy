@@ -67,8 +67,15 @@
 .leftColumns:nth-child(2) {
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   margin-top: 20px;
+}
+
+.secondLeftColumn {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  width: 50%;
+  margin-top: 0.8%;
 }
 
 .buttonContainer {
