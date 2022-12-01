@@ -31,7 +31,7 @@ import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
-import { accessRoles, optionsAccessRoleType, userFilterOptions, userHeaders } from './constants';
+import { accessRoles, userFilterOptions, userHeaders } from './constants';
 import { SearchUserData, UserData } from './types';
 import UserForm from './userForm';
 import styles from './users.module.css';
@@ -216,7 +216,7 @@ const Users = () => {
             <option value={''} disabled selected={filters.role === ''} className={styles.option}>
               {'Rol de acceso'}
             </option>
-            {optionsAccessRoleType.map((item) => (
+            {accessRoles.map((item) => (
               <option key={item.value} value={item.value} className={styles.option}>
                 {item.label}
               </option>

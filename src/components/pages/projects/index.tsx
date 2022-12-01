@@ -37,12 +37,8 @@ import { MappedProjectData, SearchProjectData } from './types';
 
 const filterData = (list, filters) => {
   let filterDataList;
-  console.log('listInFilter', list);
-  console.log('filters', filters);
 
   filterDataList = list.filter((item) => item.active === filters.isActive);
-
-  console.log('filterdataList', filterDataList);
 
   filterDataList = filterDataList.filter((item) => item.criticality.includes(filters.criticality));
 
