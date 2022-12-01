@@ -127,6 +127,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                     name="employee"
                     options={employeeDropdown}
                     fullWidth
+                    disabled={memberData ? true : false}
                   />
                 </div>
                 <div className={styles.bottomContainer}>
