@@ -72,6 +72,7 @@ const Employees = () => {
       resource={Resources.Empleados}
       handleReload={() => handleNavigation(0)}
       error={employeeError}
+      isEmployee
     />
   ) : (
     <>
