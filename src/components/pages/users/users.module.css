@@ -28,6 +28,11 @@
   margin-bottom: 10%;
 }
 
+.tableContainer td,
+.tableContainer th {
+  text-align: left;
+}
+
 .searchBar {
   width: 100%;
 }

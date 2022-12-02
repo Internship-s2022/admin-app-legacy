@@ -73,7 +73,7 @@ const Projects = () => {
   const activeProjectsList = useMemo(() => {
     const formattedProjectList = projectList.map((project) => ({
       ...project,
-      members: project.members.map((member) => ({
+      members: project?.members?.map((member) => ({
         ...member,
         fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
       })),
