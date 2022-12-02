@@ -29,6 +29,22 @@ import styles from './clients.module.css';
 import { clientFilterOptions, header } from './constants';
 import { ClientsData, SearchClientData } from './types';
 
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      clientFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
+
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
@@ -36,35 +52,41 @@ const Clients = () => {
 
   const clientsList = useSelector((state: RootState) => state.client?.list);
   const clientError = useSelector((state: RootState) => state.client?.error);
-  const navigate = useNavigate();
-
-  const activeClientsList = useMemo(
-    () =>
-      clientsList.reduce((acc, item) => {
-        if (item.isActive) {
-          acc.push({
-            _id: item?._id,
-            name: item?.name,
-            projects: formattedTableData(item.projects, 'projectName'),
-            clientContact: item?.clientContact?.name,
-            email: item?.clientContact?.email,
-            localContact: item?.localContact?.name,
-            localEmail: item?.localContact?.name,
-            relationshipEnd: item?.relationshipEnd?.toString(),
-            relationshipStart: item?.relationshipStart?.toString(),
-            notes: item?.notes,
-            active: item?.isActive.toString(),
-          });
-        }
-        return acc;
-      }, []),
-    [clientsList],
-  );
-
-  const [dataList, setDataList] = useState(activeClientsList);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
-  useEffect(() => setDataList(activeClientsList), [clientsList]);
+  const navigate = useNavigate();
+
+  const [dataList, setDataList] = useState([]);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    search: '',
+  });
+  const [checked, setChecked] = React.useState(false);
+
+  const activeClientsList = useMemo(() => {
+    const mappedClients = clientsList.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        name: item?.name,
+        projects: formattedTableData(item.projects, 'projectName'),
+        clientContact: item?.clientContact?.name,
+        email: item?.clientContact?.email,
+        localContact: item?.localContact?.name,
+        localEmail: item?.localContact?.name,
+        relationshipEnd: item?.relationshipEnd?.toString(),
+        relationshipStart: item?.relationshipStart?.toString(),
+        notes: item?.notes,
+        active: item?.isActive,
+      });
+      return acc;
+    }, []);
+    const filteredData = filterData(mappedClients, filters);
+    return filteredData;
+  }, [clientsList, filters.isActive, filters.search]);
+
+  useEffect(() => {
+    setDataList(activeClientsList);
+  }, [clientsList, filters.isActive, filters.search]);
 
   useEffect(() => {
     dispatch(getClients());
@@ -130,9 +152,7 @@ const Clients = () => {
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchClientData>
-            setFilteredList={handleDataList}
-            details={activeClientsList}
-            mainArray={clientFilterOptions}
+            setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
         <div className={styles.addUserButton}>
@@ -145,8 +165,36 @@ const Clients = () => {
           />
         </div>
       </div>
+      <div className={styles.checkboxInput}>
+        <div className={styles.filterButtons}>
+          {checked ? (
+            <div className={styles.filterButtonsPressed}>
+              <Button
+                materialVariant={Variant.CONTAINED}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+                color={'warning'}
+              />
+            </div>
+          ) : (
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ ...filters, isActive: !filters.isActive });
+                setChecked(!checked);
+              }}
+              label={'Inactivos'}
+              testId={'inactiveButtons'}
+            />
+          )}
+        </div>
+      </div>
       <div className={styles.tableContainer}>
-        {dataList.length ? (
+        {dataList?.length ? (
           <Table<ClientsData>
             showButtons
             testId={'clientsTable'}

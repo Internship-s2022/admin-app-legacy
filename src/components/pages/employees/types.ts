@@ -1,4 +1,4 @@
-import { AbsencesData, Motives } from './edit-employee/absencesModal/types';
+import { AbsencesData, Motives } from './employeeForm/absencesModal/types';
 
 export interface EmployeeData {
   _id: string;

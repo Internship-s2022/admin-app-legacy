@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Motives } from 'src/components/pages/employees/edit-employee/absencesModal/types';
+import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
 import { FormValues, Seniority } from 'src/components/pages/employees/types';
 import {
   Button,

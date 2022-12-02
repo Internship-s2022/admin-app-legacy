@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { SuccessErrorMessage, Table } from 'src/components/shared/ui';
+import { Button, SuccessErrorMessage, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
@@ -16,29 +16,68 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { employeeFilterOptions, header } from './constants';
 import styles from './employee.module.css';
+import { checkboxData } from './employeeForm/constants';
 import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
+
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  filterDataList = filterDataList.filter((item) => item.potentialRole.includes(filters.role));
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      employeeFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
 
 const Employees = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const navigate = useNavigate();
   const employeeError = useAppSelector((state: RootState) => state.employee.error);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const [dataList, setDataList] = useState([]);
 
-  const listEmployee = useAppSelector((state: RootState) =>
-    state.employee?.list.map((employee) => ({
-      _id: employee?._id,
-      name: `${employee?.user?.firstName} ${employee?.user?.lastName}`,
-      projects: formattedTableData<Projects>(employee?.projectHistory, 'project', 'projectName'),
-      email: employee?.user?.email,
-      active: employee?.user?.isActive.toString(),
-      careerPlan: employee?.careerPlan,
-      notes: employee?.notes,
-      skills: employee?.skills?.join('-'),
-      potentialRole: employee?.potentialRole?.join('-'),
-    })),
-  );
+  const employee = useAppSelector((state: RootState) => state.employee?.list);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    role: '',
+    search: '',
+  });
+  const [checked, setChecked] = React.useState(false);
 
-  const [dataList, setDataList] = useState(listEmployee);
+  const listEmployee = useMemo(() => {
+    const mappedEmployees = employee.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        name: `${item?.user?.firstName} ${item?.user?.lastName}`,
+        projects: formattedTableData<Projects>(item?.projectHistory, 'project', 'projectName'),
+        email: item?.user?.email,
+        active: item?.user?.isActive,
+        careerPlan: item?.careerPlan,
+        notes: item?.notes,
+        skills: item?.skills?.join('-'),
+        potentialRole: item?.potentialRole?.join('-'),
+      });
+      return acc;
+    }, []);
+    const filteredData = filterData(mappedEmployees, filters);
+    return filteredData;
+  }, [employee, filters.isActive, filters.role, filters.search]);
+
+  useEffect(() => {
+    dispatch(getEmployees());
+  }, []);
+
+  useEffect(() => {
+    setDataList(listEmployee);
+  }, [employee, filters.isActive, filters.role, filters.search]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -48,7 +87,7 @@ const Employees = () => {
     setDataList(data);
   };
 
-  const showErrorMessage = employeeError?.networkError || !listEmployee.length;
+  const showErrorMessage = employeeError?.networkError || !employee.length;
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -82,12 +121,62 @@ const Employees = () => {
         </div>
         <div className={styles.searchInput}>
           <SearchBar<SearchEmployeeData>
-            setFilteredList={handleDataList}
-            details={listEmployee}
-            mainArray={employeeFilterOptions}
+            setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
-        {dataList.length ? (
+        <div className={styles.checkboxInput}>
+          <div className={styles.filterButtons}>
+            {checked ? (
+              <Button
+                materialVariant={Variant.CONTAINED}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+                color={'warning'}
+              />
+            ) : (
+              <Button
+                materialVariant={Variant.TEXT}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+              />
+            )}
+          </div>
+          <select
+            className={styles.filterDropdown}
+            onChange={(e) => {
+              setFilters({ ...filters, role: e.target.value });
+            }}
+          >
+            <option value={''} disabled selected={filters.role === ''} className={styles.option}>
+              {'Role'}
+            </option>
+            {checkboxData?.map((item) => (
+              <option key={item.value} value={item.value} className={styles.option}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <div className={styles.filterButtons}>
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ isActive: true, role: '', search: '' });
+                setChecked(false);
+              }}
+              label={'Resetear filtros'}
+              testId={'resetFilter'}
+            />
+          </div>
+        </div>
+        {dataList?.length ? (
           <>
             <Table<MappedEmployeeData>
               showButtons
