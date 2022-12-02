@@ -173,6 +173,7 @@ const Projects = () => {
         <div className={styles.searchInput}>
           <SearchBar<SearchProjectData>
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+            filter={filters.search}
           />
         </div>
         <div className={styles.addUserButton}>

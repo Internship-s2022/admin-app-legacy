@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 
@@ -6,9 +6,14 @@ import styles from './searchbar.module.css';
 import { SearchBarProps, SearchData } from './types';
 
 const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element => {
-  const { setFilter } = props;
+  const { setFilter, filter } = props;
   const [inputValue, setInputValue] = useState('');
 
+  useEffect(() => {
+    if (filter === '') {
+      setInputValue('');
+    }
+  }, [filter]);
   return (
     <div>
       <form

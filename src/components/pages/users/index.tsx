@@ -169,6 +169,7 @@ const Users = () => {
           <div className={styles.searchBar}>
             <SearchBar<SearchUserData>
               setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+              filter={filters.search}
             />
           </div>
           <div className={styles.addUserButton}>

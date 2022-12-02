@@ -122,6 +122,7 @@ const Employees = () => {
         <div className={styles.searchInput}>
           <SearchBar<SearchEmployeeData>
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+            filter={filters.search}
           />
         </div>
         <div className={styles.checkboxInput}>
