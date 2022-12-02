@@ -135,7 +135,7 @@ const Clients = () => {
     },
   ];
 
-  const showErrorMessage = clientError?.networkError || !activeClientsList.length;
+  const showErrorMessage = clientError?.networkError || !clientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
