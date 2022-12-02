@@ -99,7 +99,7 @@ const Employees = () => {
   const buttonsArray: TableButton<MappedEmployeeData>[] = [
     {
       active: true,
-      label: 'editar',
+      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`),
@@ -177,7 +177,7 @@ const Employees = () => {
           </div>
         </div>
         {dataList?.length ? (
-          <>
+          <div className={styles.tableContainer}>
             <Table<MappedEmployeeData>
               showButtons
               testId={'userTable'}
@@ -193,7 +193,7 @@ const Employees = () => {
               resource={Resources.Empleados}
               operation={'editado'}
             />
-          </>
+          </div>
         ) : (
           <>
             <div className={styles.notFound}>

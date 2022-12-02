@@ -16,7 +16,7 @@ h1 {
 .welcomeMessage {
   display: flex;
   justify-content: flex-start;
-  margin: 69px 0 34px;
+  margin: 69px 5% 34px;
 }
 
 .welcomeMessage h1 {
@@ -26,21 +26,22 @@ h1 {
 
 .inputsContainer {
   display: flex;
-  flex-direction: row;
+  gap: 20px;
   align-self: center;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: flex-start;
+  width: 90%;
   height: 50px;
 }
 
 .searchBar {
   display: flex;
-  width: 100%;
+  width: 90%;
   height: 50px;
+  margin-left: 5%;
 }
 
 .searchInput {
-  width: 70%;
+  width: 93%;
 }
 
 .addUserButton {
@@ -50,8 +51,11 @@ h1 {
 }
 
 .tableContainer {
+  display: flex;
+  flex-direction: column;
   align-self: center;
-  width: 100%;
+  width: 90%;
+  margin-bottom: 10%;
 }
 
 .tableContainer td,
@@ -105,7 +109,9 @@ h1 {
   gap: 14px;
   align-items: center;
   width: 100%;
+  margin-top: 15px;
   margin-bottom: 10px;
+  margin-left: 5%;
 }
 
 .filterButtons > button {

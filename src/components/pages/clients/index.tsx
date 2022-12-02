@@ -116,7 +116,7 @@ const Clients = () => {
   const buttonsArray = [
     {
       active: true,
-      label: 'Editar',
+      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
@@ -135,7 +135,7 @@ const Clients = () => {
     },
   ];
 
-  const showErrorMessage = clientError?.networkError || !activeClientsList.length;
+  const showErrorMessage = clientError?.networkError || !clientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -145,7 +145,7 @@ const Clients = () => {
       error={clientError}
     />
   ) : (
-    <div className={styles.container}>
+    <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">Lista de Clientes</Typography>
       </div>
