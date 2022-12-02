@@ -41,6 +41,12 @@
   font-weight: 500;
 }
 
+.buttons > div {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
 .buttons > button {
   min-width: 30px;
   min-height: 15px;

@@ -15,6 +15,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
+import { getMembers } from 'src/redux/member/thunk';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {

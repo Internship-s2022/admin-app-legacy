@@ -1,6 +1,12 @@
 import { Dispatch } from 'redux';
 
-import { addResourceRequest, deleteResourceRequest } from 'src/config/api';
+import {
+  addResourceRequest,
+  deleteResourceRequest,
+  editResourceRequest,
+  getByFilterResourceRequest,
+  getResourceRequest,
+} from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 import { AppThunk } from 'src/redux/types';
 
@@ -12,7 +18,31 @@ import {
   deleteMemberError,
   deleteMemberPending,
   deleteMemberSuccess,
+  editMemberError,
+  editMemberPending,
+  editMemberSuccess,
+  getMembersError,
+  getMembersPending,
+  getMembersSuccess,
 } from './actions';
+import { Member } from './types';
+
+export const getMembers: AppThunk = (filter) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(getMembersPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
+      if (response.data?.length) {
+        dispatch(getMembersSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(getMembersError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+    }
+  };
+};
 
 export const addMember: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
@@ -32,6 +62,23 @@ export const addMember: AppThunk = (data) => {
   };
 };
 
+export const editMember: AppThunk = (options: { id: string; body: Member }) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(editMemberPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await editResourceRequest(ApiRoutes.MEMBER, options);
+      if (!response.error) {
+        dispatch(editMemberSuccess(response.data, options.id));
+      }
+    } catch (error) {
+      dispatch(editMemberError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
+    }
+  };
+};
 export const deleteMember: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
     dispatch(deleteMemberPending());

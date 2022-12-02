@@ -36,7 +36,7 @@ describe('Edit Employee page - Unit Testing', () => {
       expect(getByText('PM')).toBeInTheDocument();
       expect(getByText('DEV')).toBeInTheDocument();
       expect(getByText('QA')).toBeInTheDocument();
-      expect(getByText('UXUI')).toBeInTheDocument();
+      expect(getByText('UX/UI')).toBeInTheDocument();
     });
     describe('Buttons - Unit Testing', () => {
       it('should check the button for toggleButton is rendering well', () => {

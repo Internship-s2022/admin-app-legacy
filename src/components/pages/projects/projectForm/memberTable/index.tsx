@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { openModal, setOpenMessageAlert } from 'src/redux/ui/actions';
+import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
@@ -15,7 +15,7 @@ import { MemberTableProps } from './types';
 const MemberTable = (props: MemberTableProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const { list } = props;
+  const { list, setMemberId } = props;
 
   const filteredList = list.filter((item) => item?.active);
 
@@ -25,13 +25,20 @@ const MemberTable = (props: MemberTableProps) => {
       employee: `${item?.employee?.user?.firstName} ${item?.employee?.user?.lastName}` || '-',
       role: item?.role || '-',
       dedication: item?.memberDedication || '-',
-      helper: '-',
+      helper: item.helper[0]
+        ? `${item?.helper[0]?.helperReference?.user?.firstName} ${item?.helper[0]?.helperReference?.user?.lastName}`
+        : '-', //TODO: PONER PARA QUE SE VEA EL ULTIMO HELPER AGREGADO
       date: dateFormatter(item?.startDate, item?.endDate),
     };
   });
 
   const handleDelete = (id) => {
     dispatch(deleteMember(id));
+  };
+
+  const handleEdit = (id) => {
+    setMemberId(id);
+    dispatch(openModal());
   };
 
   return (
@@ -71,12 +78,20 @@ const MemberTable = (props: MemberTableProps) => {
                     );
                   })}
                   <td className={`${styles.buttons} ${styles.rows}`}>
-                    <Button
-                      testId="deleteButton"
-                      materialVariant={Variant.OUTLINED}
-                      onClick={() => handleDelete(data.id)}
-                      label="X"
-                    />
+                    <div>
+                      <Button
+                        testId="deleteButton"
+                        materialVariant={Variant.OUTLINED}
+                        onClick={() => handleDelete(data.id)}
+                        label="X"
+                      />
+                      <Button
+                        testId="editButton"
+                        materialVariant={Variant.OUTLINED}
+                        onClick={() => handleEdit(data.id)}
+                        label="Editar"
+                      />
+                    </div>
                   </td>
                 </tr>
               );

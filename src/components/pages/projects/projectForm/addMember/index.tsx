@@ -13,7 +13,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
-import { addMember } from 'src/redux/member/thunk';
+import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
@@ -24,7 +24,7 @@ import { AddMemberFormProps, FormValues, Role } from './types';
 import { memberValidations } from './validations';
 
 const AddMemberForm = (props: AddMemberFormProps) => {
-  const { projectId } = props;
+  const { projectId, memberData } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
@@ -33,14 +33,14 @@ const AddMemberForm = (props: AddMemberFormProps) => {
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const employeeDropdown = employeeList.reduce((acc, item) => {
+  const employeeDropdownList = employeeList.reduce((acc, item) => {
     if (item?.user?.isActive) {
       acc.push({ value: item._id, label: `${item.user.firstName} ${item.user.lastName}` });
     }
     return acc;
   }, []);
 
-  const { handleSubmit, control } = useForm<FormValues>({
+  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
     defaultValues: {
       employee: '',
       role: Role.DEV,
@@ -51,26 +51,66 @@ const AddMemberForm = (props: AddMemberFormProps) => {
         dedication: 0,
         isActive: true,
       },
-      startDate: null,
-      endDate: null,
-      isActive: true,
+      startDate: new Date(Date.now()),
+      active: true,
     },
     mode: 'onBlur',
     resolver: joiResolver(memberValidations),
   });
 
+  useEffect(() => {
+    memberData &&
+      reset({
+        employee: memberData.employee,
+        role: memberData.role,
+        memberDedication: memberData.memberDedication,
+        helper: {
+          helperReference: memberData.helper?.helperReference,
+          dependency: memberData.helper?.dependency,
+          dedication: memberData.helper?.dedication,
+        },
+        startDate: memberData.startDate,
+        endDate: memberData.endDate,
+      });
+    setEndDateDisabled(!memberData?.endDate);
+  }, [memberData]);
+
+  const selectedMember = watch('employee');
+
+  const helperDropdownList = employeeDropdownList.filter(
+    (employee) => employee.value !== selectedMember,
+  );
+
   const onSubmit = (data) => {
-    const { helper, ...rest } = data;
+    const { helper, employee, ...rest } = data;
+
+    //TODO: Hacer esto mas prolijo
     const formattedData = helper.helperReference
       ? {
           ...rest,
+          employee: employee,
           project: projectId,
           helper: helper,
           endDate: endDateDisabled ? null : data.endDate,
         }
-      : { ...rest, endDate: endDateDisabled ? null : data.endDate, project: projectId };
+      : {
+          ...rest,
+          employee: employee,
+          endDate: endDateDisabled ? null : data.endDate,
+          project: projectId,
+        };
 
-    dispatch(addMember(formattedData));
+    const formattedDataEdit = helper.helperReference
+      ? {
+          ...rest,
+          helper: helper,
+          endDate: endDateDisabled ? null : data.endDate,
+        }
+      : { ...rest, endDate: endDateDisabled ? null : data.endDate };
+
+    memberData
+      ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))
+      : dispatch(addMember(formattedData));
     dispatch(closeModal());
   };
 
@@ -85,7 +125,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   return (
     <div className={styles.modalContainer}>
       <div className={styles.headerAddMember} data-testid={'headerMessage'}>
-        Agregar miembro al proyecto
+        {memberData ? 'Editar miembro' : 'Agregar miembro al proyecto'}
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.memberForm}>
@@ -98,8 +138,9 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                     testId={'employeeDropdown'}
                     label={'Empleado'}
                     name="employee"
-                    options={employeeDropdown}
+                    options={employeeDropdownList}
                     fullWidth
+                    disabled={memberData ? true : false}
                   />
                 </div>
                 <div className={styles.bottomContainer}>
@@ -129,7 +170,7 @@ const AddMemberForm = (props: AddMemberFormProps) => {
                     testId={'helper'}
                     label={'Ayudante'}
                     name="helper.helperReference"
-                    options={employeeDropdown}
+                    options={helperDropdownList}
                     fullWidth
                   />
                 </div>

@@ -1,3 +1,6 @@
+import { Employee } from 'src/redux/employee/types';
+import { Project } from 'src/redux/project/types';
+
 export interface Helper {
   helperReference: string;
   dependency: number;
@@ -13,7 +16,7 @@ export interface FormValues {
   helper: Helper;
   startDate: Date;
   endDate: Date;
-  isActive: boolean;
+  active: boolean;
   projectId?: string;
 }
 
@@ -25,6 +28,19 @@ export enum Role {
   PM = 'PM',
 }
 
+export interface Member {
+  _id: string;
+  helper: Helper;
+  employee: string;
+  project: string;
+  role: Role;
+  memberDedication: number;
+  startDate: Date;
+  endDate: Date;
+  active: boolean;
+}
+
 export interface AddMemberFormProps {
   projectId: string;
+  memberData?: Member;
 }

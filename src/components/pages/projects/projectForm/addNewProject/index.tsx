@@ -23,16 +23,18 @@ import { RootState } from 'src/redux/store';
 import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
-import MemberTable from '../memberTable';
 import styles from './addNewProject.module.css';
 import { criticalityOptions, projectTypeOptions } from './constants';
+import { AddNewProjectProps } from './types';
 import { projectValidation } from './validations';
 
-const AddNewProject = () => {
-  const { id } = useParams();
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+const AddNewProject = (props: AddNewProjectProps) => {
+  const { children } = props;
 
+  const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
+
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
@@ -194,25 +196,7 @@ const AddNewProject = () => {
                 </div>
               </div>
             </div>
-            {selectedProject?.members?.length ? (
-              <MemberTable list={selectedProject?.members} />
-            ) : (
-              <div className={styles.emptyMember}>
-                <div>Este proyecto no cuenta con miembros asociados</div>
-                <div className={styles.messageContainer}>
-                  <p>Para agregar un nuevo miembro al proyecto,</p>
-                  <p>clickee en agregar miembro</p>
-                </div>
-                <div className={styles.addMemberButton}>
-                  <Button
-                    testId="addMember"
-                    materialVariant={Variant.OUTLINED}
-                    onClick={() => dispatch(openModal())}
-                    label="+ Agregar Miembro"
-                  />
-                </div>
-              </div>
-            )}
+            {children}
           </div>
           <div className={styles.rightSide}>
             <div>
