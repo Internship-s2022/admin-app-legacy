@@ -1,0 +1,22 @@
+import React from 'react';
+
+import { cutLastLetter } from 'src/utils/formatters';
+
+import styles from './EndDateCheckbox.module.css';
+import { EndDateCheckboxProps } from './types';
+
+const EndDateCheckbox = (props: EndDateCheckboxProps) => {
+  const { handleEndDateDisable, endDateDisabled, resource } = props;
+  return (
+    <div className={styles.container}>
+      <input
+        type="checkbox"
+        checked={endDateDisabled}
+        onClick={() => handleEndDateDisable(!endDateDisabled)}
+      />
+      <span className={styles.checkboxMsg}>{cutLastLetter(resource)} long term</span>
+    </div>
+  );
+};
+
+export default EndDateCheckbox;

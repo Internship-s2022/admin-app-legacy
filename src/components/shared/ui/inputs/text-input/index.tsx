@@ -1,4 +1,3 @@
-import { max, min } from 'date-fns';
 import React from 'react';
 import { FieldValues, useController } from 'react-hook-form';
 import { TextField } from '@mui/material';
@@ -17,6 +16,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     color = 'info',
     disabled,
     inputProps,
+    placeholder,
   } = props;
 
   const {
@@ -41,6 +41,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         disabled={disabled}
         color={color}
         inputProps={inputProps}
+        placeholder={placeholder}
       />
     </div>
   );

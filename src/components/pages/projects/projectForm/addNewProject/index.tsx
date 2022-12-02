@@ -1,32 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
-import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Dropdown,
+  Modal,
+  SuccessErrorMessage,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { openModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
-import MemberTable from '../memberTable';
 import styles from './addNewProject.module.css';
 import { criticalityOptions, projectTypeOptions } from './constants';
+import { AddNewProjectProps } from './types';
 import { projectValidation } from './validations';
 
-const AddNewProject = () => {
+const AddNewProject = (props: AddNewProjectProps) => {
+  const { children } = props;
+
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
   const dispatch: AppDispatch<null> = useDispatch();
 
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   const clientList = useSelector((state: RootState) =>
     state.client.list?.reduce((acc, item) => {
@@ -39,12 +51,16 @@ const AddNewProject = () => {
   const projectError = useSelector((state: RootState) => state.project?.error);
   const operation = id ? 'editado' : 'agregado';
 
+  const handleEndDateDisable = (data) => {
+    setEndDateDisabled(data);
+  };
+
   const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
     defaultValues: {
       projectName: '',
       clientName: '',
-      startDate: new Date(Date.now()),
-      endDate: new Date(Date.now()),
+      startDate: null,
+      endDate: null,
       projectType: ProjectType.STAFF_AUGMENTATION,
       isCritic: Criticality.ALTA,
       description: '',
@@ -61,7 +77,7 @@ const AddNewProject = () => {
         projectName: data.projectName,
         clientName: data.clientName,
         startDate: data.startDate,
-        endDate: data.endDate,
+        endDate: endDateDisabled ? null : data.endDate,
         projectType: data.projectType,
         isCritic: data.isCritic,
         description: data.description,
@@ -69,7 +85,7 @@ const AddNewProject = () => {
       }),
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
-    setConfirmationMsgOpen(true);
+    dispatch(closeConfirmationModal());
   };
 
   useEffect(() => {
@@ -91,6 +107,7 @@ const AddNewProject = () => {
       description: selectedProject.description,
       notes: selectedProject.notes,
     });
+    setEndDateDisabled(!selectedProject.endDate);
   }, [selectedProject]);
 
   return (
@@ -153,40 +170,33 @@ const AddNewProject = () => {
                       name="startDate"
                       control={control}
                     />
+                    <EndDateCheckbox
+                      endDateDisabled={endDateDisabled}
+                      handleEndDateDisable={handleEndDateDisable}
+                      resource={Resources.Proyectos}
+                    />
                   </div>
                   <div className={styles.dateSelection}>
-                    <DatePicker label={'Fin'} testId={'endDate'} name="endDate" control={control} />
+                    <DatePicker
+                      disabled={endDateDisabled}
+                      label={'Fin'}
+                      testId={'endDate'}
+                      name="endDate"
+                      control={control}
+                    />
                   </div>
                 </div>
                 <div className={styles.saveButton}>
                   <Button
                     testId="saveButton"
                     materialVariant={Variant.CONTAINED}
-                    onClick={handleSubmit(onSubmit)}
+                    onClick={id ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)}
                     label="Guardar"
                   />
                 </div>
               </div>
             </div>
-            {selectedProject?.members?.length ? (
-              <MemberTable list={selectedProject?.members} />
-            ) : (
-              <div className={styles.emptyMember}>
-                <div>Este proyecto no cuenta con miembros asociados</div>
-                <div className={styles.messageContainer}>
-                  <p>Para agregar un nuevo miembro al proyecto,</p>
-                  <p>clickee en agregar miembro</p>
-                </div>
-                <div className={styles.addMemberButton}>
-                  <Button
-                    testId="addMember"
-                    materialVariant={Variant.OUTLINED}
-                    onClick={() => dispatch(openModal())}
-                    label="+ Agregar Miembro"
-                  />
-                </div>
-              </div>
-            )}
+            {children}
           </div>
           <div className={styles.rightSide}>
             <div>
@@ -219,14 +229,26 @@ const AddNewProject = () => {
             </div>
           </div>
         </div>
-        <ConfirmationMessage
-          open={openConfirmationMsg}
-          setOpen={setConfirmationMsgOpen}
+        <SuccessErrorMessage
+          open={showAlert}
           error={projectError}
           resource={Resources.Proyectos}
           operation={operation}
         />
       </form>
+      <Modal
+        testId="editProjectModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al proyecto ${selectedProject.projectName}?`}
+          title={'Editar Proyecto'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </>
   );
 };

@@ -1,43 +1,86 @@
-import { format } from 'date-fns';
 import React, { useEffect, useMemo } from 'react';
-import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { joiResolver } from '@hookform/resolvers/joi';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Dropdown, Modal, Table, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Modal,
+  SuccessErrorMessage,
+  Table,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
-import { addUser, deleteUser, getUsers } from 'src/redux/user/thunks';
+import {
+  closeConfirmationModal,
+  closeFormModal,
+  closeMessageAlert,
+  closeModal,
+  openConfirmationModal,
+  openFormModal,
+  openModal,
+} from 'src/redux/ui/actions';
+import { deleteUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { TableButton } from '../../shared/ui/table/types';
 import AccessRoleModal from './AccessRoleModal';
 import { accessRoles, userFilterOptions, userHeaders } from './constants';
-import { FormValues, SearchUserData, UserData } from './types';
+import { SearchUserData, UserData } from './types';
+import UserForm from './userForm';
 import styles from './users.module.css';
-import { userValidation } from './validations';
+
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  filterDataList = filterDataList.filter((item) => item.accessRoleType.includes(filters.role));
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      userFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
 
 const Users = () => {
   const [row, setRow] = React.useState({} as UserData);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    role: '',
+    search: '',
+  });
+
+  const [dataList, setDataList] = React.useState([]);
+  const [checked, setChecked] = React.useState(false);
+  const [operation, setOperation] = React.useState('');
+
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const superAdmin = useSelector((state: RootState) => state.auth.authUser);
   const userList = useSelector((state: RootState) => state.user.list);
+  const userError = useSelector((state: RootState) => state.user.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const navigate = useNavigate();
 
   const dispatch: AppDispatch<null> = useDispatch();
 
   const activeUsers = useMemo(() => {
-    return userList.reduce((acc, item) => {
-      if (item.isActive) {
+    const mappedUser = userList.reduce((acc, item) => {
+      if (item.accessRoleType !== AccessRoleType.SUPER_ADMIN) {
         acc.push({
           _id: item?._id,
           firebaseUid: item?.firebaseUid,
@@ -48,54 +91,40 @@ const Users = () => {
           )}`,
           location: item?.location,
           birthDate: item?.birthDate.toString(),
-          active: item?.isActive.toString(),
+          active: item?.isActive,
         });
       }
       return acc;
     }, []);
-  }, [userList]);
-
-  const [filteredList, setFilteredList] = React.useState(activeUsers);
-  const userError = useSelector((state: RootState) => state.user?.error);
+    const filteredData = filterData(mappedUser, filters);
+    return filteredData;
+  }, [userList, filters.isActive, filters.role, filters.search]);
 
   useEffect(() => {
     dispatch(getUsers());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   useEffect(() => {
-    setFilteredList(activeUsers);
-  }, [userList]);
-
-  const { handleSubmit, control, reset } = useForm<FormValues>({
-    defaultValues: {
-      accessRoleType: AccessRoleType.EMPLOYEE,
-      email: '',
-      firstName: '',
-      lastName: '',
-      location: '',
-      birthDate: new Date(Date.now()),
-      isActive: true,
-    },
-    mode: 'onBlur',
-    resolver: joiResolver(userValidation),
-  });
-
-  const onSubmit = (data) => {
-    data = {
-      ...data,
-      birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
-    };
-    dispatch(addUser(data));
-    onClose();
-  };
-
-  const onClose = () => {
-    reset();
-    dispatch(closeFormModal());
-  };
+    setDataList(activeUsers);
+  }, [userList, filters.isActive, filters.role, filters.search]);
 
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
+    dispatch(closeConfirmationModal());
+    setOperation('borrado');
+  };
+
+  const handleEdit = (data) => {
+    dispatch(openModal());
+    setOperation('editado');
+    setRow(data);
+  };
+
+  const handleNavigation = (path) => {
+    navigate(path);
   };
 
   const buttonsArray: TableButton<UserData>[] = [
@@ -105,8 +134,7 @@ const Users = () => {
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
-        setRow(data);
+        handleEdit(data);
       },
     },
     {
@@ -115,16 +143,13 @@ const Users = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        handleDelete(data);
+        dispatch(openConfirmationModal());
+        setRow(data);
       },
     },
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
-  const showErrorMessage = userError?.networkError || !activeUsers.length;
+  const showErrorMessage = userError?.networkError || !userList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -143,9 +168,7 @@ const Users = () => {
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>
             <SearchBar<SearchUserData>
-              setFilteredList={setFilteredList}
-              details={activeUsers}
-              mainArray={userFilterOptions}
+              setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
             />
           </div>
           <div className={styles.addUserButton}>
@@ -157,14 +180,69 @@ const Users = () => {
             />
           </div>
         </div>
+        <div className={styles.checkboxInput}>
+          {checked ? (
+            <div className={styles.filterButtonsPressed}>
+              <Button
+                materialVariant={Variant.CONTAINED}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+                color={'warning'}
+              />
+            </div>
+          ) : (
+            <div className={styles.filterButtons}>
+              <Button
+                materialVariant={Variant.TEXT}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+              />
+            </div>
+          )}
+          <select
+            className={styles.filterDropdown}
+            onChange={(e) => {
+              setFilters({ ...filters, role: formattedRoleType[e.target.value] });
+            }}
+          >
+            <option value={''} disabled selected={filters.role === ''} className={styles.option}>
+              {'Rol de acceso'}
+            </option>
+            {accessRoles.map((item) => (
+              <option key={item.value} value={item.value} className={styles.option}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <div className={styles.filterButtons}>
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ isActive: true, role: '', search: '' });
+                setChecked(false);
+              }}
+              label={'Resetear filtros'}
+              testId={'resetFilter'}
+            />
+          </div>
+        </div>
         <div className={styles.tableContainer}>
-          {filteredList.length ? (
+          {dataList?.length ? (
             <Table<UserData>
               showButtons
               testId={'userTable'}
               headers={userHeaders}
-              value={filteredList}
+              value={dataList}
               buttons={buttonsArray}
+              setDataList={setDataList}
             />
           ) : (
             <>
@@ -189,82 +267,15 @@ const Users = () => {
           isOpen={showFormModal}
           testId="add-user-modal"
         >
-          <div className={styles.formContainer}>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className={styles.inputsContainer}>
-                <Dropdown
-                  control={control}
-                  testId={'access-role-dropdown'}
-                  label="Rol de acceso"
-                  name="accessRoleType"
-                  options={accessRoles}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'email-input'}
-                  label="Email"
-                  name="email"
-                  type={'text'}
-                  variant="outlined"
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'first-name-input'}
-                  label="Nombre"
-                  name="firstName"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'last-name-input'}
-                  label="Apellido"
-                  name="lastName"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'location-input'}
-                  label="Localidad"
-                  name="location"
-                  type={'text'}
-                  error
-                  fullWidth
-                />
-                <TextInput
-                  control={control}
-                  testId={'date-input'}
-                  name="birthDate"
-                  type="date"
-                  error
-                  fullWidth
-                />
-              </div>
-              <div className={styles.buttonsContainer}>
-                <Button
-                  testId="submit-btn"
-                  materialVariant={Variant.CONTAINED}
-                  label="Confirmar"
-                  onClick={handleSubmit(onSubmit)}
-                />
-                <Button
-                  testId="reset-btn"
-                  materialVariant={Variant.OUTLINED}
-                  label="Cancelar"
-                  onClick={() => onClose()}
-                />
-              </div>
-            </form>
-          </div>
+          <UserForm />
         </Modal>
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={userError}
+        resource={Resources.Usuarios}
+        operation={operation}
+      />
       {!showErrorMessage && (
         <Modal
           testId={'User-access-modal'}
@@ -274,6 +285,19 @@ const Users = () => {
           <AccessRoleModal row={row} open={showModal} />
         </Modal>
       )}
+      <Modal
+        testId="deleteUserModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea eliminar al usuario ${row.name}?`}
+          title={'Eliminar Usuario'}
+          handleConfirm={() => handleDelete(row)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </>
   );
 };

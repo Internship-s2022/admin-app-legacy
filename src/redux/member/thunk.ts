@@ -1,10 +1,16 @@
 import { Dispatch } from 'redux';
 
-import { addResourceRequest, deleteResourceRequest } from 'src/config/api';
+import {
+  addResourceRequest,
+  deleteResourceRequest,
+  editResourceRequest,
+  getByFilterResourceRequest,
+  getResourceRequest,
+} from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 import { AppThunk } from 'src/redux/types';
 
-import { setLoaderOff, setLoaderOn } from '../ui/actions';
+import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
   addMemberError,
   addMemberPending,
@@ -12,38 +18,81 @@ import {
   deleteMemberError,
   deleteMemberPending,
   deleteMemberSuccess,
+  editMemberError,
+  editMemberPending,
+  editMemberSuccess,
+  getMembersError,
+  getMembersPending,
+  getMembersSuccess,
 } from './actions';
+import { Member } from './types';
 
-export const addMember: AppThunk = (data) => {
+export const getMembers: AppThunk = (filter) => {
   return async (dispatch: Dispatch) => {
+    dispatch(getMembersPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(addMemberPending());
-      dispatch(setLoaderOn());
-      const response = await addResourceRequest(ApiRoutes.MEMBER, data);
-      if (!response.error) {
-        dispatch(addMemberSuccess(response.data));
+      const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
+      if (response.data?.length) {
+        dispatch(getMembersSuccess(response.data));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
-      dispatch(addMemberError({ message: error.message, networkError: error.networkError }));
+      dispatch(getMembersError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
     }
   };
 };
 
+export const addMember: AppThunk = (data) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(addMemberPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await addResourceRequest(ApiRoutes.MEMBER, data);
+      if (!response.error) {
+        dispatch(addMemberSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(addMemberError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
+    }
+  };
+};
+
+export const editMember: AppThunk = (options: { id: string; body: Member }) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(editMemberPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await editResourceRequest(ApiRoutes.MEMBER, options);
+      if (!response.error) {
+        dispatch(editMemberSuccess(response.data, options.id));
+      }
+    } catch (error) {
+      dispatch(editMemberError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
+    }
+  };
+};
 export const deleteMember: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
+    dispatch(deleteMemberPending());
+    dispatch(setLoaderOn());
     try {
-      dispatch(deleteMemberPending());
-      dispatch(setLoaderOn());
       const response = await deleteResourceRequest(ApiRoutes.MEMBER, id);
       if (!response.error) {
         dispatch(deleteMemberSuccess(id));
       }
-      dispatch(setLoaderOff());
     } catch (error) {
       dispatch(deleteMemberError({ message: error.message, networkError: error.networkError }));
+    } finally {
       dispatch(setLoaderOff());
+      dispatch(setOpenMessageAlert());
     }
   };
 };

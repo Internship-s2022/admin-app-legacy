@@ -22,9 +22,9 @@ export const formattedTableData = <T>(list: T[], firstField: string, secondField
 };
 
 export const dateFormatter = (startDate, endDate) => {
-  if (startDate === undefined) {
+  if (!startDate) {
     return 'No hay datos';
-  } else if (endDate === undefined) {
+  } else if (!endDate) {
     return `Desde ${format(new Date(startDate), 'dd/MM/yy')}`;
   } else {
     return `${startDate && format(new Date(startDate), 'dd/MM/yy')} a ${format(

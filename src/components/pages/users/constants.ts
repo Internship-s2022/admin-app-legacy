@@ -1,4 +1,5 @@
 import { Headers } from 'src/components/shared/ui/table/types';
+import { AccessRoleType } from 'src/constants';
 
 export const userHeaders: Headers[] = [
   { header: 'Nombre', key: 'name' },
@@ -6,17 +7,9 @@ export const userHeaders: Headers[] = [
 ];
 
 export const accessRoles = [
-  { value: 'MANAGER', label: 'Manager' },
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'SUPER_ADMIN', label: 'Super Admin' },
-  { value: 'EMPLOYEE', label: 'Employee' },
+  { value: AccessRoleType.MANAGER, label: 'Manager' },
+  { value: AccessRoleType.ADMIN, label: 'Admin' },
+  { value: AccessRoleType.EMPLOYEE, label: 'Employee' },
 ];
-export const userFilterOptions = [
-  'name',
-  'email',
-  'firebaseUid',
-  'location',
-  'birthDate',
-  'accessRoleType',
-  'active',
-];
+
+export const userFilterOptions = ['name', 'email', 'firebaseUid', 'location', 'birthDate'];

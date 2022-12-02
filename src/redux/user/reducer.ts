@@ -67,6 +67,7 @@ const userReducer: Reducer<State<User>, ActionsType> = (
           return item;
         }),
         isLoading: false,
+        error: undefined,
       };
     case Actions.EDIT_USER_ERROR:
       return {

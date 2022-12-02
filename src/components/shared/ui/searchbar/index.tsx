@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 
@@ -6,16 +6,8 @@ import styles from './searchbar.module.css';
 import { SearchBarProps, SearchData } from './types';
 
 const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element => {
-  const { details, setFilteredList, mainArray } = props;
-  const [filter, setFilter] = useState('');
+  const { setFilter } = props;
   const [inputValue, setInputValue] = useState('');
-
-  useMemo(() => {
-    const filterList = details.filter((d) =>
-      mainArray.some((field) => d[field]?.toLowerCase().includes(filter.toLowerCase())),
-    );
-    setFilteredList(filterList);
-  }, [filter]);
 
   return (
     <div>

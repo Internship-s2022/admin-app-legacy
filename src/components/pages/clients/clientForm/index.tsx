@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,27 +7,40 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
-import { Button, DatePicker, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Modal,
+  SuccessErrorMessage,
+  TextInput,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import ConfirmationMessage from 'src/components/shared/ui/confirmationMessage';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
 
 const ClientForm = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
-  const [openConfirmationMsg, setConfirmationMsgOpen] = React.useState(false);
+
+  const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
+
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+
   const operation = id ? 'editado' : 'agregado';
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -53,6 +66,7 @@ const ClientForm = () => {
         notes: selectedClient.notes,
         isActive: true,
       });
+      setEndDateDisabled(!selectedClient.relationshipEnd);
     }
   }, [selectedClient]);
 
@@ -67,7 +81,8 @@ const ClientForm = () => {
         name: '',
         email: '',
       },
-      relationshipStart: new Date(Date.now()),
+      relationshipStart: null,
+      relationshipEnd: null,
       notes: '',
       isActive: true,
     },
@@ -75,19 +90,37 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation),
   });
 
-  const projectsList = selectedClient?.projects;
+  const latestClientsList = selectedClient?.projects?.slice(-2);
 
-  const formattedProjects = projectsList?.map((item) => ({
+  const formattedProjects = latestClientsList?.map((item) => ({
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
-    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
-    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TO DO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
   const onSubmit = (data) => {
-    id ? dispatch(editClient({ body: data, id: id })) : dispatch(addClient(data));
-    setConfirmationMsgOpen(true);
+    const options = {
+      id: id,
+      body: JSON.stringify({
+        name: data.name,
+        localContact: {
+          name: data.localContact.name,
+          email: data.localContact.email,
+        },
+        clientContact: {
+          name: data.clientContact.name,
+          email: data.clientContact.email,
+        },
+        relationshipStart: data.relationshipStart,
+        relationshipEnd: endDateDisabled ? null : data.relationshipEnd,
+        notes: data.notes,
+        isActive: true,
+      }),
+    };
+    id ? dispatch(editClient(options)) : dispatch(addClient(options));
+    dispatch(closeConfirmationModal());
   };
 
   const onClose = () => {
@@ -97,6 +130,12 @@ const ClientForm = () => {
   const handleNavigation = (path) => {
     navigate(path);
   };
+
+  const handleEndDateDisable = (data) => {
+    setEndDateDisabled(data);
+  };
+
+  const styleConsideringTable = formattedProjects ? styles.secondLeftColumn : styles.leftColumns;
 
   return (
     <div className={styles.container}>
@@ -115,7 +154,7 @@ const ClientForm = () => {
                   control={control}
                   testId={'clientNameInput'}
                   label="Cliente"
-                  placeholder="Nombre del ciente"
+                  placeholder="Nombre de la empresa"
                   name="name"
                   type={'text'}
                   variant="outlined"
@@ -125,35 +164,9 @@ const ClientForm = () => {
               <div className={styles.inputs}>
                 <TextInput
                   control={control}
-                  testId={'clientEmailInput'}
-                  label="Email contacto cliente"
-                  name="clientContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email de contacto de cliente"
-                  fullWidth
-                />
-              </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'localEmailInput'}
-                  label="Email contacto Radium Rocket"
-                  name="localContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email de contacto de Radium Rocket"
-                  fullWidth
-                />
-              </div>
-            </div>
-            <div className={styles.leftColumns}>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
                   testId={'clientContactInput'}
                   label="Contacto cliente"
-                  placeholder="Nombre del contacto del ciente"
+                  placeholder="Nombre y apellido del contacto del cliente"
                   name="clientContact.name"
                   type={'text'}
                   variant="outlined"
@@ -165,30 +178,64 @@ const ClientForm = () => {
                   control={control}
                   testId={'localContactInput'}
                   label="Contacto Radium Rocket"
-                  placeholder="Nombre del contacto del Radium Rocket"
+                  placeholder="Nombre y apellido del contacto de Radium Rocket"
                   name="localContact.name"
                   type={'text'}
                   variant="outlined"
                   fullWidth
                 />
               </div>
+            </div>
+            <div className={styleConsideringTable}>
               <div className={styles.dateContainer}>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Inicio'}
-                    testId={'startDatePickerTestId'}
-                    name="relationshipStart"
-                    control={control}
-                  />
+                <div className={styles.datePickers}>
+                  <div>
+                    <DatePicker
+                      label={'Inicio'}
+                      testId={'startDatePickerTestId'}
+                      name="relationshipStart"
+                      control={control}
+                    />
+                    <EndDateCheckbox
+                      endDateDisabled={endDateDisabled}
+                      handleEndDateDisable={handleEndDateDisable}
+                      resource={Resources.Clientes}
+                    />
+                  </div>
+                  <div>
+                    <DatePicker
+                      label={'Fin'}
+                      testId={'endDatePickerTestId'}
+                      name="relationshipEnd"
+                      control={control}
+                      disabled={endDateDisabled}
+                    />
+                  </div>
                 </div>
-                <div className={styles.inputs}>
-                  <DatePicker
-                    label={'Fin'}
-                    testId={'endDatePickerTestId'}
-                    name="relationshipEnd"
-                    control={control}
-                  />
-                </div>
+              </div>
+              <div className={styles.inputs}>
+                <TextInput
+                  control={control}
+                  testId={'clientEmailInput'}
+                  label="Email cliente"
+                  name="clientContact.email"
+                  type={'text'}
+                  variant="outlined"
+                  placeholder="Email del contacto del cliente"
+                  fullWidth
+                />
+              </div>
+              <div className={styles.inputs}>
+                <TextInput
+                  control={control}
+                  testId={'localEmailInput'}
+                  label="Email Radium Rocket"
+                  name="localContact.email"
+                  type={'text'}
+                  variant="outlined"
+                  placeholder="Email del contacto de Radium Rocket"
+                  fullWidth
+                />
               </div>
             </div>
           </div>
@@ -223,6 +270,14 @@ const ClientForm = () => {
                     })}
                   </tbody>
                 </table>
+                <div className={styles.viewMore}>
+                  <Button
+                    testId="viewMoreButton"
+                    materialVariant={Variant.TEXT}
+                    onClick={() => undefined}
+                    label="Ver más"
+                  />
+                </div>
               </div>
             )}
             <TextInput
@@ -251,19 +306,35 @@ const ClientForm = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={handleSubmit(onSubmit)}
+              onClick={
+                selectedClient._id
+                  ? () => dispatch(openConfirmationModal())
+                  : handleSubmit(onSubmit)
+              }
               label="Confirmar"
             />
           </div>
         </div>
       </div>
-      <ConfirmationMessage
-        open={openConfirmationMsg}
-        setOpen={setConfirmationMsgOpen}
+      <SuccessErrorMessage
+        open={showAlert}
         error={clientError}
         resource={Resources.Clientes}
         operation={operation}
       />
+      <Modal
+        testId="editClientModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al cliente ${selectedClient.name}?`}
+          title={'Editar Cliente'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </div>
   );
 };

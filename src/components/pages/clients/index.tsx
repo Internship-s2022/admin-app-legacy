@@ -4,14 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Modal, Table } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Modal,
+  SuccessErrorMessage,
+  Table,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  closeMessageAlert,
+  closeModal,
+  openConfirmationModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -19,44 +29,75 @@ import styles from './clients.module.css';
 import { clientFilterOptions, header } from './constants';
 import { ClientsData, SearchClientData } from './types';
 
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      clientFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
+
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useDispatch();
 
   const clientsList = useSelector((state: RootState) => state.client?.list);
-
-  const activeClientsList = useMemo(
-    () =>
-      clientsList.reduce((acc, item) => {
-        if (item.isActive) {
-          acc.push({
-            _id: item?._id,
-            name: item?.name,
-            projects: formattedTableData(item.projects, 'projectName'),
-            clientContact: item?.clientContact?.name,
-            email: item?.clientContact?.email,
-            localContact: item?.localContact?.name,
-            localEmail: item?.localContact?.name,
-            relationshipEnd: item?.relationshipEnd?.toString(),
-            relationshipStart: item?.relationshipStart?.toString(),
-            notes: item?.notes,
-            active: item?.isActive.toString(),
-          });
-        }
-        return acc;
-      }, []),
-    [clientsList],
-  );
-
   const clientError = useSelector((state: RootState) => state.client?.error);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+
   const navigate = useNavigate();
 
-  const [filteredList, setFilteredList] = useState(activeClientsList);
-  useEffect(() => setFilteredList(activeClientsList), [clientsList]);
+  const [dataList, setDataList] = useState([]);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    search: '',
+  });
+  const [checked, setChecked] = React.useState(false);
+
+  const activeClientsList = useMemo(() => {
+    const mappedClients = clientsList.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        name: item?.name,
+        projects: formattedTableData(item.projects, 'projectName'),
+        clientContact: item?.clientContact?.name,
+        email: item?.clientContact?.email,
+        localContact: item?.localContact?.name,
+        localEmail: item?.localContact?.name,
+        relationshipEnd: item?.relationshipEnd?.toString(),
+        relationshipStart: item?.relationshipStart?.toString(),
+        notes: item?.notes,
+        active: item?.isActive,
+      });
+      return acc;
+    }, []);
+    const filteredData = filterData(mappedClients, filters);
+    return filteredData;
+  }, [clientsList, filters.isActive, filters.search]);
+
+  useEffect(() => {
+    setDataList(activeClientsList);
+  }, [clientsList, filters.isActive, filters.search]);
+
+  useEffect(() => {
+    dispatch(getClients());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
+  }, []);
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
+    dispatch(closeConfirmationModal());
     dispatch(closeModal());
   };
 
@@ -64,10 +105,18 @@ const Clients = () => {
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const handleDataList = (data) => {
+    setDataList(data);
+  };
+
   const buttonsArray = [
     {
       active: true,
-      label: 'Editar',
+      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
@@ -80,25 +129,13 @@ const Clients = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-  };
-
-  const handleFilteredList = (data) => {
-    setFilteredList(data);
-  };
-
-  useEffect(() => {
-    dispatch(getClients());
-  }, []);
-
-  const showErrorMessage = clientError?.networkError || !activeClientsList.length;
+  const showErrorMessage = clientError?.networkError || !clientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -108,16 +145,14 @@ const Clients = () => {
       error={clientError}
     />
   ) : (
-    <div className={styles.container}>
+    <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">Lista de Clientes</Typography>
       </div>
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
           <SearchBar<SearchClientData>
-            setFilteredList={handleFilteredList}
-            details={activeClientsList}
-            mainArray={clientFilterOptions}
+            setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
         <div className={styles.addUserButton}>
@@ -130,13 +165,42 @@ const Clients = () => {
           />
         </div>
       </div>
+      <div className={styles.checkboxInput}>
+        <div className={styles.filterButtons}>
+          {checked ? (
+            <div className={styles.filterButtonsPressed}>
+              <Button
+                materialVariant={Variant.CONTAINED}
+                onClick={() => {
+                  setFilters({ ...filters, isActive: !filters.isActive });
+                  setChecked(!checked);
+                }}
+                label={'Inactivos'}
+                testId={'inactiveButtons'}
+                color={'warning'}
+              />
+            </div>
+          ) : (
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ ...filters, isActive: !filters.isActive });
+                setChecked(!checked);
+              }}
+              label={'Inactivos'}
+              testId={'inactiveButtons'}
+            />
+          )}
+        </div>
+      </div>
       <div className={styles.tableContainer}>
-        {filteredList.length ? (
+        {dataList?.length ? (
           <Table<ClientsData>
             showButtons
             testId={'clientsTable'}
             headers={header}
-            value={filteredList}
+            value={dataList}
+            setDataList={handleDataList}
             buttons={buttonsArray}
           />
         ) : (
@@ -155,18 +219,23 @@ const Clients = () => {
           </>
         )}
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={clientError}
+        resource={Resources.Clientes}
+        operation={'borrado'}
+      />
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Clientes}
-          id={row._id}
-          name={row.name}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          description={`¿Desea eliminar al cliente ${row.name}?`}
+          title={'Eliminar Cliente'}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

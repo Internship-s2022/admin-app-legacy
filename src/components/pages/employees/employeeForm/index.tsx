@@ -4,9 +4,16 @@ import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Motives } from 'src/components/pages/employees/edit-employee/absencesModal/types';
+import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
 import { FormValues, Seniority } from 'src/components/pages/employees/types';
-import { Button, DatePicker, Dropdown, Modal, TextInput } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  DatePicker,
+  Dropdown,
+  Modal,
+  TextInput,
+} from 'src/components/shared/ui';
 import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
@@ -15,7 +22,12 @@ import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  closeModal,
+  openConfirmationModal,
+  openModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import AbsencesModal from './absencesModal';
@@ -28,8 +40,9 @@ const EditEmployee = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const params = useParams();
 
-  const showModal = useAppSelector((state: RootState) => state.ui?.showModal);
-  const listEmployee = useAppSelector((state: RootState) => state.employee?.list);
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const listEmployee = useAppSelector((state: RootState) => state.employee.list);
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
 
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
@@ -130,6 +143,7 @@ const EditEmployee = () => {
     };
     const { id, user, projectHistory, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
+    dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
 
@@ -164,7 +178,6 @@ const EditEmployee = () => {
                   name="user.birthDate"
                   control={control}
                   disabled
-                  disableFuture
                 />
               </div>
               <div className={`${styles.elementContainer} ${styles.lastRowOfContainer}`}>
@@ -342,7 +355,7 @@ const EditEmployee = () => {
             <Button
               testId="confirmButton"
               materialVariant={Variant.CONTAINED}
-              onClick={handleSubmit(onSubmit)}
+              onClick={() => dispatch(openConfirmationModal())}
               label="Confirmar"
             />
           </div>
@@ -357,6 +370,19 @@ const EditEmployee = () => {
           <AbsencesModal setAbsence={handleAbsence} open={showModal} absences={absences} />
         </Modal>
       </div>
+      <Modal
+        testId="editEmployeeModal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        <ConfirmationMessage
+          description={`¿Desea editar al empleado ${matchedEmployee?.user?.firstName} ${matchedEmployee?.user?.lastName}?`}
+          title={'Editar Empleado'}
+          handleConfirm={handleSubmit(onSubmit)}
+          handleClose={() => dispatch(closeConfirmationModal())}
+        />
+      </Modal>
     </div>
   );
 };

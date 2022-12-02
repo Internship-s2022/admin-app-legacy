@@ -62,13 +62,19 @@ const clientValidation = Joi.object({
       .required(),
   }),
 
-  relationshipStart: Joi.date().less('now').messages({
-    'date.less': 'La fecha de inicio debe ser menor que la fecha actual',
-  }),
+  relationshipStart: Joi.date()
+    .less('now')
+    .messages({
+      'date.less': 'Fecha de inicio debe ser menor que la fecha actual',
+    })
+    .allow(null),
 
-  relationshipEnd: Joi.date().greater(Joi.ref('relationshipStart')).messages({
-    'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
-  }),
+  relationshipEnd: Joi.date()
+    .greater(Joi.ref('relationshipStart'))
+    .messages({
+      'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
+    })
+    .allow(null),
 
   notes: Joi.string().min(0).max(35).messages({
     'string.base': 'Notas tiene que ser un string',

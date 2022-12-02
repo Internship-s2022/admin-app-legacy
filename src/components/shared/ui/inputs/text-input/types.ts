@@ -5,5 +5,6 @@ export type InputProps<Form extends FieldValues> = {
   testId: string;
   onChange?: () => void;
   styles?: string;
+  placeholder?: string;
 } & UseControllerProps<Form> &
   TextFieldProps;

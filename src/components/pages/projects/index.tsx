@@ -4,75 +4,107 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import { Button, Modal, Table } from 'src/components/shared/ui';
+import {
+  Button,
+  ConfirmationMessage,
+  Modal,
+  SuccessErrorMessage,
+  Table,
+} from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteConfirmation from 'src/components/shared/ui/deleteConfirmation';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
+import { getMembers } from 'src/redux/member/thunk';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, openModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  closeMessageAlert,
+  closeModal,
+  openConfirmationModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
 
-import { formattedProjectType, projectFilterOptions, projectHeaders } from './constants';
+import {
+  formattedProjectType,
+  optionsIsCritic,
+  projectFilterOptions,
+  projectHeaders,
+} from './constants';
 import styles from './projects.module.css';
 import { MappedProjectData, SearchProjectData } from './types';
+
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  filterDataList = list.filter((item) => item.active === filters.isActive);
+
+  filterDataList = filterDataList.filter((item) => item.criticality.includes(filters.criticality));
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      projectFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
 
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
-  const dispatch: AppDispatch<null> = useDispatch();
-  const projectList = useSelector((state: RootState) => state.project.list);
-
-  const formattedProjectList = useMemo(
-    () =>
-      projectList.map((project) => ({
-        ...project,
-        members: project.members?.map((member) => ({
-          ...member,
-          fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
-        })),
-      })),
-    [projectList],
-  );
-
-  const activeProjectsList = useMemo(
-    () =>
-      formattedProjectList.reduce((acc, item) => {
-        if (item.isActive) {
-          acc.push({
-            _id: item?._id,
-            projectName: item?.projectName && `${capitalizeFirstLetter(item.projectName)}`,
-            clientName: item?.clientName.name && `${capitalizeFirstLetter(item.clientName.name)}`,
-            projectType: item?.projectType && formattedProjectType[item.projectType],
-            startDate: item?.startDate.toString(),
-            endDate: item?.endDate.toString(),
-            criticality: item?.isCritic,
-            description: item?.description,
-            active: item?.isActive?.toString(),
-            members: formattedTableData(item?.members, 'fullName'),
-            notes: item?.notes,
-          });
-        }
-        return acc;
-      }, []),
-    [projectList],
-  );
-
   const projectError = useSelector((state: RootState) => state.project?.error);
+  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const dispatch: AppDispatch<null> = useDispatch();
+  const [dataList, setDataList] = useState([]);
+  const projectList = useSelector((state: RootState) => state.project.list);
+  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
-  const [filteredList, setFilteredList] = useState(activeProjectsList);
+  const [filters, setFilters] = React.useState({
+    isActive: true,
+    criticality: '',
+    search: '',
+  });
+  const [checked, setChecked] = React.useState(false);
+
+  const activeProjectsList = useMemo(() => {
+    const formattedProjectList = projectList.map((project) => ({
+      ...project,
+      members: project?.members?.map((member) => ({
+        ...member,
+        fullName: `${member?.employee?.user?.firstName} ${member?.employee?.user?.lastName}`,
+      })),
+    }));
+    const mappedProjects = formattedProjectList.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        projectName: item?.projectName && `${capitalizeFirstLetter(item.projectName)}`,
+        clientName: item?.clientName.name && `${capitalizeFirstLetter(item.clientName.name)}`,
+        projectType: item?.projectType && formattedProjectType[item.projectType],
+        startDate: item?.startDate?.toString(),
+        endDate: item?.endDate?.toString(),
+        criticality: item?.isCritic,
+        description: item?.description,
+        active: item?.isActive,
+        members: formattedTableData(item?.members, 'fullName'),
+        notes: item?.notes,
+      });
+      return acc;
+    }, []);
+    const filteredData = filterData(mappedProjects, filters);
+    return filteredData;
+  }, [projectList, filters.isActive, filters.criticality, filters.search]);
 
   useEffect(() => {
     dispatch(getProjects());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
-
-  useEffect(() => {
-    setFilteredList(activeProjectsList);
-  }, [projectList]);
 
   const navigate = useNavigate();
   const handleNavigation = (path) => {
@@ -83,18 +115,28 @@ const Projects = () => {
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
-  const handleFilteredList = (data) => {
-    setFilteredList(data);
+  const handleDataList = (data) => {
+    setDataList(data);
   };
+
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
+    dispatch(closeConfirmationModal());
     dispatch(closeModal());
   };
+
+  useEffect(() => {
+    dispatch(getProjects());
+  }, []);
+
+  useEffect(() => {
+    setDataList(activeProjectsList);
+  }, [projectList, filters.isActive, filters.criticality, filters.search]);
 
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
       active: true,
-      label: 'editar',
+      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
@@ -107,13 +149,13 @@ const Projects = () => {
       testId: 'deleteButton',
       variant: Variant.CONTAINED,
       onClick: (data) => {
-        dispatch(openModal());
+        dispatch(openConfirmationModal());
         setRow(data);
       },
     },
   ];
 
-  const showErrorMessage = projectError?.networkError || !activeProjectsList.length;
+  const showErrorMessage = projectError?.networkError || !projectList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -123,16 +165,14 @@ const Projects = () => {
       error={projectError}
     />
   ) : (
-    <div className={styles.container}>
+    <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">Lista de proyectos</Typography>
       </div>
-      <div className={styles.inputsContainer}>
-        <div className={styles.searchBar}>
+      <div className={styles.searchBar}>
+        <div className={styles.searchInput}>
           <SearchBar<SearchProjectData>
-            setFilteredList={handleFilteredList}
-            details={activeProjectsList}
-            mainArray={projectFilterOptions}
+            setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
         <div className={styles.addUserButton}>
@@ -145,13 +185,73 @@ const Projects = () => {
           />
         </div>
       </div>
+      <div className={styles.checkboxInput}>
+        {checked ? (
+          <div className={styles.filterButtonsPressed}>
+            <Button
+              materialVariant={Variant.CONTAINED}
+              onClick={() => {
+                setFilters({ ...filters, isActive: !filters.isActive });
+                setChecked(!checked);
+              }}
+              label={'Inactivos'}
+              testId={'inactiveButtons'}
+              color={'warning'}
+            />
+          </div>
+        ) : (
+          <div className={styles.filterButtons}>
+            <Button
+              materialVariant={Variant.TEXT}
+              onClick={() => {
+                setFilters({ ...filters, isActive: !filters.isActive });
+                setChecked(!checked);
+              }}
+              label={'Inactivos'}
+              testId={'inactiveButtons'}
+            />
+          </div>
+        )}
+        <select
+          className={styles.filterDropdown}
+          onChange={(e) => {
+            setFilters({ ...filters, criticality: e.target.value });
+          }}
+        >
+          <option
+            value={''}
+            disabled
+            selected={filters.criticality === ''}
+            className={styles.option}
+          >
+            {'Criticidad'}
+          </option>
+          {optionsIsCritic?.map((item) => (
+            <option key={item.value} value={item.value} className={styles.option}>
+              {item.label}
+            </option>
+          ))}
+        </select>
+        <div className={styles.filterButtons}>
+          <Button
+            materialVariant={Variant.TEXT}
+            onClick={() => {
+              setFilters({ isActive: true, criticality: '', search: '' });
+              setChecked(false);
+            }}
+            label={'Resetear filtros'}
+            testId={'resetFilter'}
+          />
+        </div>
+      </div>
       <div className={styles.tableContainer}>
-        {filteredList.length ? (
+        {dataList?.length ? (
           <Table<MappedProjectData>
             showButtons
             testId={'projectsTable'}
             headers={projectHeaders}
-            value={filteredList}
+            value={dataList}
+            setDataList={handleDataList}
             buttons={buttonsArray}
           />
         ) : (
@@ -170,18 +270,23 @@ const Projects = () => {
           </>
         )}
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={projectError}
+        resource={Resources.Proyectos}
+        operation={'borrado'}
+      />
       <Modal
         testId="deleteModal"
         styles={styles.modal}
-        isOpen={showModal}
-        onClose={() => dispatch(closeModal())}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
       >
-        <DeleteConfirmation
-          resource={Resources.Proyectos}
-          id={row._id}
-          name={row.projectName}
-          handleDelete={handleDelete}
-          onClose={() => dispatch(closeModal())}
+        <ConfirmationMessage
+          title={'Eliminar Proyecto'}
+          description={`¿Desea eliminar al proyecto ${row.projectName}?`}
+          handleConfirm={() => handleDelete(row._id)}
+          handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
     </div>

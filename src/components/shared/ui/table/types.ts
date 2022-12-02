@@ -6,6 +6,7 @@ export interface TableProps<Data> {
   testId: string;
   buttons?: TableButton<Data>[];
   profileIcon?: boolean;
+  setDataList?: (data: Data[]) => void;
 }
 
 export interface RowData {
@@ -23,4 +24,7 @@ export interface TableButton<Data> {
   label: string;
   onClick: (row: Data) => void;
   variant: Variant;
+}
+export interface SortBy {
+  dir: 'asc' | 'desc';
 }

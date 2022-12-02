@@ -1,4 +1,4 @@
-import { AbsencesData, Motives } from './edit-employee/absencesModal/types';
+import { AbsencesData, Motives } from './employeeForm/absencesModal/types';
 
 export interface EmployeeData {
   _id: string;
@@ -65,4 +65,8 @@ export interface SearchEmployeeData {
   notes: string;
   skills: string;
   potentialRole: string;
+}
+
+export interface SortBy {
+  dir: 'asc' | 'desc';
 }

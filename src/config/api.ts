@@ -18,7 +18,7 @@ const responseBody = (response: AxiosResponse) => response.data;
 const parseError = (error) => {
   if (error.code !== 'ERR_NETWORK') {
     throw {
-      message: error.response.data,
+      message: error.response.data.message,
       networkError: false,
     };
   }
@@ -30,6 +30,12 @@ const parseError = (error) => {
 
 export const getResourceRequest = <T>(apiRoute) =>
   api.get<T[]>(apiRoute).then(responseBody).catch<ErrorFormat>(parseError);
+
+export const getByFilterResourceRequest = <T>(apiRoute, filter) =>
+  api
+    .get<T[]>(`${apiRoute}/`, { params: filter })
+    .then(responseBody)
+    .catch<ErrorFormat>(parseError);
 
 export const addResourceRequest = <T>(apiRoute, body: T) =>
   api.post<T>(apiRoute, body).then(responseBody).catch<ErrorFormat>(parseError);
