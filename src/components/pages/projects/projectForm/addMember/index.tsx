@@ -72,7 +72,8 @@ const AddMemberForm = (props: AddMemberFormProps) => {
         startDate: memberData.startDate,
         endDate: memberData.endDate,
       });
-  }, []);
+    setEndDateDisabled(!memberData?.endDate);
+  }, [memberData]);
 
   const selectedMember = watch('employee');
 
@@ -92,14 +93,20 @@ const AddMemberForm = (props: AddMemberFormProps) => {
           helper: helper,
           endDate: endDateDisabled ? null : data.endDate,
         }
-      : { ...rest, endDate: endDateDisabled ? null : data.endDate, project: projectId };
+      : {
+          ...rest,
+          employee: employee,
+          endDate: endDateDisabled ? null : data.endDate,
+          project: projectId,
+        };
 
     const formattedDataEdit = helper.helperReference
       ? {
           ...rest,
           helper: helper,
+          endDate: endDateDisabled ? null : data.endDate,
         }
-      : { ...rest };
+      : { ...rest, endDate: endDateDisabled ? null : data.endDate };
 
     memberData
       ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))

@@ -4,6 +4,7 @@ import {
   addResourceRequest,
   deleteResourceRequest,
   editResourceRequest,
+  getByFilterResourceRequest,
   getResourceRequest,
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
@@ -26,12 +27,12 @@ import {
 } from './actions';
 import { Member } from './types';
 
-export const getMembers: AppThunk = () => {
+export const getMembers: AppThunk = (filter) => {
   return async (dispatch: Dispatch) => {
     dispatch(getMembersPending());
     dispatch(setLoaderOn());
     try {
-      const response = await getResourceRequest(ApiRoutes.MEMBER);
+      const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
       if (response.data?.length) {
         dispatch(getMembersSuccess(response.data));
       }

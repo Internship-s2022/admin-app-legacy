@@ -34,13 +34,13 @@ const ProjectForm = () => {
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
-  useEffect(() => {
-    dispatch(getMembers()); //TODO: HACER FILTRADO
-  }, [matchedMember?.helper.helperReference]); //TODO: Agregar algo para que no entre en loop
-
   const selectedProjectMemberList = membersList.filter(
     (member) => member?.project?._id === selectedProject?._id,
   );
+
+  useEffect(() => {
+    dispatch(getMembers({ project: selectedProject?._id })); //TODO: HACER FILTRADO
+  }, [matchedMember?.helper.helperReference, membersList.length]);
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
@@ -48,7 +48,7 @@ const ProjectForm = () => {
     helper: matchedMember.helper[0]
       ? {
           ...matchedMember.helper[0],
-          helperReference: matchedMember.helper[0].helperReference._id,
+          helperReference: matchedMember.helper[0]?.helperReference?._id,
         }
       : '',
     project: matchedMember.project._id,
