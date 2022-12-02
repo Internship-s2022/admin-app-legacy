@@ -135,7 +135,7 @@ const Projects = () => {
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
       active: true,
-      label: 'editar',
+      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
@@ -164,7 +164,7 @@ const Projects = () => {
       error={projectError}
     />
   ) : (
-    <div className={styles.container}>
+    <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
         <Typography variant="h1">Lista de proyectos</Typography>
       </div>
