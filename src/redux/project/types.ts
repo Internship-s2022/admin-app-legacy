@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
-import { Role } from 'src/components/pages/projects/projectForm/addMember/types';
+import { Role } from 'src/components/pages/projects/projectMembersLayout/memberForm/types';
 import { Criticality, ProjectType } from 'src/components/pages/projects/types';
 import { State } from 'src/redux/types';
 

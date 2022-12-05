@@ -43,4 +43,5 @@ export interface Member {
 export interface AddMemberFormProps {
   projectId: string;
   memberData?: Member;
+  setMemberId?: React.Dispatch<React.SetStateAction<any>>;
 }

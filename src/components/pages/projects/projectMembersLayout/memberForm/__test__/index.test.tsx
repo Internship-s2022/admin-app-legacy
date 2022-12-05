@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AddMemberForm from 'src/components/pages/projects/projectForm/addMember/index';
+import AddMemberForm from 'src/components/pages/projects/projectMembersLayout/memberForm/index';
 import customRender from 'src/utils/customRender';
 
 describe('Add New Member form - Unit Testing', () => {

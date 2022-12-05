@@ -10,6 +10,7 @@ import {
 import { ApiRoutes } from 'src/constants';
 import { AppThunk } from 'src/redux/types';
 
+import { getProjectByIdPending, getProjectByIdSuccess } from '../project/actions';
 import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
   addMemberError,
@@ -30,7 +31,6 @@ import { Member } from './types';
 export const getMembers: AppThunk = (filter) => {
   return async (dispatch: Dispatch) => {
     dispatch(getMembersPending());
-    dispatch(setLoaderOn());
     try {
       const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
       if (response.data?.length) {
@@ -38,8 +38,6 @@ export const getMembers: AppThunk = (filter) => {
       }
     } catch (error) {
       dispatch(getMembersError({ message: error.message, networkError: error.networkError }));
-    } finally {
-      dispatch(setLoaderOff());
     }
   };
 };

@@ -15,7 +15,7 @@ const employeeValidations = Joi.object({
 
   potentialRole: Joi.array().items(
     Joi.string()
-      .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UI_UX)
+      .valid(RoleType.DEV, RoleType.PM, RoleType.QA, RoleType.TL, RoleType.UX_UI)
       .messages({
         'any.only': 'El rol potencial debe ser DEV, QA, UI-UX, PM o TL',
         'string.base': 'Los items del array deben ser una cadena de caracteres',

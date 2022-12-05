@@ -3,7 +3,8 @@ import { Dispatch } from 'redux';
 
 import { auth } from 'src/helper/firebase';
 
-import { loginError, loginPending } from './actions';
+import { AppThunk } from '../types';
+import { loginError, loginPending, loginSuccess } from './actions';
 
 export const login = () => {
   return async (dispatch: Dispatch) => {

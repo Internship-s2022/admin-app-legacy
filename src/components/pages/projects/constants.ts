@@ -1,6 +1,6 @@
 import { Headers } from 'src/components/shared/ui/table/types';
 
-import { CriticalType } from './projectForm/addNewProject/types';
+import { CriticalType } from './projectMembersLayout/projectForm/types';
 
 export const formattedProjectType = {
   PRODUCT_BUILDING: 'Product Building',

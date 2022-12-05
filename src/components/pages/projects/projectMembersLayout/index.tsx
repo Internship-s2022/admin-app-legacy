@@ -12,12 +12,12 @@ import { RootState } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
-import AddMemberForm from './addMember';
-import AddNewProject from './addNewProject';
+import AddMemberForm from './memberForm';
 import MemberTable from './memberTable';
-import styles from './projectForm.module.css';
+import ProjectForm from './projectForm';
+import styles from './projectMembersLayout.module.css';
 
-const ProjectForm = () => {
+const ProjectMembersLayout = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -39,7 +39,7 @@ const ProjectForm = () => {
   );
 
   useEffect(() => {
-    dispatch(getMembers({ project: selectedProject?._id })); //TODO: HACER FILTRADO
+    dispatch(getMembers({ project: selectedProject?._id }));
   }, [matchedMember?.helper.helperReference, membersList.length]);
 
   const formattedMatchedMember = matchedMember && {
@@ -68,7 +68,7 @@ const ProjectForm = () => {
         </div>
       </div>
       <div>
-        <AddNewProject>
+        <ProjectForm>
           {selectedProject?.members?.length ? (
             <MemberTable list={selectedProjectMemberList} setMemberId={setMemberId} />
           ) : (
@@ -88,7 +88,7 @@ const ProjectForm = () => {
               </div>
             </div>
           )}
-        </AddNewProject>
+        </ProjectForm>
       </div>
       <div className={styles.buttonContainer}>
         <Button
@@ -104,11 +104,15 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm projectId={id} memberData={formattedMatchedMember} />
+          <AddMemberForm
+            projectId={id}
+            memberData={formattedMatchedMember}
+            setMemberId={setMemberId}
+          />
         </Modal>
       </div>
     </div>
   );
 };
 
-export default ProjectForm;
+export default ProjectMembersLayout;

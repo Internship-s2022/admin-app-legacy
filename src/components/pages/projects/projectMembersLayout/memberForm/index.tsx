@@ -24,7 +24,7 @@ import { AddMemberFormProps, FormValues, Role } from './types';
 import { memberValidations } from './validations';
 
 const AddMemberForm = (props: AddMemberFormProps) => {
-  const { projectId, memberData } = props;
+  const { projectId, memberData, setMemberId } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
@@ -73,6 +73,9 @@ const AddMemberForm = (props: AddMemberFormProps) => {
         endDate: memberData.endDate,
       });
     setEndDateDisabled(!memberData?.endDate);
+    return () => {
+      setMemberId('');
+    };
   }, [memberData]);
 
   const selectedMember = watch('employee');

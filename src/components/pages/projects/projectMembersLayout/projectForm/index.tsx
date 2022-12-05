@@ -16,19 +16,17 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
-import { getClients } from 'src/redux/client/thunks';
-import { cleanSelectedProject } from 'src/redux/project/actions';
-import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
+import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
-import styles from './addNewProject.module.css';
 import { criticalityOptions, projectTypeOptions } from './constants';
-import { AddNewProjectProps } from './types';
+import styles from './projectForm.module.css';
+import { ProjectFormProps } from './types';
 import { projectValidation } from './validations';
 
-const AddNewProject = (props: AddNewProjectProps) => {
+const ProjectForm = (props: ProjectFormProps) => {
   const { children } = props;
 
   const { id } = useParams();
@@ -89,11 +87,7 @@ const AddNewProject = (props: AddNewProjectProps) => {
   };
 
   useEffect(() => {
-    dispatch(getClients());
-    id && dispatch(getProjectById(id));
-    return () => {
-      dispatch(cleanSelectedProject());
-    };
+    dispatch(getProjectAndClients(id));
   }, [membersList]);
 
   useEffect(() => {
@@ -253,4 +247,4 @@ const AddNewProject = (props: AddNewProjectProps) => {
   );
 };
 
-export default AddNewProject;
+export default ProjectForm;
