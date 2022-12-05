@@ -20,10 +20,10 @@ import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
-import { AddMemberFormProps, FormValues, Role } from './types';
+import { FormValues, MemberFormProps, Role } from './types';
 import { memberValidations } from './validations';
 
-const AddMemberForm = (props: AddMemberFormProps) => {
+const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, setMemberId } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
@@ -254,4 +254,4 @@ const AddMemberForm = (props: AddMemberFormProps) => {
   );
 };
 
-export default AddMemberForm;
+export default MemberForm;

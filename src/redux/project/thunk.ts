@@ -75,7 +75,6 @@ export const getProjectAndClients: AppThunk = (id) => {
         id && getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`),
       ]);
 
-      console.log(responses);
       responses[0].data?.length && dispatch(getClientsSuccess(responses[0].data));
       responses[1]?.data && dispatch(getProjectByIdSuccess(responses[1]?.data));
     } catch (error: any) {

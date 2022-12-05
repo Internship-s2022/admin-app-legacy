@@ -12,7 +12,7 @@ import { RootState } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
-import AddMemberForm from './memberForm';
+import MemberForm from './memberForm';
 import MemberTable from './memberTable';
 import ProjectForm from './projectForm';
 import styles from './projectMembersLayout.module.css';
@@ -104,7 +104,7 @@ const ProjectMembersLayout = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm
+          <MemberForm
             projectId={id}
             memberData={formattedMatchedMember}
             setMemberId={setMemberId}

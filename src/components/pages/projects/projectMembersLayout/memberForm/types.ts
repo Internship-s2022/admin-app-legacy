@@ -40,7 +40,7 @@ export interface Member {
   active: boolean;
 }
 
-export interface AddMemberFormProps {
+export interface MemberFormProps {
   projectId: string;
   memberData?: Member;
   setMemberId?: React.Dispatch<React.SetStateAction<any>>;
