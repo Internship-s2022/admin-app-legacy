@@ -299,7 +299,6 @@ const Users = () => {
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
-      feature/RA-188-Checkbox-Date-End
     </>
   );
 };
