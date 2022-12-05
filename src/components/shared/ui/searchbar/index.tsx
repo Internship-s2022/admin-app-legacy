@@ -14,12 +14,22 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
       setInputValue('');
     }
   }, [filter]);
+
+  const handleSubmit = (e, value) => {
+    e.preventDefault();
+    setFilter(value);
+  };
+
+  const handleChange = (e, value) => {
+    setInputValue(e.target.value);
+    value.length >= 3 ? setFilter(inputValue.trim()) : setFilter('');
+  };
+
   return (
     <div>
       <form
         onSubmit={(e) => {
-          e.preventDefault();
-          setFilter(inputValue);
+          handleSubmit(e, inputValue);
         }}
       >
         <div className={styles.searchInputContainer}>
@@ -29,7 +39,9 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
           <input
             className={styles.searchInput}
             placeholder="Búsqueda por palabra clave"
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => {
+              handleChange(e, inputValue);
+            }}
             value={inputValue}
           />
         </div>

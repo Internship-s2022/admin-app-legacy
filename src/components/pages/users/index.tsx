@@ -10,7 +10,6 @@ import {
   Modal,
   SuccessErrorMessage,
   Table,
-  TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
