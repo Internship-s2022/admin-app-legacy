@@ -243,6 +243,7 @@ const Users = () => {
               value={dataList}
               buttons={buttonsArray}
               setDataList={setDataList}
+              isActive={filters.isActive}
             />
           ) : (
             <>

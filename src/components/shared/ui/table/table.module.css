@@ -24,3 +24,8 @@
   gap: 10px;
   border: none;
 }
+
+.inactiveRows {
+  color: #000000;
+  opacity: 0.3;
+}

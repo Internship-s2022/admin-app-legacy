@@ -202,6 +202,7 @@ const Clients = () => {
             value={dataList}
             setDataList={handleDataList}
             buttons={buttonsArray}
+            isActive={filters.isActive}
           />
         ) : (
           <>

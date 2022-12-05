@@ -7,6 +7,7 @@ export interface TableProps<Data> {
   buttons?: TableButton<Data>[];
   profileIcon?: boolean;
   setDataList?: (data: Data[]) => void;
+  isActive?: boolean;
 }
 
 export interface RowData {

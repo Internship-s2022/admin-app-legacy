@@ -253,6 +253,7 @@ const Projects = () => {
             value={dataList}
             setDataList={handleDataList}
             buttons={buttonsArray}
+            isActive={filters.isActive}
           />
         ) : (
           <>
