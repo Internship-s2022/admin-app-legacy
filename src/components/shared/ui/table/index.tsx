@@ -15,7 +15,8 @@ import styles from './table.module.css';
 import { RowData, SortBy, TableProps } from './types';
 
 const Table = <T extends RowData>(props: TableProps<T>) => {
-  const { showButtons, headers, value, testId, buttons, profileIcon, setDataList } = props;
+  const { showButtons, headers, value, testId, buttons, profileIcon, setDataList, isActive } =
+    props;
 
   const [order, setOrder] = React.useState<SortBy>({ dir: 'asc' });
 
@@ -63,7 +64,12 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
                 </TableCell>
               )}
               {headers.map((header, index) => (
-                <TableCell align="center" key={index} scope="row">
+                <TableCell
+                  align="center"
+                  key={index}
+                  scope="row"
+                  className={!isActive && styles.inactiveRows}
+                >
                   {row[header.key]}
                 </TableCell>
               ))}

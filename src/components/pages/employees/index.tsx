@@ -186,6 +186,7 @@ const Employees = () => {
               setDataList={handleDataList}
               profileIcon={true}
               buttons={buttonsArray}
+              isActive={filters.isActive}
             />
             <SuccessErrorMessage
               open={showAlert}

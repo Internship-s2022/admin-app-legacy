@@ -243,6 +243,7 @@ const Users = () => {
               value={dataList}
               buttons={buttonsArray}
               setDataList={setDataList}
+              isActive={filters.isActive}
             />
           ) : (
             <>
@@ -298,6 +299,7 @@ const Users = () => {
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
+      feature/RA-188-Checkbox-Date-End
     </>
   );
 };
