@@ -21,8 +21,9 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
   };
 
   const handleChange = (e, value) => {
+    e.preventDefault();
     setInputValue(e.target.value);
-    value.length >= 3 ? setFilter(inputValue.trim()) : setFilter('');
+    value.length > 0 ? setFilter(inputValue.trim()) : setFilter('');
   };
 
   return (
