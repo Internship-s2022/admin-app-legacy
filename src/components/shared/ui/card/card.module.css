@@ -1,0 +1,119 @@
+.baseIconTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 32px;
+  margin-left: 15px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 2px 13px 5px #0000001c;
+}
+
+.projectTabIcon {
+  background: linear-gradient(180deg, #4d9578 0%, #63b967 100%);
+}
+
+.employeeTabIcon {
+  background: linear-gradient(180deg, #373867 0%, #1e78e9 100%);
+}
+
+.clientTabIcon {
+  background: linear-gradient(180deg, #381f3c 0%, #6d4574 21.88%, rgb(73 34 80 / 59%) 100%);
+}
+
+.highCriticality {
+  border: 0.5px solid #cb0707;
+}
+
+.mediumCriticality {
+  border: 0.5px solid #d6be05;
+}
+
+.lowCriticality {
+  border: 0.5px solid #95c807;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 302px;
+  height: 203px;
+  color: #7b809a;
+  border-radius: 12px;
+  box-shadow: 0 2px 13px 5px #0000001c;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px 0;
+  margin-bottom: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 19.6px;
+}
+
+.projectInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 19.6px;
+}
+
+.customMessage {
+  padding: 0 15px;
+}
+
+.notification {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 18px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 22.4px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.notification p {
+  padding: 0 15px 15px;
+  margin: inherit;
+}
+
+.tickIcon {
+  padding: 15px;
+}
+
+.nameContainer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding-top: 5px;
+  font-weight: 400;
+}
+
+.avatars div,
+.nameContainer div {
+  width: 25px;
+  height: 25px;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.nameContainer div {
+  width: 30px;
+  height: 30px;
+}
+
+.criticality {
+  align-items: center;
+  height: 16px;
+  padding: 0.5% 1%;
+  font-size: 12px;
+  color: #4d4d4d;
+  text-align: center;
+  background: #f2f2f2;
+  border-radius: 5px;
+}
