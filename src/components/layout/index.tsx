@@ -10,12 +10,12 @@ import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
-  const role = localStorage.getItem('role');
 
+  const roleAuth = useSelector((state: RootState) => state.auth.authUser.accessRoleType);
   return (
     <div className={styles.container}>
       {isLoading && <Loader />}
-      {role && <Header />}
+      {roleAuth && <Header />}
       <Outlet />
     </div>
   );

@@ -1,9 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
 
 import { navbarItems } from 'src/constants';
+import { RootState } from 'src/redux/store';
 import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
@@ -12,7 +13,7 @@ import LinkTab from './linkTab';
 const Navbar = () => {
   const navigate = useNavigate();
   const pathValue = useLocation().pathname;
-  const userRole = localStorage.getItem('role');
+  const userRole = useSelector((state: RootState) => state.auth.authUser.accessRoleType);
   const initialValue = navbarItems[userRole]?.findIndex((route) => route.path.includes(pathValue));
   const [value, setValue] = React.useState<number>(initialValue);
   const dispatch: AppDispatch<null> = useDispatch();
