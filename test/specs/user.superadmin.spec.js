@@ -1,13 +1,14 @@
-/* eslint-disable no-undef */
 import LoginPage from '../page-objects/login.page';
 import HeaderPage from '../page-objects/header.page';
+import UserPage from '../page-objects/superAdmin/user.page';
+
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 const superAdminEmail = process.env.REACT_APP_SUPERADMIN_USER;
 const superAdminPassword = process.env.REACT_APP_SUPERADMIN_PASSWORD;
 
-describe('SuperAdmin login functionality with Google Account', () => {
+describe('Testing SuperAdmin login functionality with Google Account', () => {
   beforeAll('Refresh and delete cache', () => {
     LoginPage.open();
   });
@@ -22,9 +23,15 @@ describe('SuperAdmin login functionality with Google Account', () => {
     await browser.switchWindow('Radium Admin');
     await expect(browser).toHaveUrlContaining('super-admin');
   });
-  it('Testing SuperAdmin role logout', async () => {
-    await HeaderPage.logoutBtn.click();
-    await HeaderPage.logoutModalConfirmationBtn.click();
-    await expect(browser).toHaveUrlContaining('login');
+});
+
+describe('Testing display of elements on Superadmin homepage', () => {
+  it('Testing welcome title', async () => {
+    await expect(UserPage.userWelcomeTitle).toHaveTextContent('Bienvenido')
+  });
+  it('Testing SuperAdmin role login with valid credentials', async () => {
+    await LoginPage.login(superAdminEmail, superAdminPassword);
+    await browser.switchWindow('Radium Admin');
+    await expect(browser).toHaveUrlContaining('super-admin');
   });
 });
