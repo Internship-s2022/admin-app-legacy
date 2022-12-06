@@ -20,7 +20,7 @@ import { getClients } from 'src/redux/client/thunks';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { createProject, editProject, getProjectById } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal, openModal } from 'src/redux/ui/actions';
+import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import styles from './addNewProject.module.css';
