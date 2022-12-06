@@ -11,7 +11,11 @@ const PrivateRoute = ({
   redirectPath = '/not-allowed',
   children,
 }: PrivateRouteProps): JSX.Element => {
-  const { error } = useSelector((state: RootState) => state.auth);
+  const { error, isLoading } = useSelector((state: RootState) => state.auth);
+
+  if (isLoading) {
+    return null;
+  }
 
   const accessRole = localStorage.getItem('role');
   const token = localStorage.getItem('token');

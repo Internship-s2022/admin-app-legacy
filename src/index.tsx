@@ -13,17 +13,15 @@ import { themes } from './themes';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={themes}>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </ThemeProvider>
-      </StyledEngineProvider>
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={themes}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </ThemeProvider>
+    </StyledEngineProvider>
+  </Provider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

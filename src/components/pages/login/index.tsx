@@ -10,13 +10,12 @@ import { AppDispatch } from 'src/types';
 import styles from './login.module.css';
 
 const Login = () => {
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<any> = useDispatch();
 
   const navigate = useNavigate();
 
   const handleGoogleSignIn = async () => {
-    await dispatch(login());
-    const role = await localStorage.getItem('role');
+    const role = await dispatch(login());
     if (role === 'ADMIN') {
       navigate('/admin');
     } else if (role === 'SUPER_ADMIN') {
