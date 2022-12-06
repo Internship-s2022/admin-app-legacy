@@ -10,6 +10,7 @@ export interface AuthUser extends UserData {
 
 export interface State {
   authUser: AuthUser;
+  isLoading: boolean;
   error: string;
 }
 

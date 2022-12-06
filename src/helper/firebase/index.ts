@@ -2,7 +2,7 @@ import 'firebase/compat/auth';
 import { getAuth } from 'firebase/auth';
 import firebase from 'firebase/compat/app';
 
-import { setAuthentication } from 'src/redux/auth/actions';
+import { loginSuccess, setAuthentication } from 'src/redux/auth/actions';
 import store from 'src/redux/store';
 
 const firebaseConfig = {
@@ -22,12 +22,12 @@ export const tokenListener = () => {
   auth.onIdTokenChanged(async (user) => {
     try {
       if (user) {
-        const token = await user.getIdToken();
         const {
+          token,
           claims: { role, email, name, picture },
-        } = await user.getIdTokenResult();
+        } = await user.getIdTokenResult(true);
         store.dispatch(
-          setAuthentication({
+          loginSuccess({
             token,
             accessRoleType: role,
             email,
