@@ -40,7 +40,7 @@ const Card = (props: any) => {
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
 
   return (
-    <div className={styles.container}>
+    <div>
       <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
       <div className={styles.cardContainer}>
         <div className={styles.cardContent}>
