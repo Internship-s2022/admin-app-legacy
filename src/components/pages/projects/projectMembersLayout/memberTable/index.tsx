@@ -44,6 +44,11 @@ const MemberTable = (props: MemberTableProps) => {
     dispatch(openModal());
   };
 
+  const handleAdd = () => {
+    setMemberId('');
+    dispatch(openModal());
+  };
+
   return isLoading ? (
     <div className={styles.spinnerContainer}>
       <Spinner />
@@ -56,7 +61,7 @@ const MemberTable = (props: MemberTableProps) => {
           <Button
             testId="addMember"
             materialVariant={Variant.CONTAINED}
-            onClick={() => dispatch(openModal())}
+            onClick={() => handleAdd()}
             label="+ Agregar miembros"
           />
         </div>

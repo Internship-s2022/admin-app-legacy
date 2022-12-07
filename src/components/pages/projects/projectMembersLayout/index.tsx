@@ -104,11 +104,7 @@ const ProjectMembersLayout = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <MemberForm
-            projectId={id}
-            memberData={formattedMatchedMember}
-            setMemberId={setMemberId}
-          />
+          <MemberForm projectId={id} memberData={formattedMatchedMember} />
         </Modal>
       </div>
     </div>

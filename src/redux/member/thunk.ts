@@ -5,12 +5,10 @@ import {
   deleteResourceRequest,
   editResourceRequest,
   getByFilterResourceRequest,
-  getResourceRequest,
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 import { AppThunk } from 'src/redux/types';
 
-import { getProjectByIdPending, getProjectByIdSuccess } from '../project/actions';
 import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
   addMemberError,
@@ -80,7 +78,6 @@ export const editMember: AppThunk = (options: { id: string; body: Member }) => {
 export const deleteMember: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
     dispatch(deleteMemberPending());
-    dispatch(setLoaderOn());
     try {
       const response = await deleteResourceRequest(ApiRoutes.MEMBER, id);
       if (!response.error) {
@@ -89,7 +86,6 @@ export const deleteMember: AppThunk = (id) => {
     } catch (error) {
       dispatch(deleteMemberError({ message: error.message, networkError: error.networkError }));
     } finally {
-      dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
     }
   };

@@ -1,6 +1,3 @@
-import { Employee } from 'src/redux/employee/types';
-import { Project } from 'src/redux/project/types';
-
 export interface Helper {
   helperReference: string;
   dependency: number;
