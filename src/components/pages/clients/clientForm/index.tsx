@@ -7,6 +7,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
+import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import {
   Button,
   ConfirmationMessage,
@@ -21,8 +22,13 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
-import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
+import { RootState, useAppSelector } from 'src/redux/store';
+import {
+  closeConfirmationModal,
+  closeFormModal,
+  openConfirmationModal,
+  openFormModal,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { FormValues } from '../types';
@@ -34,6 +40,7 @@ const ClientForm = () => {
   const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
 
+  const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const clientError = useSelector((state: RootState) => state.client.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
@@ -141,7 +148,7 @@ const ClientForm = () => {
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
         <div>{id ? `Editar ${selectedClient?.name}` : 'Nuevo Cliente'}</div>
-        <div className={styles.bellIcon}>
+        <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
           <BellIcon />
         </div>
       </div>
@@ -322,6 +329,15 @@ const ClientForm = () => {
         resource={Resources.Clientes}
         operation={operation}
       />
+      <div>
+        <Modal
+          testId={'client-custom-notification'}
+          isOpen={showNotificationModal}
+          onClose={() => dispatch(closeFormModal())}
+        >
+          <CustomNotifications />
+        </Modal>
+      </div>
       <Modal
         testId="editClientModal"
         styles={styles.modal}

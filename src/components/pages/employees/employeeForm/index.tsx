@@ -6,6 +6,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
 import { FormValues, Seniority } from 'src/components/pages/employees/types';
+import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import {
   Button,
   ConfirmationMessage,
@@ -24,8 +25,10 @@ import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
+  closeFormModal,
   closeModal,
   openConfirmationModal,
+  openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -42,6 +45,7 @@ const EditEmployee = () => {
 
   const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
   const listEmployee = useAppSelector((state: RootState) => state.employee.list);
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
 
@@ -151,7 +155,7 @@ const EditEmployee = () => {
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
         <div>Editar un empleado</div>
-        <div className={styles.bellIcon}>
+        <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
           <BellIcon />
         </div>
       </div>
@@ -368,6 +372,15 @@ const EditEmployee = () => {
           onClose={() => dispatch(closeModal())}
         >
           <AbsencesModal setAbsence={handleAbsence} open={showModal} absences={absences} />
+        </Modal>
+      </div>
+      <div>
+        <Modal
+          testId={'employee-custom-notification'}
+          isOpen={showNotificationModal}
+          onClose={() => dispatch(closeFormModal())}
+        >
+          <CustomNotifications />
         </Modal>
       </div>
       <Modal
