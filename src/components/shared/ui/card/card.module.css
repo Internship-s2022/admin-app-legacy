@@ -33,7 +33,7 @@
   border: 0.5px solid #95c807;
 }
 
-.cardContent {
+.cardContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -42,6 +42,11 @@
   color: #7b809a;
   border-radius: 12px;
   box-shadow: 0 2px 13px 5px #0000001c;
+}
+
+.cardContent {
+  width: auto;
+  height: calc(203px - 51px);
 }
 
 .title {
@@ -63,6 +68,8 @@
 }
 
 .customMessage {
+  width: auto;
+  height: 40px;
   padding: 0 15px;
 }
 
@@ -70,7 +77,10 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-top: 18px;
+  width: auto;
+  height: 51px;
+
+  /* margin-top: 18px; */
   font-size: 16px;
   font-weight: 300;
   line-height: 22.4px;

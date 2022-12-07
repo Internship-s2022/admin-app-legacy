@@ -20,6 +20,19 @@ const defineColor = (data) => {
   }
 };
 
+const defineIcon = (data) => {
+  switch (data) {
+    case 'Proyectos':
+      return <ProjectCardIcon />;
+    case 'Empleados':
+      return <EmployeeCardIcon />;
+    case 'Clientes':
+      return <ClientCardIcon />;
+    default:
+      return '';
+  }
+};
+
 const defineCriticality = (data) => {
   switch (data) {
     case 'MEDIA':
@@ -37,20 +50,15 @@ const Card = (props: any) => {
   const { name, resource, members, notification, criticality, customMessage, isCustom } = props;
   const isProject = !!(resource === 'Proyectos');
   const isEmployee = !!(resource === 'Empleados');
-  const isClient = !!(resource === 'Clientes');
   const iconColor = defineColor(resource);
   const criticalityColor = defineCriticality(criticality);
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.baseIconTab} ${iconColor}`}>
-        {isProject && <ProjectCardIcon />}
-        {isEmployee && <EmployeeCardIcon />}
-        {isClient && <ClientCardIcon />}
-      </div>
-      <div className={styles.cardContent}>
-        <div>
+      <div className={`${styles.baseIconTab} ${iconColor}`}>{defineIcon(resource)}</div>
+      <div className={styles.cardContainer}>
+        <div className={styles.cardContent}>
           <div className={styles.title}>
             <div className={styles.nameContainer}>
               {isEmployee && <Avatar className={styles.avatars} />}
@@ -77,8 +85,8 @@ const Card = (props: any) => {
               </>
             </div>
           )}
+          {isCustom && <div className={styles.customMessage}>{customMessage}</div>}
         </div>
-        {isCustom && <div className={styles.customMessage}>{customMessage}</div>}
         <div className={styles.notification}>
           <p>{shownNotification}</p>
           <div className={styles.tickIcon}>

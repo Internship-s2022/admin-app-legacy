@@ -13,8 +13,6 @@ const Home = () => {
   const user = useSelector((state: RootState) => state.auth.authUser);
   const projects = useSelector((state: RootState) => state.project.list);
   const dispatch: AppDispatch<null> = useDispatch();
-
-  console.log(projects);
   const members = projects[0]?.members;
 
   useEffect(() => {
@@ -32,7 +30,7 @@ const Home = () => {
           resource={Resources.Proyectos}
           members={members}
           criticality={Criticality.BAJA}
-          customMessage={'holis holis holis holis'}
+          customMessage={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
           isCustom
         />
         <Card
@@ -46,7 +44,7 @@ const Home = () => {
           resource={Resources.Proyectos}
           members={members}
           criticality={Criticality.MEDIA}
-          customMessage={'holis holis holis holis'}
+          customMessage={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
           isCustom
         />
         <Card
@@ -60,20 +58,21 @@ const Home = () => {
           resource={Resources.Proyectos}
           members={members}
           criticality={Criticality.ALTA}
-          customMessage={'holis holis holis holis'}
+          customMessage={'Lorem ipsum dolor sit amet. Vestibulum sed.'}
           isCustom
         />
         <Card
           name={'Luchito Alarcón'}
           resource={Resources.Empleados}
-          customMessage={'holis holis holis holis'}
+          customMessage={'Consectetur adipiscing elit. Vestibulum sed.'}
           isCustom
         />
         <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
         <Card
           name={'Luchito Alarcón'}
           resource={Resources.Empleados}
-          customMessage={'holis holis holis holis '}
+          customMessage={'Lorem ipsum dolor sit amet.'}
+          isCustom
         />
         <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
         <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
