@@ -5,7 +5,7 @@ export enum ApiRoutes {
   CLIENT = '/clients',
   AUTH = '/auth',
   MEMBER = '/members',
-  NOTIFICATION = '/notification',
+  NOTIFICATION = '/notifications',
 }
 
 //Navbar
