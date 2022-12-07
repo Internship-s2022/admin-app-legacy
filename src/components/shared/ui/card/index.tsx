@@ -7,29 +7,14 @@ import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
 import TickIcon from '../icons/cardIcons/tickIcon';
 import styles from './card.module.css';
 
-const defineColor = (data) => {
-  switch (data) {
-    case 'Proyectos':
-      return styles.projectTabIcon;
-    case 'Empleados':
-      return styles.employeeTabIcon;
-    case 'Clientes':
-      return styles.clientTabIcon;
-    default:
-      return '';
-  }
-};
-
 const defineIcon = (data) => {
   switch (data) {
-    case 'Proyectos':
-      return <ProjectCardIcon />;
     case 'Empleados':
-      return <EmployeeCardIcon />;
+      return { icon: <EmployeeCardIcon />, color: styles.employeeTabIcon };
     case 'Clientes':
-      return <ClientCardIcon />;
+      return { icon: <ClientCardIcon />, color: styles.clientTabIcon };
     default:
-      return '';
+      return { icon: <ProjectCardIcon />, color: styles.projectTabIcon };
   }
 };
 
@@ -50,13 +35,13 @@ const Card = (props: any) => {
   const { name, resource, members, notification, criticality, customMessage, isCustom } = props;
   const isProject = !!(resource === 'Proyectos');
   const isEmployee = !!(resource === 'Empleados');
-  const iconColor = defineColor(resource);
+  const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
 
   return (
     <div className={styles.container}>
-      <div className={`${styles.baseIconTab} ${iconColor}`}>{defineIcon(resource)}</div>
+      <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
       <div className={styles.cardContainer}>
         <div className={styles.cardContent}>
           <div className={styles.title}>
