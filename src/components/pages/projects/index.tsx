@@ -64,12 +64,12 @@ const Projects = () => {
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const [dataList, setDataList] = useState([]);
+  const [checked, setChecked] = React.useState(false);
   const [filters, setFilters] = React.useState({
     isActive: true,
     criticality: '',
     search: '',
   });
-  const [checked, setChecked] = React.useState(false);
 
   const activeProjectsList = useMemo(() => {
     const formattedProjectList = projectList.map((project) => ({

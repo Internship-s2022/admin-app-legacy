@@ -38,6 +38,8 @@ const ProjectMembersLayout = () => {
     (member) => member?.project?._id === selectedProject?._id,
   );
 
+  const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
+
   useEffect(() => {
     dispatch(getMembers({ project: selectedProject?._id }));
   }, [matchedMember?.helper.helperReference, membersList.length]);
@@ -69,8 +71,8 @@ const ProjectMembersLayout = () => {
       </div>
       <div>
         <ProjectForm>
-          {selectedProject?.members?.length ? (
-            <MemberTable list={selectedProjectMemberList} setMemberId={setMemberId} />
+          {activeMembersList?.length ? (
+            <MemberTable list={activeMembersList} setMemberId={setMemberId} />
           ) : (
             <div className={styles.emptyMember}>
               <div>Este proyecto no cuenta con miembros asociados</div>
