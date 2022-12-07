@@ -10,9 +10,9 @@ import { Criticality } from '../projects/types';
 import styles from './home.module.css';
 
 const Home = () => {
+  const dispatch: AppDispatch<null> = useDispatch();
   const user = useSelector((state: RootState) => state.auth.authUser);
   const projects = useSelector((state: RootState) => state.project.list);
-  const dispatch: AppDispatch<null> = useDispatch();
   const members = projects[0]?.members;
 
   useEffect(() => {

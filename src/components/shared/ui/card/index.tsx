@@ -6,9 +6,10 @@ import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
 import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
 import TickIcon from '../icons/cardIcons/tickIcon';
 import styles from './card.module.css';
+import { CardProps } from './types';
 
-const defineIcon = (data) => {
-  switch (data) {
+const defineIcon = (resourceType) => {
+  switch (resourceType) {
     case 'Empleados':
       return { icon: <EmployeeCardIcon />, color: styles.employeeTabIcon };
     case 'Clientes':
@@ -18,8 +19,8 @@ const defineIcon = (data) => {
   }
 };
 
-const defineCriticality = (data) => {
-  switch (data) {
+const defineCriticality = (criticality) => {
+  switch (criticality) {
     case 'MEDIA':
       return styles.mediumCriticality;
     case 'ALTA':
@@ -31,7 +32,7 @@ const defineCriticality = (data) => {
   }
 };
 
-const Card = (props: any) => {
+const Card = (props: CardProps) => {
   const { name, resource, members, notification, criticality, customMessage, isCustom } = props;
   const isProject = !!(resource === 'Proyectos');
   const isEmployee = !!(resource === 'Empleados');
