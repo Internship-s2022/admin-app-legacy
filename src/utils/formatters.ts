@@ -7,15 +7,20 @@ export const capitalizeFirstLetter = (text: string) => {
   return '';
 };
 
-export const formattedTableData = <T>(list: T[], firstField: string, secondField?: string) => {
+export const formattedTableData = <T>(list: any[], firstField: string, secondField?: string) => {
+  const listilla = list.filter((item) =>
+    secondField
+      ? item[firstField].isActive || item[firstField].active
+      : item.active || item.isActive,
+  );
   let result = ' - ';
-  if (list?.length > 1) {
-    result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} y ${
-      list?.length - 1
-    } más`;
-  } else if (list?.length == 1) {
-    result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} `;
-  } else if (list?.length == 0) {
+  if (listilla?.length > 1) {
+    result = `${
+      secondField ? listilla[0]?.[firstField][secondField] : listilla[0]?.[firstField]
+    } y ${listilla?.length - 1} más`;
+  } else if (listilla?.length == 1) {
+    result = `${secondField ? listilla[0]?.[firstField][secondField] : listilla[0]?.[firstField]} `;
+  } else if (listilla?.length == 0) {
     return result;
   }
   return result;

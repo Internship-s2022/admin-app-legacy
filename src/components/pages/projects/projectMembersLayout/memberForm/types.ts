@@ -1,6 +1,3 @@
-import { Employee } from 'src/redux/employee/types';
-import { Project } from 'src/redux/project/types';
-
 export interface Helper {
   helperReference: string;
   dependency: number;
@@ -40,7 +37,8 @@ export interface Member {
   active: boolean;
 }
 
-export interface AddMemberFormProps {
+export interface MemberFormProps {
   projectId: string;
   memberData?: Member;
+  setMemberId?: React.Dispatch<React.SetStateAction<any>>;
 }

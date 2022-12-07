@@ -9,6 +9,6 @@ export enum ProjectType {
   PRODUCT_BUILDING = 'PRODUCT_BUILDING',
 }
 
-export interface AddNewProjectProps {
+export interface ProjectFormProps {
   children?: JSX.Element;
 }

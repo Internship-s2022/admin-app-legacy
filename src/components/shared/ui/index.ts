@@ -10,5 +10,6 @@ export { default as TextInput } from './inputs/text-input';
 export { default as Loader } from './loader';
 export { default as Modal } from './modal';
 export { default as SearchBar } from './searchbar';
+export { default as Spinner } from './spinner';
 export { default as SuccessErrorMessage } from './successErrorMessage';
 export { default as Table } from './table';

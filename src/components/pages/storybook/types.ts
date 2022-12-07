@@ -24,7 +24,7 @@ export interface PotentialRole {
 export enum RoleType {
   DEV = 'DEV',
   QA = 'QA',
-  UI_UX = 'UX/UI',
+  UX_UI = 'UX/UI',
   PM = 'PM',
   TL = 'TL',
 }

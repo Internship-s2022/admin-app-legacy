@@ -2,12 +2,12 @@ import React from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
-  AddProjects,
   Clients,
   ClientsForm,
   EditEmployee,
   Employees,
   Home,
+  ProjectMembersLayout,
   Projects,
 } from 'src/components/pages';
 import { UiRoutes } from 'src/constants';
@@ -22,8 +22,8 @@ const Admin = (): JSX.Element => {
       <Route path={UiRoutes.CLIENTS_FORM} element={<ClientsForm />} />
       <Route path={`${UiRoutes.CLIENTS_FORM}/:id`} element={<ClientsForm />} />
       <Route path={UiRoutes.PROJECTS} element={<Projects />} />
-      <Route path={UiRoutes.PROJECTS_FORM} element={<AddProjects />} />
-      <Route path={`${UiRoutes.PROJECTS_FORM}/:id`} element={<AddProjects />} />
+      <Route path={UiRoutes.PROJECTS_FORM} element={<ProjectMembersLayout />} />
+      <Route path={`${UiRoutes.PROJECTS_FORM}/:id`} element={<ProjectMembersLayout />} />
       <Route path="/*" element={<Navigate to="/" />} />
     </Routes>
   );

@@ -15,6 +15,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {
@@ -56,19 +57,19 @@ const filterData = (list, filters) => {
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
+  const dispatch: AppDispatch<null> = useDispatch();
   const projectError = useSelector((state: RootState) => state.project?.error);
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const dispatch: AppDispatch<null> = useDispatch();
-  const [dataList, setDataList] = useState([]);
   const projectList = useSelector((state: RootState) => state.project.list);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
+  const [dataList, setDataList] = useState([]);
+  const [checked, setChecked] = React.useState(false);
   const [filters, setFilters] = React.useState({
     isActive: true,
     criticality: '',
     search: '',
   });
-  const [checked, setChecked] = React.useState(false);
 
   const activeProjectsList = useMemo(() => {
     const formattedProjectList = projectList.map((project) => ({
@@ -126,6 +127,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getProjects());
+    dispatch(cleanSelectedProject());
   }, []);
 
   useEffect(() => {

@@ -12,12 +12,12 @@ import { RootState } from 'src/redux/store';
 import { closeModal, openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
-import AddMemberForm from './addMember';
-import AddNewProject from './addNewProject';
+import MemberForm from './memberForm';
 import MemberTable from './memberTable';
-import styles from './projectForm.module.css';
+import ProjectForm from './projectForm';
+import styles from './projectMembersLayout.module.css';
 
-const ProjectForm = () => {
+const ProjectMembersLayout = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -38,8 +38,10 @@ const ProjectForm = () => {
     (member) => member?.project?._id === selectedProject?._id,
   );
 
+  const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
+
   useEffect(() => {
-    dispatch(getMembers({ project: selectedProject?._id })); //TODO: HACER FILTRADO
+    dispatch(getMembers({ project: selectedProject?._id }));
   }, [matchedMember?.helper.helperReference, membersList.length]);
 
   const formattedMatchedMember = matchedMember && {
@@ -68,9 +70,9 @@ const ProjectForm = () => {
         </div>
       </div>
       <div>
-        <AddNewProject>
-          {selectedProject?.members?.length ? (
-            <MemberTable list={selectedProjectMemberList} setMemberId={setMemberId} />
+        <ProjectForm>
+          {activeMembersList?.length ? (
+            <MemberTable list={activeMembersList} setMemberId={setMemberId} />
           ) : (
             <div className={styles.emptyMember}>
               <div>Este proyecto no cuenta con miembros asociados</div>
@@ -88,7 +90,7 @@ const ProjectForm = () => {
               </div>
             </div>
           )}
-        </AddNewProject>
+        </ProjectForm>
       </div>
       <div className={styles.buttonContainer}>
         <Button
@@ -104,11 +106,11 @@ const ProjectForm = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <AddMemberForm projectId={id} memberData={formattedMatchedMember} />
+          <MemberForm projectId={id} memberData={formattedMatchedMember} />
         </Modal>
       </div>
     </div>
   );
 };
 
-export default ProjectForm;
+export default ProjectMembersLayout;
