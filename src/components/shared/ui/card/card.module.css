@@ -10,15 +10,15 @@
 }
 
 .projectTabIcon {
-  background: linear-gradient(180deg, #4d9578 0%, #63b967 100%);
+  background: linear-gradient(180deg, #408066 0%, #54aa78 50%, #51a66c 100%);
 }
 
 .employeeTabIcon {
-  background: linear-gradient(180deg, #373867 0%, #1e78e9 100%);
+  background: linear-gradient(180deg, #373867 0%, #2f4c8f 64.58%, #264f95 100%);
 }
 
 .clientTabIcon {
-  background: linear-gradient(180deg, #381f3c 0%, #6d4574 21.88%, rgb(73 34 80 / 59%) 100%);
+  background: linear-gradient(180deg, #381f3c 0%, #6d4574 63.54%, rgb(73 34 80 / 71%) 100%);
 }
 
 .highCriticality {

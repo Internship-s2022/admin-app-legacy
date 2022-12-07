@@ -41,7 +41,7 @@ const Card = (props: CardProps) => {
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
 
   return (
-    <div>
+    <div data-testid={'card-component'}>
       <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
       <div className={styles.cardContainer}>
         <div className={styles.cardContent}>
