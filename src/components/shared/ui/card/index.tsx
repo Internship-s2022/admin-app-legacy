@@ -1,6 +1,8 @@
 import React from 'react';
 import { Avatar, AvatarGroup } from '@mui/material';
 
+import { Member } from 'src/redux/project/types';
+
 import ClientCardIcon from '../icons/cardIcons/clientCardIcon';
 import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
 import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
@@ -58,7 +60,7 @@ const Card = (props: CardProps) => {
                 <div>
                   <div>
                     <AvatarGroup className={styles.avatars}>
-                      {members?.map((member: any) => {
+                      {members?.map((member: Member) => {
                         return <Avatar key={member._id} />;
                       })}
                     </AvatarGroup>
