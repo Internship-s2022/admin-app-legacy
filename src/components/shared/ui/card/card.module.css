@@ -55,7 +55,7 @@
   padding: 10px 15px 0;
   margin-bottom: 9px;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 19.6px;
 }
 
@@ -71,6 +71,9 @@
   width: auto;
   height: 40px;
   padding: 0 15px;
+  margin-top: 13px;
+  font-size: 14px;
+  font-weight: 300;
 }
 
 .notification {
@@ -80,7 +83,7 @@
   width: auto;
   height: 51px;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 200;
   line-height: 22.4px;
   border-top: 1px solid #f0f2f5;
 }
@@ -99,7 +102,19 @@
   gap: 6px;
   align-items: center;
   padding-top: 5px;
-  font-weight: 400;
+}
+
+.avatarsContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.membersContainer {
+  font-size: 13px;
+}
+
+.membersContainer p {
+  display: inline;
 }
 
 .avatars div,
@@ -107,7 +122,7 @@
   width: 25px;
   height: 25px;
   margin-bottom: 6px;
-  font-size: 13px;
+  font-size: 10px;
 }
 
 .nameContainer div {

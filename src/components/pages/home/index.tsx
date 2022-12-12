@@ -14,6 +14,8 @@ const Home = () => {
   const user = useSelector((state: RootState) => state.auth.authUser);
   const projects = useSelector((state: RootState) => state.project.list);
   const members = projects[0]?.members;
+  const otherMembers = projects[5]?.members;
+  console.log(projects);
 
   useEffect(() => {
     dispatch(getProjects());
@@ -42,7 +44,7 @@ const Home = () => {
         <Card
           name={'Radium Admin'}
           resource={Resources.Proyectos}
-          members={members}
+          members={otherMembers}
           criticality={Criticality.MEDIA}
           customMessage={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
           isCustom

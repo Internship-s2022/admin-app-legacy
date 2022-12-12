@@ -52,20 +52,20 @@ const Card = (props: CardProps) => {
               {isEmployee && <Avatar className={styles.avatars} />}
               <span>{name}</span>
             </div>
-            <span>{resource}</span>
+            <span>{resource.toUpperCase()}</span>
           </div>
           {isProject && (
             <div className={styles.projectInfo}>
               <>
-                <div>
-                  <div>
+                <div className={styles.membersContainer}>
+                  <div className={styles.avatarsContainer}>
                     <AvatarGroup className={styles.avatars}>
                       {members?.map((member: Member) => {
                         return <Avatar key={member._id} />;
                       })}
                     </AvatarGroup>
                   </div>
-                  <span>{members?.length} involucrados</span>
+                  <p>{members?.length} involucrados</p>
                 </div>
                 <div className={`${styles.criticality} ${criticalityColor}`}>
                   {criticality.toLowerCase()}
