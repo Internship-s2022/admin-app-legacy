@@ -280,44 +280,6 @@ const EditEmployee = () => {
           </div>
           <div className={styles.rightSide}>
             <TableProject projectList={formattedProjects} />
-            {/* <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    {projectHeadersEmp?.map((header, index) => {
-                      return (
-                        <th className={styles.header} key={index}>
-                          {header.header}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {formattedProjects?.map((data) => {
-                    return (
-                      <tr key={data.id}>
-                        {projectHeadersEmp.map((header, index) => {
-                          return (
-                            <td className={styles.rows} key={index}>
-                              {data[header.key]}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <div className={styles.viewMore}>
-                <Button
-                  testId="viewMoreButton"
-                  materialVariant={Variant.TEXT}
-                  onClick={() => undefined}
-                  label="Ver más"
-                />
-              </div>
-            </div> */}
             <div>
               <div className={styles.rightInputs}>
                 <TextInput
