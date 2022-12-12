@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
-import { FormValues, Seniority } from 'src/components/pages/employees/types';
+import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import {
   Button,
@@ -36,6 +36,7 @@ import { AppDispatch } from 'src/types';
 import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
 import styles from './editEmployee.module.css';
+import TableProject from './tableProject';
 import employeeValidations from './validations';
 
 const EditEmployee = () => {
@@ -51,7 +52,7 @@ const EditEmployee = () => {
 
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
 
-  const formattedProjects = latestProjects?.map((item) => ({
+  const formattedProjects = latestProjects?.map((item: Projects) => ({
     id: item?.project?._id || '-',
     name: item?.project?.projectName || '-',
     role: item?.role ? item?.role : '-',
@@ -278,7 +279,8 @@ const EditEmployee = () => {
             </div>
           </div>
           <div className={styles.rightSide}>
-            <div className={styles.tableContainer}>
+            <TableProject projectList={formattedProjects} />
+            {/* <div className={styles.tableContainer}>
               <table className={styles.table}>
                 <thead>
                   <tr>
@@ -315,7 +317,7 @@ const EditEmployee = () => {
                   label="Ver más"
                 />
               </div>
-            </div>
+            </div> */}
             <div>
               <div className={styles.rightInputs}>
                 <TextInput

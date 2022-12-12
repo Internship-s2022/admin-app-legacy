@@ -1,5 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
 
 import { useAppDispatch } from 'src/redux/store';
 import { closeFormModal } from 'src/redux/ui/actions';
@@ -9,6 +10,7 @@ import { Button, DatePicker, TextInput } from '../../ui';
 import { Variant } from '../../ui/buttons/button/types';
 import styles from './customNotifications.module.css';
 import { FormValues } from './types';
+import customNotificationsValidations from './validations';
 
 const CustomNotifications = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
@@ -19,6 +21,7 @@ const CustomNotifications = () => {
       date: null,
     },
     mode: 'onBlur',
+    resolver: joiResolver(customNotificationsValidations),
   });
 
   return (
