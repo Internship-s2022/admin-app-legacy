@@ -16,7 +16,7 @@ const ConfirmationMessage = (props: ConfirmationMessageProps) => {
       <div className={styles.buttonsContainer}>
         <div className={styles.cancelBtn}>
           <Button
-            testId="cancelBtn"
+            testId="cancel-button"
             materialVariant={Variant.OUTLINED}
             label="Cancelar"
             onClick={handleClose}
@@ -24,7 +24,7 @@ const ConfirmationMessage = (props: ConfirmationMessageProps) => {
         </div>
         <div>
           <Button
-            testId="confirmBtn"
+            testId="confirm-buttonconfirmBtn"
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleConfirm}

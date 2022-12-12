@@ -32,7 +32,7 @@ const CustomNotifications = () => {
           <div>
             <TextInput
               control={control}
-              testId={'customMessageInput'}
+              testId={'custom-message-button'}
               name="customMessage"
               type={'text'}
               variant="outlined"
@@ -42,12 +42,17 @@ const CustomNotifications = () => {
             />
           </div>
           <div className={styles.input}>
-            <DatePicker label={'Fecha'} testId={'datePickerCustom'} name="date" control={control} />
+            <DatePicker
+              label={'Fecha'}
+              testId={'date-picker-custom'}
+              name="date"
+              control={control}
+            />
           </div>
           <div className={styles.buttonContainer}>
             <div>
               <Button
-                testId="cancelButton"
+                testId="cancel-button"
                 materialVariant={Variant.OUTLINED}
                 onClick={() => dispatch(closeFormModal())}
                 label="Cancelar"

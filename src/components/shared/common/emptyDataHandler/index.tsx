@@ -19,7 +19,7 @@ const EmptyDataHandler = (props: EmptyDataProps) => {
         </div>
         <Button
           materialVariant={Variant.CONTAINED}
-          testId="reloadButton"
+          testId="reload-button"
           onClick={handleReload}
           label="Recargar"
         />

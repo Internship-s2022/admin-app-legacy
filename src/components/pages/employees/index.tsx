@@ -137,7 +137,7 @@ const Employees = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
                 color={'warning'}
               />
             ) : (
@@ -148,7 +148,7 @@ const Employees = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
               />
             )}
           </div>
@@ -175,7 +175,7 @@ const Employees = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-              testId={'resetFilter'}
+              testId={'reset-filter'}
             />
           </div>
         </div>
@@ -183,7 +183,7 @@ const Employees = () => {
           <div className={styles.tableContainer}>
             <Table<MappedEmployeeData>
               showButtons
-              testId={'userTable'}
+              testId={'employee-table'}
               headers={header}
               value={dataList}
               setDataList={handleDataList}

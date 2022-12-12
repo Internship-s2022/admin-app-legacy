@@ -138,7 +138,7 @@ const Projects = () => {
     {
       active: true,
       label: 'EDITAR',
-      testId: 'editButton',
+      testId: 'edit-button',
       variant: Variant.CONTAINED,
       onClick: (row) => {
         return handleEdit(row);
@@ -147,7 +147,7 @@ const Projects = () => {
     {
       active: true,
       label: 'X',
-      testId: 'deleteButton',
+      testId: 'delete-button',
       variant: Variant.CONTAINED,
       onClick: (data) => {
         dispatch(openConfirmationModal());
@@ -182,7 +182,7 @@ const Projects = () => {
             materialVariant={Variant.CONTAINED}
             onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
             label={'+ Agregar proyecto'}
-            testId={'addProjectButton'}
+            testId={'add-project-button'}
             styles={'addButton'}
           />
         </div>
@@ -197,7 +197,7 @@ const Projects = () => {
                 setChecked(!checked);
               }}
               label={'Inactivos'}
-              testId={'inactiveButtons'}
+              testId={'inactive-button'}
               color={'warning'}
             />
           </div>
@@ -210,7 +210,7 @@ const Projects = () => {
                 setChecked(!checked);
               }}
               label={'Inactivos'}
-              testId={'inactiveButtons'}
+              testId={'inactive-button'}
             />
           </div>
         )}
@@ -242,7 +242,7 @@ const Projects = () => {
               setChecked(false);
             }}
             label={'Resetear filtros'}
-            testId={'resetFilter'}
+            testId={'reset-filter'}
           />
         </div>
       </div>
@@ -250,7 +250,7 @@ const Projects = () => {
         {dataList?.length ? (
           <Table<MappedProjectData>
             showButtons
-            testId={'projectsTable'}
+            testId={'project-table'}
             headers={projectHeaders}
             value={dataList}
             setDataList={handleDataList}

@@ -31,7 +31,7 @@ const Header = () => {
     <header>
       <div className={styles.container}>
         <div className={styles.brand}>
-          <HeaderLogo testId="headerLogo" />
+          <HeaderLogo testId="header-logo" />
           <span>Radium</span>
           <span>Admin</span>
         </div>
@@ -50,7 +50,7 @@ const Header = () => {
         </button>
       </div>
       <Modal
-        testId="confirmLogoutModal"
+        testId="confirm-logout-modal"
         styles={styles.modal}
         isOpen={showLogoutModal}
         onClose={() => dispatch(closeLogoutModal())}
