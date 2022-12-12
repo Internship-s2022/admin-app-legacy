@@ -14,8 +14,7 @@ const Home = () => {
   const user = useSelector((state: RootState) => state.auth.authUser);
   const projects = useSelector((state: RootState) => state.project.list);
   const members = projects[0]?.members;
-  const otherMembers = projects[5]?.members;
-  console.log(projects);
+  const otherMembers = projects[17]?.members;
 
   useEffect(() => {
     dispatch(getProjects());

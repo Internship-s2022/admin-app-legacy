@@ -65,7 +65,7 @@ const Card = (props: CardProps) => {
                       })}
                     </AvatarGroup>
                   </div>
-                  <p>{members?.length} involucrados</p>
+                  {!!members?.length && <p>{members?.length} involucrados</p>}
                 </div>
                 <div className={`${styles.criticality} ${criticalityColor}`}>
                   {criticality.toLowerCase()}
