@@ -37,6 +37,7 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
             <SearchIcon />
           </div>
           <input
+            data-testid="searchbar-input"
             className={styles.searchInput}
             placeholder="Búsqueda por palabra clave"
             onChange={(e) => {
