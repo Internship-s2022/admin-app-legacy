@@ -58,6 +58,10 @@ const MemberForm = (props: MemberFormProps) => {
     resolver: joiResolver(memberValidations),
   });
 
+  const currentHelper = memberData?.helper?.find((helper) => helper.isActive);
+
+  const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
+
   useEffect(() => {
     memberData &&
       reset({
@@ -65,15 +69,16 @@ const MemberForm = (props: MemberFormProps) => {
         role: memberData.role,
         memberDedication: memberData.memberDedication,
         helper: {
-          helperReference: memberData.helper?.helperReference,
-          dependency: memberData.helper?.dependency,
-          dedication: memberData.helper?.dedication,
+          helperReference: currentHelper?.helperReference,
+          dependency: currentHelper?.dependency,
+          dedication: currentHelper?.dedication,
+          isActive: true,
         },
         startDate: memberData.startDate,
         endDate: memberData.endDate,
       });
     setEndDateDisabled(!memberData?.endDate);
-  }, [memberData]);
+  }, []);
 
   const selectedMember = watch('employee');
 
@@ -84,13 +89,27 @@ const MemberForm = (props: MemberFormProps) => {
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
 
+    if (currentHelper) {
+      memberData.helper[currentHelperIndex].isActive = false;
+    }
+
+    if (memberData) {
+      const helperIndex = memberData.helper?.findIndex(
+        (item) => item?.helperReference === helper?.helperReference,
+      );
+
+      helperIndex !== -1
+        ? (memberData.helper[helperIndex] = helper)
+        : memberData.helper?.push(helper);
+    }
+
     //TODO: Hacer esto mas prolijo
     const formattedData = helper.helperReference
       ? {
           ...rest,
           employee: employee,
           project: projectId,
-          helper: helper,
+          helper: [helper],
           endDate: endDateDisabled ? null : data.endDate,
         }
       : {
@@ -103,7 +122,7 @@ const MemberForm = (props: MemberFormProps) => {
     const formattedDataEdit = helper.helperReference
       ? {
           ...rest,
-          helper: helper,
+          helper: memberData?.helper,
           endDate: endDateDisabled ? null : data.endDate,
         }
       : { ...rest, endDate: endDateDisabled ? null : data.endDate };

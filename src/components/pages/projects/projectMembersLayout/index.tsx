@@ -34,6 +34,15 @@ const ProjectMembersLayout = () => {
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
+  const helperArray = matchedMember?.helper?.map((item, index) => {
+    return matchedMember.helper.length
+      ? {
+          ...matchedMember.helper[index],
+          helperReference: matchedMember.helper[index]?.helperReference?._id,
+        }
+      : '';
+  });
+
   const selectedProjectMemberList = membersList.filter(
     (member) => member?.project?._id === selectedProject?._id,
   );
@@ -41,19 +50,21 @@ const ProjectMembersLayout = () => {
   const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
 
   useEffect(() => {
-    dispatch(getMembers({ project: selectedProject?._id }));
-  }, [matchedMember?.helper.helperReference, membersList.length]);
+    selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
+    // }, [activeMembersList.length]);
+    // }, [selectedProjectMemberList.length]);
+  }, [selectedProject?._id]);
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
     employee: matchedMember.employee._id,
-    helper: matchedMember.helper[0]
-      ? {
-          ...matchedMember.helper[0],
-          helperReference: matchedMember.helper[0]?.helperReference?._id,
-        }
-      : '',
+    helper: helperArray,
     project: matchedMember.project._id,
+  };
+
+  const handleAdd = () => {
+    setMemberId('');
+    dispatch(openModal());
   };
 
   return (
@@ -84,7 +95,7 @@ const ProjectMembersLayout = () => {
                 <Button
                   testId="addMember"
                   materialVariant={Variant.OUTLINED}
-                  onClick={() => dispatch(openModal())}
+                  onClick={() => handleAdd()}
                   label="+ Agregar Miembro"
                 />
               </div>

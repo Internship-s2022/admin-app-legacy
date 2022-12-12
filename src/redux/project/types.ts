@@ -33,7 +33,7 @@ export interface Member {
   memberDedication?: number;
   startDate?: Date;
   endDate?: Date;
-  helper?: Helper;
+  helper?: Helper[];
   active?: boolean;
 }
 
