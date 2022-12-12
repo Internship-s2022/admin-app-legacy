@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import LoginPage from '../page-objects/login.page';
-import HeaderPage from '../page-objects/header.page';
 import UserPage from '../page-objects/superAdmin/user.page';
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -8,7 +7,7 @@ dotenv.config();
 const superAdminEmail = process.env.REACT_APP_SUPERADMIN_USER;
 const superAdminPassword = process.env.REACT_APP_SUPERADMIN_PASSWORD;
 
-describe('User flow log-in testing', () => {
+describe('# User flow # log-in testing', () => {
   beforeAll('Refresh and delete cache', () => {
     LoginPage.open();
   });
@@ -25,20 +24,37 @@ describe('User flow log-in testing', () => {
   });
 });
 
-describe('User flow homepage elements display testing', () => {
-  it('Testing the display of welcome title', async () => {
+describe('# User flow # homepage elements display testing', () => {
+  it('Testing display of welcome title', async () => {
     await expect(UserPage.userWelcomeTitle).toHaveTextContaining('Bienvenido');
   });
-  it('Testing the display of subtitle title', async () => {
+  it('Testing display of subtitle title', async () => {
     await expect(UserPage.userSubtitle).toHaveText(
       'Esta es la lista de usuarios, puedes asignarles el acceso que desees!',
     );
   });
-  it('Testing the display and functionality of "+ Agregar nuevo usuario" button', async () => {
+  it('Testing display and functionality of "+ Agregar nuevo usuario" button', async () => {
     await expect(UserPage.addUserButton).toBeDisplayed();
     await expect(UserPage.addUserButton).toBeEnabled();
   });
-  it('Testing the display of the welcome title', async () => {
-    await expect(UserPage.userWelcomeTitle).toHaveTextContaining('Bienvenido');
+  it('Testing display of searchbar', async () => {
+    await expect(UserPage.searchbar).toBeDisplayed();
+    await expect(UserPage.searchbar).toBeEnabled;
+  });
+  it('Testing display of inactive filter button', async () => {
+    await expect(UserPage.inactiveFilterButton).toBeDisplayed();
+    await expect(UserPage.inactiveFilterButton).toBeEnabled();
+  });
+  it('Testing display of reset filter button', async () => {
+    await expect(UserPage.resetFiltersButton).toBeDisplayed();
+    await expect(UserPage.resetFiltersButton).toBeEnabled();
+  });
+  it('Testing display of delete user button', async () => {
+    await expect(UserPage.deleteUserBtn).toBeDisplayed();
+    await expect(UserPage.deleteUserBtn).toBeEnabled();
+  });
+  it('Testing display of edit user button', async () => {
+    await expect(UserPage.editUserBtn).toBeDisplayed();
+    await expect(UserPage.editUserBtn).toBeEnabled();
   });
 });
