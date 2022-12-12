@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-import LoginPage from './login.page';
-
 class HeaderPage {
   // GETTERS
   get radiumAdminHeaderBrand() {

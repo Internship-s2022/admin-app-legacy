@@ -18,10 +18,10 @@ class LoginPage extends Page {
     return $('#identifierNext');
   }
   get passwordInput() {
-    return $('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input');
+    return $('[aria-label="Ingresa tu contraseña"]');
   }
   get passwordNextBtn() {
-    return $('#passwordNext'); // SELECTOR CSS
+    return $('#passwordNext');
   }
   /**
    * SETTERS

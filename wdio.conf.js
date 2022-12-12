@@ -21,14 +21,7 @@ exports.config = {
   // will be called from there.
   // './test/specs/**/*.js',
   //
-<<<<<<< Updated upstream
-  specs: ['./test/specs/**/*.js'],
-=======
-  specs: [
-    // './test/specs/login.superadmin.spec.js',
-    './test/specs/user.superadmin.spec.js',
-  ],
->>>>>>> Stashed changes
+  specs: ['./test/specs/user.flow.spec.js'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
