@@ -67,8 +67,9 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
     dispatch(setLoaderOn());
     try {
       const response = await editResourceRequest(ApiRoutes.USER, options);
+      console.log('response', response);
       if (!response.error) {
-        dispatch(editUserSuccess(response.data.accessRoleType, options.id));
+        dispatch(editUserSuccess(response.data, options.id));
       }
     } catch (error) {
       dispatch(editUserError({ message: error.message, networkError: error.networkError }));
