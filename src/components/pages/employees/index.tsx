@@ -64,6 +64,8 @@ const Employees = () => {
         notes: item?.notes,
         skills: item?.skills?.join('-'),
         potentialRole: item?.potentialRole?.join('-'),
+        seniority: item?.seniority || '-',
+        availability: item?.availability ? 'Disponible' : 'No disponible',
       });
       return acc;
     }, []);
@@ -71,6 +73,7 @@ const Employees = () => {
     return filteredData;
   }, [employee, filters.isActive, filters.role, filters.search]);
 
+  console.log('listEmployee', listEmployee);
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
