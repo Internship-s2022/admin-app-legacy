@@ -35,12 +35,12 @@ const ProjectMembersLayout = () => {
   const matchedMember = membersList.find((member) => memberId === member._id);
 
   const helperArray = matchedMember?.helper?.map((item, index) => {
-    return matchedMember.helper.length
-      ? {
-          ...matchedMember.helper[index],
-          helperReference: matchedMember.helper[index]?.helperReference?._id,
-        }
-      : '';
+    return (
+      matchedMember.helper.length && {
+        ...matchedMember.helper[index],
+        helperReference: matchedMember.helper[index]?.helperReference?._id,
+      }
+    );
   });
 
   const selectedProjectMemberList = membersList.filter(
@@ -51,8 +51,6 @@ const ProjectMembersLayout = () => {
 
   useEffect(() => {
     selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
-    // }, [activeMembersList.length]);
-    // }, [selectedProjectMemberList.length]);
   }, [selectedProject?._id]);
 
   const formattedMatchedMember = matchedMember && {

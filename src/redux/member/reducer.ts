@@ -39,7 +39,6 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         isLoading: true,
       };
     case Actions.ADD_MEMBER_SUCCESS:
-      console.log('aaaaaasa', action.payload);
       return {
         ...state,
         list: [...state.list, action.payload],

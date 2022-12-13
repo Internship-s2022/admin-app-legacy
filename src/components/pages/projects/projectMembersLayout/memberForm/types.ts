@@ -1,4 +1,5 @@
 export interface Helper {
+  _id: string;
   helperReference: string;
   dependency: number;
   dedication: number;
@@ -27,7 +28,7 @@ export enum Role {
 
 export interface Member {
   _id: string;
-  helper: any; //TODO: Tipar esto
+  helper: Helper[]; //TODO: Tipar esto
   employee: string;
   project: string;
   role: Role;
