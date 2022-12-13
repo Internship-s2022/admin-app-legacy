@@ -18,7 +18,7 @@ class LoginPage extends Page {
     return $('#identifierNext');
   }
   get passwordInput() {
-    return $('[aria-label="Ingresa tu contraseña"]');
+    return $('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input');
   }
   get passwordNextBtn() {
     return $('#passwordNext');

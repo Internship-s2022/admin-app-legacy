@@ -58,3 +58,10 @@ describe('# User flow # homepage elements display testing', () => {
     await expect(UserPage.editUserBtn).toBeEnabled();
   });
 });
+
+describe('# User flow # CRUD functionality', () => {
+  it('Testing opening of modal to add a new user', async () => {
+    await UserPage.addUserButton.click();
+    await expect(UserPage.createUserCancelBtn).toBeDisplayed();
+  });
+});
