@@ -10,8 +10,8 @@ export const capitalizeFirstLetter = (text: string) => {
 export const formattedTableData = <T>(list: any[], firstField: string, secondField?: string) => {
   const listilla = list.filter((item) =>
     secondField
-      ? item[firstField].isActive || item[firstField].active
-      : item.active || item.isActive,
+      ? item[firstField]?.isActive || item[firstField]?.active
+      : item?.active || item?.isActive,
   );
   let result = ' - ';
   if (listilla?.length > 1) {

@@ -73,7 +73,6 @@ const Employees = () => {
     return filteredData;
   }, [employee, filters.isActive, filters.role, filters.search]);
 
-  console.log('listEmployee', listEmployee);
   useEffect(() => {
     dispatch(getEmployees());
   }, []);
