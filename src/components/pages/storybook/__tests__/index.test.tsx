@@ -14,40 +14,6 @@ describe('StoryBook - Unit Testing', () => {
     );
   };
 
-  describe('AutocompleteInput - Unit Testing', () => {
-    it('Should check if autocomplete is rendering well', () => {
-      const { getByTestId } = customRender();
-      expect(getByTestId('autocompleteTestId')).toBeInTheDocument();
-    });
-
-    it('Should return a chip when entering a preset value and selecting it', () => {
-      const { getByTestId, getByPlaceholderText, getByText } = customRender();
-
-      const input = getByPlaceholderText('Select or add skill');
-      fireEvent.change(input, {
-        target: {
-          value: 'Re',
-        },
-      });
-      const tag = getByText('React');
-      fireEvent.click(tag);
-
-      expect(getByTestId('react')).toBeInTheDocument();
-    });
-
-    it('Should return a chip when entering a value and pressing enter', () => {
-      const { getByTestId, getByPlaceholderText } = customRender();
-      const input = getByPlaceholderText('Select or add skill');
-      fireEvent.change(input, {
-        target: {
-          value: 'test',
-        },
-      });
-      fireEvent.keyDown(input, { key: 'Enter' });
-      expect(getByTestId('test')).toBeInTheDocument();
-    });
-  });
-
   describe('Checkbox input - Unit testing', () => {
     it('should the checkbox is rendering well', () => {
       const { getByText } = customRender();

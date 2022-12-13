@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import {
+  AutocompleteInput,
   Button,
   DatePicker,
   Dropdown,
@@ -78,17 +79,10 @@ const MemberForm = (props: MemberFormProps) => {
   }, []);
 
   const selectedMember = watch('employee');
-  const selectedHelper = watch('helper.helperReference');
 
-  !selectedHelper && (setValue('helper.dedication', 0), setValue('helper.dependency', 0));
-
-  const filterDropdownList = () => {
-    const helperDropdownList = employeeDropdownList.filter(
-      (employee) => employee.value !== selectedMember,
-    );
-    helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
-    return helperDropdownList;
-  };
+  const helperDropdownList = employeeDropdownList.filter(
+    (employee) => employee.value !== selectedMember,
+  );
 
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
@@ -152,14 +146,11 @@ const MemberForm = (props: MemberFormProps) => {
             <div className={styles.inputsContainer}>
               <div className={styles.memberData}>
                 <div className={styles.topContainer}>
-                  <Dropdown
+                  <AutocompleteInput
+                    name={'employee'}
                     control={control}
-                    testId={'employeeDropdown'}
-                    label={'Empleado'}
-                    name="employee"
                     options={employeeDropdownList}
-                    fullWidth
-                    disabled={memberData ? true : false}
+                    label={'Empleado'}
                   />
                 </div>
                 <div className={styles.bottomContainer}>
@@ -189,7 +180,7 @@ const MemberForm = (props: MemberFormProps) => {
                     testId={'helper'}
                     label={'Ayudante'}
                     name="helper.helperReference"
-                    options={filterDropdownList()}
+                    options={helperDropdownList}
                     fullWidth
                   />
                 </div>
