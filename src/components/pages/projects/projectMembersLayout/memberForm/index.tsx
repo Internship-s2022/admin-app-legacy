@@ -82,9 +82,13 @@ const MemberForm = (props: MemberFormProps) => {
 
   const selectedMember = watch('employee');
 
-  const helperDropdownList = employeeDropdownList.filter(
-    (employee) => employee.value !== selectedMember,
-  );
+  const filterDropdownList = () => {
+    const helperDropdownList = employeeDropdownList.filter(
+      (employee) => employee.value !== selectedMember,
+    );
+    helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
+    return helperDropdownList;
+  };
 
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
@@ -92,8 +96,7 @@ const MemberForm = (props: MemberFormProps) => {
     if (currentHelper) {
       memberData.helper[currentHelperIndex].isActive = false;
     }
-
-    if (memberData) {
+    if (memberData && helper.helperReference) {
       const helperIndex = memberData.helper?.findIndex(
         (item) => item?.helperReference === helper?.helperReference,
       );
@@ -119,13 +122,11 @@ const MemberForm = (props: MemberFormProps) => {
           project: projectId,
         };
 
-    const formattedDataEdit = helper.helperReference
-      ? {
-          ...rest,
-          helper: memberData?.helper,
-          endDate: endDateDisabled ? null : data.endDate,
-        }
-      : { ...rest, endDate: endDateDisabled ? null : data.endDate };
+    const formattedDataEdit = {
+      ...rest,
+      helper: memberData?.helper,
+      endDate: endDateDisabled ? null : data.endDate,
+    };
 
     memberData
       ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))
@@ -189,7 +190,7 @@ const MemberForm = (props: MemberFormProps) => {
                     testId={'helper'}
                     label={'Ayudante'}
                     name="helper.helperReference"
-                    options={helperDropdownList}
+                    options={filterDropdownList()}
                     fullWidth
                   />
                 </div>
