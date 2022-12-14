@@ -106,7 +106,6 @@ const MemberForm = (props: MemberFormProps) => {
         : memberData.helper?.push(helper);
     }
 
-    //TODO: Hacer esto mas prolijo
     const formattedData = helper.helperReference
       ? {
           ...rest,
