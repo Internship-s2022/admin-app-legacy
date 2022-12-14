@@ -63,5 +63,11 @@ describe('# User flow # CRUD functionality', () => {
   it('Testing opening of modal to add a new user', async () => {
     await UserPage.addUserButton.click();
     await expect(UserPage.createUserCancelBtn).toBeDisplayed();
+    await expect(UserPage.createUserConfirmBtn).toBeDisplayed();
+  });
+  it('Testing validation on adding a new user with empty fields', async () => {
+    await UserPage.addUserForm();
+    await UserPage.createUserConfirmBtn.click();
+    await expect(UserPage.userNameInputError).toHaveText('Este campo es requerido');
   });
 });

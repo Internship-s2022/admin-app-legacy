@@ -73,7 +73,30 @@ class UserPage {
   get userDateInputError() {
     return $('[id=:ra:-helper-text]');
   }
+  // SETTERS
+  async setUserEmail(userEmail) {
+    await this.userEmailInput.setValue(userEmail);
+  }
+  async setUserName(userName) {
+    await this.userNameInput.setValue(userName);
+  }
+  async setUserLastName(userLastName) {
+    await this.userLastNameInput.setValue(userLastName);
+  }
+  async setUserLocation(userLocation) {
+    await this.userLocationInput.setValue(userLocation);
+  }
+  async setUserBirthday(userBirthday) {
+    await this.userBirthday.setValue(userBirthday);
+  }
   // METHODS
+  async addUserForm(userEmail, userName, userLastName, userLocation, userBirthday) {
+    await this.setUserEmail(userEmail);
+    await this.setUserName(userName);
+    await this.setUserLastName(userLastName);
+    await this.setUserLocation(userLocation);
+    await this.setUserBirthday(userBirthday);
+  }
 }
 
 export default new UserPage();
