@@ -5,7 +5,7 @@ import { Resources } from 'src/types';
 export interface CardProps {
   name: string;
   resource: Resources;
-  members?: Member[];
+  members?: any[] | undefined;
   notification?: string;
   criticality?: Criticality;
   customMessage?: string;

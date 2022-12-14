@@ -1,82 +1,203 @@
-import React, { useEffect } from 'react';
+import { format } from 'date-fns';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { Button, SearchBar } from 'src/components/shared/ui';
+import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
+import { getNotifications } from 'src/redux/notifications/thunk';
 import { getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { AppDispatch, Resources } from 'src/types';
+import { AppDispatch } from 'src/types';
 
-import { Criticality } from '../projects/types';
+import { entities, notificationsFilterOptions } from './constants';
 import styles from './home.module.css';
+
+const filterData = (list, filters) => {
+  let filterDataList;
+
+  if (filters.newest) {
+    filterDataList = list.sort((a, b) => {
+      return Date.parse(b.date) - Date.parse(a.date);
+    });
+  } else {
+    filterDataList = list.sort((a, b) => {
+      return Date.parse(a.date) - Date.parse(b.date);
+    });
+  }
+
+  filterDataList = filterDataList.filter((item) => item.resource.includes(filters.role));
+
+  if (filters.search) {
+    filterDataList = filterDataList?.filter((d) =>
+      notificationsFilterOptions.some((field) =>
+        d[field]?.toLowerCase().includes(filters.search?.toLowerCase()),
+      ),
+    );
+  }
+
+  return filterDataList;
+};
 
 const Home = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const user = useSelector((state: RootState) => state.auth.authUser);
-  const projects = useSelector((state: RootState) => state.project.list);
-  const members = projects[0]?.members;
-  const otherMembers = projects[17]?.members;
+  const notifications = useSelector((state: RootState) => state.notification.list);
+  const today = format(new Date(Date.now()), 'PPPP');
+  const [filters, setFilters] = React.useState({
+    newest: true,
+    role: '',
+    search: '',
+  });
+  const [checked, setChecked] = React.useState(false);
+  const [dataList, setDataList] = React.useState([]);
+
+  const listNotifications = useMemo(() => {
+    const mappedNotifications = notifications.reduce((acc, item) => {
+      acc.push({
+        _id: item?._id,
+        resource: item.notificationType,
+        projectName: item.project?.projectName || '',
+        projectCriticality: item.project?.isCritic || '',
+        employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
+        clientName: item.client?.clientContact?.name || '',
+        date: item.date,
+        customMessage: item.customMessage || '',
+        isCustom: item.isCustom,
+        active: item.isActive,
+      });
+      return acc;
+    }, []);
+    const filteredData = filterData(mappedNotifications, filters);
+    return filteredData;
+  }, [notifications, filters.newest, filters.role, filters.search]);
 
   useEffect(() => {
     dispatch(getProjects());
+    dispatch(getNotifications());
   }, []);
+
+  useEffect(() => {
+    setDataList(listNotifications);
+  }, [notifications, filters.newest, filters.role, filters.search]);
+
+  console.log('dataList', dataList);
 
   return (
     <>
       <section className={styles.container}>
-        {user.name.length ? <h2>Bienvenido {user.name}</h2> : ''}
+        <div className={styles.welcomeMessage}>
+          {user.name.length ? <p className={styles.welcomeMessage}>Bienvenido {user.name}</p> : ''}
+        </div>
+        <div className={styles.searchBar}>
+          <SearchBar />
+          <div className={styles.filterContainer}>
+            <div className={styles.checkboxInput}>
+              <div className={styles.filterButtons}>
+                {checked ? (
+                  <Button
+                    materialVariant={Variant.CONTAINED}
+                    onClick={() => {
+                      setFilters({ ...filters, newest: !filters.newest });
+                      setChecked(!checked);
+                    }}
+                    label={'Más viejas'}
+                    testId={'oldest-button'}
+                    color={'warning'}
+                  />
+                ) : (
+                  <Button
+                    materialVariant={Variant.TEXT}
+                    onClick={() => {
+                      setFilters({ ...filters, newest: !filters.newest });
+                      setChecked(!checked);
+                    }}
+                    label={'Más recientes'}
+                    testId={'newest-button'}
+                  />
+                )}
+              </div>
+              <select
+                className={styles.filterDropdown}
+                onChange={(e) => {
+                  setFilters({ ...filters, role: e.target.value });
+                }}
+              >
+                <option
+                  value={''}
+                  disabled
+                  selected={filters.role === ''}
+                  className={styles.option}
+                >
+                  {'Entidad'}
+                </option>
+                {entities?.map((item) => (
+                  <option key={item.value} value={item.value} className={styles.option}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+              <div className={styles.filterButtons}>
+                <Button
+                  materialVariant={Variant.TEXT}
+                  onClick={() => {
+                    setFilters({ newest: true, role: '', search: '' });
+                    setChecked(false);
+                  }}
+                  label={'Resetear filtros'}
+                  testId={'reset-filters'}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.todayDate}>{today.toString()}</div>
       </section>
       <div className={styles.cardContainer}>
-        <Card
-          name={'Radium Admin'}
-          resource={Resources.Proyectos}
-          members={members}
-          criticality={Criticality.BAJA}
-          customMessage={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
-          isCustom
-        />
-        <Card
-          name={'Luchito Alarcón'}
-          resource={Resources.Empleados}
-          notification={'notificación'}
-        />
-        <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
-        <Card
-          name={'Radium Admin'}
-          resource={Resources.Proyectos}
-          members={otherMembers}
-          criticality={Criticality.MEDIA}
-          customMessage={'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'}
-          isCustom
-        />
-        <Card
-          name={'Luchito Alarcón'}
-          resource={Resources.Empleados}
-          notification={'Notificación no custom'}
-        />
-        <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
-        <Card
-          name={'Radium Admin'}
-          resource={Resources.Proyectos}
-          members={members}
-          criticality={Criticality.ALTA}
-          customMessage={'Lorem ipsum dolor sit amet. Vestibulum sed.'}
-          isCustom
-        />
-        <Card
-          name={'Luchito Alarcón'}
-          resource={Resources.Empleados}
-          customMessage={'Consectetur adipiscing elit. Vestibulum sed.'}
-          isCustom
-        />
-        <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
-        <Card
-          name={'Luchito Alarcón'}
-          resource={Resources.Empleados}
-          customMessage={'Lorem ipsum dolor sit amet.'}
-          isCustom
-        />
-        <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
-        <Card name={'Nombre Cliente'} resource={Resources.Clientes} notification={'notificación'} />
+        {dataList?.map((item) => {
+          switch (item.resource) {
+            case 'PROJECT':
+              return (
+                <Card
+                  key={item.id}
+                  name={item.projectName}
+                  resource={item.resource}
+                  criticality={item.projectCriticality}
+                  customMessage={item.customMessage}
+                  isCustom={item.isCustom}
+                />
+              );
+            case 'EMPLOYEE':
+              return (
+                <Card
+                  key={item.id}
+                  name={item.employeeName}
+                  resource={item.resource}
+                  customMessage={item.customMessage}
+                  isCustom={item.isCustom}
+                />
+              );
+            case 'CLIENT':
+              return (
+                <Card
+                  key={item.id}
+                  name={item.clientName}
+                  resource={item.resource}
+                  customMessage={item.customMessage}
+                  isCustom={item.isCustom}
+                />
+              );
+            default:
+              return (
+                <Card
+                  key={item.id}
+                  name={item.clientName || item.projectName || item.employeeName}
+                  resource={item.notificationType}
+                />
+              );
+              break;
+          }
+        })}
       </div>
     </>
   );

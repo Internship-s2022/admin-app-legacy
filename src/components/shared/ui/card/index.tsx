@@ -12,9 +12,9 @@ import { CardProps } from './types';
 
 const defineIcon = (resourceType) => {
   switch (resourceType) {
-    case 'Empleados':
+    case 'EMPLOYEE':
       return { icon: <EmployeeCardIcon />, color: styles.employeeTabIcon };
-    case 'Clientes':
+    case 'CLIENT':
       return { icon: <ClientCardIcon />, color: styles.clientTabIcon };
     default:
       return { icon: <ProjectCardIcon />, color: styles.projectTabIcon };
@@ -52,7 +52,7 @@ const Card = (props: CardProps) => {
               {isEmployee && <Avatar className={styles.avatars} />}
               <span>{name}</span>
             </div>
-            <span>{resource.toUpperCase()}</span>
+            <span>{resource?.toUpperCase()}</span>
           </div>
           {isProject && (
             <div className={styles.projectInfo}>
@@ -68,7 +68,7 @@ const Card = (props: CardProps) => {
                   {!!members?.length && <p>{members?.length} involucrados</p>}
                 </div>
                 <div className={`${styles.criticality} ${criticalityColor}`}>
-                  {criticality.toLowerCase()}
+                  {criticality?.toLowerCase()}
                 </div>
               </>
             </div>

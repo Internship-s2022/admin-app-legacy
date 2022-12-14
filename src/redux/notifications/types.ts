@@ -10,9 +10,9 @@ import * as actions from './actions';
 export interface Notification {
   _id: string;
   notificationType: string;
-  employee?: Employee[];
-  project?: Project[];
-  client?: Client[];
+  employee?: Employee;
+  project?: Project;
+  client?: Client;
   date: Date;
   reasonType?: number;
   isChecked?: boolean;
