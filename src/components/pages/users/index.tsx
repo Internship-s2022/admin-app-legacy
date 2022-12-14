@@ -121,7 +121,6 @@ const Users = () => {
   };
 
   const handleEdit = (data) => {
-    console.log(data);
     dispatch(openModal());
     setOperation('editado');
     setRow(data);

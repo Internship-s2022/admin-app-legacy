@@ -67,7 +67,6 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
     dispatch(setLoaderOn());
     try {
       const response = await editResourceRequest(ApiRoutes.USER, options);
-      console.log('response', response);
       if (!response.error) {
         dispatch(editUserSuccess(response.data, options.id));
       }
