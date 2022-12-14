@@ -96,6 +96,7 @@
 
 .tickIcon {
   padding: 15px;
+  cursor: pointer;
 }
 
 .nameContainer {
@@ -140,4 +141,14 @@
   text-align: center;
   background: #f2f2f2;
   border-radius: 5px;
+}
+
+.name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 13px 5px #0000006c;
 }

@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import esLocale from 'date-fns/locale/es';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -9,6 +10,7 @@ import { getNotifications } from 'src/redux/notifications/thunk';
 import { getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
+import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { entities, notificationsFilterOptions } from './constants';
 import styles from './home.module.css';
@@ -43,7 +45,10 @@ const Home = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const user = useSelector((state: RootState) => state.auth.authUser);
   const notifications = useSelector((state: RootState) => state.notification.list);
-  const today = format(new Date(Date.now()), 'PPPP');
+  console.log({ notifications });
+  const today = capitalizeFirstLetter(
+    format(new Date(Date.now()), 'eeee, d LLL', { locale: esLocale }),
+  );
   const [filters, setFilters] = React.useState({
     newest: true,
     role: '',
@@ -55,12 +60,16 @@ const Home = () => {
   const listNotifications = useMemo(() => {
     const mappedNotifications = notifications.reduce((acc, item) => {
       acc.push({
-        _id: item?._id,
+        id: item?._id,
         resource: item.notificationType,
+        projectId: item.project?._id,
         projectName: item.project?.projectName || '',
         projectCriticality: item.project?.isCritic || '',
+        members: item.project?.members || [],
         employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
+        employeeId: item.employee?._id,
         clientName: item.client?.clientContact?.name || '',
+        clientId: item.client?._id,
         date: item.date,
         customMessage: item.customMessage || '',
         isCustom: item.isCustom,
@@ -73,7 +82,6 @@ const Home = () => {
   }, [notifications, filters.newest, filters.role, filters.search]);
 
   useEffect(() => {
-    dispatch(getProjects());
     dispatch(getNotifications());
   }, []);
 
@@ -81,16 +89,11 @@ const Home = () => {
     setDataList(listNotifications);
   }, [notifications, filters.newest, filters.role, filters.search]);
 
-  console.log('dataList', dataList);
-
   return (
     <>
       <section className={styles.container}>
         <div className={styles.welcomeMessage}>
           {user.name.length ? <p className={styles.welcomeMessage}>Bienvenido {user.name}</p> : ''}
-        </div>
-        <div className={styles.searchBar}>
-          <SearchBar />
           <div className={styles.filterContainer}>
             <div className={styles.checkboxInput}>
               <div className={styles.filterButtons}>
@@ -101,7 +104,7 @@ const Home = () => {
                       setFilters({ ...filters, newest: !filters.newest });
                       setChecked(!checked);
                     }}
-                    label={'Más viejas'}
+                    label={'Menos recientes'}
                     testId={'oldest-button'}
                     color={'warning'}
                   />
@@ -160,9 +163,11 @@ const Home = () => {
               return (
                 <Card
                   key={item.id}
+                  id={item.projectId}
                   name={item.projectName}
                   resource={item.resource}
                   criticality={item.projectCriticality}
+                  members={item.members}
                   customMessage={item.customMessage}
                   isCustom={item.isCustom}
                 />
@@ -170,6 +175,7 @@ const Home = () => {
             case 'EMPLOYEE':
               return (
                 <Card
+                  id={item.employeeId}
                   key={item.id}
                   name={item.employeeName}
                   resource={item.resource}
@@ -180,6 +186,7 @@ const Home = () => {
             case 'CLIENT':
               return (
                 <Card
+                  id={item.clientId}
                   key={item.id}
                   name={item.clientName}
                   resource={item.resource}
@@ -190,6 +197,7 @@ const Home = () => {
             default:
               return (
                 <Card
+                  id={item.id}
                   key={item.id}
                   name={item.clientName || item.projectName || item.employeeName}
                   resource={item.notificationType}
