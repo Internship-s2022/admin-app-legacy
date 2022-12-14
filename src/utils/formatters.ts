@@ -8,19 +8,19 @@ export const capitalizeFirstLetter = (text: string) => {
 };
 
 export const formattedTableData = <T>(list: any[], firstField: string, secondField?: string) => {
-  const listilla = list.filter((item) =>
+  const dataList = list.filter((item) =>
     secondField
-      ? item[firstField].isActive || item[firstField].active
-      : item.active || item.isActive,
+      ? item[firstField]?.isActive || item[firstField]?.active
+      : item?.active || item?.isActive,
   );
   let result = ' - ';
-  if (listilla?.length > 1) {
+  if (dataList?.length > 1) {
     result = `${
-      secondField ? listilla[0]?.[firstField][secondField] : listilla[0]?.[firstField]
-    } y ${listilla?.length - 1} más`;
-  } else if (listilla?.length == 1) {
-    result = `${secondField ? listilla[0]?.[firstField][secondField] : listilla[0]?.[firstField]} `;
-  } else if (listilla?.length == 0) {
+      secondField ? dataList[0]?.[firstField][secondField] : dataList[0]?.[firstField]
+    } y ${dataList?.length - 1} más`;
+  } else if (dataList?.length == 1) {
+    result = `${secondField ? dataList[0]?.[firstField][secondField] : dataList[0]?.[firstField]} `;
+  } else if (dataList?.length == 0) {
     return result;
   }
   return result;

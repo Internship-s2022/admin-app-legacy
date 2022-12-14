@@ -64,6 +64,8 @@ const Employees = () => {
         notes: item?.notes,
         skills: item?.skills?.join('-'),
         potentialRole: item?.potentialRole?.join('-'),
+        seniority: item?.seniority || '-',
+        availability: item?.availability ? 'Disponible' : 'No disponible',
       });
       return acc;
     }, []);
