@@ -40,7 +40,7 @@ const MemberForm = (props: MemberFormProps) => {
     return acc;
   }, []);
 
-  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
+  const { handleSubmit, control, reset, watch, setValue } = useForm<FormValues>({
     defaultValues: {
       employee: '',
       role: Role.DEV,
@@ -81,6 +81,9 @@ const MemberForm = (props: MemberFormProps) => {
   }, []);
 
   const selectedMember = watch('employee');
+  const selectedHelper = watch('helper.helperReference');
+
+  !selectedHelper && (setValue('helper.dedication', 0), setValue('helper.dependency', 0));
 
   const filterDropdownList = () => {
     const helperDropdownList = employeeDropdownList.filter(
