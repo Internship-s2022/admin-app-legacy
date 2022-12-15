@@ -40,11 +40,26 @@ const filterData = (list, filters) => {
   return filterDataList;
 };
 
+const selectName = (item) => {
+  switch (item.resource) {
+    case 'PROJECT':
+      return { name: item.projectName, id: item.projectId };
+    case 'CLIENT':
+      return { name: item.clientName, id: item.clientId };
+    case 'EMPLOYEE':
+      return { name: item.employeeName, id: item.employeeId };
+    default:
+      return {
+        name: item.projectName || item.clientName || item.employeeName,
+        id: item.projectId || item.clientId || item.employeeId,
+      };
+  }
+};
+
 const Home = () => {
   const dispatch: AppDispatch<null> = useDispatch();
   const user = useSelector((state: RootState) => state.auth.authUser);
   const notifications = useSelector((state: RootState) => state.notification.list);
-  console.log({ notifications });
   const today = capitalizeFirstLetter(
     format(new Date(Date.now()), 'eeee, d LLL', { locale: esLocale }),
   );
@@ -158,54 +173,18 @@ const Home = () => {
       </section>
       <div className={styles.cardContainer}>
         {dataList?.map((item) => {
-          switch (item.resource) {
-            case 'PROJECT':
-              return (
-                <Card
-                  key={item.id}
-                  id={item.projectId}
-                  name={item.projectName}
-                  resource={item.resource}
-                  criticality={item.projectCriticality}
-                  members={item.members}
-                  customMessage={item.customMessage}
-                  isCustom={item.isCustom}
-                />
-              );
-            case 'EMPLOYEE':
-              return (
-                <Card
-                  id={item.employeeId}
-                  key={item.id}
-                  name={item.employeeName}
-                  resource={item.resource}
-                  customMessage={item.customMessage}
-                  isCustom={item.isCustom}
-                />
-              );
-            case 'CLIENT':
-              return (
-                <Card
-                  id={item.clientId}
-                  key={item.id}
-                  name={item.clientName}
-                  resource={item.resource}
-                  customMessage={item.customMessage}
-                  isCustom={item.isCustom}
-                />
-              );
-            default:
-              return (
-                <Card
-                  id={item.id}
-                  key={item.id}
-                  name={item.clientName || item.projectName || item.employeeName}
-                  resource={item.notificationType}
-                  notification={item.notification}
-                />
-              );
-              break;
-          }
+          return (
+            <Card
+              key={item.id}
+              id={selectName(item).id}
+              name={selectName(item).name}
+              resource={item.resource}
+              criticality={item.projectCriticality}
+              members={item.members}
+              customMessage={item.customMessage}
+              isCustom={item.isCustom}
+            />
+          );
         })}
       </div>
     </>

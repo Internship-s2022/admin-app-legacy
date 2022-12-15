@@ -5,7 +5,7 @@ export interface CardProps {
   id: string;
   name: string;
   resource: string;
-  members?: Member[] | undefined;
+  members?: Member[];
   notification?: string;
   criticality?: Criticality;
   customMessage?: string;

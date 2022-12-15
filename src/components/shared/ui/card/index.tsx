@@ -9,7 +9,6 @@ import ClientCardIcon from '../icons/cardIcons/clientCardIcon';
 import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
 import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
 import TickIcon from '../icons/cardIcons/tickIcon';
-import TickIconColor from '../icons/cardIcons/tickIconColor';
 import styles from './card.module.css';
 import { CardProps } from './types';
 
@@ -94,7 +93,7 @@ const Card = (props: CardProps) => {
         <div className={styles.notification}>
           <p>{shownNotification}</p>
           <div className={styles.tickIcon} onClick={() => setChecked(!checked)}>
-            {checked ? <TickIconColor /> : <TickIcon />}
+            <TickIcon checked={checked} />
           </div>
         </div>
       </div>
