@@ -351,7 +351,7 @@ const EditEmployee = () => {
       <Modal
         testId="editEmployeeModal"
         styles={styles.modal}
-        isOpen={showConfirmModal}
+        isOpen={!showNotificationModal && showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage

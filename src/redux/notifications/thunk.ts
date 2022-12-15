@@ -39,7 +39,7 @@ export const createNotification: AppThunk = (data) => {
     dispatch(createNotificationPending());
     dispatch(setLoaderOn());
     try {
-      const response = await addResourceRequest(ApiRoutes.NOTIFICATION, data.body);
+      const response = await addResourceRequest(ApiRoutes.NOTIFICATION, data);
       if (!response.error) {
         dispatch(createNotificationSuccess(response.data));
       }

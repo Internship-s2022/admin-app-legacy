@@ -14,7 +14,7 @@ import { AppDispatch } from 'src/types';
 import { Button, ConfirmationMessage, DatePicker, Modal, TextInput } from '../../ui';
 import { Variant } from '../../ui/buttons/button/types';
 import styles from './customNotifications.module.css';
-import { customNotificationProps, FormValues } from './types';
+import { customNotificationProps, FormValues, Resource } from './types';
 import customNotificationsValidations from './validations';
 
 const CustomNotifications = (props: customNotificationProps) => {
@@ -36,9 +36,11 @@ const CustomNotifications = (props: customNotificationProps) => {
     const body = {
       ...data,
       notificationType: resource,
+      isActive: true,
       isCustom: true,
     };
     dispatch(createNotification(body));
+    dispatch(closeFormModal());
   };
 
   return (
@@ -79,26 +81,13 @@ const CustomNotifications = (props: customNotificationProps) => {
               <Button
                 testId="confirm-button"
                 materialVariant={Variant.CONTAINED}
-                onClick={() => dispatch(openConfirmationModal())}
+                onClick={handleSubmit(onSubmit)}
                 label="Confirmar"
               />
             </div>
           </div>
         </div>
       </form>
-      <Modal
-        testId="custom-notification-employee"
-        styles={styles.modal}
-        isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationModal())}
-      >
-        <ConfirmationMessage
-          description={'¿Desea agregar una notificación?'}
-          title={'Notificacion personalizada'}
-          handleConfirm={handleSubmit(onSubmit)}
-          handleClose={() => dispatch(closeConfirmationModal())}
-        />
-      </Modal>
     </div>
   );
 };
