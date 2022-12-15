@@ -59,10 +59,10 @@ const Card = (props: CardProps) => {
   };
 
   return (
-    <div data-testid={'card-component'} onClick={() => redirectClick(id)}>
+    <div data-testid={'card-component'}>
       <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
       <div className={`${styles.cardContainer} ${styles.card}`}>
-        <div className={styles.cardContent}>
+        <div className={styles.cardContent} onClick={() => redirectClick(id)}>
           <div className={styles.title}>
             <div className={styles.nameContainer}>
               {isEmployee && <Avatar className={styles.avatars} />}
@@ -93,15 +93,9 @@ const Card = (props: CardProps) => {
         </div>
         <div className={styles.notification}>
           <p>{shownNotification}</p>
-          {checked ? (
-            <div className={styles.tickIcon} onClick={() => setChecked(!checked)}>
-              <TickIconColor />
-            </div>
-          ) : (
-            <div className={styles.tickIcon} onClick={() => setChecked(!checked)}>
-              <TickIcon />
-            </div>
-          )}
+          <div className={styles.tickIcon} onClick={() => setChecked(!checked)}>
+            {checked ? <TickIconColor /> : <TickIcon />}
+          </div>
         </div>
       </div>
     </div>

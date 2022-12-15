@@ -3,11 +3,10 @@ import esLocale from 'date-fns/locale/es';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Button, SearchBar } from 'src/components/shared/ui';
+import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
 import { getNotifications } from 'src/redux/notifications/thunk';
-import { getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { AppDispatch } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
@@ -72,6 +71,7 @@ const Home = () => {
         clientId: item.client?._id,
         date: item.date,
         customMessage: item.customMessage || '',
+        notification: item.reasonType || '',
         isCustom: item.isCustom,
         active: item.isActive,
       });
@@ -201,6 +201,7 @@ const Home = () => {
                   key={item.id}
                   name={item.clientName || item.projectName || item.employeeName}
                   resource={item.notificationType}
+                  notification={item.notification}
                 />
               );
               break;

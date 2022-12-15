@@ -95,6 +95,8 @@
 }
 
 .tickIcon {
+  display: flex;
+  align-self: center;
   padding: 15px;
   cursor: pointer;
 }
