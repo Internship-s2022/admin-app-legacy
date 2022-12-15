@@ -76,7 +76,7 @@ const MemberForm = (props: MemberFormProps) => {
         endDate: memberData.endDate,
       });
     setEndDateDisabled(!memberData?.endDate);
-  }, []);
+  }, [memberData]);
 
   const selectedMember = watch('employee');
 

@@ -10,19 +10,25 @@ const AutocompleteInput = <Form extends FieldValues>(
 ): JSX.Element => {
   const { control, options, name, label } = props;
   const {
-    field: { onChange },
+    field: { value, onChange },
     fieldState: { error },
   } = useController({ name, control });
 
   return (
     <Autocomplete
+      disableClearable
       disablePortal
       id="combo-box-demo"
-      defaultValue={''}
-      options={options}
-      getOptionLabel={(option) => option.label ?? option}
-      isOptionEqualToValue={(option, value) => {
-        return option.value === value.value;
+      value={value}
+      options={options || []}
+      getOptionLabel={(option) => options.find((item) => item.value === option)?.label ?? ''}
+      isOptionEqualToValue={(option, value) => option.value === value}
+      renderOption={(props, option) => {
+        return (
+          <li {...props} key={option.value}>
+            {option.label}
+          </li>
+        );
       }}
       renderInput={(params) => (
         <TextField
