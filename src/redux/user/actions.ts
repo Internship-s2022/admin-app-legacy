@@ -18,8 +18,8 @@ export const addUserSuccess = (user: User) => action(Actions.ADD_USER_SUCCESS, u
 
 export const addUsersError = (error: ErrorFormat) => action(Actions.ADD_USER_ERROR, error);
 
-export const editUserSuccess = (accessRole: AccessRoleType, id: string) =>
-  action(Actions.EDIT_USER_SUCCESS, { accessRole, id });
+export const editUserSuccess = (response: User, id: string) =>
+  action(Actions.EDIT_USER_SUCCESS, { response, id });
 
 export const editUserPending = () => action(Actions.EDIT_USER_PENDING);
 
