@@ -76,6 +76,22 @@ class UserPage {
   get userDateInputError() {
     return $('[data-testid="date-input"] p');
   }
+  // Edit role to user modal
+  get managerAccessRoleBtn() {
+    return $('[data-testid="accessManagerBtn"]');
+  }
+  get adminAccessRoleBtn() {
+    return $('[data-testid="accessAdminBtn"]');
+  }
+  get employeeAccessRoleBtn() {
+    return $('[data-testid="accessEmployeeBtn"]');
+  }
+  get confirmAccessRoleBtn() {
+    return $('[data-testid="confirmAccessRoleBtn"]');
+  }
+  get cancelAccessRoleBtn() {
+    return $('[data-testid="cancelAccessRoleBtn"]');
+  }
   // SETTERS
   async setUserEmail(userEmail) {
     await this.userEmailInput.setValue(userEmail);

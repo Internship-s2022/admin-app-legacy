@@ -2,6 +2,7 @@
 import LoginPage from '../page-objects/login.page';
 import UserPage from '../page-objects/superAdmin/user.page';
 import * as dotenv from 'dotenv';
+import { userEmail } from '../utils/helper';
 dotenv.config();
 
 const superAdminEmail = process.env.REACT_APP_SUPERADMIN_USER;
@@ -107,24 +108,28 @@ describe('# User flow # CREATE USER functionality', () => {
   it('Testing validation on adding a new user with valid data', async () => {
     await UserPage.createUserCancelBtn.click();
     await UserPage.addUserButton.click();
-    await UserPage.addUserForm(
-      'test.newuser@radiumrocket.com',
-      'Test',
-      'New User',
-      'San Luis',
-      '01012000',
-    );
+    await UserPage.addUserForm(userEmail, 'Test', 'New User', 'San Luis', '01012000');
     await UserPage.createUserConfirmBtn.click();
     await browser.pause(2000);
     await expect(UserPage.snackBarMessage).toHaveText('Usuario creado con éxito');
   });
 });
 
-// describe('# User flow # EDIT ROLE functionality', () => {
-//   it('Testing opening of modal to add a new user', async () => {
-//     await UserPage.addUserButton.click();
-//     await browser.pause(2000);
-//     await expect(UserPage.createUserCancelBtn).toBeDisplayed();
-//     await expect(UserPage.createUserConfirmBtn).toBeDisplayed();
-//   });
-// });
+describe('# User flow # EDIT ROLE functionality', () => {
+  it('Testing opening of modal to change the access role of an existing user', async () => {
+    await UserPage.editUserBtn.click();
+    await browser.pause(2000);
+    await expect(UserPage.managerAccessRoleBtn).toBeDisplayed();
+    await expect(UserPage.adminAccessRoleBtn).toBeDisplayed();
+    await expect(UserPage.employeeAccessRoleBtn).toBeDisplayed();
+    await expect(UserPage.confirmAccessRoleBtn).toBeDisplayed();
+    await expect(UserPage.cancelAccessRoleBtn).toBeDisplayed();
+  });
+  it('Testing editing the access role of an existing user', async () => {
+    await UserPage.managerAccessRoleBtn.click();
+    await browser.pause(1000);
+    await UserPage.confirmAccessRoleBtn.click();
+    await browser.pause(1000);
+    await expect(UserPage.snackBarMessage).toHaveText('Usuario editado con éxito.');
+  });
+});
