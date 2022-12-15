@@ -44,10 +44,14 @@ h1 {
   width: 93%;
 }
 
-.addUserButton {
+.addProjectButton {
   display: flex;
   justify-content: flex-end;
   width: 30%;
+}
+
+.addProjectButton > button {
+  background-color: #4f987b;
 }
 
 .tableContainer {

@@ -17,3 +17,7 @@
   font-size: 14px;
   color: rgb(0 0 0 / 60%);
 }
+
+.buttonContainer > button {
+  background-color: #4f987b;
+}

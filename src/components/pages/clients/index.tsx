@@ -147,7 +147,7 @@ const Clients = () => {
   ) : (
     <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
-        <Typography variant="h1">Lista de Clientes</Typography>
+        <Typography variant="h1">Clientes</Typography>
       </div>
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>

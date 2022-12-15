@@ -119,7 +119,7 @@ const Employees = () => {
     <>
       <div className={styles.tableContainer}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">Lista de Empleados</Typography>
+          <Typography variant="h1">Empleados</Typography>
         </div>
         <div className={styles.searchInput}>
           <SearchBar<SearchEmployeeData>
@@ -159,7 +159,7 @@ const Employees = () => {
             }}
           >
             <option value={''} disabled selected={filters.role === ''} className={styles.option}>
-              {'Role'}
+              {'Rol'}
             </option>
             {checkboxData?.map((item) => (
               <option key={item.value} value={item.value} className={styles.option}>

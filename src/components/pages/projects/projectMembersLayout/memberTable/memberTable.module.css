@@ -48,6 +48,10 @@
   font-weight: 500;
 }
 
+.addMembers > button {
+  background-color: #4f987b;
+}
+
 .buttons > div {
   display: flex;
   gap: 10px;
