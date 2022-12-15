@@ -28,13 +28,13 @@ describe('Login page automated test', () => {
   describe('Admin login functionality with Google Account', () => {
     it('Testing the opening of new tab to access with new account', async () => {
       await LoginPage.googleButton.click();
-      await browser.pause(10000);
+      await browser.pause(2000);
       await browser.switchWindow('Acceso: Cuentas de Google');
       await expect(browser).toHaveTitle('Acceso: Cuentas de Google');
     });
     it('Testing Admin role login with valid credentials', async () => {
       await LoginPage.login(adminEmail, adminPassword);
-      await browser.pause(10000);
+      await browser.pause(3000);
       await browser.switchWindow('React App');
       await expect(browser).toHaveUrlContaining('admin');
     });

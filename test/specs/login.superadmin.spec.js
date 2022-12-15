@@ -13,12 +13,13 @@ describe('SuperAdmin login functionality with Google Account', () => {
   });
   it('Testing the opening of new tab to access with new account', async () => {
     await LoginPage.googleButton.click();
-    await browser.pause(5000);
+    await browser.pause(2000);
     await browser.switchWindow('Acceso: Cuentas de Google');
     await expect(browser).toHaveTitle('Acceso: Cuentas de Google');
   });
   it('Testing SuperAdmin role login with valid credentials', async () => {
     await LoginPage.login(superAdminEmail, superAdminPassword);
+    await browser.pause(3000);
     await browser.switchWindow('Radium Admin');
     await expect(browser).toHaveUrlContaining('super-admin');
   });

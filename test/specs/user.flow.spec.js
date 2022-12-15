@@ -13,7 +13,7 @@ describe('# User flow # log-in testing', () => {
   });
   it('Testing the opening of new tab to access with new account', async () => {
     await LoginPage.googleButton.click();
-    await browser.pause(5000);
+    await browser.pause(2000);
     await browser.switchWindow('Acceso: Cuentas de Google');
     await expect(browser).toHaveTitle('Acceso: Cuentas de Google');
   });
@@ -59,15 +59,72 @@ describe('# User flow # homepage elements display testing', () => {
   });
 });
 
-describe('# User flow # CRUD functionality', () => {
+describe('# User flow # CREATE USER functionality', () => {
   it('Testing opening of modal to add a new user', async () => {
     await UserPage.addUserButton.click();
+    await browser.pause(2000);
     await expect(UserPage.createUserCancelBtn).toBeDisplayed();
     await expect(UserPage.createUserConfirmBtn).toBeDisplayed();
   });
   it('Testing validation on adding a new user with empty fields', async () => {
-    await UserPage.addUserForm();
     await UserPage.createUserConfirmBtn.click();
+    await expect(UserPage.userEmailInputError).toHaveText('Este campo es requerido');
     await expect(UserPage.userNameInputError).toHaveText('Este campo es requerido');
+    await expect(UserPage.userLastNameInputError).toHaveText('Este campo es requerido');
+    await expect(UserPage.userLocationInputError).toHaveText('Este campo es requerido');
+    await expect(UserPage.userDateInputError).toHaveText('Este campo es requerido');
+  });
+  it('Testing validation on adding a new user with invalid data', async () => {
+    await UserPage.addUserForm('t3st@gmail.com', 'T3st', 'Super 4dmin', 'M0ntevideo.', '10102020');
+    await UserPage.createUserConfirmBtn.click();
+    await expect(UserPage.userEmailInputError).toHaveText('El formato del email no es válido');
+    await expect(UserPage.userNameInputError).toHaveText('El nombre debe contener solo letras');
+    await expect(UserPage.userLastNameInputError).toHaveText(
+      'El apellido debe contener solo letras',
+    );
+    await expect(UserPage.userLocationInputError).toHaveText(
+      'El formato de localidad no es válido',
+    );
+    await expect(UserPage.userDateInputError).toHaveText('El usuario debe ser mayor a 18 años');
+  });
+  it('Testing validation on adding a new user with incomplete data', async () => {
+    await UserPage.createUserCancelBtn.click();
+    await UserPage.addUserButton.click();
+    await UserPage.addUserForm('tet', 'Te', 'Su', 'Mo', '1111111111');
+    await UserPage.createUserConfirmBtn.click();
+    await expect(UserPage.userEmailInputError).toHaveText('El formato del email no es válido');
+    await expect(UserPage.userNameInputError).toHaveText(
+      'El nombre debe contener al menos 3 letras',
+    );
+    await expect(UserPage.userLastNameInputError).toHaveText(
+      'El apellido debe contener al menos 3 letras',
+    );
+    await expect(UserPage.userLocationInputError).toHaveText(
+      'El nombre de la localidad debe tener al menos 3 letras',
+    );
+    await expect(UserPage.userDateInputError).toHaveText('El formato de fecha debe ser dd/mm/aaaa');
+  });
+  it('Testing validation on adding a new user with valid data', async () => {
+    await UserPage.createUserCancelBtn.click();
+    await UserPage.addUserButton.click();
+    await UserPage.addUserForm(
+      'test.newuser@radiumrocket.com',
+      'Test',
+      'New User',
+      'San Luis',
+      '01012000',
+    );
+    await UserPage.createUserConfirmBtn.click();
+    await browser.pause(2000);
+    await expect(UserPage.snackBarMessage).toHaveText('Usuario creado con éxito');
   });
 });
+
+// describe('# User flow # EDIT ROLE functionality', () => {
+//   it('Testing opening of modal to add a new user', async () => {
+//     await UserPage.addUserButton.click();
+//     await browser.pause(2000);
+//     await expect(UserPage.createUserCancelBtn).toBeDisplayed();
+//     await expect(UserPage.createUserConfirmBtn).toBeDisplayed();
+//   });
+// });

@@ -18,7 +18,7 @@ class LoginPage extends Page {
     return $('#identifierNext');
   }
   get passwordInput() {
-    return $('[aria-label="Ingresa tu contraseña"]');
+    return $('input[name=password]');
   }
   get passwordNextBtn() {
     return $('#passwordNext');
@@ -38,6 +38,7 @@ class LoginPage extends Page {
   async login(email, password) {
     await this.setEmail(email);
     await this.emailNextBtn.click();
+    await browser.pause(2000);
     await this.setPassword(password);
     await this.passwordNextBtn.click();
   }
