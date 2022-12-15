@@ -43,6 +43,10 @@
   width: 100%;
 }
 
+.addUserButton > button {
+  background-color: #4f987b;
+}
+
 .inputsContainer {
   display: flex;
   flex-direction: column;
