@@ -28,7 +28,7 @@ export enum Role {
 
 export interface Member {
   _id: string;
-  helper: Helper[]; //TODO: Tipar esto
+  helper: Helper[];
   employee: string;
   project: string;
   role: Role;

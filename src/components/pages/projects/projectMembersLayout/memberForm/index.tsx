@@ -58,8 +58,6 @@ const MemberForm = (props: MemberFormProps) => {
     resolver: joiResolver(memberValidations),
   });
 
-  const currentHelper = memberData?.helper?.find((helper) => helper.isActive);
-
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
 
   useEffect(() => {
@@ -69,9 +67,12 @@ const MemberForm = (props: MemberFormProps) => {
         role: memberData.role,
         memberDedication: memberData.memberDedication,
         helper: {
-          helperReference: currentHelper?.helperReference,
-          dependency: currentHelper?.dependency,
-          dedication: currentHelper?.dedication,
+          helperReference:
+            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].helperReference : '',
+          dependency:
+            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dependency : 0,
+          dedication:
+            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dedication : 0,
           isActive: true,
         },
         startDate: memberData.startDate,
@@ -96,7 +97,7 @@ const MemberForm = (props: MemberFormProps) => {
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
 
-    if (currentHelper) {
+    if (currentHelperIndex !== undefined && currentHelperIndex !== -1) {
       memberData.helper[currentHelperIndex].isActive = false;
     }
     if (memberData && helper.helperReference) {

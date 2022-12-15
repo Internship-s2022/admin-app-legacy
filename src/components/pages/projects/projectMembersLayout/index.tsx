@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -34,14 +34,16 @@ const ProjectMembersLayout = () => {
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
-  const helperArray = matchedMember?.helper?.map((item, index) => {
-    return (
-      matchedMember.helper.length && {
-        ...matchedMember.helper[index],
-        helperReference: matchedMember.helper[index]?.helperReference?._id,
-      }
-    );
-  });
+  const helperArray = useMemo(() => {
+    return matchedMember?.helper?.map((item, index) => {
+      return (
+        matchedMember.helper.length && {
+          ...matchedMember.helper[index],
+          helperReference: matchedMember.helper[index]?.helperReference?._id,
+        }
+      );
+    });
+  }, [membersList, memberId]);
 
   const selectedProjectMemberList = membersList.filter(
     (member) => member?.project?._id === selectedProject?._id,
