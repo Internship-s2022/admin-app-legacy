@@ -58,7 +58,6 @@ const userReducer: Reducer<State<User>, ActionsType> = (
         isLoading: true,
       };
     case Actions.EDIT_USER_SUCCESS:
-      console.log('edit', action.payload);
       return {
         ...state,
         list: state.list.map((item) => {
