@@ -21,3 +21,7 @@
 .buttonContainer > button {
   background-color: #4f987b;
 }
+
+.buttonContainer > button:hover {
+  background-color: #478c71;
+}

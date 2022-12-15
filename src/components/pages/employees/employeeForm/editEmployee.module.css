@@ -200,6 +200,10 @@
   background-color: #4f987b;
 }
 
+.buttonAbsences > button:hover {
+  background-color: #478c71;
+}
+
 .buttonText {
   font-size: 0.8vw;
 }

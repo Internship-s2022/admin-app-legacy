@@ -155,7 +155,7 @@ const Clients = () => {
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
-        <div className={styles.addUserButton}>
+        <div className={styles.addClientButton}>
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
