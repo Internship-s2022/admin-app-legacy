@@ -71,6 +71,10 @@ const Home = () => {
   const [checked, setChecked] = React.useState(false);
   const [dataList, setDataList] = React.useState([]);
 
+  const indexNameUser = user.name.indexOf(' ');
+
+  const firstNameUser = user.name.substring(0, indexNameUser);
+
   const listNotifications = useMemo(() => {
     const mappedNotifications = notifications.reduce((acc, item) => {
       acc.push({
@@ -106,86 +110,92 @@ const Home = () => {
 
   return (
     <>
-      <section className={styles.container}>
-        <div className={styles.welcomeMessage}>
-          {user.name.length ? <p className={styles.welcomeMessage}>Bienvenido {user.name}</p> : ''}
-          <div className={styles.filterContainer}>
-            <div className={styles.checkboxInput}>
-              <div className={styles.filterButtons}>
-                {checked ? (
-                  <Button
-                    materialVariant={Variant.CONTAINED}
-                    onClick={() => {
-                      setFilters({ ...filters, newest: !filters.newest });
-                      setChecked(!checked);
-                    }}
-                    label={'Menos recientes'}
-                    testId={'oldest-button'}
-                    color={'warning'}
-                  />
-                ) : (
+      <div className={styles.containerPage}>
+        <section className={styles.container}>
+          <div className={styles.welcomeMessageContainer}>
+            {user.name.length ? (
+              <p className={styles.welcomeMessage}>¡Bienvenido {firstNameUser}!</p>
+            ) : (
+              ''
+            )}
+            <div className={styles.filterContainer}>
+              <div className={styles.checkboxInput}>
+                <div className={styles.filterButtons}>
+                  {checked ? (
+                    <Button
+                      materialVariant={Variant.CONTAINED}
+                      onClick={() => {
+                        setFilters({ ...filters, newest: !filters.newest });
+                        setChecked(!checked);
+                      }}
+                      label={'Menos recientes'}
+                      testId={'oldest-button'}
+                      color={'warning'}
+                    />
+                  ) : (
+                    <Button
+                      materialVariant={Variant.TEXT}
+                      onClick={() => {
+                        setFilters({ ...filters, newest: !filters.newest });
+                        setChecked(!checked);
+                      }}
+                      label={'Más recientes'}
+                      testId={'newest-button'}
+                    />
+                  )}
+                </div>
+                <select
+                  className={styles.filterDropdown}
+                  onChange={(e) => {
+                    setFilters({ ...filters, role: e.target.value });
+                  }}
+                >
+                  <option
+                    value={''}
+                    disabled
+                    selected={filters.role === ''}
+                    className={styles.option}
+                  >
+                    {'Entidad'}
+                  </option>
+                  {entities?.map((item) => (
+                    <option key={item.value} value={item.value} className={styles.option}>
+                      {item.label}
+                    </option>
+                  ))}
+                </select>
+                <div className={styles.filterButtons}>
                   <Button
                     materialVariant={Variant.TEXT}
                     onClick={() => {
-                      setFilters({ ...filters, newest: !filters.newest });
-                      setChecked(!checked);
+                      setFilters({ newest: true, role: '', search: '' });
+                      setChecked(false);
                     }}
-                    label={'Más recientes'}
-                    testId={'newest-button'}
+                    label={'Resetear filtros'}
+                    testId={'reset-filters'}
                   />
-                )}
-              </div>
-              <select
-                className={styles.filterDropdown}
-                onChange={(e) => {
-                  setFilters({ ...filters, role: e.target.value });
-                }}
-              >
-                <option
-                  value={''}
-                  disabled
-                  selected={filters.role === ''}
-                  className={styles.option}
-                >
-                  {'Entidad'}
-                </option>
-                {entities?.map((item) => (
-                  <option key={item.value} value={item.value} className={styles.option}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-              <div className={styles.filterButtons}>
-                <Button
-                  materialVariant={Variant.TEXT}
-                  onClick={() => {
-                    setFilters({ newest: true, role: '', search: '' });
-                    setChecked(false);
-                  }}
-                  label={'Resetear filtros'}
-                  testId={'reset-filters'}
-                />
+                </div>
               </div>
             </div>
           </div>
+          <div className={styles.todayDate}>{today.toString()}</div>
+        </section>
+        <div className={styles.cardContainer}>
+          {dataList?.map((item) => {
+            return (
+              <Card
+                key={item.id}
+                id={selectName(item).id}
+                name={selectName(item).name}
+                resource={item.resource}
+                criticality={item.projectCriticality}
+                members={item.members}
+                customMessage={item.customMessage}
+                isCustom={item.isCustom}
+              />
+            );
+          })}
         </div>
-        <div className={styles.todayDate}>{today.toString()}</div>
-      </section>
-      <div className={styles.cardContainer}>
-        {dataList?.map((item) => {
-          return (
-            <Card
-              key={item.id}
-              id={selectName(item).id}
-              name={selectName(item).name}
-              resource={item.resource}
-              criticality={item.projectCriticality}
-              members={item.members}
-              customMessage={item.customMessage}
-              isCustom={item.isCustom}
-            />
-          );
-        })}
       </div>
     </>
   );

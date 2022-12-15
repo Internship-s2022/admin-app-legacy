@@ -1,3 +1,10 @@
+.containerPage {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  width: 95%;
+}
+
 .container {
   display: flex;
   flex: 1;
@@ -14,22 +21,26 @@
   width: 100%;
 }
 
-.welcomeMessage {
+.welcomeMessageContainer {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin-left: 18px;
+  margin-left: 8px;
   font-size: 24px;
   font-weight: 500;
+}
+
+.welcomeMessage {
+  margin-left: 18px;
 }
 
 .todayDate {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 130px;
+  height: 95px;
   margin-top: 20px;
-  margin-right: 23px;
+  margin-right: 10px;
   font-size: 20px;
   font-weight: 500;
 }
