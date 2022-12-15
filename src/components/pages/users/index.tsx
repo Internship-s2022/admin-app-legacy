@@ -72,9 +72,9 @@ const Users = () => {
   const userList = useSelector((state: RootState) => state.user.list);
   const userError = useSelector((state: RootState) => state.user.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
-  const confirmationTitle = filters.isActive ? 'Desactivar Usuario' : 'Activar Usuario';
+  const confirmationTitle = filters.isActive ? 'Desactivar usuario' : 'Activar Usuario';
   const confirmationDescription = filters.isActive
-    ? `¿Desea dar de baja al usuario ${row.name}?`
+    ? `¿Desea desactivar al usuario ${row.name}?`
     : `¿Desea activar al usuario ${row.name}?`;
 
   const navigate = useNavigate();
