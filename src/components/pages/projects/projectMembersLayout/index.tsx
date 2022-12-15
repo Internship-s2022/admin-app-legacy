@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
+import { Resource } from 'src/components/shared/common/customNotificationForm/types';
 import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
@@ -109,7 +110,7 @@ const ProjectMembersLayout = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications />
+          <CustomNotifications resource={Resource.PROJECT} />
         </Modal>
       </div>
       <div>

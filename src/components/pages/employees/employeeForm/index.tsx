@@ -7,6 +7,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
 import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
+import { Resource } from 'src/components/shared/common/customNotificationForm/types';
 import {
   Button,
   ConfirmationMessage,
@@ -344,7 +345,7 @@ const EditEmployee = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications />
+          <CustomNotifications resource={Resource.EMPLOYEE} />
         </Modal>
       </div>
       <Modal

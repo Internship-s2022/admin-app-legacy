@@ -8,6 +8,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import styles from 'src/components/pages/clients/clientForm/clientsForm.module.css';
 import validations from 'src/components/pages/clients/validations';
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
+import { Resource } from 'src/components/shared/common/customNotificationForm/types';
 import {
   Button,
   ConfirmationMessage,
@@ -335,7 +336,7 @@ const ClientForm = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications />
+          <CustomNotifications resource={Resource.CLIENT} />
         </Modal>
       </div>
       <Modal

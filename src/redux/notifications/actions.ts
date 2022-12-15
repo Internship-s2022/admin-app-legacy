@@ -13,6 +13,14 @@ export const getNotificationsSuccess = (notifications: Notification[]) =>
 export const getNotificationsError = (error: ErrorFormat) =>
   action(Actions.GET_NOTIFICATIONS_ERROR, error);
 
+export const createNotificationPending = () => action(Actions.ADD_NOTIFICATION_PENDING);
+
+export const createNotificationSuccess = (notification: Notification) =>
+  action(Actions.ADD_NOTIFICATION_SUCCESS, notification);
+
+export const createNotificationError = (error: ErrorFormat) =>
+  action(Actions.ADD_NOTIFICATION_ERROR, error);
+
 export const deleteNotificationPending = () => action(Actions.DELETE_NOTIFICATION_PENDING);
 
 export const deleteNotificationSuccess = (id: string) =>
