@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Avatar, AvatarGroup } from '@mui/material';
 
-import { Member } from 'src/redux/project/types';
+import { Member } from 'src/components/pages/home/types';
+import { UiRoutes } from 'src/constants';
 
 import ClientCardIcon from '../icons/cardIcons/clientCardIcon';
 import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
@@ -12,9 +14,9 @@ import { CardProps } from './types';
 
 const defineIcon = (resourceType) => {
   switch (resourceType) {
-    case 'Empleados':
+    case 'EMPLOYEE':
       return { icon: <EmployeeCardIcon />, color: styles.employeeTabIcon };
-    case 'Clientes':
+    case 'CLIENT':
       return { icon: <ClientCardIcon />, color: styles.clientTabIcon };
     default:
       return { icon: <ProjectCardIcon />, color: styles.projectTabIcon };
@@ -35,24 +37,37 @@ const defineCriticality = (criticality) => {
 };
 
 const Card = (props: CardProps) => {
-  const { name, resource, members, notification, criticality, customMessage, isCustom } = props;
-  const isProject = !!(resource === 'Proyectos');
-  const isEmployee = !!(resource === 'Empleados');
+  const { name, resource, members, notification, criticality, customMessage, isCustom, id } = props;
+  const isProject = !!(resource === 'PROJECT');
+  const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
+  const navigate = useNavigate();
+
+  const [checked, setChecked] = React.useState(false);
+
+  const redirectClick = (data) => {
+    if (isProject) {
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${data}`);
+    } else if (isEmployee) {
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${data}`);
+    } else {
+      navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${data}`);
+    }
+  };
 
   return (
     <div data-testid={'card-component'}>
       <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
-      <div className={styles.cardContainer}>
-        <div className={styles.cardContent}>
+      <div className={`${styles.cardContainer} ${styles.card}`}>
+        <div className={styles.cardContent} onClick={() => redirectClick(id)}>
           <div className={styles.title}>
             <div className={styles.nameContainer}>
               {isEmployee && <Avatar className={styles.avatars} />}
-              <span>{name}</span>
+              <span key={id}>{name}</span>
             </div>
-            <span>{resource.toUpperCase()}</span>
+            <span>{resource?.toUpperCase()}</span>
           </div>
           {isProject && (
             <div className={styles.projectInfo}>
@@ -60,7 +75,7 @@ const Card = (props: CardProps) => {
                 <div className={styles.membersContainer}>
                   <div className={styles.avatarsContainer}>
                     <AvatarGroup className={styles.avatars}>
-                      {members?.map((member: Member) => {
+                      {members.map((member: Member) => {
                         return <Avatar key={member._id} />;
                       })}
                     </AvatarGroup>
@@ -68,7 +83,7 @@ const Card = (props: CardProps) => {
                   {!!members?.length && <p>{members?.length} involucrados</p>}
                 </div>
                 <div className={`${styles.criticality} ${criticalityColor}`}>
-                  {criticality.toLowerCase()}
+                  {criticality?.toUpperCase()}
                 </div>
               </>
             </div>
@@ -77,8 +92,8 @@ const Card = (props: CardProps) => {
         </div>
         <div className={styles.notification}>
           <p>{shownNotification}</p>
-          <div className={styles.tickIcon}>
-            <TickIcon />
+          <div className={styles.tickIcon} onClick={() => setChecked(!checked)}>
+            <TickIcon checked={checked} />
           </div>
         </div>
       </div>

@@ -1,10 +1,10 @@
+import { Member } from 'src/components/pages/home/types';
 import { Criticality } from 'src/components/pages/projects/types';
-import { Member } from 'src/redux/project/types';
-import { Resources } from 'src/types';
 
 export interface CardProps {
+  id: string;
   name: string;
-  resource: Resources;
+  resource: string;
   members?: Member[];
   notification?: string;
   criticality?: Criticality;

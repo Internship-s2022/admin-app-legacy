@@ -39,6 +39,7 @@
   justify-content: space-between;
   width: 302px;
   height: 203px;
+  margin-bottom: 25px;
   color: #7b809a;
   border-radius: 12px;
   box-shadow: 0 2px 13px 5px #0000001c;
@@ -94,7 +95,10 @@
 }
 
 .tickIcon {
+  display: flex;
+  align-self: center;
   padding: 15px;
+  cursor: pointer;
 }
 
 .nameContainer {
@@ -139,4 +143,14 @@
   text-align: center;
   background: #f2f2f2;
   border-radius: 5px;
+}
+
+.name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 13px 5px #0000006c;
 }
