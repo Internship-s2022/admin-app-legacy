@@ -33,6 +33,24 @@ const notificationReducer: Reducer<NotificationState, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.ADD_NOTIFICATION_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.ADD_NOTIFICATION_SUCCESS:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isLoading: false,
+        error: undefined,
+      };
+    case Actions.ADD_NOTIFICATION_ERROR:
+      return {
+        ...state,
+        error: { ...action.payload },
+        isLoading: false,
+      };
     case Actions.DELETE_NOTIFICATION_PENDING:
       return {
         ...state,

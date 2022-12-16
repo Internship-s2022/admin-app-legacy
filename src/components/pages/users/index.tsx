@@ -206,7 +206,7 @@ const Users = () => {
               materialVariant={Variant.CONTAINED}
               onClick={() => dispatch(openFormModal())}
               label={'+ Agregar un nuevo usuario'}
-              testId={'addUserButton'}
+              testId={'add-user-button'}
             />
           </div>
         </div>
@@ -220,7 +220,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
                 color={'warning'}
               />
             </div>
@@ -233,7 +233,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
               />
             </div>
           )}
@@ -260,7 +260,7 @@ const Users = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-              testId={'resetFilter'}
+              testId={'reset-filter'}
             />
           </div>
         </div>
@@ -268,7 +268,7 @@ const Users = () => {
           {dataList?.length ? (
             <Table<UserData>
               showButtons
-              testId={'userTable'}
+              testId={'user-table'}
               headers={userHeaders}
               value={dataList}
               buttons={buttonsArray}
@@ -317,7 +317,7 @@ const Users = () => {
         </Modal>
       )}
       <Modal
-        testId="deleteUserModal"
+        testId="delete-user-modal"
         styles={styles.modal}
         isOpen={showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
