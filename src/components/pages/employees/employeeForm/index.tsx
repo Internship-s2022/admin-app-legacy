@@ -35,7 +35,7 @@ import {
 import { AppDispatch } from 'src/types';
 
 import AbsencesModal from './absencesModal';
-import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
+import { arraySkills, checkboxData, seniority } from './constants';
 import styles from './editEmployee.module.css';
 import TableProject from './tableProject';
 import employeeValidations from './validations';
@@ -345,7 +345,7 @@ const EditEmployee = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications resource={Resource.EMPLOYEE} />
+          <CustomNotifications resource={Resource.EMPLOYEE} id={params.id} />
         </Modal>
       </div>
       <Modal

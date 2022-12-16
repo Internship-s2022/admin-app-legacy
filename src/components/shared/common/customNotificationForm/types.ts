@@ -5,6 +5,7 @@ export type FormValues = {
 
 export interface customNotificationProps {
   resource: Resource;
+  id: string;
 }
 
 export enum Resource {

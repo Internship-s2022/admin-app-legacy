@@ -336,13 +336,13 @@ const ClientForm = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications resource={Resource.CLIENT} />
+          <CustomNotifications resource={Resource.CLIENT} id={id} />
         </Modal>
       </div>
       <Modal
         testId="editClientModal"
         styles={styles.modal}
-        isOpen={showConfirmModal}
+        isOpen={!showNotificationModal && showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage

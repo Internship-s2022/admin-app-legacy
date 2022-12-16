@@ -110,13 +110,13 @@ const ProjectMembersLayout = () => {
           isOpen={showNotificationModal}
           onClose={() => dispatch(closeFormModal())}
         >
-          <CustomNotifications resource={Resource.PROJECT} />
+          <CustomNotifications resource={Resource.PROJECT} id={id} />
         </Modal>
       </div>
       <div>
         <Modal
           testId={'User-access-modal'}
-          isOpen={showModal}
+          isOpen={!showNotificationModal && showModal}
           onClose={() => dispatch(closeModal())}
         >
           <MemberForm projectId={id} memberData={formattedMatchedMember} />
