@@ -18,10 +18,10 @@ class LoginPage extends Page {
     return $('#identifierNext');
   }
   get passwordInput() {
-    return $('#password > div.aCsJod.oJeWuf > div > div.Xb9hP > input');
+    return $('input[name=password]');
   }
   get passwordNextBtn() {
-    return $('#passwordNext'); // SELECTOR CSS
+    return $('#passwordNext');
   }
   /**
    * SETTERS
@@ -38,6 +38,7 @@ class LoginPage extends Page {
   async login(email, password) {
     await this.setEmail(email);
     await this.emailNextBtn.click();
+    await browser.pause(2000);
     await this.setPassword(password);
     await this.passwordNextBtn.click();
   }

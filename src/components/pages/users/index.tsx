@@ -148,7 +148,7 @@ const Users = () => {
         {
           active: true,
           label: 'editar',
-          testId: 'editButton',
+          testId: 'edit-button',
           variant: Variant.CONTAINED,
           onClick: (data) => {
             handleEdit(data);
@@ -157,7 +157,7 @@ const Users = () => {
         {
           active: true,
           label: 'X',
-          testId: 'deleteButton',
+          testId: 'delete-button',
           variant: Variant.CONTAINED,
           onClick: (data) => {
             dispatch(openConfirmationModal());
@@ -191,8 +191,12 @@ const Users = () => {
     <>
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-          <p>Esta es la lista de usuarios. Puedes asignarles el acceso que desees</p>
+          <Typography data-testid="user-welcome-title" variant="h1">
+            ¡Bienvenido {superAdmin.name}!
+          </Typography>
+          <p data-testid="user-subtitle">
+            ¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!
+          </p>
         </div>
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>
@@ -220,7 +224,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactive-button'}
+                testId={'inactive-filter-button'}
                 color={'warning'}
               />
             </div>
@@ -233,12 +237,13 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactive-button'}
+                testId={'inactive-filter-button'}
               />
             </div>
           )}
           <select
             className={styles.filterDropdown}
+            data-testid="role-dropdown"
             onChange={(e) => {
               setFilters({ ...filters, role: formattedRoleType[e.target.value] });
             }}
@@ -247,7 +252,12 @@ const Users = () => {
               {'Rol de acceso'}
             </option>
             {accessRoles.map((item) => (
-              <option key={item.value} value={item.value} className={styles.option}>
+              <option
+                data-testid={item.label}
+                key={item.value}
+                value={item.value}
+                className={styles.option}
+              >
                 {item.label}
               </option>
             ))}
@@ -260,7 +270,7 @@ const Users = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-              testId={'reset-filter'}
+              testId={'reset-filter-button'}
             />
           </div>
         </div>
@@ -309,7 +319,7 @@ const Users = () => {
       />
       {!showErrorMessage && (
         <Modal
-          testId={'User-access-modal'}
+          testId={'user-access-modal'}
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
@@ -327,6 +337,8 @@ const Users = () => {
           title={confirmationTitle}
           handleConfirm={() => (filters.isActive ? handleDelete(row) : handleActivate(options))}
           handleClose={() => dispatch(closeConfirmationModal())}
+          testIdDescription="delete-modal-desc"
+          testIdTitle="delete-modal-title"
         />
       </Modal>
     </>

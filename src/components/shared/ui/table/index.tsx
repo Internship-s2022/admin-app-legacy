@@ -47,7 +47,11 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
             {profileIcon && <TableCell align="center"></TableCell>}
             {headers.map((row) => (
               <TableCell align="center" key={row.key}>
-                <TableSortLabel onClick={() => sorting(row.key)} direction={order.dir}>
+                <TableSortLabel
+                  data-testid={row.header}
+                  onClick={() => sorting(row.key)}
+                  direction={order.dir}
+                >
                   {row.header}
                 </TableSortLabel>
               </TableCell>
