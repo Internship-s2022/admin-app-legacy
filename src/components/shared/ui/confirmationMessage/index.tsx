@@ -6,12 +6,12 @@ import styles from './confirmationMessage.module.css';
 import { ConfirmationMessageProps } from './types';
 
 const ConfirmationMessage = (props: ConfirmationMessageProps) => {
-  const { title, handleConfirm, handleClose, description } = props;
+  const { title, handleConfirm, handleClose, description, testIdDescription, testIdTitle } = props;
   return (
     <div className={styles.container}>
-      <span>{title}</span>
+      <span data-testid={testIdTitle}>{title}</span>
       <div>
-        <p>{description}</p>
+        <p data-testid={testIdDescription}>{description}</p>
       </div>
       <div className={styles.buttonsContainer}>
         <div className={styles.cancelBtn}>

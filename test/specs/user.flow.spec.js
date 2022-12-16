@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import LoginPage from '../page-objects/login.page';
 import UserPage from '../page-objects/superAdmin/user.page';
+import HeaderPage from '../page-objects/header.page';
 import * as dotenv from 'dotenv';
 import { userEmail } from '../utils/helper';
 dotenv.config();
@@ -131,5 +132,60 @@ describe('# User flow # EDIT ROLE functionality', () => {
     await UserPage.confirmAccessRoleBtn.click();
     await browser.pause(1000);
     await expect(UserPage.snackBarMessage).toHaveText('Usuario editado con éxito.');
+    await UserPage.editUserBtn.click();
+    await UserPage.adminAccessRoleBtn.click();
+    await UserPage.confirmAccessRoleBtn.click();
   });
 });
+
+describe('# User flow # LOGICAL DELETE functionality', () => {
+  it('Testing opening of modal to disable an user', async () => {
+    await UserPage.deleteUserBtn.click();
+    await browser.pause(1000);
+    await expect(UserPage.deleteUserModalTitle).toBeDisplayed();
+    await expect(UserPage.deleteUserModalDescription).toBeDisplayed();
+    await expect(UserPage.deleteUserModalCancelBtn).toBeDisplayed();
+    await expect(UserPage.deleteUserModalConfirmBtn).toBeDisplayed();
+  });
+  it('Testing elements on modal', async () => {
+    await expect(UserPage.deleteUserModalTitle).toHaveText('Eliminar Usuario');
+    await expect(UserPage.deleteUserModalDescription).toHaveTextContaining(
+      '¿Desea eliminar al usuario Samuel Trillo?',
+    );
+    await expect(UserPage.deleteUserModalCancelBtn).toBeClickable();
+    await expect(UserPage.deleteUserModalConfirmBtn).toBeClickable();
+  });
+  it('Testing deleting an user', async () => {
+    await UserPage.deleteUserModalConfirmBtn.click();
+    await expect(UserPage.snackBarMessage).toHaveText('Usuario eliminado con éxito.');
+  });
+  it('Testing SuperAdmin role logout', async () => {
+    await HeaderPage.logoutBtn.click();
+    await HeaderPage.logoutModalConfirmationBtn.click();
+    await expect(browser).toHaveUrlContaining('login');
+  });
+});
+
+//
+// describe('# User flow # SearchBar and filters functionalities', () => {
+//   it('Testing display of searchbar & filter buttons', async () => {
+//     await UserPage.deleteUserBtn.click();
+//     await browser.pause(1000);
+//     await expect(UserPage.deleteUserModalTitle).toBeDisplayed();
+//     await expect(UserPage.deleteUserModalDescription).toBeDisplayed();
+//     await expect(UserPage.deleteUserModalCancelBtn).toBeDisplayed();
+//     await expect(UserPage.deleteUserModalConfirmBtn).toBeDisplayed();
+//   });
+//   it('Testing elements on modal', async () => {
+//     await expect(UserPage.deleteUserModalTitle).toHaveText('Eliminar Usuario');
+//     await expect(UserPage.deleteUserModalDescription).toHaveTextContent(
+//       '¿Desea eliminar al usuario?',
+//     );
+//     await expect(UserPage.deleteUserModalCancelBtn).toBeClickable();
+//     await expect(UserPage.deleteUserModalConfirmBtn).toBeClickable();
+//   });
+//   it('Testing deleting an user', async () => {
+//     await UserPage.deleteUserModalConfirmBtn.click();
+//     await expect(UserPage.snackBarMessage).toHaveText('Usuario eliminado con éxito.');
+//   });
+// });

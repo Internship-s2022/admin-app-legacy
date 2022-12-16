@@ -3,4 +3,6 @@ export interface ConfirmationMessageProps {
   handleConfirm: (data?: any) => void;
   handleClose: () => void;
   description: string;
+  testIdTitle?: string;
+  testIdDescription?: string;
 }

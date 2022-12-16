@@ -349,6 +349,8 @@ const Users = () => {
           title={confirmationTitle}
           handleConfirm={() => (filters.isActive ? handleDelete(row) : handleActivate(options))}
           handleClose={() => dispatch(closeConfirmationModal())}
+          testIdDescription="delete-modal-desc"
+          testIdTitle="delete-modal-title"
         />
       </Modal>
     </>

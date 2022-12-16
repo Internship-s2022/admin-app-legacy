@@ -76,7 +76,7 @@ class UserPage {
   get userDateInputError() {
     return $('[data-testid="date-input"] p');
   }
-  // Edit role to user modal
+  // Edit user role modal
   get managerAccessRoleBtn() {
     return $('[data-testid="accessManagerBtn"]');
   }
@@ -91,6 +91,19 @@ class UserPage {
   }
   get cancelAccessRoleBtn() {
     return $('[data-testid="cancelAccessRoleBtn"]');
+  }
+  // Delete logically an user modal
+  get deleteUserModalTitle() {
+    return $('[data-testid="delete-modal-title"]');
+  }
+  get deleteUserModalDescription() {
+    return $('[data-testid="delete-modal-desc"]');
+  }
+  get deleteUserModalConfirmBtn() {
+    return $('[data-testid="confirmBtn"]');
+  }
+  get deleteUserModalCancelBtn() {
+    return $('[data-testid="cancelBtn"]');
   }
   // SETTERS
   async setUserEmail(userEmail) {
