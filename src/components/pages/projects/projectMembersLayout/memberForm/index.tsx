@@ -24,21 +24,13 @@ import { FormValues, MemberFormProps, Role } from './types';
 import { memberValidations } from './validations';
 
 const MemberForm = (props: MemberFormProps) => {
-  const { projectId, memberData } = props;
+  const { projectId, memberData, dropdownData } = props;
 
-  const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
-
-  const employeeDropdownList = employeeList.reduce((acc, item) => {
-    if (item?.user?.isActive) {
-      acc.push({ value: item._id, label: `${item.user.firstName} ${item.user.lastName}` });
-    }
-    return acc;
-  }, []);
 
   const { handleSubmit, control, reset, watch, setValue } = useForm<FormValues>({
     defaultValues: {
@@ -56,6 +48,10 @@ const MemberForm = (props: MemberFormProps) => {
     },
     mode: 'onBlur',
     resolver: joiResolver(memberValidations),
+  });
+
+  const employeeDropdownList = dropdownData.map((employee) => {
+    return { value: employee._id, label: `${employee.user.firstName} ${employee.user.lastName}` };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);

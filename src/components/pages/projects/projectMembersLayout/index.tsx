@@ -29,6 +29,7 @@ const ProjectMembersLayout = () => {
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
+  const employeeList = useSelector((state: RootState) => state.employee.list);
 
   const [memberId, setMemberId] = React.useState({} as any);
 
@@ -65,6 +66,16 @@ const ProjectMembersLayout = () => {
   const handleAdd = () => {
     setMemberId('');
     dispatch(openModal());
+  };
+
+  const employeeDropdownList = () => {
+    const activeEmployees = employeeList.filter((employee) => employee?.user?.isActive);
+    return matchedMember
+      ? activeEmployees
+      : activeEmployees.reduce((acc, item) => {
+          !activeMembersList.some((member) => member.employee._id === item._id) && acc.push(item);
+          return acc;
+        }, []);
   };
 
   return (
@@ -117,7 +128,11 @@ const ProjectMembersLayout = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <MemberForm projectId={id} memberData={formattedMatchedMember} />
+          <MemberForm
+            projectId={id}
+            memberData={formattedMatchedMember}
+            dropdownData={employeeDropdownList()}
+          />
         </Modal>
       </div>
     </div>

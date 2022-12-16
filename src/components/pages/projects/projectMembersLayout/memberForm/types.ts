@@ -1,3 +1,6 @@
+import { DropdownProps } from 'src/components/shared/ui/inputs/dropdown/types';
+import { Employee } from 'src/redux/employee/types';
+
 export interface Helper {
   _id: string;
   helperReference: string;
@@ -38,8 +41,14 @@ export interface Member {
   active: boolean;
 }
 
+interface DropdownData {
+  value: string;
+  label: string;
+}
+
 export interface MemberFormProps {
   projectId: string;
   memberData?: Member;
+  dropdownData?: Employee[];
   setMemberId?: React.Dispatch<React.SetStateAction<any>>;
 }
