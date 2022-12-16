@@ -166,26 +166,25 @@ describe('# User flow # LOGICAL DELETE functionality', () => {
   });
 });
 
-//
-// describe('# User flow # SearchBar and filters functionalities', () => {
-//   it('Testing display of searchbar & filter buttons', async () => {
-//     await UserPage.deleteUserBtn.click();
-//     await browser.pause(1000);
-//     await expect(UserPage.deleteUserModalTitle).toBeDisplayed();
-//     await expect(UserPage.deleteUserModalDescription).toBeDisplayed();
-//     await expect(UserPage.deleteUserModalCancelBtn).toBeDisplayed();
-//     await expect(UserPage.deleteUserModalConfirmBtn).toBeDisplayed();
-//   });
-//   it('Testing elements on modal', async () => {
-//     await expect(UserPage.deleteUserModalTitle).toHaveText('Eliminar Usuario');
-//     await expect(UserPage.deleteUserModalDescription).toHaveTextContent(
-//       '¿Desea eliminar al usuario?',
-//     );
-//     await expect(UserPage.deleteUserModalCancelBtn).toBeClickable();
-//     await expect(UserPage.deleteUserModalConfirmBtn).toBeClickable();
-//   });
-//   it('Testing deleting an user', async () => {
-//     await UserPage.deleteUserModalConfirmBtn.click();
-//     await expect(UserPage.snackBarMessage).toHaveText('Usuario eliminado con éxito.');
-//   });
-// });
+describe('# User flow # SearchBar and filters functionalities', () => {
+  it('Testing display of searchbar & filter buttons', async () => {
+    await UserPage.deleteUserBtn.click();
+    await browser.pause(1000);
+    await expect(UserPage.deleteUserModalTitle).toBeDisplayed();
+    await expect(UserPage.deleteUserModalDescription).toBeDisplayed();
+    await expect(UserPage.deleteUserModalCancelBtn).toBeDisplayed();
+    await expect(UserPage.deleteUserModalConfirmBtn).toBeDisplayed();
+  });
+  it('Testing elements on modal', async () => {
+    await expect(UserPage.deleteUserModalTitle).toHaveText('Eliminar Usuario');
+    await expect(UserPage.deleteUserModalDescription).toHaveTextContent(
+      '¿Desea eliminar al usuario?',
+    );
+    await expect(UserPage.deleteUserModalCancelBtn).toBeClickable();
+    await expect(UserPage.deleteUserModalConfirmBtn).toBeClickable();
+  });
+  it('Testing deleting an user', async () => {
+    await UserPage.deleteUserModalConfirmBtn.click();
+    await expect(UserPage.snackBarMessage).toHaveText('Usuario eliminado con éxito.');
+  });
+});
