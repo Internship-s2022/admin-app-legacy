@@ -13,6 +13,17 @@ import styles from './customNotifications.module.css';
 import { customNotificationProps, FormValues } from './types';
 import customNotificationsValidations from './validations';
 
+const newBody = (resource, id, body) => {
+  switch (resource) {
+    case 'PROJECT':
+      return { ...body, project: id };
+    case 'EMPLOYEE':
+      return { ...body, employee: id };
+    case 'CLIENT':
+      return { ...body, client: id };
+  }
+};
+
 const CustomNotifications = (props: customNotificationProps) => {
   const dispatch: AppDispatch<null> = useAppDispatch();
 
@@ -34,17 +45,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       isActive: true,
       isCustom: true,
     };
-    const newBody = () => {
-      switch (resource) {
-        case 'PROJECT':
-          return { ...body, project: id };
-        case 'EMPLOYEE':
-          return { ...body, employee: id };
-        case 'CLIENT':
-          return { ...body, client: id };
-      }
-    };
-    dispatch(createNotification(newBody()));
+    dispatch(createNotification(newBody(resource, id, body)));
     dispatch(closeFormModal());
   };
 
