@@ -16,7 +16,7 @@ export interface Helper {
 
 export interface Member {
   _id: string;
-  helper: Helper;
+  helper: Helper[];
   employee: Employee;
   project: Project;
   role: Role;

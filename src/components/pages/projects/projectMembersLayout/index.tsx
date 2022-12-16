@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
@@ -29,10 +29,22 @@ const ProjectMembersLayout = () => {
   const showModal = useSelector((state: RootState) => state.ui.showModal);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
+  const employeeList = useSelector((state: RootState) => state.employee.list);
 
   const [memberId, setMemberId] = React.useState({} as any);
 
   const matchedMember = membersList.find((member) => memberId === member._id);
+
+  const helperArray = useMemo(() => {
+    return matchedMember?.helper?.map((item, index) => {
+      return (
+        matchedMember.helper.length && {
+          ...matchedMember.helper[index],
+          helperReference: matchedMember.helper[index]?.helperReference?._id,
+        }
+      );
+    });
+  }, [membersList, memberId]);
 
   const selectedProjectMemberList = membersList.filter(
     (member) => member?.project?._id === selectedProject?._id,
@@ -41,19 +53,29 @@ const ProjectMembersLayout = () => {
   const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
 
   useEffect(() => {
-    dispatch(getMembers({ project: selectedProject?._id }));
-  }, [matchedMember?.helper.helperReference, membersList.length]);
+    selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
+  }, [selectedProject?._id]);
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
     employee: matchedMember.employee._id,
-    helper: matchedMember.helper[0]
-      ? {
-          ...matchedMember.helper[0],
-          helperReference: matchedMember.helper[0]?.helperReference?._id,
-        }
-      : '',
+    helper: helperArray,
     project: matchedMember.project._id,
+  };
+
+  const handleAdd = () => {
+    setMemberId('');
+    dispatch(openModal());
+  };
+
+  const employeeDropdownList = () => {
+    const activeEmployees = employeeList.filter((employee) => employee?.user?.isActive);
+    return matchedMember
+      ? activeEmployees
+      : activeEmployees.reduce((acc, item) => {
+          !activeMembersList.some((member) => member.employee._id === item._id) && acc.push(item);
+          return acc;
+        }, []);
   };
 
   return (
@@ -84,7 +106,7 @@ const ProjectMembersLayout = () => {
                 <Button
                   testId="addMember"
                   materialVariant={Variant.OUTLINED}
-                  onClick={() => dispatch(openModal())}
+                  onClick={() => handleAdd()}
                   label="+ Agregar Miembro"
                 />
               </div>
@@ -106,7 +128,11 @@ const ProjectMembersLayout = () => {
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
-          <MemberForm projectId={id} memberData={formattedMatchedMember} />
+          <MemberForm
+            projectId={id}
+            memberData={formattedMatchedMember}
+            dropdownData={employeeDropdownList()}
+          />
         </Modal>
       </div>
     </div>

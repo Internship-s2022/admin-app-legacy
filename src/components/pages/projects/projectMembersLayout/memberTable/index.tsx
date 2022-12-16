@@ -23,14 +23,15 @@ const MemberTable = (props: MemberTableProps) => {
   const filteredList = list.filter((item) => item?.active);
 
   const newList = filteredList.map((item) => {
+    const currentHelper = item.helper?.find((helper) => helper.isActive);
     return {
       id: item._id,
       employee: `${item?.employee?.user?.firstName} ${item?.employee?.user?.lastName}` || '-',
       role: item?.role || '-',
       dedication: item?.memberDedication || '-',
-      helper: item.helper[0]
-        ? `${item?.helper[0]?.helperReference?.user?.firstName} ${item?.helper[0]?.helperReference?.user?.lastName}`
-        : '-', //TODO: PONER PARA QUE SE VEA EL ULTIMO HELPER AGREGADO
+      helper: currentHelper
+        ? `${currentHelper.helperReference?.user?.firstName} ${currentHelper.helperReference?.user?.lastName}`
+        : '-',
       date: dateFormatter(item?.startDate, item?.endDate),
     };
   });
