@@ -168,7 +168,7 @@ const Projects = () => {
   ) : (
     <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
-        <Typography variant="h1">Lista de proyectos</Typography>
+        <Typography variant="h1">Proyectos</Typography>
       </div>
       <div className={styles.searchBar}>
         <div className={styles.searchInput}>
@@ -177,7 +177,7 @@ const Projects = () => {
             filter={filters.search}
           />
         </div>
-        <div className={styles.addUserButton}>
+        <div className={styles.addProjectButton}>
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}

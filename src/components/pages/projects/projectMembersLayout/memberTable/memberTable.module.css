@@ -38,6 +38,12 @@
   border-bottom: #d4d4df 2px solid;
 }
 
+.buttons > button {
+  min-width: 30px;
+  min-height: 15px;
+  padding: 4px;
+}
+
 .addMembers {
   display: flex;
   align-items: center;
@@ -48,14 +54,16 @@
   font-weight: 500;
 }
 
+.addMembers > button {
+  background-color: #4f987b;
+}
+
+.addMembers > button:hover {
+  background-color: #478c71;
+}
+
 .buttons > div {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-}
-
-.buttons > button {
-  min-width: 30px;
-  min-height: 15px;
-  padding: 4px;
 }

@@ -105,8 +105,8 @@ const ProjectMembersLayout = () => {
               <div className={styles.addMemberButton}>
                 <Button
                   testId="addMember"
-                  materialVariant={Variant.OUTLINED}
-                  onClick={() => handleAdd()}
+                  materialVariant={Variant.CONTAINED}
+                  onClick={() => dispatch(openModal())}
                   label="+ Agregar Miembro"
                 />
               </div>

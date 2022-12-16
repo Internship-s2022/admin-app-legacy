@@ -192,7 +192,7 @@ const Users = () => {
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
           <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
+          <p>Esta es la lista de usuarios. Puedes asignarles el acceso que desees</p>
         </div>
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>

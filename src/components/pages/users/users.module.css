@@ -37,10 +37,54 @@
   width: 100%;
 }
 
+.filterButtons > button {
+  padding: 2px 8px;
+}
+
+.filterButtonsPressed > button {
+  padding: 2px 8px;
+}
+
+.filterButtons {
+  border-radius: 4px;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    0 1px 5px rgb(0 0 0 / 12%);
+}
+
+.filterButtonsPressed {
+  border-radius: 4px;
+}
+
+.filterDropdown {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #373867;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
+    0 1px 5px rgb(0 0 0 / 12%);
+}
+
+.filterDropdown:focus-visible {
+  outline: none;
+}
+
 .addUserButton {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+}
+
+.addUserButton > button {
+  background-color: #4f987b;
+}
+
+.addUserButton > button:hover {
+  background-color: #478c71;
 }
 
 .inputsContainer {
@@ -121,42 +165,6 @@ input:focus {
   align-items: center;
   width: 100%;
   margin-bottom: 10px;
-}
-
-.filterButtons > button {
-  padding: 2px 8px;
-}
-
-.filterButtonsPressed > button {
-  padding: 2px 8px;
-}
-
-.filterButtons {
-  border-radius: 4px;
-  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
-    0 1px 5px rgb(0 0 0 / 12%);
-}
-
-.filterButtonsPressed {
-  border-radius: 4px;
-}
-
-.filterDropdown {
-  display: flex;
-  align-items: center;
-  height: 28px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #373867;
-  background-color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px rgb(0 0 0 / 14%),
-    0 1px 5px rgb(0 0 0 / 12%);
-}
-
-.filterDropdown:focus-visible {
-  outline: none;
 }
 
 .option {
