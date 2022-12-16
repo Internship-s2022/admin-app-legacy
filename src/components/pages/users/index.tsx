@@ -224,11 +224,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-<<<<<<< HEAD
-                testId={'inactive-button'}
-=======
                 testId={'inactive-filter-button'}
->>>>>>> 7c83141 (RA-180: Data test id prop added on some elements)
                 color={'warning'}
               />
             </div>
@@ -241,11 +237,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-<<<<<<< HEAD
-                testId={'inactive-button'}
-=======
                 testId={'inactive-filter-button'}
->>>>>>> 7c83141 (RA-180: Data test id prop added on some elements)
               />
             </div>
           )}
@@ -278,11 +270,7 @@ const Users = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-<<<<<<< HEAD
-              testId={'reset-filter'}
-=======
               testId={'reset-filter-button'}
->>>>>>> 7c83141 (RA-180: Data test id prop added on some elements)
             />
           </div>
         </div>
