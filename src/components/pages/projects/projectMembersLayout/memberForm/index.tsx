@@ -26,6 +26,8 @@ import { memberValidations } from './validations';
 
 const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
+
+  const employeeList = useSelector((state: RootState) => state.employee.list);
   const memberError = useSelector((state: RootState) => state.member.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
@@ -89,10 +91,17 @@ const MemberForm = (props: MemberFormProps) => {
   const selectedMember = watch('employee');
 
   const filterDropdownList = () => {
-    const helperDropdownList = employeeDropdownList.filter(
-      (employee) => employee.value !== selectedMember.value,
-    );
-    helperDropdownList.unshift({ value: undefined, label: 'Sin ayudante' });
+    const helperDropdownList = employeeList.reduce((acc, employee) => {
+      if (employee._id !== selectedMember.value && employee?.user?.isActive) {
+        acc.push({
+          value: employee._id,
+          label: `${employee.user.firstName} ${employee.user.lastName}`,
+        });
+      }
+      return acc;
+    }, []);
+
+    helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
     return helperDropdownList;
   };
 
