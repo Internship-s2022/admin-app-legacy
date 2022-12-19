@@ -1,7 +1,8 @@
-export { default as AutocompleteInput } from './autocomplete';
 export { default as Button } from './buttons/button';
 export { default as ToggleButton } from './buttons/toggle-button';
 export { default as ConfirmationMessage } from './confirmationMessage';
+export { default as AutocompleteChip } from './inputs/autocompleteChip';
+export { default as AutocompleteInput } from './inputs/autocompleteInput';
 export { default as Checkbox } from './inputs/checkbox';
 export { default as DatePicker } from './inputs/date-picker';
 export { default as DatePickerInterval } from './inputs/date-picker-interval';

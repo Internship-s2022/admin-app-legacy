@@ -44,7 +44,10 @@ const ProjectMembersLayout = () => {
       return (
         matchedMember.helper.length && {
           ...matchedMember.helper[index],
-          helperReference: matchedMember.helper[index]?.helperReference?._id,
+          helperReference: {
+            value: matchedMember.helper[index]?.helperReference?._id,
+            label: `${matchedMember.helper[index]?.helperReference.user.firstName} ${matchedMember.helper[index]?.helperReference.user.lastName}`,
+          },
         }
       );
     });
@@ -62,14 +65,12 @@ const ProjectMembersLayout = () => {
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
-    employee: matchedMember.employee._id,
+    employee: {
+      value: matchedMember.employee._id,
+      label: `${matchedMember.employee.user.firstName} ${matchedMember.employee.user.lastName}`,
+    },
     helper: helperArray,
     project: matchedMember.project._id,
-  };
-
-  const handleAdd = () => {
-    setMemberId('');
-    dispatch(openModal());
   };
 
   const employeeDropdownList = () => {

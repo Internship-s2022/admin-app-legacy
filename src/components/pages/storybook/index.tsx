@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import {
-  AutocompleteInput,
   Button,
   DatePicker,
   Dropdown,
@@ -161,9 +160,6 @@ const StoryBook = (): JSX.Element => {
                     error
                     fullWidth
                   />
-                </div>
-                <div className={styles.textInput}>
-                  <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />
                 </div>
               </div>
             </div>

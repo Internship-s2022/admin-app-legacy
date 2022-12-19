@@ -3,7 +3,10 @@ import Joi from 'joi';
 import { Role } from './types';
 
 export const memberValidations = Joi.object({
-  employee: Joi.string()
+  employee: Joi.object({
+    value: Joi.string(),
+    label: Joi.string(),
+  })
     .messages({
       'any.required': 'Este campo es requerido',
       'string.empty': 'Este campo es requerido',
@@ -29,8 +32,10 @@ export const memberValidations = Joi.object({
     .required(),
 
   helper: Joi.object({
-    helperReference: Joi.string()
-      .allow('')
+    helperReference: Joi.object({
+      value: Joi.string(),
+      label: Joi.string(),
+    })
       .messages({
         'any.required': 'Este campo es requerido',
         'string.empty': 'Este campo es requerido',

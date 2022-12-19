@@ -16,10 +16,10 @@ import {
   Modal,
   TextInput,
 } from 'src/components/shared/ui';
-import AutocompleteInput from 'src/components/shared/ui/autocomplete';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import AutocompleteChip from 'src/components/shared/ui/inputs/autocompleteChip';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
 import { editEmployee } from 'src/redux/employee/thunk';
@@ -275,7 +275,7 @@ const EditEmployee = () => {
                 />
               </div>
               <div className={styles.elementContainer}>
-                <AutocompleteInput control={control} name={'skills'} skills={arraySkills} />{' '}
+                <AutocompleteChip control={control} name={'skills'} skills={arraySkills} />{' '}
               </div>
             </div>
           </div>

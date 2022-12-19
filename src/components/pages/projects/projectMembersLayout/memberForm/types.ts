@@ -1,16 +1,21 @@
-import { DropdownProps } from 'src/components/shared/ui/inputs/dropdown/types';
 import { Employee } from 'src/redux/employee/types';
 
 export interface Helper {
   _id: string;
-  helperReference: string;
+  helperReference: {
+    value: string;
+    label: string;
+  };
   dependency: number;
   dedication: number;
   isActive: boolean;
 }
 
 export interface FormValues {
-  employee: string;
+  employee: {
+    value: string;
+    label: string;
+  };
   project: string;
   role: Role;
   memberDedication: number;
@@ -32,18 +37,16 @@ export enum Role {
 export interface Member {
   _id: string;
   helper: Helper[];
-  employee: string;
+  employee: {
+    value: string;
+    label: string;
+  };
   project: string;
   role: Role;
   memberDedication: number;
   startDate: Date;
   endDate: Date;
   active: boolean;
-}
-
-interface DropdownData {
-  value: string;
-  label: string;
 }
 
 export interface MemberFormProps {
