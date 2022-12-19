@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Tabs } from '@mui/material';
@@ -14,9 +14,18 @@ const Navbar = () => {
   const navigate = useNavigate();
   const pathValue = useLocation().pathname;
   const userRole = useSelector((state: RootState) => state.auth.authUser.accessRoleType);
-  const initialValue = navbarItems[userRole]?.findIndex((route) => route.path.includes(pathValue));
-  const [value, setValue] = React.useState<number>(initialValue);
+  const [value, setValue] = React.useState<number>(null);
   const dispatch: AppDispatch<null> = useDispatch();
+
+  useEffect(() => {
+    const initialValue = navbarItems[userRole]?.findIndex((route) =>
+      pathValue.includes(route.path),
+    );
+
+    setValue(initialValue);
+  }, []);
+
+  console.log({ value });
 
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
