@@ -53,5 +53,4 @@ export interface MemberFormProps {
   projectId: string;
   memberData?: Member;
   dropdownData?: Employee[];
-  setMemberId?: React.Dispatch<React.SetStateAction<any>>;
 }
