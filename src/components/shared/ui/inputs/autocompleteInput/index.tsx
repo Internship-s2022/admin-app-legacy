@@ -37,7 +37,6 @@ const AutocompleteInput = <Form extends FieldValues>(
       )}
       onChange={(_, value) => {
         onChange(value);
-        console.log('value', value);
       }}
     />
   );
