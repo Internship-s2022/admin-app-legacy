@@ -8,7 +8,7 @@ import { AutocompleteInputProps } from './types';
 const AutocompleteInput = <Form extends FieldValues>(
   props: AutocompleteInputProps<Form>,
 ): JSX.Element => {
-  const { control, options, name, label } = props;
+  const { control, options, name, label, disable } = props;
   const {
     field: { value, onChange },
     fieldState: { error },
@@ -21,18 +21,14 @@ const AutocompleteInput = <Form extends FieldValues>(
       id="combo-box-demo"
       value={value}
       options={options || []}
-      getOptionLabel={(option) => options.find((item) => item.value === option)?.label ?? ''}
-      isOptionEqualToValue={(option, value) => option.value === value}
-      renderOption={(props, option) => {
-        return (
-          <li {...props} key={option.value}>
-            {option.label}
-          </li>
-        );
+      getOptionLabel={(option) => {
+        return option.label ?? '';
       }}
+      isOptionEqualToValue={(option) => option.value === value.value}
+      disabled={disable}
       renderInput={(params) => (
         <TextField
-          helperText={error?.message || ' '}
+          helperText={error?.['value']?.message || ''}
           {...params}
           label={label}
           error={Boolean(error)}
@@ -40,7 +36,8 @@ const AutocompleteInput = <Form extends FieldValues>(
         />
       )}
       onChange={(_, value) => {
-        onChange(value.value);
+        onChange(value);
+        console.log('value', value);
       }}
     />
   );

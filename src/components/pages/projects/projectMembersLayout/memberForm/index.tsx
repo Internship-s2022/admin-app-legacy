@@ -26,20 +26,20 @@ import { memberValidations } from './validations';
 
 const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
-
   const memberError = useSelector((state: RootState) => state.member.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  let helperDropdownList;
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const { handleSubmit, control, reset, watch, setValue } = useForm<FormValues>({
+  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
     defaultValues: {
-      employee: '',
+      employee: { label: '', value: '' },
       role: Role.DEV,
       memberDedication: 0,
       helper: {
-        helperReference: '',
+        helperReference: { label: '', value: undefined },
         dependency: 0,
         dedication: 0,
         isActive: true,
@@ -52,7 +52,7 @@ const MemberForm = (props: MemberFormProps) => {
   });
 
   const employeeDropdownList = dropdownData.map((employee) => {
-    return { value: employee._id, label: `${employee.user.firstName} ${employee.user.lastName}` };
+    return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
@@ -60,12 +60,20 @@ const MemberForm = (props: MemberFormProps) => {
   useEffect(() => {
     memberData &&
       reset({
-        employee: memberData.employee,
+        employee: {
+          value: memberData.employee.value,
+          label: employeeDropdownList?.find((item) => item.value === memberData?.employee.value)
+            ?.label,
+        },
         role: memberData.role,
         memberDedication: memberData.memberDedication,
         helper: {
-          helperReference:
-            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].helperReference : '',
+          helperReference: {
+            value: memberData.helper[currentHelperIndex]?.helperReference.value,
+            label: helperDropdownList?.find(
+              (item) => item.value === memberData.helper[currentHelperIndex].helperReference.value,
+            )?.label,
+          },
           dependency:
             currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dependency : 0,
           dedication:
@@ -80,48 +88,65 @@ const MemberForm = (props: MemberFormProps) => {
 
   const selectedMember = watch('employee');
 
-  const helperDropdownList = employeeDropdownList.filter(
-    (employee) => employee.value !== selectedMember,
-  );
+  const filterDropdownList = () => {
+    const helperDropdownList = employeeDropdownList.filter(
+      (employee) => employee.value !== selectedMember.value,
+    );
+    helperDropdownList.unshift({ value: undefined, label: 'Sin ayudante' });
+    return helperDropdownList;
+  };
 
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
 
+    const memberDataHelper = memberData?.helper?.map((item) => {
+      return {
+        ...item,
+        helperReference: item.helperReference.value,
+      };
+    });
+
+    const helperData = {
+      ...helper,
+      helperReference: helper?.helperReference?.value || '',
+    };
+
     if (currentHelperIndex !== undefined && currentHelperIndex !== -1) {
-      memberData.helper[currentHelperIndex].isActive = false;
+      memberDataHelper[currentHelperIndex].isActive = false;
     }
-    if (memberData && helper.helperReference) {
-      const helperIndex = memberData.helper?.findIndex(
-        (item) => item?.helperReference === helper?.helperReference,
+
+    if (memberDataHelper && helperData?.helperReference) {
+      const helperIndex = memberDataHelper?.findIndex(
+        (item) => item?.helperReference === helperData?.helperReference,
       );
 
       helperIndex !== -1
-        ? (memberData.helper[helperIndex] = helper)
-        : memberData.helper?.push(helper);
+        ? (memberDataHelper[helperIndex] = helperData)
+        : memberDataHelper?.push(helperData);
     }
 
-    const formattedData = helper.helperReference
+    const formattedData = memberDataHelper
       ? {
           ...rest,
-          employee: employee,
+          employee: employee.value,
           project: projectId,
-          helper: [helper],
+          helper: [helperData],
           endDate: endDateDisabled ? null : data.endDate,
         }
       : {
           ...rest,
-          employee: employee,
+          employee: employee.value,
           endDate: endDateDisabled ? null : data.endDate,
           project: projectId,
         };
 
     const formattedDataEdit = {
       ...rest,
-      helper: memberData?.helper,
+      helper: memberDataHelper,
       endDate: endDateDisabled ? null : data.endDate,
     };
 
-    memberData
+    memberDataHelper
       ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))
       : dispatch(addMember(formattedData));
     dispatch(closeModal());
@@ -151,6 +176,7 @@ const MemberForm = (props: MemberFormProps) => {
                     control={control}
                     options={employeeDropdownList}
                     label={'Empleado'}
+                    disable={memberData ? true : false}
                   />
                 </div>
                 <div className={styles.bottomContainer}>
@@ -175,13 +201,11 @@ const MemberForm = (props: MemberFormProps) => {
               </div>
               <div className={styles.helperData}>
                 <div className={styles.topContainer}>
-                  <Dropdown
+                  <AutocompleteInput
                     control={control}
-                    testId={'helper'}
                     label={'Ayudante'}
                     name="helper.helperReference"
-                    options={helperDropdownList}
-                    fullWidth
+                    options={filterDropdownList()}
                   />
                 </div>
                 <div className={styles.bottomContainer}>

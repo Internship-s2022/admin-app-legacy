@@ -4,6 +4,5 @@ export type AutocompleteInputProps<Form extends FieldValues> = {
   name: string;
   options: any[];
   label: string;
+  disable?: boolean;
 } & UseControllerProps<Form>;
-
-// TODO: Type de options
