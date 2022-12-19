@@ -39,7 +39,7 @@ const MemberForm = (props: MemberFormProps) => {
       role: Role.DEV,
       memberDedication: 0,
       helper: {
-        helperReference: { label: '', value: undefined },
+        helperReference: { label: 'Sin ayudante', value: undefined },
         dependency: 0,
         dedication: 0,
         isActive: true,
@@ -108,7 +108,7 @@ const MemberForm = (props: MemberFormProps) => {
 
     const helperData = {
       ...helper,
-      helperReference: helper?.helperReference?.value || '',
+      helperReference: helper?.helperReference?.value,
     };
 
     if (currentHelperIndex !== undefined && currentHelperIndex !== -1) {

@@ -59,7 +59,7 @@ export const memberValidations = Joi.object({
         'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
       })
       .required(),
-  }).allow(null),
+  }),
 
   startDate: Joi.date().allow(null),
 
