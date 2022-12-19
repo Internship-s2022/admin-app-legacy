@@ -21,9 +21,7 @@ const AutocompleteInput = <Form extends FieldValues>(
       id="combo-box-demo"
       value={value}
       options={options || []}
-      getOptionLabel={(option) => {
-        return option.label ?? '';
-      }}
+      getOptionLabel={(option) => option.label ?? ''}
       isOptionEqualToValue={(option) => option.value === value.value}
       disabled={disable}
       renderInput={(params) => (
