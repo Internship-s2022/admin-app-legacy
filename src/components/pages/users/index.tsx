@@ -117,7 +117,7 @@ const Users = () => {
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
     dispatch(closeConfirmationModal());
-    setOperation('borrado');
+    setOperation('inactivado');
   };
 
   const handleEdit = (data) => {
@@ -308,7 +308,7 @@ const Users = () => {
           isOpen={showFormModal}
           testId="add-user-modal"
         >
-          <UserForm />
+          <UserForm setOperation={() => setOperation('agregado')} />
         </Modal>
       </div>
       <SuccessErrorMessage

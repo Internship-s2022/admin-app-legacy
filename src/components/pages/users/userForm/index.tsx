@@ -15,9 +15,11 @@ import { accessRoles } from '../constants';
 import { FormValues } from '../types';
 import styles from '../users.module.css';
 import { userValidation } from '../validations';
+import { userFormProps } from './types';
 
-const UserForm = () => {
+const UserForm = (props: userFormProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
+  const { setOperation } = props;
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -45,6 +47,7 @@ const UserForm = () => {
     };
     dispatch(addUser(data));
     onClose();
+    setOperation();
   };
 
   return (
