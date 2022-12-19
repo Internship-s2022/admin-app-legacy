@@ -64,6 +64,8 @@ const Employees = () => {
         notes: item?.notes,
         skills: item?.skills?.join('-'),
         potentialRole: item?.potentialRole?.join('-'),
+        seniority: item?.seniority || '-',
+        availability: item?.availability ? 'Disponible' : 'No disponible',
       });
       return acc;
     }, []);
@@ -117,11 +119,12 @@ const Employees = () => {
     <>
       <div className={styles.tableContainer}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">Lista de Empleados</Typography>
+          <Typography variant="h1">Empleados</Typography>
         </div>
         <div className={styles.searchInput}>
           <SearchBar<SearchEmployeeData>
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+            filter={filters.search}
           />
         </div>
         <div className={styles.checkboxInput}>
@@ -134,7 +137,7 @@ const Employees = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
                 color={'warning'}
               />
             ) : (
@@ -145,7 +148,7 @@ const Employees = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
               />
             )}
           </div>
@@ -156,7 +159,7 @@ const Employees = () => {
             }}
           >
             <option value={''} disabled selected={filters.role === ''} className={styles.option}>
-              {'Role'}
+              {'Rol'}
             </option>
             {checkboxData?.map((item) => (
               <option key={item.value} value={item.value} className={styles.option}>
@@ -172,7 +175,7 @@ const Employees = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-              testId={'resetFilter'}
+              testId={'reset-filter'}
             />
           </div>
         </div>
@@ -180,12 +183,13 @@ const Employees = () => {
           <div className={styles.tableContainer}>
             <Table<MappedEmployeeData>
               showButtons
-              testId={'userTable'}
+              testId={'employee-table'}
               headers={header}
               value={dataList}
               setDataList={handleDataList}
               profileIcon={true}
               buttons={buttonsArray}
+              isActive={filters.isActive}
             />
             <SuccessErrorMessage
               open={showAlert}

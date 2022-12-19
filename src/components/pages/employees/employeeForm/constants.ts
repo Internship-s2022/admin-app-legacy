@@ -22,5 +22,5 @@ export const checkboxData: PotentialRole[] = [
   { label: 'PM', value: RoleType.PM },
   { label: 'DEV', value: RoleType.DEV },
   { label: 'QA', value: RoleType.QA },
-  { label: 'UX/UI', value: RoleType.UI_UX },
+  { label: 'UX/UI', value: RoleType.UX_UI },
 ];

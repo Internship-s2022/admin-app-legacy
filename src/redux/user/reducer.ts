@@ -62,7 +62,7 @@ const userReducer: Reducer<State<User>, ActionsType> = (
         ...state,
         list: state.list.map((item) => {
           if (item._id === action.payload.id) {
-            return { ...item, accessRoleType: action.payload.accessRole };
+            return { ...action.payload.response };
           }
           return item;
         }),
@@ -84,7 +84,15 @@ const userReducer: Reducer<State<User>, ActionsType> = (
       return {
         ...state,
         isLoading: false,
-        list: state.list.filter((user) => user._id !== action.payload),
+        list: state.list.map((user) => {
+          if (user._id === action.payload) {
+            return {
+              ...user,
+              isActive: false,
+            };
+          }
+          return user;
+        }),
         error: undefined,
       };
     case Actions.DELETE_USER_ERROR:

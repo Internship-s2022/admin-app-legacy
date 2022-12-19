@@ -5,7 +5,6 @@ import {
   deleteResourceRequest,
   editResourceRequest,
   getByFilterResourceRequest,
-  getResourceRequest,
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 import { AppThunk } from 'src/redux/types';
@@ -30,7 +29,6 @@ import { Member } from './types';
 export const getMembers: AppThunk = (filter) => {
   return async (dispatch: Dispatch) => {
     dispatch(getMembersPending());
-    dispatch(setLoaderOn());
     try {
       const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
       if (response.data?.length) {
@@ -38,8 +36,6 @@ export const getMembers: AppThunk = (filter) => {
       }
     } catch (error) {
       dispatch(getMembersError({ message: error.message, networkError: error.networkError }));
-    } finally {
-      dispatch(setLoaderOff());
     }
   };
 };
@@ -82,7 +78,6 @@ export const editMember: AppThunk = (options: { id: string; body: Member }) => {
 export const deleteMember: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
     dispatch(deleteMemberPending());
-    dispatch(setLoaderOn());
     try {
       const response = await deleteResourceRequest(ApiRoutes.MEMBER, id);
       if (!response.error) {
@@ -91,7 +86,6 @@ export const deleteMember: AppThunk = (id) => {
     } catch (error) {
       dispatch(deleteMemberError({ message: error.message, networkError: error.networkError }));
     } finally {
-      dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
     }
   };

@@ -1,0 +1,69 @@
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}
+
+.tableContainer {
+  width: 90%;
+}
+
+.table {
+  width: 100%;
+  margin-block: 1%;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.header {
+  padding: 13px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(0 0 0 / 60%);
+  background-color: rgb(238 238 238 / 59%);
+  border-bottom: #d4d4df 2px solid;
+}
+
+.rows {
+  padding: 13px;
+  font-size: 14px;
+  color: rgb(0 0 0 / 60%);
+  border: none;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.buttons > button {
+  min-width: 30px;
+  min-height: 15px;
+  padding: 4px;
+}
+
+.addMembers {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 7%;
+  margin-bottom: 4%;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.addMembers > button {
+  background-color: #4f987b;
+}
+
+.addMembers > button:hover {
+  background-color: #478c71;
+}
+
+.buttons > div {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}

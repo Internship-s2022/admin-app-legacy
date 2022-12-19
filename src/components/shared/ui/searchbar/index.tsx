@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearchIcon from 'src/components/shared/ui/icons/searchIcon';
 
@@ -6,15 +6,30 @@ import styles from './searchbar.module.css';
 import { SearchBarProps, SearchData } from './types';
 
 const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element => {
-  const { setFilter } = props;
+  const { setFilter, filter } = props;
   const [inputValue, setInputValue] = useState('');
+
+  useEffect(() => {
+    if (filter === '') {
+      setInputValue('');
+    }
+  }, [filter]);
+
+  const handleSubmit = (e, value) => {
+    e.preventDefault();
+    setFilter(value);
+  };
+
+  const handleChange = (e, value) => {
+    setInputValue(e.target.value);
+    setFilter(!value.length ? ' ' : inputValue.trim());
+  };
 
   return (
     <div>
       <form
         onSubmit={(e) => {
-          e.preventDefault();
-          setFilter(inputValue);
+          handleSubmit(e, inputValue);
         }}
       >
         <div className={styles.searchInputContainer}>
@@ -22,9 +37,12 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
             <SearchIcon />
           </div>
           <input
+            data-testid="searchbar-input"
             className={styles.searchInput}
             placeholder="Búsqueda por palabra clave"
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => {
+              handleChange(e, inputValue);
+            }}
             value={inputValue}
           />
         </div>

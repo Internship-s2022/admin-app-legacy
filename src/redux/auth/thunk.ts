@@ -3,11 +3,9 @@ import { Dispatch } from 'redux';
 
 import { auth } from 'src/helper/firebase';
 
-import { AppThunk } from '../types';
-// import { setLoaderOff, setLoaderOn } from '../ui/actions';
-import { loginError, loginPending, loginSuccess } from './actions';
+import { loginError, loginPending } from './actions';
 
-export const login: AppThunk = () => {
+export const login = () => {
   return async (dispatch: Dispatch) => {
     try {
       dispatch(loginPending());
@@ -18,24 +16,13 @@ export const login: AppThunk = () => {
 
       const result = await signInWithPopup(auth, provider);
 
-      const token = await result.user.getIdToken();
-
       const {
         claims: { role },
       } = await result.user.getIdTokenResult();
 
-      // The signed-in user info.
-      const userBody = {
-        token: token,
-        name: result.user.displayName,
-        email: result.user.email,
-        accessRoleType: role,
-        photo: result.user.photoURL,
-      };
-
-      dispatch(loginSuccess(userBody));
+      return role as string;
     } catch (error: any) {
-      dispatch(loginError(error));
+      return dispatch(loginError(error));
     }
   };
 };

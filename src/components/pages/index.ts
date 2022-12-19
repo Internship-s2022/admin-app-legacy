@@ -5,6 +5,6 @@ export { default as EditEmployee } from './employees/employeeForm';
 export { default as Home } from './home';
 export { default as Login } from './login';
 export { default as Projects } from './projects';
-export { default as AddProjects } from './projects/projectForm';
+export { default as ProjectMembersLayout } from './projects/projectMembersLayout';
 export { default as Storybook } from './storybook';
 export { default as Users } from './users';

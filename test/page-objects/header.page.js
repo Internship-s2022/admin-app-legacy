@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-import LoginPage from './login.page';
-
 class HeaderPage {
   // GETTERS
   get radiumAdminHeaderBrand() {
@@ -19,9 +17,14 @@ class HeaderPage {
     return $('=Clients');
   }
   get logoutBtn() {
-    return $('[data-testid=logout-btn] svg');
+    return $('[data-testid=logout-btn]');
   }
-
+  get logoutModalConfirmationBtn() {
+    return $('[data-testid=confirmBtn]');
+  }
+  get logoutModalCancelBtn() {
+    return $('[data-testid=cancelBtn]');
+  }
   // METHODS
 }
 

@@ -15,7 +15,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
-import { getMembers } from 'src/redux/member/thunk';
+import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {
@@ -57,19 +57,19 @@ const filterData = (list, filters) => {
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
+  const dispatch: AppDispatch<null> = useDispatch();
   const projectError = useSelector((state: RootState) => state.project?.error);
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const dispatch: AppDispatch<null> = useDispatch();
-  const [dataList, setDataList] = useState([]);
   const projectList = useSelector((state: RootState) => state.project.list);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
+  const [dataList, setDataList] = useState([]);
+  const [checked, setChecked] = React.useState(false);
   const [filters, setFilters] = React.useState({
     isActive: true,
     criticality: '',
     search: '',
   });
-  const [checked, setChecked] = React.useState(false);
 
   const activeProjectsList = useMemo(() => {
     const formattedProjectList = projectList.map((project) => ({
@@ -127,6 +127,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(getProjects());
+    dispatch(cleanSelectedProject());
   }, []);
 
   useEffect(() => {
@@ -137,7 +138,7 @@ const Projects = () => {
     {
       active: true,
       label: 'EDITAR',
-      testId: 'editButton',
+      testId: 'edit-button',
       variant: Variant.CONTAINED,
       onClick: (row) => {
         return handleEdit(row);
@@ -146,7 +147,7 @@ const Projects = () => {
     {
       active: true,
       label: 'X',
-      testId: 'deleteButton',
+      testId: 'delete-button',
       variant: Variant.CONTAINED,
       onClick: (data) => {
         dispatch(openConfirmationModal());
@@ -167,20 +168,21 @@ const Projects = () => {
   ) : (
     <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
-        <Typography variant="h1">Lista de proyectos</Typography>
+        <Typography variant="h1">Proyectos</Typography>
       </div>
       <div className={styles.searchBar}>
         <div className={styles.searchInput}>
           <SearchBar<SearchProjectData>
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+            filter={filters.search}
           />
         </div>
-        <div className={styles.addUserButton}>
+        <div className={styles.addProjectButton}>
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
             label={'+ Agregar proyecto'}
-            testId={'addProjectButton'}
+            testId={'add-project-button'}
             styles={'addButton'}
           />
         </div>
@@ -195,7 +197,7 @@ const Projects = () => {
                 setChecked(!checked);
               }}
               label={'Inactivos'}
-              testId={'inactiveButtons'}
+              testId={'inactive-button'}
               color={'warning'}
             />
           </div>
@@ -208,7 +210,7 @@ const Projects = () => {
                 setChecked(!checked);
               }}
               label={'Inactivos'}
-              testId={'inactiveButtons'}
+              testId={'inactive-button'}
             />
           </div>
         )}
@@ -240,7 +242,7 @@ const Projects = () => {
               setChecked(false);
             }}
             label={'Resetear filtros'}
-            testId={'resetFilter'}
+            testId={'reset-filter'}
           />
         </div>
       </div>
@@ -248,11 +250,12 @@ const Projects = () => {
         {dataList?.length ? (
           <Table<MappedProjectData>
             showButtons
-            testId={'projectsTable'}
+            testId={'project-table'}
             headers={projectHeaders}
             value={dataList}
             setDataList={handleDataList}
             buttons={buttonsArray}
+            isActive={filters.isActive}
           />
         ) : (
           <>

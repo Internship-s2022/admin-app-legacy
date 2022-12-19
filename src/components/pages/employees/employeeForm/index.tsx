@@ -5,7 +5,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
-import { FormValues, Seniority } from 'src/components/pages/employees/types';
+import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
+import CustomNotifications from 'src/components/shared/common/customNotificationForm';
+import { Resource } from 'src/components/shared/common/customNotificationForm/types';
 import {
   Button,
   ConfirmationMessage,
@@ -24,15 +26,18 @@ import { editEmployee } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
+  closeFormModal,
   closeModal,
   openConfirmationModal,
+  openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import AbsencesModal from './absencesModal';
-import { arraySkills, checkboxData, projectHeadersEmp, seniority } from './constants';
+import { arraySkills, checkboxData, seniority } from './constants';
 import styles from './editEmployee.module.css';
+import TableProject from './tableProject';
 import employeeValidations from './validations';
 
 const EditEmployee = () => {
@@ -42,12 +47,13 @@ const EditEmployee = () => {
 
   const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
   const listEmployee = useAppSelector((state: RootState) => state.employee.list);
   const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
 
   const latestProjects = matchedEmployee?.projectHistory.slice(-2);
 
-  const formattedProjects = latestProjects?.map((item) => ({
+  const formattedProjects = latestProjects?.map((item: Projects) => ({
     id: item?.project?._id || '-',
     name: item?.project?.projectName || '-',
     role: item?.role ? item?.role : '-',
@@ -151,7 +157,7 @@ const EditEmployee = () => {
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
         <div>Editar un empleado</div>
-        <div className={styles.bellIcon}>
+        <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
           <BellIcon />
         </div>
       </div>
@@ -274,44 +280,7 @@ const EditEmployee = () => {
             </div>
           </div>
           <div className={styles.rightSide}>
-            <div className={styles.tableContainer}>
-              <table className={styles.table}>
-                <thead>
-                  <tr>
-                    {projectHeadersEmp?.map((header, index) => {
-                      return (
-                        <th className={styles.header} key={index}>
-                          {header.header}
-                        </th>
-                      );
-                    })}
-                  </tr>
-                </thead>
-                <tbody>
-                  {formattedProjects?.map((data) => {
-                    return (
-                      <tr key={data.id}>
-                        {projectHeadersEmp.map((header, index) => {
-                          return (
-                            <td className={styles.rows} key={index}>
-                              {data[header.key]}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-              <div className={styles.viewMore}>
-                <Button
-                  testId="viewMoreButton"
-                  materialVariant={Variant.TEXT}
-                  onClick={() => undefined}
-                  label="Ver más"
-                />
-              </div>
-            </div>
+            <TableProject projectList={formattedProjects} />
             <div>
               <div className={styles.rightInputs}>
                 <TextInput
@@ -370,10 +339,19 @@ const EditEmployee = () => {
           <AbsencesModal setAbsence={handleAbsence} open={showModal} absences={absences} />
         </Modal>
       </div>
+      <div>
+        <Modal
+          testId={'employee-custom-notification'}
+          isOpen={showNotificationModal}
+          onClose={() => dispatch(closeFormModal())}
+        >
+          <CustomNotifications resource={Resource.EMPLOYEE} id={params.id} />
+        </Modal>
+      </div>
       <Modal
         testId="editEmployeeModal"
         styles={styles.modal}
-        isOpen={showConfirmModal}
+        isOpen={!showNotificationModal && showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage

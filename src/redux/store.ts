@@ -7,6 +7,7 @@ import authReducer from './auth/reducer';
 import clientReducer from './client/reducer';
 import employeeReducer from './employee/reducer';
 import memberReducer from './member/reducer';
+import notificationReducer from './notifications/reducer';
 import projectReducer from './project/reducer';
 import uiReducer from './ui/reducer';
 import userReducer from './user/reducer';
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   ui: uiReducer,
   auth: authReducer,
   member: memberReducer,
+  notification: notificationReducer,
 });
 
 const configureStore = () => {

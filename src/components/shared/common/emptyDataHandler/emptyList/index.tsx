@@ -20,13 +20,15 @@ const EmptyList = (props: EmptyDataProps) => {
         </p>
       </div>
       {!isEmployee && (
-        <Button
-          materialVariant={Variant.CONTAINED}
-          testId="reloadButton"
-          onClick={handleAdd}
-          styles={'addButton'}
-          label={`+ Agregar ${cutLastLetter(resource)}`}
-        />
+        <div className={styles.buttonContainer}>
+          <Button
+            materialVariant={Variant.CONTAINED}
+            testId="reloadButton"
+            onClick={handleAdd}
+            styles={'addButton'}
+            label={`+ Agregar ${cutLastLetter(resource)}`}
+          />
+        </div>
       )}
     </div>
   );

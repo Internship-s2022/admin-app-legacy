@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 
-import { Role } from 'src/components/pages/projects/projectForm/addMember/types';
+import { Role } from 'src/components/pages/projects/projectMembersLayout/memberForm/types';
 
 import { Employee } from '../employee/types';
 import { Project } from '../project/types';
@@ -16,7 +16,7 @@ export interface Helper {
 
 export interface Member {
   _id: string;
-  helper: Helper;
+  helper: Helper[];
   employee: Employee;
   project: Project;
   role: Role;

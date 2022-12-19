@@ -117,7 +117,7 @@ const Clients = () => {
     {
       active: true,
       label: 'EDITAR',
-      testId: 'editButton',
+      testId: 'edit-button',
       variant: Variant.CONTAINED,
       onClick: (row) => {
         return handleEdit(row);
@@ -126,7 +126,7 @@ const Clients = () => {
     {
       active: true,
       label: 'X',
-      testId: 'deleteButton',
+      testId: 'delete-button',
       variant: Variant.CONTAINED,
       onClick: (data) => {
         dispatch(openConfirmationModal());
@@ -147,7 +147,7 @@ const Clients = () => {
   ) : (
     <div className={styles.tableContainer}>
       <div className={styles.welcomeMessage}>
-        <Typography variant="h1">Lista de Clientes</Typography>
+        <Typography variant="h1">Clientes</Typography>
       </div>
       <div className={styles.inputsContainer}>
         <div className={styles.searchBar}>
@@ -155,12 +155,12 @@ const Clients = () => {
             setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
           />
         </div>
-        <div className={styles.addUserButton}>
+        <div className={styles.addClientButton}>
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
             label={'+ Agregar cliente'}
-            testId={'addClientButton'}
+            testId={'add-client-button'}
             styles={'addButton'}
           />
         </div>
@@ -176,7 +176,7 @@ const Clients = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-button'}
                 color={'warning'}
               />
             </div>
@@ -188,7 +188,7 @@ const Clients = () => {
                 setChecked(!checked);
               }}
               label={'Inactivos'}
-              testId={'inactiveButtons'}
+              testId={'inactive-button'}
             />
           )}
         </div>
@@ -197,11 +197,12 @@ const Clients = () => {
         {dataList?.length ? (
           <Table<ClientsData>
             showButtons
-            testId={'clientsTable'}
+            testId={'client-table'}
             headers={header}
             value={dataList}
             setDataList={handleDataList}
             buttons={buttonsArray}
+            isActive={filters.isActive}
           />
         ) : (
           <>
@@ -226,7 +227,7 @@ const Clients = () => {
         operation={'borrado'}
       />
       <Modal
-        testId="deleteModal"
+        testId="delete-modaldeleteModal"
         styles={styles.modal}
         isOpen={showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}

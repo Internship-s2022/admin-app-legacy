@@ -8,6 +8,7 @@ import {
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
+import { getClientsPending, getClientsSuccess } from '../client/actions';
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
@@ -55,6 +56,27 @@ export const getProjectById: AppThunk = (id) => {
       if (response.data) {
         dispatch(getProjectByIdSuccess(response.data));
       }
+    } catch (error: any) {
+      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getProjectAndClients: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(getProjectByIdPending());
+    dispatch(getClientsPending());
+    dispatch(setLoaderOn());
+    try {
+      const responses = await Promise.all([
+        getResourceRequest(ApiRoutes.CLIENT),
+        id && getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`),
+      ]);
+
+      responses[0].data?.length && dispatch(getClientsSuccess(responses[0].data));
+      responses[1]?.data && dispatch(getProjectByIdSuccess(responses[1]?.data));
     } catch (error: any) {
       dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
     } finally {

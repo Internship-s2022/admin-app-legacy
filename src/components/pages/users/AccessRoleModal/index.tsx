@@ -22,7 +22,6 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
       accessRoleType: accessRole,
     },
   };
-
   const onSubmit = (data) => {
     dispatch(editUser(data));
     dispatch(closeModal());
@@ -54,7 +53,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
           onClick={() => onSubmit(options)}
         ></Button>
         <Button
-          testId={'confirmAccessRoleBtn'}
+          testId={'cancelAccessRoleBtn'}
           materialVariant={Variant.OUTLINED}
           label={'Cancelar'}
           onClick={() => dispatch(closeModal())}

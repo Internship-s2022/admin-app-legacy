@@ -1,21 +1,26 @@
 import { format } from 'date-fns';
 
 export const capitalizeFirstLetter = (text: string) => {
-  if (text.length) {
+  if (text?.length) {
     return text.charAt(0).toUpperCase() + text.slice(1);
   }
   return '';
 };
 
-export const formattedTableData = <T>(list: T[], firstField: string, secondField?: string) => {
+export const formattedTableData = <T>(list: any[], firstField: string, secondField?: string) => {
+  const dataList = list.filter((item) =>
+    secondField
+      ? item[firstField]?.isActive || item[firstField]?.active
+      : item?.active || item?.isActive,
+  );
   let result = ' - ';
-  if (list?.length > 1) {
-    result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} y ${
-      list?.length - 1
-    } más`;
-  } else if (list?.length == 1) {
-    result = `${secondField ? list[0]?.[firstField][secondField] : list[0]?.[firstField]} `;
-  } else if (list?.length == 0) {
+  if (dataList?.length > 1) {
+    result = `${
+      secondField ? dataList[0]?.[firstField][secondField] : dataList[0]?.[firstField]
+    } y ${dataList?.length - 1} más`;
+  } else if (dataList?.length == 1) {
+    result = `${secondField ? dataList[0]?.[firstField][secondField] : dataList[0]?.[firstField]} `;
+  } else if (dataList?.length == 0) {
     return result;
   }
   return result;

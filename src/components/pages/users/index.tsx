@@ -10,7 +10,6 @@ import {
   Modal,
   SuccessErrorMessage,
   Table,
-  TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
@@ -25,7 +24,7 @@ import {
   openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
-import { deleteUser, getUsers } from 'src/redux/user/thunks';
+import { deleteUser, editUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
@@ -41,7 +40,7 @@ const filterData = (list, filters) => {
 
   filterDataList = list.filter((item) => item.active === filters.isActive);
 
-  filterDataList = filterDataList.filter((item) => item.accessRoleType.includes(filters.role));
+  filterDataList = filterDataList.filter((item) => item.accessRoleType?.includes(filters.role));
 
   if (filters.search) {
     filterDataList = filterDataList?.filter((d) =>
@@ -73,6 +72,10 @@ const Users = () => {
   const userList = useSelector((state: RootState) => state.user.list);
   const userError = useSelector((state: RootState) => state.user.error);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const confirmationTitle = filters.isActive ? 'Desactivar usuario' : 'Activar Usuario';
+  const confirmationDescription = filters.isActive
+    ? `¿Desea desactivar al usuario ${row.name}?`
+    : `¿Desea activar al usuario ${row.name}?`;
 
   const navigate = useNavigate();
 
@@ -90,7 +93,7 @@ const Users = () => {
             item?.lastName,
           )}`,
           location: item?.location,
-          birthDate: item?.birthDate.toString(),
+          birthDate: item?.birthDate?.toString(),
           active: item?.isActive,
         });
       }
@@ -127,27 +130,53 @@ const Users = () => {
     navigate(path);
   };
 
-  const buttonsArray: TableButton<UserData>[] = [
-    {
-      active: true,
-      label: 'editar',
-      testId: 'editButton',
-      variant: Variant.CONTAINED,
-      onClick: (data) => {
-        handleEdit(data);
-      },
+  const handleActivate = (data) => {
+    dispatch(editUser(data));
+    dispatch(closeConfirmationModal());
+    setOperation('activado');
+  };
+
+  const options = {
+    id: row._id,
+    body: {
+      isActive: true,
     },
-    {
-      active: true,
-      label: 'X',
-      testId: 'deleteButton',
-      variant: Variant.CONTAINED,
-      onClick: (data) => {
-        dispatch(openConfirmationModal());
-        setRow(data);
-      },
-    },
-  ];
+  };
+
+  const buttonsArray: TableButton<UserData>[] = filters.isActive
+    ? [
+        {
+          active: true,
+          label: 'editar',
+          testId: 'edit-button',
+          variant: Variant.CONTAINED,
+          onClick: (data) => {
+            handleEdit(data);
+          },
+        },
+        {
+          active: true,
+          label: 'X',
+          testId: 'delete-button',
+          variant: Variant.CONTAINED,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+        },
+      ]
+    : [
+        {
+          active: true,
+          label: 'Activar',
+          testId: 'activate-button',
+          variant: Variant.TEXT,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+        },
+      ];
 
   const showErrorMessage = userError?.networkError || !userList.length;
 
@@ -162,13 +191,18 @@ const Users = () => {
     <>
       <div className={styles.container}>
         <div className={styles.welcomeMessage}>
-          <Typography variant="h1">¡Bienvenido {superAdmin.name}!</Typography>
-          <p>¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!</p>
+          <Typography data-testid="user-welcome-title" variant="h1">
+            ¡Bienvenido {superAdmin.name}!
+          </Typography>
+          <p data-testid="user-subtitle">
+            ¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!
+          </p>
         </div>
         <div className={styles.topTableContainer}>
           <div className={styles.searchBar}>
             <SearchBar<SearchUserData>
               setFilter={(stringValue) => setFilters({ ...filters, search: stringValue })}
+              filter={filters.search}
             />
           </div>
           <div className={styles.addUserButton}>
@@ -176,7 +210,7 @@ const Users = () => {
               materialVariant={Variant.CONTAINED}
               onClick={() => dispatch(openFormModal())}
               label={'+ Agregar un nuevo usuario'}
-              testId={'addUserButton'}
+              testId={'add-user-button'}
             />
           </div>
         </div>
@@ -190,7 +224,7 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-filter-button'}
                 color={'warning'}
               />
             </div>
@@ -203,12 +237,13 @@ const Users = () => {
                   setChecked(!checked);
                 }}
                 label={'Inactivos'}
-                testId={'inactiveButtons'}
+                testId={'inactive-filter-button'}
               />
             </div>
           )}
           <select
             className={styles.filterDropdown}
+            data-testid="role-dropdown"
             onChange={(e) => {
               setFilters({ ...filters, role: formattedRoleType[e.target.value] });
             }}
@@ -217,7 +252,12 @@ const Users = () => {
               {'Rol de acceso'}
             </option>
             {accessRoles.map((item) => (
-              <option key={item.value} value={item.value} className={styles.option}>
+              <option
+                data-testid={item.label}
+                key={item.value}
+                value={item.value}
+                className={styles.option}
+              >
                 {item.label}
               </option>
             ))}
@@ -230,7 +270,7 @@ const Users = () => {
                 setChecked(false);
               }}
               label={'Resetear filtros'}
-              testId={'resetFilter'}
+              testId={'reset-filter-button'}
             />
           </div>
         </div>
@@ -238,11 +278,12 @@ const Users = () => {
           {dataList?.length ? (
             <Table<UserData>
               showButtons
-              testId={'userTable'}
+              testId={'user-table'}
               headers={userHeaders}
               value={dataList}
               buttons={buttonsArray}
               setDataList={setDataList}
+              isActive={filters.isActive}
             />
           ) : (
             <>
@@ -278,7 +319,7 @@ const Users = () => {
       />
       {!showErrorMessage && (
         <Modal
-          testId={'User-access-modal'}
+          testId={'user-access-modal'}
           isOpen={showModal}
           onClose={() => dispatch(closeModal())}
         >
@@ -286,16 +327,18 @@ const Users = () => {
         </Modal>
       )}
       <Modal
-        testId="deleteUserModal"
+        testId="delete-user-modal"
         styles={styles.modal}
         isOpen={showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
-          description={`¿Desea eliminar al usuario ${row.name}?`}
-          title={'Eliminar Usuario'}
-          handleConfirm={() => handleDelete(row)}
+          description={confirmationDescription}
+          title={confirmationTitle}
+          handleConfirm={() => (filters.isActive ? handleDelete(row) : handleActivate(options))}
           handleClose={() => dispatch(closeConfirmationModal())}
+          testIdDescription="delete-modal-desc"
+          testIdTitle="delete-modal-title"
         />
       </Modal>
     </>

@@ -1,0 +1,156 @@
+.baseIconTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 32px;
+  margin-left: 15px;
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 2px 13px 5px #0000001c;
+}
+
+.projectTabIcon {
+  background: linear-gradient(180deg, #408066 0%, #54aa78 50%, #51a66c 100%);
+}
+
+.employeeTabIcon {
+  background: linear-gradient(180deg, #373867 0%, #2f4c8f 64.58%, #264f95 100%);
+}
+
+.clientTabIcon {
+  background: linear-gradient(180deg, #381f3c 0%, #6d4574 63.54%, rgb(73 34 80 / 71%) 100%);
+}
+
+.highCriticality {
+  border: 0.5px solid #cb0707;
+}
+
+.mediumCriticality {
+  border: 0.5px solid #d6be05;
+}
+
+.lowCriticality {
+  border: 0.5px solid #95c807;
+}
+
+.cardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 302px;
+  height: 203px;
+  margin-bottom: 25px;
+  color: #7b809a;
+  border-radius: 12px;
+  box-shadow: 0 2px 13px 5px #0000001c;
+}
+
+.cardContent {
+  width: auto;
+  height: calc(203px - 51px);
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 15px 0;
+  margin-bottom: 9px;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 19.6px;
+}
+
+.projectInfo {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 15px;
+  font-size: 14px;
+  line-height: 19.6px;
+}
+
+.customMessage {
+  width: auto;
+  height: 40px;
+  padding: 0 15px;
+  margin-top: 13px;
+  font-size: 14px;
+  font-weight: 300;
+}
+
+.notification {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: auto;
+  height: 51px;
+  font-size: 16px;
+  font-weight: 200;
+  line-height: 22.4px;
+  border-top: 1px solid #f0f2f5;
+}
+
+.notification p {
+  padding: 0 15px 15px;
+  margin: inherit;
+}
+
+.tickIcon {
+  display: flex;
+  align-self: center;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.nameContainer {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  padding-top: 5px;
+}
+
+.avatarsContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.membersContainer {
+  font-size: 13px;
+}
+
+.membersContainer p {
+  display: inline;
+}
+
+.avatars div,
+.nameContainer div {
+  width: 25px;
+  height: 25px;
+  margin-bottom: 6px;
+  font-size: 10px;
+}
+
+.nameContainer div {
+  width: 30px;
+  height: 30px;
+}
+
+.criticality {
+  align-items: center;
+  height: 16px;
+  padding: 0.5% 1%;
+  font-size: 12px;
+  color: #4d4d4d;
+  text-align: center;
+  background: #f2f2f2;
+  border-radius: 5px;
+}
+
+.name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 13px 5px #0000006c;
+}

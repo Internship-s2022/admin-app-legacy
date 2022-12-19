@@ -33,7 +33,12 @@ const SuccessErrorMessage = (props: SuccessErrorMessageProps) => {
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={error ? 'error' : 'success'} sx={{ width: '100%' }}>
+        <Alert
+          data-testid="snackbar"
+          onClose={handleClose}
+          severity={error ? 'error' : 'success'}
+          sx={{ width: '100%' }}
+        >
           {message}
         </Alert>
       </Snackbar>
