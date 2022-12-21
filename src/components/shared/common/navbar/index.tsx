@@ -23,7 +23,7 @@ const Navbar = () => {
     );
 
     setValue(initialValue);
-  }, []);
+  }, [pathValue]);
 
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
