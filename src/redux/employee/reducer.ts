@@ -1,20 +1,19 @@
 import { Reducer } from 'redux';
 
-import { State } from 'src/redux/types';
-
 import { Actions } from './constants';
-import { ActionsType, Employee } from './types';
+import { ActionsType, Employee, EmployeeState } from './types';
 
-const initialState: State<Employee> = {
+const initialState: EmployeeState = {
   list: [],
   isLoading: false,
   error: undefined,
+  selectedEmployee: {} as Employee,
 };
 
-const employeeReducer: Reducer<State<Employee>, ActionsType> = (
+const employeeReducer: Reducer<EmployeeState, ActionsType> = (
   state = initialState,
   action,
-): State<Employee> => {
+): EmployeeState => {
   switch (action.type) {
     case Actions.GET_EMPLOYEE_PENDING:
       return {
@@ -25,13 +24,27 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
       return {
         ...state,
         list: action.payload,
-        isLoading: false,
         error: undefined,
       };
     case Actions.GET_EMPLOYEE_ERROR:
       return {
         ...state,
-        isLoading: false,
+        error: { ...action.payload },
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_SUCCESS:
+      return {
+        ...state,
+        selectedEmployee: action.payload,
+        error: undefined,
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_ERROR:
+      return {
+        ...state,
         error: { ...action.payload },
       };
     case Actions.EDIT_EMPLOYEE_PENDING:
@@ -42,7 +55,6 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
     case Actions.EDIT_EMPLOYEE_SUCCESS:
       return {
         ...state,
-        isLoading: false,
         list: state.list.map((item) => {
           if (item._id === action.payload.id) {
             return { ...item, ...action.payload.body };
@@ -54,7 +66,6 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
     case Actions.EDIT_EMPLOYEE_ERROR:
       return {
         ...state,
-        isLoading: false,
         error: { ...action.payload },
       };
     default:

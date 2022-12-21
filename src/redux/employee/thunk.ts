@@ -9,6 +9,9 @@ import {
   editEmployeeError,
   editEmployeePending,
   editEmployeeSuccess,
+  getEmployeeByIdError,
+  getEmployeeByIdPending,
+  getEmployeeByIdSuccess,
   getEmployeeError,
   getEmployeePending,
   getEmployeeSuccess,
@@ -26,6 +29,23 @@ export const getEmployees: AppThunk = () => {
       }
     } catch (error) {
       dispatch(getEmployeeError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getEmployeeById: AppThunk = (id) => {
+  return async (dispatch: Dispatch) => {
+    dispatch(getEmployeeByIdPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await getResourceRequest(`${ApiRoutes.EMPLOYEE}/${id}`);
+      if (response.data) {
+        dispatch(getEmployeeByIdSuccess(response.data));
+      }
+    } catch (error) {
+      dispatch(getEmployeeByIdError({ message: error.message, networkError: error.networkError }));
     } finally {
       dispatch(setLoaderOff());
     }

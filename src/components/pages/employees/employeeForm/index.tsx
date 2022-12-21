@@ -22,7 +22,7 @@ import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import AutocompleteChip from 'src/components/shared/ui/inputs/autocompleteChip';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
-import { editEmployee } from 'src/redux/employee/thunk';
+import { editEmployee, getEmployeeById } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
@@ -48,10 +48,9 @@ const EditEmployee = () => {
   const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const showModal = useAppSelector((state: RootState) => state.ui.showModal);
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
-  const listEmployee = useAppSelector((state: RootState) => state.employee.list);
-  const matchedEmployee = listEmployee?.find((item) => item?._id === params.id);
+  const selectedEmployee = useAppSelector((state: RootState) => state.employee?.selectedEmployee);
 
-  const latestProjects = matchedEmployee?.projectHistory.slice(-2);
+  const latestProjects = selectedEmployee?.projectHistory?.slice(-2);
 
   const formattedProjects = latestProjects?.map((item: Projects) => ({
     id: item?.project?._id || '-',
@@ -61,7 +60,11 @@ const EditEmployee = () => {
     endDate: item?.endDate || '-',
   }));
 
-  const [absences, setAbsences] = React.useState(matchedEmployee?.absences || []);
+  useEffect(() => {
+    params.id && dispatch(getEmployeeById(params.id));
+  }, []);
+
+  const [absences, setAbsences] = React.useState(selectedEmployee?.absences || []);
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -87,29 +90,27 @@ const EditEmployee = () => {
   });
 
   useEffect(() => {
-    if (listEmployee.length && matchedEmployee?._id) {
+    if (Object.keys(selectedEmployee).length) {
       reset({
-        id: matchedEmployee?._id,
+        id: selectedEmployee?._id,
         user: {
-          _id: matchedEmployee?.user?._id,
-          firstName: matchedEmployee?.user?.firstName,
-          lastName: matchedEmployee?.user?.lastName,
-          email: matchedEmployee?.user?.email,
-          birthDate: matchedEmployee?.user?.birthDate,
+          _id: selectedEmployee?.user?._id,
+          firstName: selectedEmployee?.user?.firstName,
+          lastName: selectedEmployee?.user?.lastName,
+          email: selectedEmployee?.user?.email,
+          birthDate: selectedEmployee?.user?.birthDate,
         },
-        seniority: matchedEmployee?.seniority as Seniority,
-        skills: matchedEmployee?.skills || [],
-        potentialRole: matchedEmployee?.potentialRole,
-        availability: matchedEmployee?.availability,
+        seniority: selectedEmployee?.seniority as Seniority,
+        skills: selectedEmployee?.skills || [],
+        potentialRole: selectedEmployee?.potentialRole,
+        availability: selectedEmployee?.availability,
         projectHistory: [],
-        careerPlan: matchedEmployee?.careerPlan,
-        notes: matchedEmployee?.notes,
-        absences: matchedEmployee?.absences,
+        careerPlan: selectedEmployee?.careerPlan,
+        notes: selectedEmployee?.notes,
+        absences: selectedEmployee?.absences,
       });
-    } else {
-      navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
     }
-  }, []);
+  }, [selectedEmployee]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -147,7 +148,7 @@ const EditEmployee = () => {
         };
       }),
     };
-    const { id, user, projectHistory, ...rest } = body;
+    const { id, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
@@ -355,7 +356,7 @@ const EditEmployee = () => {
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
-          description={`¿Desea editar al empleado ${matchedEmployee?.user?.firstName} ${matchedEmployee?.user?.lastName}?`}
+          description={`¿Desea editar al empleado ${selectedEmployee?.user?.firstName} ${selectedEmployee?.user?.lastName}?`}
           title={'Editar Empleado'}
           handleConfirm={handleSubmit(onSubmit)}
           handleClose={() => dispatch(closeConfirmationModal())}
