@@ -17,7 +17,7 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     const role = await dispatch(login());
     if (role === 'ADMIN') {
-      navigate('/admin');
+      navigate('/admin/home');
     } else if (role === 'SUPER_ADMIN') {
       navigate('/super-admin');
     }
