@@ -18,7 +18,7 @@ export const userValidation = Joi.object({
     .min(20)
     .trim()
     .messages({
-      'string.pattern.base': 'Formato de email no es válido',
+      'string.pattern.base': 'El formato de email no es válido',
       'string.empty': 'Este campo es requerido',
       'string.min': 'El email debe contener al menos 3 letras',
     })
@@ -33,7 +33,7 @@ export const userValidation = Joi.object({
       'string.min': 'El nombre debe contener al menos 3 letras',
       'string.empty': 'Este campo es requerido',
       'string.max': 'El nombre debe tener máximo 35 letras',
-      'string.pattern.base': 'El nombre debe contener solo letras',
+      'string.pattern.base': 'El nombre debe contener sólo letras',
     })
     .required(),
 
@@ -43,7 +43,7 @@ export const userValidation = Joi.object({
     .max(35)
     .trim()
     .messages({
-      'string.pattern.base': 'El apellido debe contener solo letras',
+      'string.pattern.base': 'El apellido debe contener sólo letras',
       'string.empty': 'Este campo es requerido',
       'string.min': 'El apellido debe contener al menos 3 letras',
       'string.max': 'El apellido debe tener máximo 35 letras',
@@ -55,7 +55,7 @@ export const userValidation = Joi.object({
     .regex(/^[a-zA-Z0-9 ]*$/)
     .trim()
     .messages({
-      'string.pattern.base': 'Formato de localidad no es válido',
+      'string.pattern.base': 'El formato de localidad no es válido',
       'string.empty': 'Este campo es requerido',
       'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
     })
@@ -64,9 +64,8 @@ export const userValidation = Joi.object({
   birthDate: Joi.date()
     .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
     .messages({
-      'date.base': 'El formato de fecha debe ser aaaa/mm/dd',
       'date.less': 'El usuario debe ser mayor a 18 años',
-      'any.required': 'Este campo es requerido',
+      'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
     })
     .required(),
 }).options({ allowUnknown: true });

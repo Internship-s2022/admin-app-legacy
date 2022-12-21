@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
-import { Button, Dropdown, TextInput } from 'src/components/shared/ui';
+import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { AccessRoleType } from 'src/constants';
 import { closeFormModal } from 'src/redux/ui/actions';
@@ -28,7 +28,7 @@ const UserForm = (props: userFormProps) => {
       firstName: '',
       lastName: '',
       location: '',
-      birthDate: new Date(Date.now()),
+      birthDate: new Date(undefined),
       isActive: true,
     },
     mode: 'onBlur',
@@ -100,13 +100,11 @@ const UserForm = (props: userFormProps) => {
             error
             fullWidth
           />
-          <TextInput
-            control={control}
-            testId={'date-input'}
+          <DatePicker
+            label={'Fecha de nacimiento'}
+            testId={'birthDate'}
             name="birthDate"
-            type="date"
-            error
-            fullWidth
+            control={control}
           />
         </div>
         <div className={styles.buttonsContainer}>
