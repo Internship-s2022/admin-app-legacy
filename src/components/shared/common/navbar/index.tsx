@@ -25,8 +25,6 @@ const Navbar = () => {
     setValue(initialValue);
   }, []);
 
-  console.log({ value });
-
   const handleChange = (_: React.SyntheticEvent, value: number) => {
     setValue(value);
   };

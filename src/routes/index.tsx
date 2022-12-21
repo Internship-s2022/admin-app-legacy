@@ -24,7 +24,7 @@ const AppRoutes = (): JSX.Element => {
     let path = '/login';
     switch (role) {
       case AccessRoleType.ADMIN:
-        path = '/admin';
+        path = '/admin/home';
         break;
       case AccessRoleType.SUPER_ADMIN:
         path = '/super-admin';
