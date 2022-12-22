@@ -40,8 +40,6 @@ const defineCriticality = (criticality) => {
 };
 
 const Card = (props: CardProps) => {
-  const dispatch: AppDispatch<null> = useDispatch();
-
   const {
     name,
     resource,
@@ -50,7 +48,7 @@ const Card = (props: CardProps) => {
     criticality,
     customMessage,
     isCustom,
-    entityId,
+    resourceId,
     id,
   } = props;
   const isProject = !!(resource === 'PROJECT');
@@ -59,6 +57,7 @@ const Card = (props: CardProps) => {
   const criticalityColor = defineCriticality(criticality);
   const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
   const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useDispatch();
 
   const [checked, setChecked] = React.useState(false);
 
@@ -88,11 +87,11 @@ const Card = (props: CardProps) => {
       <div data-testid={'card-component'}>
         <div className={`${styles.baseIconTab} ${cardIcon.color}`}>{cardIcon.icon}</div>
         <div className={`${styles.cardContainer} ${styles.card}`}>
-          <div className={styles.cardContent} onClick={() => redirectClick(entityId)}>
+          <div className={styles.cardContent} onClick={() => redirectClick(resourceId)}>
             <div className={styles.title}>
               <div className={styles.nameContainer}>
                 {isEmployee && <Avatar className={styles.avatars} />}
-                <span key={entityId}>{name}</span>
+                <span key={resourceId}>{name}</span>
               </div>
               <span>{resource?.toUpperCase()}</span>
             </div>

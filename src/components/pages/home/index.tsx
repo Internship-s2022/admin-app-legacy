@@ -77,7 +77,7 @@ const Home = () => {
 
   const listNotifications = useMemo(() => {
     const mappedNotifications = notifications.reduce((acc, item) => {
-      if (item.isActive === true) {
+      if (item.isActive) {
         acc.push({
           id: item?._id,
           resource: item.notificationType,
@@ -189,7 +189,7 @@ const Home = () => {
                 <Card
                   id={item.id}
                   key={item.id}
-                  entityId={selectName(item).id}
+                  resourceId={selectName(item).id}
                   name={selectName(item).name}
                   resource={item.resource}
                   criticality={item.projectCriticality}

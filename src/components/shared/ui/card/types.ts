@@ -3,7 +3,7 @@ import { Criticality } from 'src/components/pages/projects/types';
 
 export interface CardProps {
   id: string;
-  entityId: string;
+  resourceId: string;
   name: string;
   resource: string;
   members?: Member[];
