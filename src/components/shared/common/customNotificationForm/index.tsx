@@ -34,7 +34,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       customMessage: '',
       date: null,
     },
-    mode: 'onBlur',
+    mode: 'onChange',
     resolver: joiResolver(customNotificationsValidations),
   });
 
@@ -68,7 +68,7 @@ const CustomNotifications = (props: customNotificationProps) => {
           </div>
           <div className={styles.input}>
             <DatePicker
-              label={'Fecha'}
+              label={'Fecha de recordatorio'}
               testId={'date-picker-custom'}
               name="date"
               control={control}
