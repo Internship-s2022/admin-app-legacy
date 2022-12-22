@@ -3,8 +3,9 @@
   flex-direction: column;
   justify-content: space-around;
   width: 450px;
-  height: 380px;
+  height: 430px;
   text-align: center;
+  border-radius: 14px;
 }
 
 .titleContainer {
@@ -25,7 +26,39 @@
 }
 
 .input {
-  width: 150px;
+  width: 220px;
+}
+
+.input > div > div > input {
+  padding: 7px 14px;
+}
+
+.input > div > div > fieldset {
+  width: 90%;
+  height: 40px;
+}
+
+.input > div > div > div > button > svg {
+  height: 20px;
+  margin-top: 0;
+}
+
+.input > div > label {
+  margin-top: -8px;
+}
+
+.input > div > p {
+  margin-top: 2px;
+  margin-left: 1px;
+}
+
+.textArea > div > div > div {
+  background-color: #f6f6f6;
+  box-shadow: 0 0 10px 0 #0000001e inset;
+}
+
+.textArea > div > div > p {
+  margin-bottom: 20px;
 }
 
 .buttonContainer {
