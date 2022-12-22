@@ -54,7 +54,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       <div className={styles.titleContainer}>Agregar recordatorio</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputContainer}>
-          <div>
+          <div className={styles.textArea}>
             <TextInput
               control={control}
               testId={'custom-message-button'}
