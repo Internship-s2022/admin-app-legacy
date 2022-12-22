@@ -77,23 +77,25 @@ const Home = () => {
 
   const listNotifications = useMemo(() => {
     const mappedNotifications = notifications.reduce((acc, item) => {
-      acc.push({
-        id: item?._id,
-        resource: item.notificationType,
-        projectId: item.project?._id,
-        projectName: item.project?.projectName || '',
-        projectCriticality: item.project?.isCritic || '',
-        members: item.project?.members || [],
-        employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
-        employeeId: item.employee?._id,
-        clientName: item.client?.clientContact?.name || '',
-        clientId: item.client?._id,
-        date: item.date,
-        customMessage: item.customMessage || '',
-        notification: item.reasonType || '',
-        isCustom: item.isCustom,
-        active: item.isActive,
-      });
+      if (item.isActive === true) {
+        acc.push({
+          id: item?._id,
+          resource: item.notificationType,
+          projectId: item.project?._id,
+          projectName: item.project?.projectName || '',
+          projectCriticality: item.project?.isCritic || '',
+          members: item.project?.members || [],
+          employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
+          employeeId: item.employee?._id,
+          clientName: item.client?.clientContact?.name || '',
+          clientId: item.client?._id,
+          date: item.date,
+          customMessage: item.customMessage || '',
+          notification: item.reasonType || '',
+          isCustom: item.isCustom,
+          active: item.isActive,
+        });
+      }
       return acc;
     }, []);
     const filteredData = filterData(mappedNotifications, filters);
@@ -183,16 +185,19 @@ const Home = () => {
         <div className={styles.cardContainer}>
           {dataList?.map((item) => {
             return (
-              <Card
-                key={item.id}
-                id={selectName(item).id}
-                name={selectName(item).name}
-                resource={item.resource}
-                criticality={item.projectCriticality}
-                members={item.members}
-                customMessage={item.customMessage}
-                isCustom={item.isCustom}
-              />
+              <>
+                <Card
+                  id={item.id}
+                  key={item.id}
+                  entityId={selectName(item).id}
+                  name={selectName(item).name}
+                  resource={item.resource}
+                  criticality={item.projectCriticality}
+                  members={item.members}
+                  customMessage={item.customMessage}
+                  isCustom={item.isCustom}
+                />
+              </>
             );
           })}
         </div>

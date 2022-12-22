@@ -57,7 +57,6 @@ export const createNotification: AppThunk = (data) => {
 export const deleteNotification: AppThunk = (id: string) => {
   return async (dispatch: Dispatch) => {
     dispatch(deleteNotificationPending());
-    dispatch(setLoaderOn());
     try {
       const response = await deleteResourceRequest(ApiRoutes.NOTIFICATION, id);
       if (!response.error) {
@@ -68,7 +67,6 @@ export const deleteNotification: AppThunk = (id: string) => {
         deleteNotificationError({ message: error.message, networkError: error.networkError }),
       );
     } finally {
-      dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
     }
   };
