@@ -46,7 +46,7 @@ const ProjectMembersLayout = () => {
           ...matchedMember.helper[index],
           helperReference: {
             value: matchedMember.helper[index]?.helperReference?._id,
-            label: `${matchedMember.helper[index]?.helperReference.user.firstName} ${matchedMember.helper[index]?.helperReference.user.lastName}`,
+            label: `${matchedMember.helper[index]?.helperReference?.user?.firstName} ${matchedMember.helper[index]?.helperReference?.user?.lastName}`,
           },
         }
       );
@@ -66,11 +66,11 @@ const ProjectMembersLayout = () => {
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
     employee: {
-      value: matchedMember.employee._id,
-      label: `${matchedMember.employee.user.firstName} ${matchedMember.employee.user.lastName}`,
+      value: matchedMember?.employee?._id,
+      label: `${matchedMember.employee?.user?.firstName} ${matchedMember.employee?.user?.lastName}`,
     },
     helper: helperArray,
-    project: matchedMember.project._id,
+    project: matchedMember.project?._id,
   };
 
   const employeeDropdownList = () => {
@@ -78,7 +78,7 @@ const ProjectMembersLayout = () => {
     return matchedMember
       ? activeEmployees
       : activeEmployees.reduce((acc, item) => {
-          !activeMembersList.some((member) => member.employee._id === item._id) && acc.push(item);
+          !activeMembersList.some((member) => member?.employee?._id === item._id) && acc.push(item);
           return acc;
         }, []);
   };

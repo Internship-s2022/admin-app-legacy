@@ -95,7 +95,7 @@ const MemberForm = (props: MemberFormProps) => {
       if (employee._id !== selectedMember.value && employee?.user?.isActive) {
         acc.push({
           value: employee._id,
-          label: `${employee.user.firstName} ${employee.user.lastName}`,
+          label: `${employee.user?.firstName} ${employee.user?.lastName}`,
         });
       }
       return acc;

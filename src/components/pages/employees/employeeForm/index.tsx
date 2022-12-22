@@ -148,7 +148,7 @@ const EditEmployee = () => {
         };
       }),
     };
-    const { id, ...rest } = body;
+    const { id, user, projectHistory, ...rest } = body;
     await dispatch(editEmployee({ body: rest, id: id }));
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
