@@ -46,7 +46,7 @@ const ProjectMembersLayout = () => {
           ...matchedMember.helper[index],
           helperReference: {
             value: matchedMember.helper[index]?.helperReference?._id,
-            label: `${matchedMember.helper[index]?.helperReference?.user?.firstName} ${matchedMember.helper[index]?.helperReference.user.lastName}`,
+            label: `${matchedMember.helper[index]?.helperReference?.user?.firstName} ${matchedMember.helper[index]?.helperReference?.user?.lastName}`,
           },
         }
       );
