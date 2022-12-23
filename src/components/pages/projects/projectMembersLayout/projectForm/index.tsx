@@ -88,7 +88,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   useEffect(() => {
     dispatch(getProjectAndClients(id));
-  }, [membersList]);
+  }, []);
 
   useEffect(() => {
     reset({
