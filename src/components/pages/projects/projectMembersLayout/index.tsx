@@ -100,7 +100,7 @@ const ProjectMembersLayout = () => {
       <div>
         <ProjectForm>
           {!isLoading ? (
-            <MemberTable list={activeMembersList} setMemberId={setMemberId} />
+            <MemberTable list={activeMembersList} setMemberId={setMemberId} projectId={id} />
           ) : (
             <div className={styles.spinnerContainer}>
               <Spinner />

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
@@ -16,6 +16,7 @@ import {
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
+import { UiRoutes } from 'src/constants';
 import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
@@ -31,6 +32,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
+  const navigate = useNavigate();
 
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
@@ -83,6 +85,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
     dispatch(closeConfirmationModal());
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
 
   useEffect(() => {
