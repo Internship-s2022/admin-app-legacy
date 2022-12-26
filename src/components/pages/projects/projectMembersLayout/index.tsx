@@ -36,7 +36,7 @@ const ProjectMembersLayout = () => {
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const isLoading = useSelector((state: RootState) => state.member.isLoading);
 
-  const [memberId, setMemberId] = React.useState({} as any);
+  const [memberId, setMemberId] = React.useState<string>('');
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
@@ -103,7 +103,7 @@ const ProjectMembersLayout = () => {
             <MemberTable list={activeMembersList} setMemberId={setMemberId} />
           ) : (
             <div className={styles.spinnerContainer}>
-              <Spinner></Spinner>
+              <Spinner />
             </div>
           )}
         </ProjectForm>
