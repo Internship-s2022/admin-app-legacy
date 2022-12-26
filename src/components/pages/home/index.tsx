@@ -87,7 +87,7 @@ const Home = () => {
           members: item.project?.members || [],
           employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
           employeeId: item.employee?._id,
-          clientName: item.client?.clientContact?.name || '',
+          clientName: item.client?.name || '',
           clientId: item.client?._id,
           date: item.date,
           customMessage: item.customMessage || '',

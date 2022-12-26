@@ -35,7 +35,6 @@ const ProjectForm = (props: ProjectFormProps) => {
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const membersList = useSelector((state: RootState) => state.member.list);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   const clientList = useSelector((state: RootState) =>
@@ -88,7 +87,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   useEffect(() => {
     dispatch(getProjectAndClients(id));
-  }, [membersList]);
+  }, []);
 
   useEffect(() => {
     reset({

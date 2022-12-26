@@ -80,3 +80,10 @@
 .addMemberButton > button:hover {
   background-color: #478c71;
 }
+
+.spinnerContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 250px;
+}

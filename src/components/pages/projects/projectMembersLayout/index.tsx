@@ -4,14 +4,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import { Resource } from 'src/components/shared/common/customNotificationForm/types';
-import { Button, Modal } from 'src/components/shared/ui';
+import { Button, Modal, Spinner } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
 import { getMembers } from 'src/redux/member/thunk';
 import { RootState, useAppSelector } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
+import { closeFormModal, closeModal, openFormModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import MemberForm from './memberForm';
@@ -34,8 +34,9 @@ const ProjectMembersLayout = () => {
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const membersList = useSelector((state: RootState) => state.member.list);
   const employeeList = useSelector((state: RootState) => state.employee.list);
+  const isLoading = useSelector((state: RootState) => state.member.isLoading);
 
-  const [memberId, setMemberId] = React.useState({} as any);
+  const [memberId, setMemberId] = React.useState<string>('');
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
@@ -98,23 +99,11 @@ const ProjectMembersLayout = () => {
       </div>
       <div>
         <ProjectForm>
-          {activeMembersList?.length ? (
+          {!isLoading ? (
             <MemberTable list={activeMembersList} setMemberId={setMemberId} />
           ) : (
-            <div className={styles.emptyMember}>
-              <div>Este proyecto no cuenta con miembros asociados</div>
-              <div className={styles.messageContainer}>
-                <p>Para agregar un nuevo miembro al proyecto,</p>
-                <p>clickee en agregar miembro</p>
-              </div>
-              <div className={styles.addMemberButton}>
-                <Button
-                  testId="addMember"
-                  materialVariant={Variant.CONTAINED}
-                  onClick={() => dispatch(openModal())}
-                  label="+ Agregar Miembro"
-                />
-              </div>
+            <div className={styles.spinnerContainer}>
+              <Spinner />
             </div>
           )}
         </ProjectForm>
