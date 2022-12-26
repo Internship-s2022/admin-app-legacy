@@ -11,7 +11,7 @@ import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
 import { getMembers } from 'src/redux/member/thunk';
 import { RootState, useAppSelector } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
+import { closeFormModal, closeModal, openFormModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import MemberForm from './memberForm';

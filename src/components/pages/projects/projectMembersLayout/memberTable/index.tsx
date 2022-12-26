@@ -1,10 +1,9 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { RootState } from 'src/redux/store';
 import { openModal } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
@@ -15,8 +14,6 @@ import { MemberTableProps } from './types';
 
 const MemberTable = (props: MemberTableProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
-
-  const isLoading = useSelector((state: RootState) => state.member.isLoading);
 
   const { list, setMemberId } = props;
 
