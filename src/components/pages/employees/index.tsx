@@ -50,7 +50,6 @@ const Employees = () => {
     role: '',
     search: '',
   });
-  const [checked, setChecked] = React.useState(false);
 
   const listEmployee = useMemo(() => {
     const mappedEmployees = employee.reduce((acc, item) => {
@@ -71,7 +70,7 @@ const Employees = () => {
     }, []);
     const filteredData = filterData(mappedEmployees, filters);
     return filteredData;
-  }, [employee, filters.isActive, filters.role, filters.search]);
+  }, [employee, filters.role, filters.search]);
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -79,7 +78,7 @@ const Employees = () => {
 
   useEffect(() => {
     setDataList(listEmployee);
-  }, [employee, filters.isActive, filters.role, filters.search]);
+  }, [employee, filters.role, filters.search]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -131,30 +130,6 @@ const Employees = () => {
           />
         </div>
         <div className={styles.checkboxInput}>
-          <div className={styles.filterButtons}>
-            {checked ? (
-              <Button
-                materialVariant={Variant.CONTAINED}
-                onClick={() => {
-                  setFilters({ ...filters, isActive: !filters.isActive });
-                  setChecked(!checked);
-                }}
-                label={'Inactivos'}
-                testId={'inactive-button'}
-                color={'warning'}
-              />
-            ) : (
-              <Button
-                materialVariant={Variant.TEXT}
-                onClick={() => {
-                  setFilters({ ...filters, isActive: !filters.isActive });
-                  setChecked(!checked);
-                }}
-                label={'Inactivos'}
-                testId={'inactive-button'}
-              />
-            )}
-          </div>
           <select
             className={styles.filterDropdown}
             onChange={(e) => {
@@ -174,8 +149,7 @@ const Employees = () => {
             <Button
               materialVariant={Variant.TEXT}
               onClick={() => {
-                setFilters({ isActive: true, role: '', search: '' });
-                setChecked(false);
+                setFilters({ ...filters, role: '', search: '' });
               }}
               label={'Resetear filtros'}
               testId={'reset-filter'}
