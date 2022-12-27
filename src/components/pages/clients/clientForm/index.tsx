@@ -14,7 +14,6 @@ import {
   ConfirmationMessage,
   DatePicker,
   Modal,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -43,10 +42,6 @@ const ClientForm = () => {
 
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
-  const clientError = useSelector((state: RootState) => state.client.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
-
-  const operation = id ? 'editado' : 'agregado';
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
@@ -129,6 +124,7 @@ const ClientForm = () => {
     };
     id ? dispatch(editClient(options)) : dispatch(addClient(options));
     dispatch(closeConfirmationModal());
+    onClose();
   };
 
   const onClose = () => {
@@ -324,12 +320,6 @@ const ClientForm = () => {
           </div>
         </div>
       </div>
-      <SuccessErrorMessage
-        open={showAlert}
-        error={clientError}
-        resource={Resources.Clientes}
-        operation={operation}
-      />
       <div>
         <Modal
           testId={'client-custom-notification'}

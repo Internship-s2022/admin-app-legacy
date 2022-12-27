@@ -11,7 +11,6 @@ import {
   DatePicker,
   Dropdown,
   Modal,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -35,7 +34,6 @@ const ProjectForm = (props: ProjectFormProps) => {
   const navigate = useNavigate();
 
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
@@ -47,8 +45,6 @@ const ProjectForm = (props: ProjectFormProps) => {
       return acc;
     }, []),
   );
-  const projectError = useSelector((state: RootState) => state.project?.error);
-  const operation = id ? 'editado' : 'agregado';
 
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
@@ -225,12 +221,6 @@ const ProjectForm = (props: ProjectFormProps) => {
             </div>
           </div>
         </div>
-        <SuccessErrorMessage
-          open={showAlert}
-          error={projectError}
-          resource={Resources.Proyectos}
-          operation={operation}
-        />
       </form>
       <Modal
         testId="editProjectModal"

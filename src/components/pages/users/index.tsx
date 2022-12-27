@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -14,7 +13,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
-import { RootState } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeFormModal,
@@ -23,6 +22,7 @@ import {
   openConfirmationModal,
   openFormModal,
   openModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { deleteUser, editUser, getUsers } from 'src/redux/user/thunks';
 import { AppDispatch, Resources } from 'src/types';
@@ -63,15 +63,14 @@ const Users = () => {
 
   const [dataList, setDataList] = React.useState([]);
   const [checked, setChecked] = React.useState(false);
-  const [operation, setOperation] = React.useState('');
-
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
-  const showFormModal = useSelector((state: RootState) => state.ui.showFormModal);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const superAdmin = useSelector((state: RootState) => state.auth.authUser);
-  const userList = useSelector((state: RootState) => state.user.list);
-  const userError = useSelector((state: RootState) => state.user.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const showFormModal = useAppSelector((state: RootState) => state.ui.showFormModal);
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const superAdmin = useAppSelector((state: RootState) => state.auth.authUser);
+  const userList = useAppSelector((state: RootState) => state.user.list);
+  const userError = useAppSelector((state: RootState) => state.user.error);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const confirmationTitle = filters.isActive ? 'Desactivar usuario' : 'Activar Usuario';
   const confirmationDescription = filters.isActive
     ? `¿Desea desactivar al usuario ${row.name}?`
@@ -79,7 +78,7 @@ const Users = () => {
 
   const navigate = useNavigate();
 
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<null> = useAppDispatch();
 
   const activeUsers = useMemo(() => {
     const mappedUser = userList.reduce((acc, item) => {
@@ -117,12 +116,12 @@ const Users = () => {
   const handleDelete = (data) => {
     dispatch(deleteUser(data._id));
     dispatch(closeConfirmationModal());
-    setOperation('inactivado');
+    dispatch(setSnackbarOperation('inactivado'));
   };
 
   const handleEdit = (data) => {
     dispatch(openModal());
-    setOperation('editado');
+    dispatch(setSnackbarOperation('editado'));
     setRow(data);
   };
 
@@ -133,7 +132,7 @@ const Users = () => {
   const handleActivate = (data) => {
     dispatch(editUser(data));
     dispatch(closeConfirmationModal());
-    setOperation('activado');
+    dispatch(setSnackbarOperation('activado'));
   };
 
   const options = {
@@ -208,7 +207,10 @@ const Users = () => {
           <div className={styles.addUserButton}>
             <Button
               materialVariant={Variant.CONTAINED}
-              onClick={() => dispatch(openFormModal())}
+              onClick={() => {
+                dispatch(openFormModal());
+                dispatch(setSnackbarOperation('agregado'));
+              }}
               label={'+ Agregar un nuevo usuario'}
               testId={'add-user-button'}
             />
@@ -308,14 +310,14 @@ const Users = () => {
           isOpen={showFormModal}
           testId="add-user-modal"
         >
-          <UserForm setOperation={() => setOperation('agregado')} />
+          <UserForm />
         </Modal>
       </div>
       <SuccessErrorMessage
         open={showAlert}
         error={userError}
         resource={Resources.Usuarios}
-        operation={operation}
+        operation={snackbarOperation}
       />
       {!showErrorMessage && (
         <Modal

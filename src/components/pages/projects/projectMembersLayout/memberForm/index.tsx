@@ -8,7 +8,6 @@ import {
   Button,
   DatePicker,
   Dropdown,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -28,8 +27,6 @@ const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
-  const memberError = useSelector((state: RootState) => state.member.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
   let helperDropdownList;
 
@@ -281,12 +278,6 @@ const MemberForm = (props: MemberFormProps) => {
                 />
               </div>
             </div>
-            <SuccessErrorMessage
-              open={showAlert}
-              error={memberError}
-              resource={Resources.Miembros}
-              operation={'agregado'}
-            />
           </form>
         </div>
       </div>

@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { deleteMember } from 'src/redux/member/thunk';
-import { openModal } from 'src/redux/ui/actions';
+import { openModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
@@ -36,16 +36,19 @@ const MemberTable = (props: MemberTableProps) => {
 
   const handleDelete = (id) => {
     dispatch(deleteMember(id));
+    dispatch(setSnackbarOperation('borrado'));
   };
 
   const handleEdit = (id) => {
     setMemberId(id);
     dispatch(openModal());
+    dispatch(setSnackbarOperation('editado'));
   };
 
   const handleAdd = () => {
     setMemberId('');
     dispatch(openModal());
+    dispatch(setSnackbarOperation('agregado'));
   };
 
   return list?.length ? (
@@ -88,7 +91,9 @@ const MemberTable = (props: MemberTableProps) => {
                     <Button
                       testId="deleteButton"
                       materialVariant={Variant.OUTLINED}
-                      onClick={() => handleDelete(data.id)}
+                      onClick={() => {
+                        handleDelete(data.id);
+                      }}
                       label="X"
                     />
                     <Button
