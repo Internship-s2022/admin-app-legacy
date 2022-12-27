@@ -194,7 +194,7 @@ const Users = () => {
             ¡Bienvenido {superAdmin.name}!
           </Typography>
           <p data-testid="user-subtitle">
-            ¡Esta es la lista de usuarios! Puedes asignarles el acceso que desees!
+            Esta es la lista de usuarios. Puedes asignarles el acceso que desees.
           </p>
         </div>
         <div className={styles.topTableContainer}>
