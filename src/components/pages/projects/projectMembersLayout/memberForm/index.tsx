@@ -8,7 +8,6 @@ import {
   Button,
   DatePicker,
   Dropdown,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -16,7 +15,7 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
+import { closeModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -279,12 +278,6 @@ const MemberForm = (props: MemberFormProps) => {
                 />
               </div>
             </div>
-            {/* <SuccessErrorMessage
-              open={showAlert}
-              error={memberError}
-              resource={Resources.Miembros}
-              operation={'agregado'}
-            /> */}
           </form>
         </div>
       </div>
