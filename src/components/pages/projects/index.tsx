@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -17,12 +16,13 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, getProjects } from 'src/redux/project/thunk';
-import { RootState } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeMessageAlert,
   closeModal,
   openConfirmationModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter, formattedTableData } from 'src/utils/formatters';
@@ -57,11 +57,12 @@ const filterData = (list, filters) => {
 const Projects = () => {
   const [row, setRow] = React.useState({} as any);
 
-  const dispatch: AppDispatch<null> = useDispatch();
-  const projectError = useSelector((state: RootState) => state.project?.error);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const projectList = useSelector((state: RootState) => state.project.list);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const dispatch: AppDispatch<null> = useAppDispatch();
+  const projectError = useAppSelector((state: RootState) => state.project?.error);
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const projectList = useAppSelector((state: RootState) => state.project.list);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
 
   const [dataList, setDataList] = useState([]);
   const [checked, setChecked] = React.useState(false);
@@ -112,6 +113,7 @@ const Projects = () => {
   };
 
   const handleEdit = (row) => {
+    dispatch(setSnackbarOperation('editado'));
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
@@ -121,6 +123,7 @@ const Projects = () => {
 
   const handleDelete = async (id) => {
     await dispatch(deleteProject(id));
+    dispatch(setSnackbarOperation('borrado'));
     dispatch(closeConfirmationModal());
     dispatch(closeModal());
   };
@@ -277,7 +280,7 @@ const Projects = () => {
         open={showAlert}
         error={projectError}
         resource={Resources.Proyectos}
-        operation={'borrado'}
+        operation={snackbarOperation}
       />
       <Modal
         testId="deleteModal"

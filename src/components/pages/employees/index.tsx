@@ -10,7 +10,7 @@ import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
-import { closeMessageAlert } from 'src/redux/ui/actions';
+import { closeMessageAlert, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -43,7 +43,7 @@ const Employees = () => {
   const employeeError = useAppSelector((state: RootState) => state.employee.error);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [dataList, setDataList] = useState([]);
-
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const employee = useAppSelector((state: RootState) => state.employee?.list);
   const [filters, setFilters] = React.useState({
     isActive: true,
@@ -104,7 +104,10 @@ const Employees = () => {
       label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
-      onClick: (row) => navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`),
+      onClick: (row) => {
+        dispatch(setSnackbarOperation('editado'));
+        navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`);
+      },
     },
   ];
 
@@ -195,7 +198,7 @@ const Employees = () => {
               open={showAlert}
               error={employeeError}
               resource={Resources.Empleados}
-              operation={'editado'}
+              operation={snackbarOperation}
             />
           </div>
         ) : (

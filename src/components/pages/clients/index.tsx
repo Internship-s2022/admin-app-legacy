@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -15,12 +14,13 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { deleteClient, getClients } from 'src/redux/client/thunks';
-import { RootState } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeMessageAlert,
   closeModal,
   openConfirmationModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
@@ -47,12 +47,13 @@ const filterData = (list, filters) => {
 
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const dispatch: AppDispatch<null> = useDispatch();
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const dispatch: AppDispatch<null> = useAppDispatch();
 
-  const clientsList = useSelector((state: RootState) => state.client?.list);
-  const clientError = useSelector((state: RootState) => state.client?.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const clientsList = useAppSelector((state: RootState) => state.client?.list);
+  const clientError = useAppSelector((state: RootState) => state.client?.error);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
 
   const navigate = useNavigate();
 
@@ -97,11 +98,13 @@ const Clients = () => {
 
   const handleDelete = async (id) => {
     await dispatch(deleteClient(id));
+    dispatch(setSnackbarOperation('borrado'));
     dispatch(closeConfirmationModal());
     dispatch(closeModal());
   };
 
   const handleEdit = (row) => {
+    dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
   };
 
@@ -224,7 +227,7 @@ const Clients = () => {
         open={showAlert}
         error={clientError}
         resource={Resources.Clientes}
-        operation={'borrado'}
+        operation={snackbarOperation}
       />
       <Modal
         testId="delete-modaldeleteModal"
