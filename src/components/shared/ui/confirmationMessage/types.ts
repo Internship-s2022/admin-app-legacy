@@ -5,5 +5,5 @@ export interface ConfirmationMessageProps {
   description: string;
   testIdTitle?: string;
   testIdDescription?: string;
-  icon?: boolean;
+  color?: string;
 }

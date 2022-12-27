@@ -1,8 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { IconButton } from '@mui/material';
 
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
+import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import { deleteMember } from 'src/redux/member/thunk';
 import { openModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
@@ -88,20 +91,16 @@ const MemberTable = (props: MemberTableProps) => {
                 })}
                 <td className={`${styles.buttons} ${styles.rows}`}>
                   <div>
-                    <Button
-                      testId="deleteButton"
-                      materialVariant={Variant.OUTLINED}
+                    <IconButton
                       onClick={() => {
                         handleDelete(data.id);
                       }}
-                      label="X"
-                    />
-                    <Button
-                      testId="editButton"
-                      materialVariant={Variant.OUTLINED}
-                      onClick={() => handleEdit(data.id)}
-                      label="Editar"
-                    />
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEdit(data.id)}>
+                      <EditIcon />
+                    </IconButton>
                   </div>
                 </td>
               </tr>
