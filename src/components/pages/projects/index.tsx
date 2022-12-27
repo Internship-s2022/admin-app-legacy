@@ -183,7 +183,10 @@ const Projects = () => {
         <div className={styles.addProjectButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`)}
+            onClick={() => {
+              handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`);
+              dispatch(setSnackbarOperation('agregado'));
+            }}
             label={'+ Agregar proyecto'}
             testId={'add-project-button'}
             styles={'addButton'}

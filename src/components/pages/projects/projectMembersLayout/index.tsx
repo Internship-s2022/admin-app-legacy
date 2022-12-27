@@ -1,18 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import { Resource } from 'src/components/shared/common/customNotificationForm/types';
-import { Button, Modal, Spinner } from 'src/components/shared/ui';
+import { Button, Modal, Spinner, SuccessErrorMessage } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
 import { getMembers } from 'src/redux/member/thunk';
-import { RootState, useAppSelector } from 'src/redux/store';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { closeFormModal, closeModal, openFormModal } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import MemberForm from './memberForm';
 import MemberTable from './memberTable';
@@ -27,15 +26,17 @@ const ProjectMembersLayout = () => {
     navigate(path);
   };
 
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<null> = useAppDispatch();
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
 
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
-  const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const membersList = useSelector((state: RootState) => state.member.list);
-  const employeeList = useSelector((state: RootState) => state.employee.list);
-  const isLoading = useSelector((state: RootState) => state.member.isLoading);
-
+  const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const selectedProject = useAppSelector((state: RootState) => state.project.selectedProject);
+  const membersList = useAppSelector((state: RootState) => state.member.list);
+  const employeeList = useAppSelector((state: RootState) => state.employee.list);
+  const isLoading = useAppSelector((state: RootState) => state.member.isLoading);
+  const memberError = useAppSelector((state: RootState) => state.member.error);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [memberId, setMemberId] = React.useState<string>('');
 
   const matchedMember = membersList.find((member) => memberId === member._id);
@@ -138,6 +139,12 @@ const ProjectMembersLayout = () => {
           />
         </Modal>
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={memberError}
+        resource={Resources.Miembros}
+        operation={snackbarOperation}
+      />
     </div>
   );
 };

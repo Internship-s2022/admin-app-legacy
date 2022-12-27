@@ -161,7 +161,10 @@ const Clients = () => {
         <div className={styles.addClientButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
+            onClick={() => {
+              navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`);
+              dispatch(setSnackbarOperation('agregado'));
+            }}
             label={'+ Agregar cliente'}
             testId={'add-client-button'}
             styles={'addButton'}

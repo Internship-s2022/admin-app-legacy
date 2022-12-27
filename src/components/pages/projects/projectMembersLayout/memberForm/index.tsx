@@ -16,7 +16,7 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal } from 'src/redux/ui/actions';
+import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -28,8 +28,6 @@ const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
-  const memberError = useSelector((state: RootState) => state.member.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
   let helperDropdownList;
 
@@ -281,12 +279,12 @@ const MemberForm = (props: MemberFormProps) => {
                 />
               </div>
             </div>
-            <SuccessErrorMessage
+            {/* <SuccessErrorMessage
               open={showAlert}
               error={memberError}
               resource={Resources.Miembros}
               operation={'agregado'}
-            />
+            /> */}
           </form>
         </div>
       </div>

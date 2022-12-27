@@ -1,12 +1,12 @@
 import { format } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import { AccessRoleType } from 'src/constants';
+import { useAppDispatch } from 'src/redux/store';
 import { closeFormModal } from 'src/redux/ui/actions';
 import { addUser } from 'src/redux/user/thunks';
 import { AppDispatch } from 'src/types';
@@ -15,11 +15,9 @@ import { accessRoles } from '../constants';
 import { FormValues } from '../types';
 import styles from '../users.module.css';
 import { userValidation } from '../validations';
-import { userFormProps } from './types';
 
-const UserForm = (props: userFormProps) => {
-  const dispatch: AppDispatch<null> = useDispatch();
-  const { setOperation } = props;
+const UserForm = () => {
+  const dispatch: AppDispatch<null> = useAppDispatch();
 
   const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
@@ -47,7 +45,6 @@ const UserForm = (props: userFormProps) => {
     };
     dispatch(addUser(data));
     onClose();
-    setOperation();
   };
 
   return (
