@@ -22,9 +22,10 @@ export interface Headers {
 export interface TableButton<Data> {
   active: boolean;
   testId: string;
-  label: string;
+  label?: string;
   onClick: (row: Data) => void;
   variant: Variant;
+  icon?: JSX.Element;
 }
 export interface SortBy {
   dir: 'asc' | 'desc';

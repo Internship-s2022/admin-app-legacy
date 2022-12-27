@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button, SuccessErrorMessage, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
@@ -101,13 +102,13 @@ const Employees = () => {
   const buttonsArray: TableButton<MappedEmployeeData>[] = [
     {
       active: true,
-      label: 'EDITAR',
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
         dispatch(setSnackbarOperation('editado'));
         navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`);
       },
+      icon: <EditIcon />,
     },
   ];
 

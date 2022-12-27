@@ -57,9 +57,10 @@ const Header = () => {
       >
         <ConfirmationMessage
           title={'Cerrar sesión'}
-          description={'¿Desea cerrar sesión de Radium Admin?'}
+          description={'¿Desea cerrar sesión de Radium Admin? '}
           handleConfirm={() => handleLogout()}
           handleClose={() => dispatch(closeLogoutModal())}
+          icon
         />
       </Modal>
     </header>
