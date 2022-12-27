@@ -50,72 +50,77 @@ const UserForm = () => {
   return (
     <div className={styles.formContainer}>
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.addUserMessage}>Agregar usuario</div>
         <div className={styles.inputsContainer}>
-          <Dropdown
-            control={control}
-            testId={'access-role-dropdown'}
-            label="Rol de acceso"
-            name="accessRoleType"
-            options={accessRoles}
-            error
-            fullWidth
-          />
-          <TextInput
-            control={control}
-            testId={'email-input'}
-            label="Email"
-            name="email"
-            type={'text'}
-            variant="outlined"
-            error
-            fullWidth
-          />
-          <TextInput
-            control={control}
-            testId={'first-name-input'}
-            label="Nombre"
-            name="firstName"
-            type={'text'}
-            error
-            fullWidth
-          />
-          <TextInput
-            control={control}
-            testId={'last-name-input'}
-            label="Apellido"
-            name="lastName"
-            type={'text'}
-            error
-            fullWidth
-          />
-          <TextInput
-            control={control}
-            testId={'location-input'}
-            label="Localidad"
-            name="location"
-            type={'text'}
-            error
-            fullWidth
-          />
-          <DatePicker
-            label={'Fecha de nacimiento'}
-            testId={'birthDate'}
-            name="birthDate"
-            control={control}
-          />
+          <div className={styles.leftInputsContainer}>
+            <TextInput
+              control={control}
+              testId={'first-name-input'}
+              label="Nombre"
+              name="firstName"
+              type={'text'}
+              error
+              fullWidth
+            />
+            <DatePicker
+              label={'Fecha de nacimiento'}
+              testId={'birthDate'}
+              name="birthDate"
+              control={control}
+            />
+            <TextInput
+              control={control}
+              testId={'location-input'}
+              label="Localidad"
+              name="location"
+              type={'text'}
+              error
+              fullWidth
+            />
+          </div>
+          <div className={styles.rightInputsContainer}>
+            <TextInput
+              control={control}
+              testId={'last-name-input'}
+              label="Apellido"
+              name="lastName"
+              type={'text'}
+              error
+              fullWidth
+            />
+            <TextInput
+              control={control}
+              testId={'email-input'}
+              label="Email"
+              name="email"
+              type={'text'}
+              variant="outlined"
+              error
+              fullWidth
+            />
+            <Dropdown
+              control={control}
+              testId={'access-role-dropdown'}
+              label="Rol de acceso"
+              name="accessRoleType"
+              options={accessRoles}
+              error
+              fullWidth
+            />
+          </div>
         </div>
         <div className={styles.buttonsContainer}>
-          <Button
-            testId="submit-btn"
-            materialVariant={Variant.CONTAINED}
-            label="Confirmar"
-            onClick={handleSubmit(onSubmit)}
-          />
           <Button
             testId="reset-btn"
             materialVariant={Variant.OUTLINED}
             label="Cancelar"
             onClick={() => onClose()}
+          />
+          <Button
+            testId="submit-btn"
+            materialVariant={Variant.CONTAINED}
+            label="Confirmar"
+            onClick={handleSubmit(onSubmit)}
           />
         </div>
       </form>
