@@ -32,6 +32,9 @@
 }
 
 .emptyNotifications {
-  align-self: center;
   width: 55%;
+}
+
+.imageContainer {
+  height: 400px;
 }
