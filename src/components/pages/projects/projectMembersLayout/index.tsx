@@ -55,11 +55,7 @@ const ProjectMembersLayout = () => {
     });
   }, [membersList, memberId]);
 
-  const selectedProjectMemberList = membersList.filter(
-    (member) => member?.project?._id === selectedProject?._id,
-  );
-
-  const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
+  const activeMembersList = membersList?.filter((member) => member.active);
 
   useEffect(() => {
     selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
