@@ -98,9 +98,17 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
     case Actions.DELETE_CLIENT_SUCCESS:
       return {
         ...state,
-        list: state.list.filter((client) => client._id !== action.payload),
-        isLoading: false,
+        list: state.list.map((client) => {
+          if (client._id === action.payload) {
+            return {
+              ...client,
+              isActive: false,
+            };
+          }
+          return client;
+        }),
         error: undefined,
+        isLoading: false,
       };
     case Actions.DELETE_CLIENT_ERROR:
       return {
