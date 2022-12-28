@@ -9,7 +9,22 @@ import styles from './emptyList.module.css';
 
 const EmptyList = (props: EmptyDataProps) => {
   const { resource, isEmployee, handleAdd } = props;
-  return (
+  const isNotification = resource === 'notificaciones';
+
+  return isNotification ? (
+    <div className={styles.container}>
+      <div className={styles.textContainer}>
+        <span>No hay {resource} pendientes</span>
+      </div>
+      <div className={styles.imageContainer}>
+        <img
+          className={styles.emptyNotifications}
+          src={`${process.env.PUBLIC_URL}/assets/images/emptyNotifications.png`}
+          alt={'empty-notifications'}
+        ></img>
+      </div>
+    </div>
+  ) : (
     <div className={styles.container}>
       <div className={styles.textContainer}>
         <span>Aún no hay {resource}</span>
