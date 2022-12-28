@@ -17,12 +17,11 @@ import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
 import { cleanSelectedProject } from 'src/redux/project/actions';
-import { deleteProject, getProjects } from 'src/redux/project/thunk';
+import { deleteProject, editProject, getProjects } from 'src/redux/project/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeMessageAlert,
-  closeModal,
   openConfirmationModal,
   setSnackbarOperation,
 } from 'src/redux/ui/actions';
@@ -73,6 +72,10 @@ const Projects = () => {
     criticality: '',
     search: '',
   });
+  const confirmationTitle = filters.isActive ? 'Desactivar proyecto' : 'Activar proyecto';
+  const confirmationDescription = filters.isActive
+    ? `¿Desea desactivar al proyecto ${row.projectName}?`
+    : `¿Desea activar al proyecto ${row.projectName}?`;
 
   const activeProjectsList = useMemo(() => {
     const formattedProjectList = projectList.map((project) => ({
@@ -109,6 +112,15 @@ const Projects = () => {
     };
   }, []);
 
+  useEffect(() => {
+    dispatch(getProjects());
+    dispatch(cleanSelectedProject());
+  }, []);
+
+  useEffect(() => {
+    setDataList(activeProjectsList);
+  }, [projectList, filters.isActive, filters.criticality, filters.search]);
+
   const navigate = useNavigate();
   const handleNavigation = (path) => {
     navigate(path);
@@ -119,47 +131,61 @@ const Projects = () => {
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
-  const handleDataList = (data) => {
-    setDataList(data);
-  };
-
-  const handleDelete = async (id) => {
-    await dispatch(deleteProject(id));
-    dispatch(setSnackbarOperation('borrado'));
+  const handleActivate = (data) => {
+    dispatch(editProject(data));
     dispatch(closeConfirmationModal());
-    dispatch(closeModal());
+    dispatch(setSnackbarOperation('activado'));
   };
 
-  useEffect(() => {
-    dispatch(getProjects());
-    dispatch(cleanSelectedProject());
-  }, []);
+  const handleDelete = (id) => {
+    dispatch(deleteProject(id));
+    dispatch(setSnackbarOperation('inactivado'));
+    dispatch(closeConfirmationModal());
+  };
 
-  useEffect(() => {
-    setDataList(activeProjectsList);
-  }, [projectList, filters.isActive, filters.criticality, filters.search]);
+  const options = {
+    id: row._id,
+    body: {
+      isActive: true,
+    },
+  };
 
-  const buttonsArray: TableButton<MappedProjectData>[] = [
-    {
-      active: true,
-      testId: 'delete-button',
-      variant: Variant.CONTAINED,
-      onClick: (data) => {
-        dispatch(openConfirmationModal());
-        setRow(data);
-      },
-      icon: <DeleteIcon />,
-    },
-    {
-      active: true,
-      testId: 'edit-button',
-      variant: Variant.CONTAINED,
-      onClick: (row) => {
-        return handleEdit(row);
-      },
-      icon: <EditIcon />,
-    },
-  ];
+  const buttonsArray: TableButton<MappedProjectData>[] = filters.isActive
+    ? [
+        {
+          active: true,
+          label: 'EDITAR',
+          testId: 'edit-button',
+          variant: Variant.CONTAINED,
+          onClick: (row) => {
+            return handleEdit(row);
+          },
+          icon: <EditIcon />,
+        },
+        {
+          active: true,
+          label: 'X',
+          testId: 'delete-button',
+          variant: Variant.CONTAINED,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+          icon: <DeleteIcon />,
+        },
+      ]
+    : [
+        {
+          active: true,
+          label: 'Activar',
+          testId: 'activate-button',
+          variant: Variant.TEXT,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+        },
+      ];
 
   const showErrorMessage = projectError?.networkError || !projectList.length;
 
@@ -261,7 +287,7 @@ const Projects = () => {
             testId={'project-table'}
             headers={projectHeaders}
             value={dataList}
-            setDataList={handleDataList}
+            setDataList={setDataList}
             buttons={buttonsArray}
             isActive={filters.isActive}
           />
@@ -294,9 +320,9 @@ const Projects = () => {
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
-          title={'Eliminar Proyecto'}
-          description={`¿Desea eliminar al proyecto ${row.projectName}?`}
-          handleConfirm={() => handleDelete(row._id)}
+          description={confirmationDescription}
+          title={confirmationTitle}
+          handleConfirm={() => (filters.isActive ? handleDelete(row._id) : handleActivate(options))}
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
