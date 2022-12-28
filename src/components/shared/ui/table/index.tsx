@@ -11,6 +11,7 @@ import {
   TableSortLabel,
 } from '@mui/material';
 
+import Button from '../buttons/button';
 import styles from './table.module.css';
 import { RowData, SortBy, TableProps } from './types';
 
@@ -79,13 +80,19 @@ const Table = <T extends RowData>(props: TableProps<T>) => {
               ))}
               {buttons?.length && (
                 <TableCell align="right" className={styles.buttonCell}>
-                  {buttons.map(
-                    (button, index) =>
-                      button.active && (
-                        <IconButton key={index} onClick={() => button.onClick(row)}>
-                          {button.icon}
-                        </IconButton>
-                      ),
+                  {buttons.map((button, index) =>
+                    button.active && button.icon ? (
+                      <IconButton key={index} onClick={() => button.onClick(row)}>
+                        {button.icon}
+                      </IconButton>
+                    ) : (
+                      <Button
+                        materialVariant={button.variant}
+                        testId={button.testId}
+                        onClick={() => button.onClick(row)}
+                        label={button.label}
+                      />
+                    ),
                   )}
                 </TableCell>
               )}

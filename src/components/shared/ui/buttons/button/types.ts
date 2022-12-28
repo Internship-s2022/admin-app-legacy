@@ -4,12 +4,12 @@ export enum Variant {
   OUTLINED = 'outlined',
 }
 export interface ButtonProps {
-  onClick: () => void;
-  label: string;
+  onClick?: () => void;
+  label?: string;
   disabled?: boolean;
-  materialVariant: Variant;
+  materialVariant?: Variant;
   type?: string;
-  testId: string;
+  testId?: string;
   styles?: string;
   color?: 'error' | 'inherit' | 'warning' | 'info' | 'primary' | 'secondary' | 'success';
 }
