@@ -118,15 +118,9 @@ const Home = () => {
     navigate(path);
   };
 
-  const showErrorMessage = notificationError?.networkError || !notifications.length;
+  const showErrorMessage = notificationError?.networkError || !listNotifications.length;
 
-  return showErrorMessage ? (
-    <EmptyDataHandler
-      resource={Resources.Notificaciones}
-      handleReload={() => handleNavigation(0)}
-      error={notificationError}
-    />
-  ) : (
+  return (
     <>
       <div className={styles.containerPage}>
         <section className={styles.container}>
@@ -198,26 +192,36 @@ const Home = () => {
           </div>
           <div className={styles.todayDate}>{today.toString()}</div>
         </section>
-        <div className={styles.cardContainer}>
-          {dataList?.map((item) => {
-            return (
-              <>
-                <Card
-                  id={item.id}
-                  key={item.id}
-                  resourceId={selectName(item).id}
-                  name={selectName(item).name}
-                  resource={item.resource}
-                  criticality={item.projectCriticality}
-                  members={item.members}
-                  customMessage={item.customMessage}
-                  isCustom={item.isCustom}
-                />
-              </>
-            );
-          })}
-        </div>
       </div>
+      {showErrorMessage ? (
+        <EmptyDataHandler
+          resource={Resources.Notificaciones}
+          handleReload={() => handleNavigation(0)}
+          error={notificationError}
+        />
+      ) : (
+        <div className={styles.containerPage}>
+          <div className={styles.cardContainer}>
+            {dataList?.map((item) => {
+              return (
+                <>
+                  <Card
+                    id={item.id}
+                    key={item.id}
+                    resourceId={selectName(item).id}
+                    name={selectName(item).name}
+                    resource={item.resource}
+                    criticality={item.projectCriticality}
+                    members={item.members}
+                    customMessage={item.customMessage}
+                    isCustom={item.isCustom}
+                  />
+                </>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </>
   );
 };

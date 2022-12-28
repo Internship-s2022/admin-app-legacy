@@ -179,7 +179,7 @@ const Users = () => {
         },
       ];
 
-  const showErrorMessage = userError?.networkError || !userList.length;
+  const showErrorMessage = userError?.networkError || !activeUsers.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler

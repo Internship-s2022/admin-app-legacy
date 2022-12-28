@@ -7,6 +7,11 @@
   text-align: center;
 }
 
+.textContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .textContainer span {
   font-size: 24px;
   font-weight: 500;
@@ -24,4 +29,9 @@
 
 .buttonContainer > button:hover {
   background-color: #478c71;
+}
+
+.emptyNotifications {
+  align-self: center;
+  width: 55%;
 }

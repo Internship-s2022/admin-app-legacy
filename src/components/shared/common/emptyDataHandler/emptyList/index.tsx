@@ -9,17 +9,28 @@ import styles from './emptyList.module.css';
 
 const EmptyList = (props: EmptyDataProps) => {
   const { resource, isEmployee, handleAdd } = props;
+  const isNotification = resource === 'notificaciones';
   return (
     <div className={styles.container}>
       <div className={styles.textContainer}>
-        <span>Aún no hay {resource}</span>
-        <p>
-          {isEmployee
-            ? 'Para agregar uno contactate con el Super Admin'
-            : 'Para agregar uno clickea en el siguiente botón'}
-        </p>
+        {!isNotification && <span>Aún no hay {resource}</span>}
+        {isNotification && <span>No hay {resource} pendientes</span>}
+        {isNotification && (
+          <img
+            className={styles.emptyNotifications}
+            src={`${process.env.PUBLIC_URL}/assets/images/emptyNotifications.png`}
+            alt={'empty-notifications'}
+          ></img>
+        )}
+        {!isNotification && (
+          <p>
+            {isEmployee
+              ? 'Para agregar uno contactate con el Super Admin'
+              : 'Para agregar uno clickea en el siguiente botón'}
+          </p>
+        )}
       </div>
-      {!isEmployee && (
+      {!isEmployee && !isNotification && (
         <div className={styles.buttonContainer}>
           <Button
             materialVariant={Variant.CONTAINED}
