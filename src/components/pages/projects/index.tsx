@@ -11,6 +11,8 @@ import {
   Table,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
+import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
@@ -140,22 +142,22 @@ const Projects = () => {
   const buttonsArray: TableButton<MappedProjectData>[] = [
     {
       active: true,
-      label: 'EDITAR',
-      testId: 'edit-button',
-      variant: Variant.CONTAINED,
-      onClick: (row) => {
-        return handleEdit(row);
-      },
-    },
-    {
-      active: true,
-      label: 'X',
       testId: 'delete-button',
       variant: Variant.CONTAINED,
       onClick: (data) => {
         dispatch(openConfirmationModal());
         setRow(data);
       },
+      icon: <DeleteIcon />,
+    },
+    {
+      active: true,
+      testId: 'edit-button',
+      variant: Variant.CONTAINED,
+      onClick: (row) => {
+        return handleEdit(row);
+      },
+      icon: <EditIcon />,
     },
   ];
 
