@@ -1,10 +1,12 @@
 import React, { lazy, Suspense, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 
 import Layout from 'src/components/layout';
 import { Loader } from 'src/components/shared/ui';
 import { AccessRoleType, UiRoutes } from 'src/constants';
 import { tokenListener } from 'src/helper/firebase';
+import { RootState } from 'src/redux/store';
 
 const Login = lazy(() => import('src/components/pages/login'));
 
@@ -17,8 +19,8 @@ const Storybook = lazy(() => import('src/components/pages/storybook'));
 const AppRoutes = (): JSX.Element => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const role = localStorage.getItem('role');
-  const token = localStorage.getItem('token');
+  const roleFromStore = useSelector((state: RootState) => state.auth.authUser.accessRoleType);
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
 
   const redirectPath = (role) => {
     let path = '/login';
@@ -36,11 +38,18 @@ const AppRoutes = (): JSX.Element => {
   };
 
   useEffect(() => {
-    tokenListener();
-    if (token) {
-      pathname !== '/' ? navigate(pathname) : redirectPath(role);
+    if (roleFromStore) {
+      pathname !== '/' ? navigate(pathname) : redirectPath(roleFromStore);
     }
+  }, [roleFromStore]);
+
+  useEffect(() => {
+    tokenListener();
   }, []);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Suspense fallback={<Loader />}>
@@ -55,7 +64,7 @@ const AppRoutes = (): JSX.Element => {
             <Route path={UiRoutes.SUPER_ADMIN} element={<SuperAdmin />} />
           </Route>
           <Route path={UiRoutes.NOT_ALLOWED} element={<NotAllowed />} />
-          <Route path="/*" element={<Navigate to={redirectPath(role)} />} />
+          <Route path="/*" element={<Navigate to={redirectPath(roleFromStore)} />} />
         </Route>
       </Routes>
     </Suspense>
