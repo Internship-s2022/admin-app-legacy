@@ -132,17 +132,6 @@ const Clients = () => {
     ? [
         {
           active: true,
-          label: 'EDITAR',
-          testId: 'edit-button',
-          variant: Variant.CONTAINED,
-          onClick: (row) => {
-            return handleEdit(row);
-          },
-          icon: <EditIcon />,
-        },
-        {
-          active: true,
-          label: 'X',
           testId: 'delete-button',
           variant: Variant.CONTAINED,
           onClick: (data) => {
@@ -150,6 +139,15 @@ const Clients = () => {
             setRow(data);
           },
           icon: <DeleteIcon />,
+        },
+        {
+          active: true,
+          testId: 'edit-button',
+          variant: Variant.CONTAINED,
+          onClick: (row) => {
+            return handleEdit(row);
+          },
+          icon: <EditIcon />,
         },
       ]
     : [

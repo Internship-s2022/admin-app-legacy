@@ -91,15 +91,15 @@ const MemberTable = (props: MemberTableProps) => {
                 })}
                 <td className={`${styles.buttons} ${styles.rows}`}>
                   <div>
+                    <IconButton onClick={() => handleEdit(data.id)}>
+                      <EditIcon />
+                    </IconButton>
                     <IconButton
                       onClick={() => {
                         handleDelete(data.id);
                       }}
                     >
                       <DeleteIcon />
-                    </IconButton>
-                    <IconButton onClick={() => handleEdit(data.id)}>
-                      <EditIcon />
                     </IconButton>
                   </div>
                 </td>
