@@ -30,7 +30,7 @@
 }
 
 .topContainer {
-  margin-bottom: 15px;
+  margin-bottom: 38px;
 }
 
 .inputsContainer {
@@ -57,4 +57,5 @@
 .datePickers {
   display: flex;
   gap: 40px;
+  justify-content: space-around;
 }
