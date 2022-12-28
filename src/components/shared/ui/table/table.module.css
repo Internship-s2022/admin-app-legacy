@@ -1,7 +1,3 @@
-.headers {
-  background-color: #b3b3b3;
-}
-
 .headers th {
   font-weight: bolder;
 }
@@ -12,17 +8,20 @@
 }
 
 .table {
-  border: 2px solid #b3b3b3;
-}
-
-.rows:nth-of-type(even) {
-  background-color: #b3b3b36f;
+  margin-block: 1%;
+  border-right: #d4d4df 0.5px solid;
+  border-bottom: #d4d4df 0.5px solid;
+  border-left: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
 }
 
 .buttonCell {
   display: flex;
   gap: 10px;
-  border: none;
+  align-self: center;
+  height: 50px;
 }
 
 .inactiveRows {
