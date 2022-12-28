@@ -2,13 +2,15 @@ import { format } from 'date-fns';
 import esLocale from 'date-fns/locale/es';
 import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
 import { getNotifications } from 'src/redux/notifications/thunk';
 import { RootState } from 'src/redux/store';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { entities, notificationsFilterOptions } from './constants';
@@ -58,8 +60,10 @@ const selectName = (item) => {
 
 const Home = () => {
   const dispatch: AppDispatch<null> = useDispatch();
+  const navigate = useNavigate();
   const user = useSelector((state: RootState) => state.auth.authUser);
   const notifications = useSelector((state: RootState) => state.notification.list);
+  const notificationError = useSelector((state: RootState) => state.notification.error);
   const today = capitalizeFirstLetter(
     format(new Date(Date.now()), 'eeee, d LLL', { locale: esLocale }),
   );
@@ -110,7 +114,19 @@ const Home = () => {
     setDataList(listNotifications);
   }, [notifications, filters.newest, filters.role, filters.search]);
 
-  return (
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
+  const showErrorMessage = notificationError?.networkError || !notifications.length;
+
+  return showErrorMessage ? (
+    <EmptyDataHandler
+      resource={Resources.Notificaciones}
+      handleReload={() => handleNavigation(0)}
+      error={notificationError}
+    />
+  ) : (
     <>
       <div className={styles.containerPage}>
         <section className={styles.container}>
