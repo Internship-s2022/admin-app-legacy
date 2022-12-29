@@ -16,3 +16,4 @@ export const setOpenMessageAlert = () => action(Actions.SET_OPEN_MESSAGE_ALERT);
 export const closeMessageAlert = () => action(Actions.CLOSE_MESSAGE_ALERT);
 export const setSnackbarOperation = (message: string) =>
   action(Actions.SET_SNACKBAR_OPERATION, message);
+export const cleanSnackbarOperation = () => action(Actions.CLEAN_SNACKBAR_OPERATION);

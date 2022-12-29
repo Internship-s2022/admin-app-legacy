@@ -81,6 +81,11 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
         ...state,
         snackbarOperation: action.payload,
       };
+    case Actions.CLEAN_SNACKBAR_OPERATION:
+      return {
+        ...state,
+        snackbarOperation: '',
+      };
     default:
       return state;
   }

@@ -20,6 +20,7 @@ import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, editProject, getProjects } from 'src/redux/project/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
+  cleanSnackbarOperation,
   closeConfirmationModal,
   closeMessageAlert,
   openConfirmationModal,
@@ -127,17 +128,20 @@ const Projects = () => {
   };
 
   const handleEdit = (row) => {
+    dispatch(cleanSnackbarOperation());
     dispatch(setSnackbarOperation('editado'));
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
   const handleActivate = (data) => {
+    dispatch(cleanSnackbarOperation());
     dispatch(editProject(data));
-    dispatch(closeConfirmationModal());
     dispatch(setSnackbarOperation('activado'));
+    dispatch(closeConfirmationModal());
   };
 
   const handleDelete = (id) => {
+    dispatch(cleanSnackbarOperation());
     dispatch(deleteProject(id));
     dispatch(setSnackbarOperation('inactivado'));
     dispatch(closeConfirmationModal());
@@ -208,6 +212,7 @@ const Projects = () => {
           <Button
             materialVariant={Variant.CONTAINED}
             onClick={() => {
+              dispatch(cleanSnackbarOperation());
               handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}`);
               dispatch(setSnackbarOperation('agregado'));
             }}
