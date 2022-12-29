@@ -31,6 +31,12 @@ const AppRoutes = (): JSX.Element => {
       case AccessRoleType.SUPER_ADMIN:
         path = '/super-admin';
         break;
+      case AccessRoleType.EMPLOYEE:
+        path = '/not-allowed';
+        break;
+      case AccessRoleType.MANAGER:
+        path = '/not-allowed';
+        break;
       default:
         path = '/login';
     }
@@ -39,7 +45,7 @@ const AppRoutes = (): JSX.Element => {
 
   useEffect(() => {
     if (roleFromStore) {
-      pathname !== '/' ? navigate(pathname) : redirectPath(roleFromStore);
+      pathname !== '/' ? navigate(pathname) : navigate(redirectPath(roleFromStore));
     }
   }, [roleFromStore]);
 

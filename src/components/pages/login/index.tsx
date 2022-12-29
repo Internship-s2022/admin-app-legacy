@@ -20,6 +20,8 @@ const Login = () => {
       navigate('/admin/home');
     } else if (role === 'SUPER_ADMIN') {
       navigate('/super-admin');
+    } else if (role != 'SUPER_ADMIN' && role != 'ADMIN') {
+      navigate('/not-allowed');
     }
   };
 
