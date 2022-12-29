@@ -7,7 +7,7 @@ export const userHeaders: Headers[] = [
 ];
 
 export const accessRoles = [
-  { value: AccessRoleType.MANAGER, label: 'Gerente' },
+  { value: AccessRoleType.MANAGER, label: 'Manager' },
   { value: AccessRoleType.ADMIN, label: 'Admin' },
   { value: AccessRoleType.EMPLOYEE, label: 'Empleado' },
 ];
