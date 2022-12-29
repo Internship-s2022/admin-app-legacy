@@ -179,13 +179,16 @@ const Users = () => {
         },
       ];
 
-  const showErrorMessage = userError?.networkError || !activeUsers.length;
+  const showErrorMessage = userError?.networkError || !userList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
       resource={Resources.Usuarios}
       handleReload={() => handleNavigation('/admin/clients')}
-      handleAdd={() => handleNavigation('/admin/clients/add')}
+      handleAdd={() => {
+        dispatch(openFormModal());
+        dispatch(setSnackbarOperation('agregado'));
+      }}
       error={userError}
     />
   ) : (
