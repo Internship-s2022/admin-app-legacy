@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import { openModal } from 'src/redux/ui/actions';
+import { openModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import styles from './noMembers.module.css';
@@ -29,7 +29,10 @@ const EmptyMemberMessage = (props: NoMembersProps) => {
           <Button
             testId="addMember"
             materialVariant={Variant.CONTAINED}
-            onClick={() => dispatch(openModal())}
+            onClick={() => {
+              dispatch(openModal());
+              dispatch(setSnackbarOperation('agregado'));
+            }}
             label="+ Agregar Miembro"
             disabled={!projectId}
           />

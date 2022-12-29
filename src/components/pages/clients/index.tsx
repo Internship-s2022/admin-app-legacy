@@ -119,8 +119,8 @@ const Clients = () => {
 
   const handleActivate = (data) => {
     dispatch(editClient(data));
-    dispatch(closeConfirmationModal());
     dispatch(setSnackbarOperation('activado'));
+    dispatch(closeConfirmationModal());
   };
 
   const options = {

@@ -127,14 +127,13 @@ const Projects = () => {
   };
 
   const handleEdit = (row) => {
-    dispatch(setSnackbarOperation('editado'));
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS_FORM}/${row._id}`);
   };
 
   const handleActivate = (data) => {
     dispatch(editProject(data));
-    dispatch(closeConfirmationModal());
     dispatch(setSnackbarOperation('activado'));
+    dispatch(closeConfirmationModal());
   };
 
   const handleDelete = (id) => {
