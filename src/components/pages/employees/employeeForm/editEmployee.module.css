@@ -55,13 +55,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  width: 170%;
   margin-top: 100px;
 }
 
 .absencesButton {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  justify-content: space-between;
 }
 
 .textInputContainer {
@@ -181,22 +182,57 @@
 .absenceTitle {
   display: flex;
   align-items: center;
+  width: 45%;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .noAbsences {
   display: flex;
   justify-content: center;
-  margin-top: 70px;
-  font-style: italic;
+  margin-top: 3%;
   color: #8d8d8d;
+}
+
+.buttonText {
+  padding: 2%;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.absencesContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 20px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #8d8d8d;
+}
+
+.newAbsences {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.newAbsences > span:first-child {
+  width: 15%;
+}
+
+.newAbsences > button {
+  width: 28px;
+  height: auto;
 }
 
 .buttonAbsences {
   display: flex;
   justify-content: space-between;
+  width: 40%;
 }
 
 .buttonAbsences > button {
+  width: 100%;
   background-color: #4f987b;
 }
 
@@ -204,27 +240,10 @@
   background-color: #478c71;
 }
 
-.buttonText {
-  font-size: 0.8vw;
-}
-
-.absencesContainer {
+.absencesDate {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 40px;
-  font-size: 12px;
-  font-style: italic;
-  color: #8d8d8d;
-}
-
-.deleteAbsence {
-  margin-left: 10px;
-  font-size: 13px;
-  color: #8d8d8d;
-  text-align: center;
-  background-color: #ffffff;
-  border: none;
+  justify-content: space-around;
+  width: 50%;
 }
 
 .deleteAbsence:hover {
