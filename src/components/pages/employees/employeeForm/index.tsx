@@ -248,9 +248,9 @@ const EditEmployee = () => {
                             <div key={index} className={styles.newAbsences}>
                               <span>{`${motiveLabel(item.motive)}:`}</span>
                               <div className={styles.absencesDate}>
-                                <span>{format(new Date(item?.startDate), 'dd/MM/yyyy')}</span>{' '}
+                                <span>{format(new Date(item?.startDate), 'dd/MM/yyyy')}</span>
                                 <span>-</span>
-                                <span> {format(new Date(item?.endDate), 'dd/MM/yyyy')}</span>
+                                <span>{format(new Date(item?.endDate), 'dd/MM/yyyy')}</span>
                               </div>
                               <IconButton
                                 key={index}
