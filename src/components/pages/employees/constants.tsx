@@ -11,8 +11,10 @@ export const employeeFilterOptions = [
   'name',
   'email',
   'projects',
+  'seniority',
   'notes',
   'careerPlan',
   'skills',
   'potentialRole',
+  'availability',
 ];
