@@ -15,6 +15,7 @@ import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
+import { clearSelectedClient } from 'src/redux/client/actions';
 import { deleteClient, editClient, getClients } from 'src/redux/client/thunks';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
@@ -94,6 +95,11 @@ const Clients = () => {
     return () => {
       dispatch(closeMessageAlert());
     };
+  }, []);
+
+  useEffect(() => {
+    dispatch(getClients());
+    dispatch(clearSelectedClient());
   }, []);
 
   useEffect(() => {

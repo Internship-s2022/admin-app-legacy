@@ -62,12 +62,7 @@ const clientValidation = Joi.object({
       .required(),
   }),
 
-  relationshipStart: Joi.date()
-    .less('now')
-    .messages({
-      'date.less': 'Fecha de inicio debe ser menor que la fecha actual',
-    })
-    .allow(null),
+  relationshipStart: Joi.date().allow(null),
 
   relationshipEnd: Joi.date()
     .greater(Joi.ref('relationshipStart'))
