@@ -61,7 +61,9 @@ const EditEmployee = () => {
   }));
 
   useEffect(() => {
-    params.id && dispatch(getEmployeeById(params.id));
+    if (!Object.keys(selectedEmployee).length) {
+      params.id && dispatch(getEmployeeById(params.id));
+    }
   }, []);
 
   const [absences, setAbsences] = React.useState(selectedEmployee?.absences || []);
@@ -107,8 +109,8 @@ const EditEmployee = () => {
         projectHistory: [],
         careerPlan: selectedEmployee?.careerPlan,
         notes: selectedEmployee?.notes,
-        absences: selectedEmployee?.absences,
       });
+      setAbsences(selectedEmployee?.absences || []);
     }
   }, [selectedEmployee]);
 

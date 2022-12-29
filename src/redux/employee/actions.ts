@@ -26,3 +26,6 @@ export const editEmployeeSuccess = (body: Employee, id: string) =>
   action(Actions.EDIT_EMPLOYEE_SUCCESS, { body, id });
 
 export const editEmployeeError = (error: ErrorFormat) => action(Actions.EDIT_EMPLOYEE_ERROR, error);
+
+export const setSelectedEmployee = (employee: Employee) =>
+  action(Actions.SET_SELECTED_EMPLOYEE, employee);
