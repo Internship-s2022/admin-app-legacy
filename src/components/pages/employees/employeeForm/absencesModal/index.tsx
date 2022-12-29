@@ -118,7 +118,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             />
           </div>
         </div>
-        <div>
+        <div className={styles.datePicker}>
           <DateIntervalPicker
             control={control}
             name="startDate"

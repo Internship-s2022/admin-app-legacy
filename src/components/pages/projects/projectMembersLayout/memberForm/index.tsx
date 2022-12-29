@@ -169,7 +169,7 @@ const MemberForm = (props: MemberFormProps) => {
   return (
     <div className={styles.modalContainer}>
       <div className={styles.headerAddMember} data-testid={'headerMessage'}>
-        {memberData ? 'Editar miembro' : 'Agregar miembro al proyecto'}
+        <p>{memberData ? 'Editar miembro' : 'Agregar miembro al proyecto'}</p>
       </div>
       <div className={styles.contentContainer}>
         <div className={styles.memberForm}>
