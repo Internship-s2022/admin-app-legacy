@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { Button } from 'src/components/shared/ui';
+import UserForm from 'src/components/pages/users/userForm';
+import { Button, Modal } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeFormModal } from 'src/redux/ui/actions';
+import { AppDispatch } from 'src/types';
 import { cutLastLetter } from 'src/utils/formatters';
 
 import { EmptyDataProps } from '../types';
@@ -9,7 +13,10 @@ import styles from './emptyList.module.css';
 
 const EmptyList = (props: EmptyDataProps) => {
   const { resource, isEmployee, handleAdd } = props;
+
   const isNotification = resource === 'notificaciones';
+  const dispatch: AppDispatch<null> = useAppDispatch();
+  const showFormModal = useAppSelector((state: RootState) => state.ui.showFormModal);
 
   return isNotification ? (
     <div className={styles.container}>
@@ -45,6 +52,15 @@ const EmptyList = (props: EmptyDataProps) => {
           />
         </div>
       )}
+      <div className={styles.modalContainer}>
+        <Modal
+          onClose={() => dispatch(closeFormModal())}
+          isOpen={showFormModal}
+          testId="add-user-modal"
+        >
+          <UserForm />
+        </Modal>
+      </div>
     </div>
   );
 };

@@ -185,7 +185,10 @@ const Users = () => {
     <EmptyDataHandler
       resource={Resources.Usuarios}
       handleReload={() => handleNavigation('/admin/clients')}
-      handleAdd={() => handleNavigation('/admin/clients/add')}
+      handleAdd={() => {
+        dispatch(openFormModal());
+        dispatch(setSnackbarOperation('agregado'));
+      }}
       error={userError}
     />
   ) : (
