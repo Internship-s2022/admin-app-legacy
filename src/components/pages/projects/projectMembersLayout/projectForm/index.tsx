@@ -83,9 +83,13 @@ const ProjectForm = (props: ProjectFormProps) => {
         notes: data.notes,
       }),
     };
-    id ? dispatch(editProject(options)) : dispatch(createProject(options));
+    if (id) {
+      dispatch(editProject(options));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      dispatch(createProject(options));
+    }
     dispatch(closeConfirmationModal());
-    dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
 

@@ -112,12 +112,12 @@ const Clients = () => {
     dispatch(closeConfirmationModal());
   };
 
-  const handleEdit = async (row) => {
+  const handleEdit = (row) => {
     dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
   };
 
-  const handleActivate = async (data) => {
+  const handleActivate = (data) => {
     dispatch(editClient(data));
     dispatch(setSnackbarOperation('activado'));
     dispatch(closeConfirmationModal());
