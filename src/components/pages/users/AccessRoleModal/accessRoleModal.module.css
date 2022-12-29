@@ -1,3 +1,14 @@
+.title {
+  margin-bottom: 5%;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+.title h1 {
+  padding-left: 20px;
+}
+
 .modalContainer {
   display: flex;
   flex-direction: column;
@@ -9,12 +20,30 @@
   text-align: center;
 }
 
-.buttonStyle {
-  width: 40%;
+.selectedBtn {
+  width: 50%;
+  background-color: #4f987b;
+}
+
+.selectedBtn:hover {
+  background-color: #478c71;
+}
+
+.unselectedBtn {
+  width: 50%;
+  color: #4f987b;
+  border: 1px solid #4f987b;
+}
+
+.unselectedBtn:hover {
+  color: #ffffff;
+  background-color: #4f987b;
+  border: none;
 }
 
 .confirmBtns {
   display: flex;
-  justify-content: space-around;
+  gap: 5%;
+  justify-content: flex-end;
   padding: 5%;
 }
