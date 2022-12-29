@@ -166,9 +166,7 @@ const Projects = () => {
           active: true,
           testId: 'edit-button',
           variant: Variant.CONTAINED,
-          onClick: (row) => {
-            return handleEdit(row);
-          },
+          onClick: (row) => handleEdit(row),
           icon: <EditIcon />,
         },
       ]

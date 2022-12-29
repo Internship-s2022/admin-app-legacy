@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { IconButton } from '@mui/material';
+import { Avatar, IconButton } from '@mui/material';
 
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -68,6 +68,7 @@ const MemberTable = (props: MemberTableProps) => {
       <table className={styles.table}>
         <thead>
           <tr>
+            <th className={styles.header}></th>
             {headerMemberTable?.map((header, index) => {
               return (
                 <th className={styles.header} key={index}>
@@ -81,29 +82,34 @@ const MemberTable = (props: MemberTableProps) => {
         <tbody>
           {newList?.map((data) => {
             return (
-              <tr key={data.id}>
-                {headerMemberTable.map((header, index) => {
-                  return (
-                    <td className={styles.rows} key={index}>
-                      {data[header.key]}
-                    </td>
-                  );
-                })}
-                <td className={`${styles.buttons} ${styles.rows}`}>
-                  <div>
-                    <IconButton onClick={() => handleEdit(data.id)}>
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        handleDelete(data.id);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </div>
-                </td>
-              </tr>
+              <>
+                <tr key={data.id}>
+                  <td className={`${styles.rows}`}>
+                    <Avatar></Avatar>
+                  </td>
+                  {headerMemberTable.map((header, index) => {
+                    return (
+                      <td className={styles.rows} key={index}>
+                        {data[header.key]}
+                      </td>
+                    );
+                  })}
+                  <td className={`${styles.buttons} ${styles.rows}`}>
+                    <div>
+                      <IconButton onClick={() => handleEdit(data.id)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(data.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </div>
+                  </td>
+                </tr>
+              </>
             );
           })}
         </tbody>
