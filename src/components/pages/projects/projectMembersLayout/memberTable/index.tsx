@@ -51,7 +51,6 @@ const MemberTable = (props: MemberTableProps) => {
   const handleAdd = () => {
     setMemberId('');
     dispatch(openModal());
-    dispatch(setSnackbarOperation('agregado'));
   };
 
   return list?.length ? (

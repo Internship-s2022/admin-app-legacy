@@ -18,7 +18,11 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
 import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  openConfirmationModal,
+  setSnackbarOperation,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { criticalityOptions, projectTypeOptions } from './constants';
@@ -81,6 +85,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     };
     id ? dispatch(editProject(options)) : dispatch(createProject(options));
     dispatch(closeConfirmationModal());
+    dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
 
