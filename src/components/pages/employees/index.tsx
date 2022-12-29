@@ -9,6 +9,7 @@ import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
+import { setSelectedEmployee } from 'src/redux/employee/actions';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { closeMessageAlert, setSnackbarOperation } from 'src/redux/ui/actions';
@@ -45,7 +46,7 @@ const Employees = () => {
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [dataList, setDataList] = useState([]);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
-  const employee = useAppSelector((state: RootState) => state.employee?.list);
+  const employeeList = useAppSelector((state: RootState) => state.employee?.list);
   const [filters, setFilters] = React.useState({
     isActive: true,
     role: '',
@@ -53,7 +54,7 @@ const Employees = () => {
   });
 
   const listEmployee = useMemo(() => {
-    const mappedEmployees = employee.reduce((acc, item) => {
+    const mappedEmployees = employeeList.reduce((acc, item) => {
       acc.push({
         _id: item?._id,
         name: `${item?.user?.firstName} ${item?.user?.lastName}`,
@@ -71,7 +72,7 @@ const Employees = () => {
     }, []);
     const filteredData = filterData(mappedEmployees, filters);
     return filteredData;
-  }, [employee, filters.role, filters.search]);
+  }, [employeeList, filters.role, filters.search]);
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -79,7 +80,7 @@ const Employees = () => {
 
   useEffect(() => {
     setDataList(listEmployee);
-  }, [employee, filters.role, filters.search]);
+  }, [employeeList, filters.role, filters.search]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -89,7 +90,7 @@ const Employees = () => {
     setDataList(data);
   };
 
-  const showErrorMessage = employeeError?.networkError || !employee.length;
+  const showErrorMessage = employeeError?.networkError || !employeeList.length;
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -104,7 +105,9 @@ const Employees = () => {
       testId: 'editButton',
       variant: Variant.CONTAINED,
       onClick: (row) => {
+        const selectedEmployee = employeeList.find((employee) => employee._id === row._id);
         dispatch(setSnackbarOperation('editado'));
+        dispatch(setSelectedEmployee(selectedEmployee));
         navigate(`${UiRoutes.ADMIN}${UiRoutes.EDIT_EMPLOYEES}/${row._id}`);
       },
       icon: <EditIcon />,

@@ -23,12 +23,14 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
     case Actions.GET_EMPLOYEE_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         list: action.payload,
         error: undefined,
       };
     case Actions.GET_EMPLOYEE_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: { ...action.payload },
       };
     case Actions.GET_EMPLOYEE_BY_ID_PENDING:
@@ -39,12 +41,14 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
     case Actions.GET_EMPLOYEE_BY_ID_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         selectedEmployee: action.payload,
         error: undefined,
       };
     case Actions.GET_EMPLOYEE_BY_ID_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: { ...action.payload },
       };
     case Actions.EDIT_EMPLOYEE_PENDING:
@@ -55,6 +59,7 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
     case Actions.EDIT_EMPLOYEE_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         list: state.list.map((item) => {
           if (item._id === action.payload.id) {
             return { ...item, ...action.payload.body };
@@ -66,8 +71,15 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
     case Actions.EDIT_EMPLOYEE_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.SET_SELECTED_EMPLOYEE:
+      return {
+        ...state,
+        selectedEmployee: action.payload,
+      };
+
     default:
       return state;
   }
