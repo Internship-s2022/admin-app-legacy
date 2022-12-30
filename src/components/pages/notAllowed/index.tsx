@@ -5,7 +5,10 @@ import styles from './notallowed.module.css';
 const NotAllowed = () => {
   return (
     <section className={styles.container}>
-      <h2>You don`t have access to this screen</h2>
+      <img src={`${process.env.PUBLIC_URL}/assets/images/notAllowed.png`} alt="Not found"></img>
+      <h2>Acceso denegado</h2>
+      <p>Usted no posee los permisos necesarios para ingresar</p>
+      <p>Por favor contactarse con el equipo de soporte</p>
     </section>
   );
 };
