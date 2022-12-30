@@ -89,8 +89,11 @@ const ProjectMembersLayout = () => {
           <div className={styles.iconContainer}>
             <ClockIcon />
           </div>
-          <div className={styles.iconContainer} onClick={() => dispatch(openFormModal())}>
-            <BellIcon />
+          <div
+            className={id && styles.iconContainer}
+            onClick={() => (id ? dispatch(openFormModal()) : undefined)}
+          >
+            <BellIcon color={id ? '#373867' : '#CBCBD7'} />
           </div>
         </div>
       </div>
