@@ -161,7 +161,7 @@ const EditEmployee = () => {
       <div className={styles.welcomeMessage}>
         <div>Editar un empleado</div>
         <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
-          <BellIcon />
+          <BellIcon color={'#373867'} />
         </div>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>

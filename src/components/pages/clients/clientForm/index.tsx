@@ -145,8 +145,11 @@ const ClientForm = () => {
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
         <div>{id ? `Editar ${selectedClient?.name}` : 'Nuevo Cliente'}</div>
-        <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
-          <BellIcon />
+        <div
+          className={id && styles.bellIcon}
+          onClick={() => (id ? dispatch(openFormModal()) : undefined)}
+        >
+          <BellIcon color={id ? '#373867' : '#CBCBD7'} />
         </div>
       </div>
       <div className={styles.formContainer}>
