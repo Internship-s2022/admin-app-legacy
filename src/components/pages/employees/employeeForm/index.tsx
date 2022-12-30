@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
+import { IconButton } from '@mui/material';
 
 import { Motives } from 'src/components/pages/employees/employeeForm/absencesModal/types';
 import { FormValues, Projects, Seniority } from 'src/components/pages/employees/types';
@@ -19,6 +20,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import ToggleButton from 'src/components/shared/ui/buttons/toggle-button';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
+import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import AutocompleteChip from 'src/components/shared/ui/inputs/autocompleteChip';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
@@ -227,7 +229,7 @@ const EditEmployee = () => {
                 <ToggleButton control={control} testId="toggleButtonTestId" name="availability" />
                 <div className={styles.addAbsenceContainer}>
                   <div className={styles.absencesButton}>
-                    <div className={styles.absenceTitle}>Ausencias</div>
+                    <div className={styles.absenceTitle}>Ausencias Programadas</div>
                     <div className={styles.buttonAbsences}>
                       <Button
                         testId="absencesButton"
@@ -244,16 +246,18 @@ const EditEmployee = () => {
                         absences.map((item, index) => {
                           return (
                             <div key={index} className={styles.newAbsences}>
-                              {`${motiveLabel(item.motive)}: ${format(
-                                new Date(item?.startDate),
-                                'dd/MM/yyyy',
-                              )} - ${format(new Date(item?.endDate), 'dd/MM/yyyy')}`}
-                              <button
-                                className={styles.deleteAbsence}
+                              <span>{`${motiveLabel(item.motive)}:`}</span>
+                              <div className={styles.absencesDate}>
+                                <span>{format(new Date(item?.startDate), 'dd/MM/yyyy')}</span>
+                                <span>-</span>
+                                <span>{format(new Date(item?.endDate), 'dd/MM/yyyy')}</span>
+                              </div>
+                              <IconButton
+                                key={index}
                                 onClick={(e) => handleAbsenceDelete(e, index)}
                               >
-                                X
-                              </button>
+                                <DeleteIcon />
+                              </IconButton>
                             </div>
                           );
                         })
