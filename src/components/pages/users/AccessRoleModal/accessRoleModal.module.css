@@ -36,9 +36,8 @@
 }
 
 .unselectedBtn:hover {
-  color: #ffffff;
-  background-color: #4f987b;
-  border: none;
+  background-color: rgb(79 152 123 / 13%);
+  border: 1px solid #4f987b;
 }
 
 .confirmBtns {
