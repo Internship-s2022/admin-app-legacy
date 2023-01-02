@@ -215,6 +215,7 @@ const Home = () => {
                     members={item.members}
                     customMessage={item.customMessage}
                     isCustom={item.isCustom}
+                    notification={item.notification}
                   />
                 </>
               );

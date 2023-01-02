@@ -13,6 +13,7 @@ import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
 import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
 import TickIcon from '../icons/cardIcons/tickIcon';
 import styles from './card.module.css';
+import { dataCards } from './constants';
 import { CardProps } from './types';
 
 const defineIcon = (resourceType) => {
@@ -51,13 +52,20 @@ const Card = (props: CardProps) => {
     resourceId,
     id,
   } = props;
+  const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useDispatch();
+
   const isProject = !!(resource === 'PROJECT');
   const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
-  const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
-  const navigate = useNavigate();
-  const dispatch: AppDispatch<null> = useDispatch();
+
+  const changedNotificationData = (notification) => {
+    const newData = dataCards.find((item) => item.key === notification);
+    return newData?.data;
+  };
+
+  const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
   const [checked, setChecked] = React.useState(false);
 
@@ -75,7 +83,7 @@ const Card = (props: CardProps) => {
     setChecked(!checked);
     setTimeout(() => {
       dispatch(deleteNotification(id));
-    }, 250);
+    }, 150);
   };
 
   return (
@@ -110,7 +118,7 @@ const Card = (props: CardProps) => {
                         })}
                       </AvatarGroup>
                     </div>
-                    {!!members?.length && <p>{members?.length} involucrados</p>}
+                    <p>{members?.length} involucrados</p>
                   </div>
                   <div className={`${styles.criticality} ${criticalityColor}`}>
                     {criticality?.toUpperCase()}
@@ -118,7 +126,9 @@ const Card = (props: CardProps) => {
                 </>
               </div>
             )}
-            {isCustom && <div className={styles.customMessage}>{customMessage}</div>}
+            <div className={styles.customMessage}>
+              {isCustom ? customMessage : changedNotificationData(notification)}
+            </div>
           </div>
           <div className={styles.notification}>
             <p>{shownNotification}</p>
