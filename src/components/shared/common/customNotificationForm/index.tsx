@@ -3,11 +3,11 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { createNotification } from 'src/redux/notifications/thunk';
-import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { useAppDispatch } from 'src/redux/store';
 import { closeFormModal, setSnackbarOperation } from 'src/redux/ui/actions';
-import { AppDispatch, Resources } from 'src/types';
+import { AppDispatch } from 'src/types';
 
-import { Button, DatePicker, SuccessErrorMessage, TextInput } from '../../ui';
+import { Button, DatePicker, TextInput } from '../../ui';
 import { Variant } from '../../ui/buttons/button/types';
 import styles from './customNotifications.module.css';
 import { customNotificationProps, FormValues } from './types';
@@ -26,9 +26,6 @@ const newBody = (resource, id, body) => {
 
 const CustomNotifications = (props: customNotificationProps) => {
   const dispatch: AppDispatch<null> = useAppDispatch();
-  const notificationError = useAppSelector((state: RootState) => state.notification.error);
-  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
-  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
 
   const { resource, id } = props;
 
@@ -49,7 +46,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       isCustom: true,
     };
     dispatch(createNotification(newBody(resource, id, body)));
-    dispatch(setSnackbarOperation('Notificación agregada'));
+    dispatch(setSnackbarOperation('agregada'));
     dispatch(closeFormModal());
   };
 
@@ -98,12 +95,6 @@ const CustomNotifications = (props: customNotificationProps) => {
           </div>
         </div>
       </form>
-      <SuccessErrorMessage
-        open={showAlert}
-        error={notificationError}
-        // resource={'Notificación'}
-        operation={snackbarOperation}
-      />
     </div>
   );
 };

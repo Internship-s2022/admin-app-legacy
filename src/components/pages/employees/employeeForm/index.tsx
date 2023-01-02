@@ -15,6 +15,7 @@ import {
   DatePicker,
   Dropdown,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -34,7 +35,7 @@ import {
   openFormModal,
   openModal,
 } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { AppDispatch, Resources } from 'src/types';
 
 import AbsencesModal from './absencesModal';
 import { arraySkills, checkboxData, seniority } from './constants';
@@ -51,6 +52,9 @@ const EditEmployee = () => {
   const showModal = useAppSelector((state: RootState) => state.ui.showModal);
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
   const selectedEmployee = useAppSelector((state: RootState) => state.employee?.selectedEmployee);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const notificationError = useAppSelector((state: RootState) => state.notification.error);
 
   const latestProjects = selectedEmployee?.projectHistory?.slice(-2);
 
@@ -368,6 +372,12 @@ const EditEmployee = () => {
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={notificationError}
+        resource={Resources.Notificaciones}
+        operation={snackbarOperation}
+      />
     </div>
   );
 };

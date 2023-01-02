@@ -14,6 +14,7 @@ import {
   ConfirmationMessage,
   DatePicker,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -44,6 +45,9 @@ const ClientForm = () => {
   const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const notificationError = useAppSelector((state: RootState) => state.notification.error);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -345,6 +349,12 @@ const ClientForm = () => {
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={notificationError}
+        resource={Resources.Notificaciones}
+        operation={snackbarOperation}
+      />
     </div>
   );
 };

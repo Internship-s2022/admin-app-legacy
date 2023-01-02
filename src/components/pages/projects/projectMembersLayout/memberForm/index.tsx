@@ -15,7 +15,7 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal } from 'src/redux/ui/actions';
+import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -152,9 +152,13 @@ const MemberForm = (props: MemberFormProps) => {
       endDate: endDateDisabled ? null : data.endDate,
     };
 
-    memberDataHelper
-      ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))
-      : dispatch(addMember(formattedData));
+    if (memberDataHelper) {
+      dispatch(editMember({ id: memberData._id, body: formattedDataEdit }));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      dispatch(addMember(formattedData));
+      dispatch(setSnackbarOperation('agregado'));
+    }
     dispatch(closeModal());
   };
 

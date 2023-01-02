@@ -27,13 +27,12 @@ const SuccessErrorMessage = (props: SuccessErrorMessageProps) => {
       return;
     }
   };
-  const isNotification = resource === undefined || operation === 'Notificación agregada';
 
   const message = error
     ? error.message
-    : isNotification
-    ? `${operation} con éxito.`
-    : `${cutLastLetter(resource)} ${operation} con éxito.`;
+    : `${
+        resource != 'Notificaciones' ? cutLastLetter(resource) : 'Notificación'
+      } ${operation} con éxito.`;
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>

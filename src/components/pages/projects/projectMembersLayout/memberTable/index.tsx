@@ -45,7 +45,6 @@ const MemberTable = (props: MemberTableProps) => {
   const handleEdit = (id) => {
     setMemberId(id);
     dispatch(openModal());
-    dispatch(setSnackbarOperation('editado'));
   };
 
   const handleAdd = () => {

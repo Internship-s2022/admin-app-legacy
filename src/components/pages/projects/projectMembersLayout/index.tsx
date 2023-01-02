@@ -34,10 +34,12 @@ const ProjectMembersLayout = () => {
   const membersList = useAppSelector((state: RootState) => state.member.list);
   const employeeList = useAppSelector((state: RootState) => state.employee.list);
   const isLoading = useAppSelector((state: RootState) => state.member.isLoading);
+  const notificationError = useAppSelector((state: RootState) => state.notification.error);
   const memberError = useAppSelector((state: RootState) => state.member.error);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const [memberId, setMemberId] = React.useState<string>('');
+  const resource = snackbarOperation != 'agregada' ? Resources.Miembros : Resources.Notificaciones;
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
@@ -140,8 +142,8 @@ const ProjectMembersLayout = () => {
       </div>
       <SuccessErrorMessage
         open={showAlert}
-        error={memberError}
-        resource={Resources.Miembros}
+        error={notificationError ?? memberError}
+        resource={resource}
         operation={snackbarOperation}
       />
     </div>
