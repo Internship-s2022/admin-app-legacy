@@ -113,11 +113,6 @@ const Projects = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getProjects());
-    dispatch(cleanSelectedProject());
-  }, []);
-
-  useEffect(() => {
     setDataList(activeProjectsList);
   }, [projectList, filters.isActive, filters.criticality, filters.search]);
 
