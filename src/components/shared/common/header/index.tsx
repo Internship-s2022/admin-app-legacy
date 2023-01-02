@@ -45,7 +45,7 @@ const Header = () => {
         >
           Salir
           <div className={styles.iconContainer}>
-            <LogoutIcon />
+            <LogoutIcon color={'white'} />
           </div>
         </button>
       </div>
@@ -60,6 +60,7 @@ const Header = () => {
           description={'¿Desea cerrar sesión de Radium Admin?'}
           handleConfirm={() => handleLogout()}
           handleClose={() => dispatch(closeLogoutModal())}
+          color={'black'}
         />
       </Modal>
     </header>

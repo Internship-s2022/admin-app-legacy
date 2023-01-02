@@ -99,7 +99,15 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
     case Actions.DELETE_PROJECT_SUCCESS:
       return {
         ...state,
-        list: state.list.filter((project) => project._id !== action.payload),
+        list: state.list.map((project) => {
+          if (project._id === action.payload) {
+            return {
+              ...project,
+              isActive: false,
+            };
+          }
+          return project;
+        }),
         isLoading: false,
         error: undefined,
       };

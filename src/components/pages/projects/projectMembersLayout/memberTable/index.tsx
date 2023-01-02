@@ -1,24 +1,25 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { Avatar, IconButton } from '@mui/material';
 
-import { Button, Spinner } from 'src/components/shared/ui';
+import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
+import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import { deleteMember } from 'src/redux/member/thunk';
-import { RootState } from 'src/redux/store';
-import { openModal } from 'src/redux/ui/actions';
+import { openModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 import { dateFormatter } from 'src/utils/formatters';
 
 import { headerMemberTable } from './constants';
 import styles from './memberTable.module.css';
+import EmptyMemberMessage from './noMembers';
 import { MemberTableProps } from './types';
 
 const MemberTable = (props: MemberTableProps) => {
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const isLoading = useSelector((state: RootState) => state.member.isLoading);
-
-  const { list, setMemberId } = props;
+  const { list, setMemberId, projectId } = props;
 
   const filteredList = list.filter((item) => item?.active);
 
@@ -38,11 +39,13 @@ const MemberTable = (props: MemberTableProps) => {
 
   const handleDelete = (id) => {
     dispatch(deleteMember(id));
+    dispatch(setSnackbarOperation('borrado'));
   };
 
   const handleEdit = (id) => {
     setMemberId(id);
     dispatch(openModal());
+    dispatch(setSnackbarOperation('editado'));
   };
 
   const handleAdd = () => {
@@ -50,39 +53,39 @@ const MemberTable = (props: MemberTableProps) => {
     dispatch(openModal());
   };
 
-  return isLoading ? (
-    <div className={styles.spinnerContainer}>
-      <Spinner />
-    </div>
-  ) : (
-    <div>
-      <div className={styles.tableContainer}>
-        <div className={styles.addMembers}>
-          Agregar miembros
-          <Button
-            testId="addMember"
-            materialVariant={Variant.CONTAINED}
-            onClick={() => handleAdd()}
-            label="+ Agregar miembros"
-          />
-        </div>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              {headerMemberTable?.map((header, index) => {
-                return (
-                  <th className={styles.header} key={index}>
-                    {header.header}
-                  </th>
-                );
-              })}
-              <th className={styles.header}></th>
-            </tr>
-          </thead>
-          <tbody>
-            {newList?.map((data) => {
+  return list?.length ? (
+    <div className={styles.tableContainer}>
+      <div className={styles.addMembers}>
+        Agregar miembros
+        <Button
+          testId="addMember"
+          materialVariant={Variant.CONTAINED}
+          onClick={() => handleAdd()}
+          label="+ Agregar miembros"
+        />
+      </div>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            <th className={styles.header}></th>
+            {headerMemberTable?.map((header, index) => {
               return (
+                <th className={styles.header} key={index}>
+                  {header.header}
+                </th>
+              );
+            })}
+            <th className={styles.header}></th>
+          </tr>
+        </thead>
+        <tbody>
+          {newList?.map((data) => {
+            return (
+              <>
                 <tr key={data.id}>
+                  <td className={`${styles.rows}`}>
+                    <Avatar></Avatar>
+                  </td>
                   {headerMemberTable.map((header, index) => {
                     return (
                       <td className={styles.rows} key={index}>
@@ -92,27 +95,27 @@ const MemberTable = (props: MemberTableProps) => {
                   })}
                   <td className={`${styles.buttons} ${styles.rows}`}>
                     <div>
-                      <Button
-                        testId="deleteButton"
-                        materialVariant={Variant.OUTLINED}
-                        onClick={() => handleDelete(data.id)}
-                        label="X"
-                      />
-                      <Button
-                        testId="editButton"
-                        materialVariant={Variant.OUTLINED}
-                        onClick={() => handleEdit(data.id)}
-                        label="Editar"
-                      />
+                      <IconButton onClick={() => handleEdit(data.id)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleDelete(data.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </div>
                   </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
+  ) : (
+    <EmptyMemberMessage projectId={projectId} />
   );
 };
 

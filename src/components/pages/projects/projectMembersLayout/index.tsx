@@ -1,18 +1,17 @@
 import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CustomNotifications from 'src/components/shared/common/customNotificationForm';
 import { Resource } from 'src/components/shared/common/customNotificationForm/types';
-import { Button, Modal } from 'src/components/shared/ui';
+import { Button, Modal, Spinner, SuccessErrorMessage } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
 import { getMembers } from 'src/redux/member/thunk';
-import { RootState, useAppSelector } from 'src/redux/store';
-import { closeFormModal, closeModal, openFormModal, openModal } from 'src/redux/ui/actions';
-import { AppDispatch } from 'src/types';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { closeFormModal, closeModal, openFormModal } from 'src/redux/ui/actions';
+import { AppDispatch, Resources } from 'src/types';
 
 import MemberForm from './memberForm';
 import MemberTable from './memberTable';
@@ -27,15 +26,18 @@ const ProjectMembersLayout = () => {
     navigate(path);
   };
 
-  const dispatch: AppDispatch<null> = useDispatch();
+  const dispatch: AppDispatch<null> = useAppDispatch();
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
 
-  const showModal = useSelector((state: RootState) => state.ui.showModal);
-  const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const membersList = useSelector((state: RootState) => state.member.list);
-  const employeeList = useSelector((state: RootState) => state.employee.list);
-
-  const [memberId, setMemberId] = React.useState({} as any);
+  const showModal = useAppSelector((state: RootState) => state.ui.showModal);
+  const selectedProject = useAppSelector((state: RootState) => state.project.selectedProject);
+  const membersList = useAppSelector((state: RootState) => state.member.list);
+  const employeeList = useAppSelector((state: RootState) => state.employee.list);
+  const isLoading = useAppSelector((state: RootState) => state.member.isLoading);
+  const memberError = useAppSelector((state: RootState) => state.member.error);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const [memberId, setMemberId] = React.useState<string>('');
 
   const matchedMember = membersList.find((member) => memberId === member._id);
 
@@ -44,17 +46,16 @@ const ProjectMembersLayout = () => {
       return (
         matchedMember.helper.length && {
           ...matchedMember.helper[index],
-          helperReference: matchedMember.helper[index]?.helperReference?._id,
+          helperReference: {
+            value: matchedMember.helper[index]?.helperReference?._id,
+            label: `${matchedMember.helper[index]?.helperReference?.user?.firstName} ${matchedMember.helper[index]?.helperReference?.user?.lastName}`,
+          },
         }
       );
     });
   }, [membersList, memberId]);
 
-  const selectedProjectMemberList = membersList.filter(
-    (member) => member?.project?._id === selectedProject?._id,
-  );
-
-  const activeMembersList = selectedProjectMemberList.filter((member) => member.active);
+  const activeMembersList = membersList?.filter((member) => member.active);
 
   useEffect(() => {
     selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
@@ -62,14 +63,12 @@ const ProjectMembersLayout = () => {
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
-    employee: matchedMember.employee._id,
+    employee: {
+      value: matchedMember?.employee?._id,
+      label: `${matchedMember.employee?.user?.firstName} ${matchedMember.employee?.user?.lastName}`,
+    },
     helper: helperArray,
-    project: matchedMember.project._id,
-  };
-
-  const handleAdd = () => {
-    setMemberId('');
-    dispatch(openModal());
+    project: matchedMember.project?._id,
   };
 
   const employeeDropdownList = () => {
@@ -77,7 +76,7 @@ const ProjectMembersLayout = () => {
     return matchedMember
       ? activeEmployees
       : activeEmployees.reduce((acc, item) => {
-          !activeMembersList.some((member) => member.employee._id === item._id) && acc.push(item);
+          !activeMembersList.some((member) => member?.employee?._id === item._id) && acc.push(item);
           return acc;
         }, []);
   };
@@ -90,30 +89,21 @@ const ProjectMembersLayout = () => {
           <div className={styles.iconContainer}>
             <ClockIcon />
           </div>
-          <div className={styles.iconContainer} onClick={() => dispatch(openFormModal())}>
-            <BellIcon />
+          <div
+            className={id && styles.iconContainer}
+            onClick={() => (id ? dispatch(openFormModal()) : undefined)}
+          >
+            <BellIcon color={id ? '#373867' : '#CBCBD7'} />
           </div>
         </div>
       </div>
       <div>
         <ProjectForm>
-          {activeMembersList?.length ? (
-            <MemberTable list={activeMembersList} setMemberId={setMemberId} />
+          {!isLoading ? (
+            <MemberTable list={activeMembersList} setMemberId={setMemberId} projectId={id} />
           ) : (
-            <div className={styles.emptyMember}>
-              <div>Este proyecto no cuenta con miembros asociados</div>
-              <div className={styles.messageContainer}>
-                <p>Para agregar un nuevo miembro al proyecto,</p>
-                <p>clickee en agregar miembro</p>
-              </div>
-              <div className={styles.addMemberButton}>
-                <Button
-                  testId="addMember"
-                  materialVariant={Variant.CONTAINED}
-                  onClick={() => dispatch(openModal())}
-                  label="+ Agregar Miembro"
-                />
-              </div>
+            <div className={styles.spinnerContainer}>
+              <Spinner />
             </div>
           )}
         </ProjectForm>
@@ -148,6 +138,12 @@ const ProjectMembersLayout = () => {
           />
         </Modal>
       </div>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={memberError}
+        resource={Resources.Miembros}
+        operation={snackbarOperation}
+      />
     </div>
   );
 };

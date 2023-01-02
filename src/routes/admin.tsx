@@ -15,7 +15,7 @@ import { UiRoutes } from 'src/constants';
 const Admin = (): JSX.Element => {
   return (
     <Routes>
-      <Route path={'/'} element={<Home />} />
+      <Route path={'/home'} element={<Home />} />
       <Route path={UiRoutes.EMPLOYEES} element={<Employees />} />
       <Route path={`${UiRoutes.EDIT_EMPLOYEES}/:id`} element={<EditEmployee />} />
       <Route path={UiRoutes.CLIENTS} element={<Clients />} />

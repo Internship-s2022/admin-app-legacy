@@ -1,20 +1,19 @@
 import { Reducer } from 'redux';
 
-import { State } from 'src/redux/types';
-
 import { Actions } from './constants';
-import { ActionsType, Employee } from './types';
+import { ActionsType, Employee, EmployeeState } from './types';
 
-const initialState: State<Employee> = {
+const initialState: EmployeeState = {
   list: [],
   isLoading: false,
   error: undefined,
+  selectedEmployee: {} as Employee,
 };
 
-const employeeReducer: Reducer<State<Employee>, ActionsType> = (
+const employeeReducer: Reducer<EmployeeState, ActionsType> = (
   state = initialState,
   action,
-): State<Employee> => {
+): EmployeeState => {
   switch (action.type) {
     case Actions.GET_EMPLOYEE_PENDING:
       return {
@@ -24,11 +23,29 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
     case Actions.GET_EMPLOYEE_SUCCESS:
       return {
         ...state,
-        list: action.payload,
         isLoading: false,
+        list: action.payload,
         error: undefined,
       };
     case Actions.GET_EMPLOYEE_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: { ...action.payload },
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_SUCCESS:
+      return {
+        ...state,
+        isLoading: false,
+        selectedEmployee: action.payload,
+        error: undefined,
+      };
+    case Actions.GET_EMPLOYEE_BY_ID_ERROR:
       return {
         ...state,
         isLoading: false,
@@ -57,6 +74,12 @@ const employeeReducer: Reducer<State<Employee>, ActionsType> = (
         isLoading: false,
         error: { ...action.payload },
       };
+    case Actions.SET_SELECTED_EMPLOYEE:
+      return {
+        ...state,
+        selectedEmployee: action.payload,
+      };
+
     default:
       return state;
   }

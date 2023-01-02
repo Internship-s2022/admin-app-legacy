@@ -65,7 +65,7 @@ describe('Edit Employee page - Unit Testing', () => {
       });
       it('should check the div as contain absences is rendering well', () => {
         const { getByText } = customRender(<EditEmployee />);
-        expect(getByText('Ausencias')).toBeInTheDocument();
+        expect(getByText('Ausencias Programadas')).toBeInTheDocument();
       });
     });
   });

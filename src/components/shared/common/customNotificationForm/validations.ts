@@ -7,9 +7,13 @@ const customNotificationsValidations = Joi.object({
     'string.min': 'El mensaje debe contener al menos 3 caracteres',
     'string.max': 'El mensaje debe contener menos de 50 caracteres',
   }),
-  date: Joi.date().greater('now').messages({
-    'date.greater': 'La fecha de la notificacion debe ser posterior a hoy',
-  }),
+  date: Joi.date()
+    .greater('now')
+    .messages({
+      'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
+      'date.greater': 'La fecha de la notificacion debe ser posterior a hoy',
+    })
+    .required(),
 });
 
 export default customNotificationsValidations;

@@ -4,11 +4,11 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Chip from '@mui/material/Chip';
 import TextField from '@mui/material/TextField';
 
-import styles from 'src/components/shared/ui/autocomplete/autocomplete.module.css';
+import styles from 'src/components/shared/ui/inputs/autocompleteChip/autocompleteChip.module.css';
 
 import { AutocompleteProps } from './types';
 
-const AutocompleteInput = <Form extends FieldValues>(
+const AutocompleteChip = <Form extends FieldValues>(
   props: AutocompleteProps<Form>,
 ): JSX.Element => {
   const { control, name, skills } = props;
@@ -61,4 +61,4 @@ const AutocompleteInput = <Form extends FieldValues>(
   );
 };
 
-export default AutocompleteInput;
+export default AutocompleteChip;

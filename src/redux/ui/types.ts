@@ -12,6 +12,7 @@ export interface State {
   showConfirmModal: boolean;
   showLogoutModal: boolean;
   showSuccessErrorAlert: boolean;
+  snackbarOperation: string;
 }
 
 export type ActionsType = ActionType<typeof actions>;

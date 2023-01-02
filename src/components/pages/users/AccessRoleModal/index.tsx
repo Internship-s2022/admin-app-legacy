@@ -29,6 +29,9 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
 
   return (
     <div>
+      <div className={styles.title}>
+        <h1>Editar acceso</h1>
+      </div>
       <div className={styles.modalContainer}>
         {accessRoles.map((item) => {
           if (item.value != 'SUPER_ADMIN') {
@@ -39,7 +42,7 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
                 materialVariant={accessRole === item.value ? Variant.CONTAINED : Variant.OUTLINED}
                 label={item.label}
                 onClick={() => setAccessRole(item.value)}
-                styles={styles.buttonStyle}
+                styles={accessRole === item.value ? styles.selectedBtn : styles.unselectedBtn}
               ></Button>
             );
           }

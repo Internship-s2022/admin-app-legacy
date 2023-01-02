@@ -31,7 +31,7 @@ export const getMembers: AppThunk = (filter) => {
     dispatch(getMembersPending());
     try {
       const response = await getByFilterResourceRequest(ApiRoutes.MEMBER, filter);
-      if (response.data?.length) {
+      if (response?.data) {
         dispatch(getMembersSuccess(response.data));
       }
     } catch (error) {

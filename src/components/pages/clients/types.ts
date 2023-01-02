@@ -7,6 +7,7 @@ export interface ClientsData {
 }
 
 export interface Project {
+  isActive?: boolean;
   _id: string;
   projectName: string;
   description: string;

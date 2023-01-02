@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Criticality, ProjectFormValues, ProjectType } from 'src/components/pages/projects/types';
@@ -11,14 +11,18 @@ import {
   DatePicker,
   Dropdown,
   Modal,
-  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
+import { UiRoutes } from 'src/constants';
 import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
-import { closeConfirmationModal, openConfirmationModal } from 'src/redux/ui/actions';
+import {
+  closeConfirmationModal,
+  openConfirmationModal,
+  setSnackbarOperation,
+} from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { criticalityOptions, projectTypeOptions } from './constants';
@@ -31,11 +35,10 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const { id } = useParams();
   const dispatch: AppDispatch<null> = useDispatch();
+  const navigate = useNavigate();
 
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const membersList = useSelector((state: RootState) => state.member.list);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   const clientList = useSelector((state: RootState) =>
@@ -46,8 +49,6 @@ const ProjectForm = (props: ProjectFormProps) => {
       return acc;
     }, []),
   );
-  const projectError = useSelector((state: RootState) => state.project?.error);
-  const operation = id ? 'editado' : 'agregado';
 
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
@@ -82,13 +83,19 @@ const ProjectForm = (props: ProjectFormProps) => {
         notes: data.notes,
       }),
     };
-    id ? dispatch(editProject(options)) : dispatch(createProject(options));
+    if (id) {
+      dispatch(editProject(options));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      dispatch(createProject(options));
+    }
     dispatch(closeConfirmationModal());
+    navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
 
   useEffect(() => {
     dispatch(getProjectAndClients(id));
-  }, [membersList]);
+  }, []);
 
   useEffect(() => {
     reset({
@@ -223,12 +230,6 @@ const ProjectForm = (props: ProjectFormProps) => {
             </div>
           </div>
         </div>
-        <SuccessErrorMessage
-          open={showAlert}
-          error={projectError}
-          resource={Resources.Proyectos}
-          operation={operation}
-        />
       </form>
       <Modal
         testId="editProjectModal"

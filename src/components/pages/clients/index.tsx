@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
@@ -12,15 +11,18 @@ import {
   Table,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
+import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
-import { deleteClient, getClients } from 'src/redux/client/thunks';
-import { RootState } from 'src/redux/store';
+import { clearSelectedClient } from 'src/redux/client/actions';
+import { deleteClient, editClient, getClients } from 'src/redux/client/thunks';
+import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
   closeConfirmationModal,
   closeMessageAlert,
-  closeModal,
   openConfirmationModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
@@ -47,13 +49,13 @@ const filterData = (list, filters) => {
 
 const Clients = () => {
   const [row, setRow] = React.useState({} as ClientsData);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const dispatch: AppDispatch<null> = useDispatch();
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const dispatch: AppDispatch<null> = useAppDispatch();
 
-  const clientsList = useSelector((state: RootState) => state.client?.list);
-  const clientError = useSelector((state: RootState) => state.client?.error);
-  const showAlert = useSelector((state: RootState) => state.ui.showSuccessErrorAlert);
-
+  const clientsList = useAppSelector((state: RootState) => state.client?.list);
+  const clientError = useAppSelector((state: RootState) => state.client?.error);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
@@ -62,6 +64,10 @@ const Clients = () => {
     search: '',
   });
   const [checked, setChecked] = React.useState(false);
+  const confirmationTitle = filters.isActive ? 'Desactivar cliente' : 'Activar cliente';
+  const confirmationDescription = filters.isActive
+    ? `¿Desea desactivar al cliente ${row.name}?`
+    : `¿Desea activar al cliente ${row.name}?`;
 
   const activeClientsList = useMemo(() => {
     const mappedClients = clientsList.reduce((acc, item) => {
@@ -85,55 +91,83 @@ const Clients = () => {
   }, [clientsList, filters.isActive, filters.search]);
 
   useEffect(() => {
-    setDataList(activeClientsList);
-  }, [clientsList, filters.isActive, filters.search]);
-
-  useEffect(() => {
     dispatch(getClients());
     return () => {
       dispatch(closeMessageAlert());
     };
   }, []);
 
-  const handleDelete = async (id) => {
-    await dispatch(deleteClient(id));
+  useEffect(() => {
+    dispatch(getClients());
+    dispatch(clearSelectedClient());
+  }, []);
+
+  useEffect(() => {
+    setDataList(activeClientsList);
+  }, [clientsList, filters.isActive, filters.search]);
+
+  const handleDelete = (id) => {
+    dispatch(deleteClient(id));
+    dispatch(setSnackbarOperation('inactivado'));
     dispatch(closeConfirmationModal());
-    dispatch(closeModal());
   };
 
   const handleEdit = (row) => {
+    dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
+  };
+
+  const handleActivate = (data) => {
+    dispatch(editClient(data));
+    dispatch(setSnackbarOperation('activado'));
+    dispatch(closeConfirmationModal());
+  };
+
+  const options = {
+    id: row._id,
+    body: {
+      isActive: true,
+    },
   };
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  const handleDataList = (data) => {
-    setDataList(data);
-  };
-
-  const buttonsArray = [
-    {
-      active: true,
-      label: 'EDITAR',
-      testId: 'edit-button',
-      variant: Variant.CONTAINED,
-      onClick: (row) => {
-        return handleEdit(row);
-      },
-    },
-    {
-      active: true,
-      label: 'X',
-      testId: 'delete-button',
-      variant: Variant.CONTAINED,
-      onClick: (data) => {
-        dispatch(openConfirmationModal());
-        setRow(data);
-      },
-    },
-  ];
+  const buttonsArray = filters.isActive
+    ? [
+        {
+          active: true,
+          testId: 'delete-button',
+          variant: Variant.CONTAINED,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+          icon: <DeleteIcon />,
+        },
+        {
+          active: true,
+          testId: 'edit-button',
+          variant: Variant.CONTAINED,
+          onClick: (row) => {
+            return handleEdit(row);
+          },
+          icon: <EditIcon />,
+        },
+      ]
+    : [
+        {
+          active: true,
+          label: 'Activar',
+          testId: 'activate-button',
+          variant: Variant.TEXT,
+          onClick: (data) => {
+            dispatch(openConfirmationModal());
+            setRow(data);
+          },
+        },
+      ];
 
   const showErrorMessage = clientError?.networkError || !clientsList.length;
 
@@ -158,7 +192,10 @@ const Clients = () => {
         <div className={styles.addClientButton}>
           <Button
             materialVariant={Variant.CONTAINED}
-            onClick={() => navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`)}
+            onClick={() => {
+              navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`);
+              dispatch(setSnackbarOperation('agregado'));
+            }}
             label={'+ Agregar cliente'}
             testId={'add-client-button'}
             styles={'addButton'}
@@ -200,7 +237,7 @@ const Clients = () => {
             testId={'client-table'}
             headers={header}
             value={dataList}
-            setDataList={handleDataList}
+            setDataList={setDataList}
             buttons={buttonsArray}
             isActive={filters.isActive}
           />
@@ -224,18 +261,18 @@ const Clients = () => {
         open={showAlert}
         error={clientError}
         resource={Resources.Clientes}
-        operation={'borrado'}
+        operation={snackbarOperation}
       />
       <Modal
-        testId="delete-modaldeleteModal"
+        testId="confirmation-modal"
         styles={styles.modal}
         isOpen={showConfirmModal}
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
-          description={`¿Desea eliminar al cliente ${row.name}?`}
-          title={'Eliminar Cliente'}
-          handleConfirm={() => handleDelete(row._id)}
+          description={confirmationDescription}
+          title={confirmationTitle}
+          handleConfirm={() => (filters.isActive ? handleDelete(row._id) : handleActivate(options))}
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>

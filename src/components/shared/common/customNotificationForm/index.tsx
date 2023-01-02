@@ -34,7 +34,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       customMessage: '',
       date: null,
     },
-    mode: 'onBlur',
+    mode: 'onChange',
     resolver: joiResolver(customNotificationsValidations),
   });
 
@@ -54,7 +54,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       <div className={styles.titleContainer}>Agregar recordatorio</div>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputContainer}>
-          <div>
+          <div className={styles.textArea}>
             <TextInput
               control={control}
               testId={'custom-message-button'}
@@ -68,7 +68,7 @@ const CustomNotifications = (props: customNotificationProps) => {
           </div>
           <div className={styles.input}>
             <DatePicker
-              label={'Fecha'}
+              label={'Fecha de recordatorio'}
               testId={'date-picker-custom'}
               name="date"
               control={control}

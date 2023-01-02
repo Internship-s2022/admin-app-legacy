@@ -1,20 +1,25 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
-  margin: 5%;
 }
 
 .headerAddMember {
-  padding: 20px 13px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 20px;
   font-weight: 500;
-  text-align: center;
+  text-align: left;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+.headerAddMember p {
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
 
 .contentContainer {
   display: flex;
+  margin: 5%;
 }
 
 .memberForm {
@@ -25,7 +30,7 @@
 }
 
 .topContainer {
-  margin-bottom: 15px;
+  margin-bottom: 38px;
 }
 
 .inputsContainer {
@@ -52,4 +57,5 @@
 .datePickers {
   display: flex;
   gap: 40px;
+  justify-content: space-around;
 }

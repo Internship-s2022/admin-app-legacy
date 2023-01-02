@@ -10,6 +10,7 @@ const initialState: State = {
   showConfirmModal: false,
   showLogoutModal: false,
   showSuccessErrorAlert: false,
+  snackbarOperation: '',
 };
 
 const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
@@ -74,6 +75,11 @@ const uiReducer: Reducer<State, ActionsType> = (state = initialState, action): S
       return {
         ...state,
         showSuccessErrorAlert: false,
+      };
+    case Actions.SET_SNACKBAR_OPERATION:
+      return {
+        ...state,
+        snackbarOperation: action.payload,
       };
     default:
       return state;
