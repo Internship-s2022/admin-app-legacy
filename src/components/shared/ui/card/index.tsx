@@ -65,9 +65,7 @@ const Card = (props: CardProps) => {
     return newData?.data;
   };
 
-  const shownNotification = isCustom
-    ? 'Notificación Personalizada'
-    : changedNotificationData(notification);
+  const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
   const [checked, setChecked] = React.useState(false);
 
@@ -128,7 +126,11 @@ const Card = (props: CardProps) => {
                 </>
               </div>
             )}
-            {isCustom && <div className={styles.customMessage}>{customMessage}</div>}
+            {isCustom ? (
+              <div className={styles.customMessage}>{customMessage}</div>
+            ) : (
+              <div className={styles.customMessage}>{changedNotificationData(notification)}</div>
+            )}
           </div>
           <div className={styles.notification}>
             <p>{shownNotification}</p>

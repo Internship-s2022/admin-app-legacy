@@ -1,8 +1,8 @@
 export const dataCards = [
-  { key: 101, data: 'Sin proyecto asignado' },
-  { key: 102, data: 'Ausencias programadas pronto' },
-  { key: 201, data: 'Sin proyectos' },
-  { key: 202, data: 'Pronto a finalizar' },
-  { key: 301, data: 'Sin miembros asignados' },
-  { key: 302, data: 'Pronto a finalizar' },
+  { key: 101, data: 'Empleado sin proyectos asignado' },
+  { key: 102, data: 'Empleado con ausencias programadas en los proximos días' },
+  { key: 201, data: 'Cliente sin proyectos' },
+  { key: 202, data: 'Cliente con fecha próxima a finalizar la relación' },
+  { key: 301, data: 'Proyecto sin miembros asginados' },
+  { key: 302, data: 'Proyecto con fecha próxima a finalizar' },
 ];
