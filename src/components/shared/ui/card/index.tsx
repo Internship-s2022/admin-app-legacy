@@ -126,11 +126,9 @@ const Card = (props: CardProps) => {
                 </>
               </div>
             )}
-            {isCustom ? (
-              <div className={styles.customMessage}>{customMessage}</div>
-            ) : (
-              <div className={styles.customMessage}>{changedNotificationData(notification)}</div>
-            )}
+            <div className={styles.customMessage}>
+              {isCustom ? customMessage : changedNotificationData(notification)}
+            </div>
           </div>
           <div className={styles.notification}>
             <p>{shownNotification}</p>
