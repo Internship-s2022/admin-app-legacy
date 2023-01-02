@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
@@ -42,12 +42,12 @@ const ClientForm = () => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
-  const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
-  const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const selectedClient = useAppSelector((state: RootState) => state.client?.selectedClient);
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
