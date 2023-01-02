@@ -88,6 +88,7 @@ const ProjectForm = (props: ProjectFormProps) => {
       dispatch(setSnackbarOperation('editado'));
     } else {
       dispatch(createProject(options));
+      dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
