@@ -28,11 +28,11 @@ const filterData = (list, filters) => {
 
   filterDataList = filterDataList.filter((item) => item.potentialRole.includes(filters.role));
 
-  if (filters.seniority != '') {
+  if (filters.seniority.length) {
     filterDataList = filterDataList.filter((item) => filters.seniority === item.seniority);
   }
 
-  if (filters.availability != '') {
+  if (filters.availability.length) {
     filterDataList = filterDataList.filter((item) => filters.availability === item.availability);
   }
 
