@@ -8,7 +8,8 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import ClockIcon from 'src/components/shared/ui/icons/clockIcon';
 import { UiRoutes } from 'src/constants';
-import { getMembers } from 'src/redux/member/thunk';
+import { cleanSelectedProject } from 'src/redux/project/actions';
+import { getProjectAndClients } from 'src/redux/project/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { closeFormModal, closeModal, openFormModal } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
@@ -30,7 +31,6 @@ const ProjectMembersLayout = () => {
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
 
   const showModal = useAppSelector((state: RootState) => state.ui.showModal);
-  const selectedProject = useAppSelector((state: RootState) => state.project.selectedProject);
   const membersList = useAppSelector((state: RootState) => state.member.list);
   const employeeList = useAppSelector((state: RootState) => state.employee.list);
   const isLoading = useAppSelector((state: RootState) => state.member.isLoading);
@@ -57,11 +57,14 @@ const ProjectMembersLayout = () => {
     });
   }, [membersList, memberId]);
 
-  const activeMembersList = membersList?.filter((member) => member.active);
+  const activeMembersList = id ? membersList?.filter((member) => member.active) : [];
 
   useEffect(() => {
-    selectedProject?._id && dispatch(getMembers({ project: selectedProject?._id }));
-  }, [selectedProject?._id]);
+    dispatch(getProjectAndClients(id));
+    return () => {
+      dispatch(cleanSelectedProject());
+    };
+  }, []);
 
   const formattedMatchedMember = matchedMember && {
     ...matchedMember,
@@ -101,12 +104,12 @@ const ProjectMembersLayout = () => {
       </div>
       <div>
         <ProjectForm>
-          {!isLoading ? (
-            <MemberTable list={activeMembersList} setMemberId={setMemberId} projectId={id} />
-          ) : (
+          {id && isLoading ? (
             <div className={styles.spinnerContainer}>
               <Spinner />
             </div>
+          ) : (
+            <MemberTable list={activeMembersList} setMemberId={setMemberId} projectId={id} />
           )}
         </ProjectForm>
       </div>

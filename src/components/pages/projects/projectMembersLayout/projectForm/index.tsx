@@ -95,10 +95,6 @@ const ProjectForm = (props: ProjectFormProps) => {
   };
 
   useEffect(() => {
-    dispatch(getProjectAndClients(id));
-  }, []);
-
-  useEffect(() => {
     reset({
       projectName: selectedProject.projectName,
       clientName: selectedProject.clientName?._id,

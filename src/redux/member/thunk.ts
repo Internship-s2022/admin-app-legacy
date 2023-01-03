@@ -43,7 +43,6 @@ export const getMembers: AppThunk = (filter) => {
 export const addMember: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
     dispatch(addMemberPending());
-    dispatch(setLoaderOn());
     try {
       const response = await addResourceRequest(ApiRoutes.MEMBER, data);
       if (!response.error) {
@@ -52,7 +51,6 @@ export const addMember: AppThunk = (data) => {
     } catch (error) {
       dispatch(addMemberError({ message: error.message, networkError: error.networkError }));
     } finally {
-      dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
     }
   };

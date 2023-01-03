@@ -4,11 +4,13 @@ import {
   addResourceRequest,
   deleteResourceRequest,
   editResourceRequest,
+  getByFilterResourceRequest,
   getResourceRequest,
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
 import { getClientsPending, getClientsSuccess } from '../client/actions';
+import { getMembersPending, getMembersSuccess } from '../member/actions';
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
@@ -68,15 +70,18 @@ export const getProjectAndClients: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
     dispatch(getProjectByIdPending());
     dispatch(getClientsPending());
+    dispatch(getMembersPending());
     dispatch(setLoaderOn());
     try {
       const responses = await Promise.all([
         getResourceRequest(ApiRoutes.CLIENT),
         id && getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`),
+        id && getByFilterResourceRequest(ApiRoutes.MEMBER, { project: id }),
       ]);
 
       responses[0].data?.length && dispatch(getClientsSuccess(responses[0].data));
       responses[1]?.data && dispatch(getProjectByIdSuccess(responses[1]?.data));
+      responses[2]?.data && dispatch(getMembersSuccess(responses[2]?.data));
     } catch (error: any) {
       dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
     } finally {
