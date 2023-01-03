@@ -245,7 +245,7 @@ const Clients = () => {
           <>
             <div className={styles.notFound}>
               <div className={styles.notFoundTitle}>
-                No han encontrado resultados que coincidan con tu búsqueda
+                No se han encontrado resultados que coincidan con tu búsqueda
               </div>
               <div>
                 <img

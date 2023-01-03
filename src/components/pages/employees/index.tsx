@@ -18,7 +18,7 @@ import { formattedTableData } from 'src/utils/formatters';
 
 import { employeeFilterOptions, header } from './constants';
 import styles from './employee.module.css';
-import { checkboxData } from './employeeForm/constants';
+import { checkboxData, seniority } from './employeeForm/constants';
 import { MappedEmployeeData, Projects, SearchEmployeeData } from './types';
 
 const filterData = (list, filters) => {
@@ -27,6 +27,14 @@ const filterData = (list, filters) => {
   filterDataList = list.filter((item) => item.active === filters.isActive);
 
   filterDataList = filterDataList.filter((item) => item.potentialRole.includes(filters.role));
+
+  if (filters.seniority.length) {
+    filterDataList = filterDataList.filter((item) => filters.seniority === item.seniority);
+  }
+
+  if (filters.availability.length) {
+    filterDataList = filterDataList.filter((item) => filters.availability === item.availability);
+  }
 
   if (filters.search) {
     filterDataList = filterDataList?.filter((d) =>
@@ -47,10 +55,13 @@ const Employees = () => {
   const [dataList, setDataList] = useState([]);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const employeeList = useAppSelector((state: RootState) => state.employee?.list);
+  const [checked, setChecked] = React.useState(false);
   const [filters, setFilters] = React.useState({
     isActive: true,
     role: '',
     search: '',
+    seniority: '',
+    availability: '',
   });
 
   const listEmployee = useMemo(() => {
@@ -72,7 +83,7 @@ const Employees = () => {
     }, []);
     const filteredData = filterData(mappedEmployees, filters);
     return filteredData;
-  }, [employeeList, filters.role, filters.search]);
+  }, [employeeList, filters.role, filters.search, filters.seniority, filters.availability]);
 
   useEffect(() => {
     dispatch(getEmployees());
@@ -80,7 +91,7 @@ const Employees = () => {
 
   useEffect(() => {
     setDataList(listEmployee);
-  }, [employeeList, filters.role, filters.search]);
+  }, [employeeList, filters.role, filters.search, filters.seniority, filters.availability]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -149,11 +160,64 @@ const Employees = () => {
               </option>
             ))}
           </select>
+          <select
+            className={styles.filterDropdown}
+            onChange={(e) => {
+              setFilters({ ...filters, seniority: e.target.value });
+            }}
+          >
+            <option
+              value={''}
+              disabled
+              selected={filters.seniority === ''}
+              className={styles.option}
+            >
+              {'Seniority'}
+            </option>
+            {seniority?.map((item) => (
+              <option key={item.value} value={item.value} className={styles.option}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+          <div className={styles.filterButtons}>
+            {checked ? (
+              <div className={styles.filterButtonsPressed}>
+                <Button
+                  materialVariant={Variant.CONTAINED}
+                  onClick={() => {
+                    setFilters({ ...filters, availability: '' });
+                    setChecked(!checked);
+                  }}
+                  label={'Disponibles'}
+                  testId={'disponibility-button'}
+                  color={'warning'}
+                />
+              </div>
+            ) : (
+              <Button
+                materialVariant={Variant.TEXT}
+                onClick={() => {
+                  setFilters({ ...filters, availability: 'Disponible' });
+                  setChecked(!checked);
+                }}
+                label={'Disponibles'}
+                testId={'disponibility-button'}
+              />
+            )}
+          </div>
           <div className={styles.filterButtons}>
             <Button
               materialVariant={Variant.TEXT}
               onClick={() => {
-                setFilters({ ...filters, role: '', search: '' });
+                setFilters({
+                  ...filters,
+                  role: '',
+                  search: '',
+                  seniority: '',
+                  availability: '',
+                });
+                setChecked(!checked);
               }}
               label={'Resetear filtros'}
               testId={'reset-filter'}
@@ -183,7 +247,7 @@ const Employees = () => {
           <>
             <div className={styles.notFound}>
               <div className={styles.notFoundTitle}>
-                No han encontrado resultados que coincidan con tu búsqueda
+                No se han encontrado resultados que coincidan con tu búsqueda
               </div>
               <div>
                 <img
