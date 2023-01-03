@@ -45,6 +45,19 @@
   box-shadow: 0 2px 13px 5px #0000001c;
 }
 
+.expiredCardContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 302px;
+  height: 203px;
+  margin-bottom: 25px;
+  color: #7b809a;
+  border: 0.4px solid rgb(255 0 0 / 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 13px 5px rgb(255 0 0 / 11%);
+}
+
 .cardContent {
   width: auto;
   height: calc(203px - 51px);

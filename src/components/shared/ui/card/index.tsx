@@ -1,3 +1,4 @@
+import { isAfter } from 'date-fns';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -51,23 +52,23 @@ const Card = (props: CardProps) => {
     isCustom,
     resourceId,
     id,
+    date,
   } = props;
   const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
+  const [checked, setChecked] = React.useState(false);
 
   const isProject = !!(resource === 'PROJECT');
   const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
+  const isExpired = isAfter(new Date(date), new Date(Date.now()));
+  const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
   const changedNotificationData = (notification) => {
     const newData = dataCards.find((item) => item.key === notification);
     return newData?.data;
   };
-
-  const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
-
-  const [checked, setChecked] = React.useState(false);
 
   const redirectClick = (data) => {
     if (isProject) {
@@ -96,7 +97,13 @@ const Card = (props: CardProps) => {
         <div className={`${styles.baseIconTab} ${cardIcon.color}`} data-testid="card-icon">
           {cardIcon.icon}
         </div>
-        <div className={`${styles.cardContainer} ${styles.card}`}>
+        <div
+          className={
+            isExpired
+              ? `${styles.expiredCardContainer} ${styles.card}`
+              : `${styles.cardContainer} ${styles.card}`
+          }
+        >
           <div className={styles.cardContent} onClick={() => redirectClick(resourceId)}>
             <div className={styles.title}>
               <div className={styles.nameContainer}>
