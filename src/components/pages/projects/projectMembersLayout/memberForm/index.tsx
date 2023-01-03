@@ -131,7 +131,7 @@ const MemberForm = (props: MemberFormProps) => {
         : memberDataHelper?.push(helperData);
     }
 
-    const formattedData = helperData
+    const formattedData = helperData?.helperReference
       ? {
           ...rest,
           employee: employee.value,
