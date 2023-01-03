@@ -216,6 +216,7 @@ const Home = () => {
                     customMessage={item.customMessage}
                     isCustom={item.isCustom}
                     notification={item.notification}
+                    date={item.date}
                   />
                 </>
               );
