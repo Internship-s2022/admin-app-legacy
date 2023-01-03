@@ -100,7 +100,7 @@ const Card = (props: CardProps) => {
         <div
           className={
             isExpired
-              ? `${styles.expiredCardContainer} ${styles.card}`
+              ? `${styles.expiredCardContainer} ${styles.expiredCard}`
               : `${styles.cardContainer} ${styles.card}`
           }
         >

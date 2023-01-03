@@ -53,7 +53,7 @@
   height: 203px;
   margin-bottom: 25px;
   color: #7b809a;
-  border: 0.4px solid rgb(255 0 0 / 100%);
+  border: 0.7px solid rgb(187 0 0 / 100%);
   border-radius: 12px;
   box-shadow: 0 2px 13px 5px rgb(255 0 0 / 11%);
 }
@@ -166,4 +166,9 @@
 .card:hover {
   cursor: pointer;
   box-shadow: 0 2px 13px 5px #0000006c;
+}
+
+.expiredCard:hover {
+  cursor: pointer;
+  box-shadow: 0 2px 13px 5px rgb(154 1 1 / 25%);
 }
