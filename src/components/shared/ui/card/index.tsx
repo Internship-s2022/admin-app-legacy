@@ -62,7 +62,7 @@ const Card = (props: CardProps) => {
   const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
-  const isExpired = isAfter(new Date(date), new Date(Date.now()));
+  const isExpired = isAfter(new Date(Date.now()), new Date(date));
   const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
   const changedNotificationData = (notification) => {
