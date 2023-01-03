@@ -16,6 +16,7 @@ import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { TableButton } from 'src/components/shared/ui/table/types';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, editProject, getProjects } from 'src/redux/project/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
@@ -109,6 +110,11 @@ const Projects = () => {
     return () => {
       dispatch(closeMessageAlert());
     };
+  }, []);
+
+  useEffect(() => {
+    dispatch(getProjects());
+    dispatch(cleanSelectedProject());
   }, []);
 
   useEffect(() => {
