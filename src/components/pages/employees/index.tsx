@@ -28,15 +28,13 @@ const filterData = (list, filters) => {
 
   filterDataList = filterDataList.filter((item) => item.potentialRole.includes(filters.role));
 
-  filterDataList =
-    filters.seniority === ''
-      ? filterDataList
-      : filterDataList.filter((item) => filters.seniority === item.seniority);
+  if (filters.seniority != '') {
+    filterDataList = filterDataList.filter((item) => filters.seniority === item.seniority);
+  }
 
-  filterDataList =
-    filters.availability === ''
-      ? filterDataList
-      : filterDataList.filter((item) => filters.availability === item.availability);
+  if (filters.availability != '') {
+    filterDataList = filterDataList.filter((item) => filters.availability === item.availability);
+  }
 
   if (filters.search) {
     filterDataList = filterDataList?.filter((d) =>
@@ -249,7 +247,7 @@ const Employees = () => {
           <>
             <div className={styles.notFound}>
               <div className={styles.notFoundTitle}>
-                No han encontrado resultados que coincidan con tu búsqueda
+                No se han encontrado resultados que coincidan con tu búsqueda
               </div>
               <div>
                 <img
