@@ -29,7 +29,11 @@ const CustomNotifications = (props: customNotificationProps) => {
 
   const { resource, id } = props;
 
-  const { control, handleSubmit } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    control,
+    handleSubmit,
+  } = useForm<FormValues>({
     defaultValues: {
       customMessage: '',
       date: null,
@@ -37,6 +41,8 @@ const CustomNotifications = (props: customNotificationProps) => {
     mode: 'onChange',
     resolver: joiResolver(customNotificationsValidations),
   });
+
+  const formChanged = isDirty;
 
   const onSubmit = (data) => {
     const body = {
@@ -90,6 +96,7 @@ const CustomNotifications = (props: customNotificationProps) => {
                 materialVariant={Variant.CONTAINED}
                 onClick={handleSubmit(onSubmit)}
                 label="Confirmar"
+                disabled={!formChanged}
               />
             </div>
           </div>
