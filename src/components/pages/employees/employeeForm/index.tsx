@@ -74,7 +74,12 @@ const EditEmployee = () => {
 
   const [absences, setAbsences] = React.useState(selectedEmployee?.absences || []);
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm<FormValues>({
     defaultValues: {
       id: '',
       user: {
@@ -96,6 +101,8 @@ const EditEmployee = () => {
     mode: 'onBlur',
     resolver: joiResolver(employeeValidations),
   });
+
+  const formChanged = !isDirty && absences === selectedEmployee.absences;
 
   useEffect(() => {
     if (Object.keys(selectedEmployee).length) {
@@ -337,6 +344,7 @@ const EditEmployee = () => {
               materialVariant={Variant.CONTAINED}
               onClick={() => dispatch(openConfirmationModal())}
               label="Confirmar"
+              disabled={formChanged}
             />
           </div>
         </div>

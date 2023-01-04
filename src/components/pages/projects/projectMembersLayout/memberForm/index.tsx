@@ -31,7 +31,13 @@ const MemberForm = (props: MemberFormProps) => {
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+    watch,
+  } = useForm<FormValues>({
     defaultValues: {
       employee: { label: '', value: '' },
       role: Role.DEV,
@@ -50,6 +56,7 @@ const MemberForm = (props: MemberFormProps) => {
   });
 
   const selectedMember = watch('employee');
+  const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
     return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
@@ -279,6 +286,7 @@ const MemberForm = (props: MemberFormProps) => {
                   materialVariant={Variant.CONTAINED}
                   onClick={handleSubmit(onSubmit)}
                   label="Confirmar"
+                  disabled={formChanged}
                 />
               </div>
             </div>
