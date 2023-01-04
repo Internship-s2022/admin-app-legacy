@@ -18,6 +18,7 @@ import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { deleteClient, editClient, getClients } from 'src/redux/client/thunks';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import {
   closeConfirmationModal,
   closeMessageAlert,
@@ -169,7 +170,8 @@ const Clients = () => {
         },
       ];
 
-  const showErrorMessage = clientError?.networkError || !clientsList.length;
+  const showErrorMessage =
+    clientError?.errorType === ErrorType.NETWORK_ERROR || !clientsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -245,7 +247,7 @@ const Clients = () => {
           <>
             <div className={styles.notFound}>
               <div className={styles.notFoundTitle}>
-                No han encontrado resultados que coincidan con tu búsqueda
+                No se han encontrado resultados que coincidan con tu búsqueda
               </div>
               <div>
                 <img

@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { ErrorFormat } from 'src/redux/types';
+import { ErrorFormat, ErrorType } from 'src/redux/types';
 
 const token = localStorage.getItem('token');
 
@@ -14,17 +14,22 @@ const api = axios.create({
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
-
 const parseError = (error) => {
-  if (error.code !== 'ERR_NETWORK') {
+  if (error.code === ErrorType.NETWORK_ERROR) {
+    throw {
+      message: error.message,
+      errorType: ErrorType.NETWORK_ERROR,
+    };
+  }
+  if (error.response.status === 403) {
     throw {
       message: error.response.data.message,
-      networkError: false,
+      errorType: ErrorType.AUTH_ERROR,
     };
   }
   throw {
-    message: error.message,
-    networkError: true,
+    message: error.response.data.message,
+    errorType: ErrorType.CLIENT_ERROR,
   };
 };
 

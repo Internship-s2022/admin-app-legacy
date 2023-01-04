@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joiResolver } from '@hookform/resolvers/joi';
 
@@ -14,6 +14,7 @@ import {
   ConfirmationMessage,
   DatePicker,
   Modal,
+  SuccessErrorMessage,
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
@@ -41,8 +42,11 @@ const ClientForm = () => {
   const dispatch: AppDispatch<null> = useDispatch();
 
   const showNotificationModal = useAppSelector((state: RootState) => state.ui.showFormModal);
-  const selectedClient = useSelector((state: RootState) => state.client?.selectedClient);
-  const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
+  const selectedClient = useAppSelector((state: RootState) => state.client?.selectedClient);
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
+  const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
+  const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
+  const notificationError = useAppSelector((state: RootState) => state.notification.error);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
@@ -73,7 +77,12 @@ const ClientForm = () => {
     }
   }, [selectedClient]);
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm<FormValues>({
     defaultValues: {
       name: '',
       localContact: {
@@ -92,6 +101,8 @@ const ClientForm = () => {
     mode: 'onBlur',
     resolver: joiResolver(validations.clientValidation),
   });
+
+  const formChanged = Boolean(!isDirty && id);
 
   const latestClientsList = selectedClient?.projects?.slice(-2);
 
@@ -319,6 +330,7 @@ const ClientForm = () => {
                   : handleSubmit(onSubmit)
               }
               label="Confirmar"
+              disabled={formChanged}
             />
           </div>
         </div>
@@ -345,6 +357,12 @@ const ClientForm = () => {
           handleClose={() => dispatch(closeConfirmationModal())}
         />
       </Modal>
+      <SuccessErrorMessage
+        open={showAlert}
+        error={notificationError}
+        resource={Resources.Notificaciones}
+        operation={snackbarOperation}
+      />
     </div>
   );
 };

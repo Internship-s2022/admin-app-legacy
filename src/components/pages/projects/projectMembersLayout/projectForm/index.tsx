@@ -54,7 +54,12 @@ const ProjectForm = (props: ProjectFormProps) => {
     setEndDateDisabled(data);
   };
 
-  const { control, reset, handleSubmit } = useForm<ProjectFormValues>({
+  const {
+    formState: { isDirty },
+    control,
+    reset,
+    handleSubmit,
+  } = useForm<ProjectFormValues>({
     defaultValues: {
       projectName: '',
       clientName: '',
@@ -68,6 +73,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     mode: 'onBlur',
     resolver: joiResolver(projectValidation),
   });
+
+  const formChanged = Boolean(!isDirty && id);
 
   const onSubmit = (data) => {
     const options = {
@@ -88,14 +95,11 @@ const ProjectForm = (props: ProjectFormProps) => {
       dispatch(setSnackbarOperation('editado'));
     } else {
       dispatch(createProject(options));
+      dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.PROJECTS}`);
   };
-
-  useEffect(() => {
-    dispatch(getProjectAndClients(id));
-  }, []);
 
   useEffect(() => {
     reset({
@@ -193,6 +197,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     materialVariant={Variant.CONTAINED}
                     onClick={id ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)}
                     label="Guardar"
+                    disabled={formChanged}
                   />
                 </div>
               </div>

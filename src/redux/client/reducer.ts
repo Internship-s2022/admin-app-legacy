@@ -25,7 +25,6 @@ const clientReducer: Reducer<ClientState, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
-        error: undefined,
       };
     case Actions.GET_CLIENTS_ERROR:
       return {

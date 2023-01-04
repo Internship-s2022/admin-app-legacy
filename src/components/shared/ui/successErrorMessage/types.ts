@@ -3,6 +3,6 @@ import { ErrorFormat } from 'src/redux/types';
 export interface SuccessErrorMessageProps {
   error: ErrorFormat;
   open: boolean;
-  resource: string;
+  resource?: string;
   operation: string;
 }

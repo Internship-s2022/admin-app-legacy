@@ -15,7 +15,7 @@ import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
-import { closeModal } from 'src/redux/ui/actions';
+import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
 import { roles } from './constants';
@@ -28,11 +28,16 @@ const MemberForm = (props: MemberFormProps) => {
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
-  let helperDropdownList;
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const { handleSubmit, control, reset, watch } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+    watch,
+  } = useForm<FormValues>({
     defaultValues: {
       employee: { label: '', value: '' },
       role: Role.DEV,
@@ -50,42 +55,14 @@ const MemberForm = (props: MemberFormProps) => {
     resolver: joiResolver(memberValidations),
   });
 
+  const selectedMember = watch('employee');
+  const formChanged = Boolean(!isDirty && memberData);
+
   const employeeDropdownList = dropdownData.map((employee) => {
     return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
-
-  useEffect(() => {
-    memberData &&
-      reset({
-        employee: {
-          value: memberData.employee.value,
-          label: employeeDropdownList?.find((item) => item.value === memberData?.employee.value)
-            ?.label,
-        },
-        role: memberData.role,
-        memberDedication: memberData.memberDedication,
-        helper: {
-          helperReference: {
-            value: memberData.helper[currentHelperIndex]?.helperReference.value,
-            label: helperDropdownList?.find(
-              (item) => item.value === memberData.helper[currentHelperIndex].helperReference.value,
-            )?.label,
-          },
-          dependency:
-            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dependency : 0,
-          dedication:
-            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dedication : 0,
-          isActive: true,
-        },
-        startDate: memberData.startDate,
-        endDate: memberData.endDate,
-      });
-    setEndDateDisabled(!memberData?.endDate);
-  }, [memberData]);
-
-  const selectedMember = watch('employee');
 
   const filterDropdownList = () => {
     const helperDropdownList = employeeList.reduce((acc, employee) => {
@@ -101,6 +78,36 @@ const MemberForm = (props: MemberFormProps) => {
     helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
     return helperDropdownList;
   };
+
+  useEffect(() => {
+    memberData &&
+      reset({
+        employee: {
+          value: memberData.employee.value,
+          label: employeeDropdownList?.find((item) => item.value === memberData?.employee.value)
+            ?.label,
+        },
+        role: memberData.role,
+        memberDedication: memberData.memberDedication,
+        helper: {
+          helperReference: {
+            value: memberData.helper[currentHelperIndex]?.helperReference.value,
+            label: filterDropdownList()?.find(
+              (item) =>
+                item.value === memberData.helper[currentHelperIndex]?.helperReference?.value,
+            )?.label,
+          },
+          dependency:
+            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dependency : 0,
+          dedication:
+            currentHelperIndex !== -1 ? memberData.helper[currentHelperIndex].dedication : 0,
+          isActive: true,
+        },
+        startDate: memberData.startDate,
+        endDate: memberData.endDate,
+      });
+    setEndDateDisabled(!memberData?.endDate);
+  }, [memberData]);
 
   const onSubmit = (data) => {
     const { helper, employee, ...rest } = data;
@@ -131,7 +138,7 @@ const MemberForm = (props: MemberFormProps) => {
         : memberDataHelper?.push(helperData);
     }
 
-    const formattedData = memberDataHelper
+    const formattedData = helperData?.helperReference
       ? {
           ...rest,
           employee: employee.value,
@@ -152,9 +159,13 @@ const MemberForm = (props: MemberFormProps) => {
       endDate: endDateDisabled ? null : data.endDate,
     };
 
-    memberDataHelper
-      ? dispatch(editMember({ id: memberData._id, body: formattedDataEdit }))
-      : dispatch(addMember(formattedData));
+    if (memberDataHelper) {
+      dispatch(editMember({ id: memberData._id, body: formattedDataEdit }));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      dispatch(addMember(formattedData));
+      dispatch(setSnackbarOperation('agregado'));
+    }
     dispatch(closeModal());
   };
 
@@ -275,6 +286,7 @@ const MemberForm = (props: MemberFormProps) => {
                   materialVariant={Variant.CONTAINED}
                   onClick={handleSubmit(onSubmit)}
                   label="Confirmar"
+                  disabled={formChanged}
                 />
               </div>
             </div>

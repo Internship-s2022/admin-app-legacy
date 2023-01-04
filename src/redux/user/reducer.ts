@@ -26,7 +26,6 @@ const userReducer: Reducer<State<User>, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
-        error: undefined,
       };
     case Actions.GET_USERS_ERROR:
       return {

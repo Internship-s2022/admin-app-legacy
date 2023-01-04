@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Button } from 'src/components/shared/ui';
+import { ErrorType } from 'src/redux/types';
 
 import { Variant } from '../../ui/buttons/button/types';
 import styles from './emptyDataHandler.module.css';
@@ -9,7 +10,7 @@ import { EmptyDataProps } from './types';
 
 const EmptyDataHandler = (props: EmptyDataProps) => {
   const { error, handleReload, resource, isEmployee, handleAdd } = props;
-  return error?.networkError ? (
+  return error?.errorType === ErrorType.NETWORK_ERROR ? (
     <div className={styles.errorContainer}>
       <div className={styles.textContainer}>
         <span>Lista de {resource}</span>

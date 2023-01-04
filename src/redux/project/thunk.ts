@@ -4,11 +4,13 @@ import {
   addResourceRequest,
   deleteResourceRequest,
   editResourceRequest,
+  getByFilterResourceRequest,
   getResourceRequest,
 } from 'src/config/api';
 import { ApiRoutes } from 'src/constants';
 
 import { getClientsPending, getClientsSuccess } from '../client/actions';
+import { getMembersPending, getMembersSuccess } from '../member/actions';
 import { AppThunk } from '../types';
 import { setLoaderOff, setLoaderOn, setOpenMessageAlert } from '../ui/actions';
 import {
@@ -40,7 +42,7 @@ export const getProjects: AppThunk = () => {
         dispatch(getProjectsSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getProjectsError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectsError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -57,7 +59,7 @@ export const getProjectById: AppThunk = (id) => {
         dispatch(getProjectByIdSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -68,17 +70,20 @@ export const getProjectAndClients: AppThunk = (id) => {
   return async (dispatch: Dispatch) => {
     dispatch(getProjectByIdPending());
     dispatch(getClientsPending());
+    dispatch(getMembersPending());
     dispatch(setLoaderOn());
     try {
       const responses = await Promise.all([
         getResourceRequest(ApiRoutes.CLIENT),
         id && getResourceRequest(`${ApiRoutes.PROJECTS}/${id}`),
+        id && getByFilterResourceRequest(ApiRoutes.MEMBER, { project: id }),
       ]);
 
       responses[0].data?.length && dispatch(getClientsSuccess(responses[0].data));
       responses[1]?.data && dispatch(getProjectByIdSuccess(responses[1]?.data));
+      responses[2]?.data && dispatch(getMembersSuccess(responses[2]?.data));
     } catch (error: any) {
-      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -95,7 +100,7 @@ export const createProject: AppThunk = (data) => {
         dispatch(createProjectSuccess(response.data));
       }
     } catch (error) {
-      dispatch(createProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(createProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -113,7 +118,7 @@ export const editProject: AppThunk = (options: { id: string; body: Project }) =>
         dispatch(editProjectSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(editProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -131,7 +136,7 @@ export const deleteProject: AppThunk = (id: string) => {
         dispatch(deleteProjectSuccess(id));
       }
     } catch (error: any) {
-      dispatch(deleteProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(deleteProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

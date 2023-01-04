@@ -6,6 +6,7 @@ import * as actions from './actions';
 
 export interface AuthUser extends UserData {
   token: string;
+  isActive: boolean;
 }
 
 export interface State {

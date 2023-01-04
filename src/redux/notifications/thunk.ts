@@ -27,7 +27,24 @@ export const getNotifications: AppThunk = () => {
         dispatch(getNotificationsSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getNotificationsError({ message: error.message, networkError: error.networkError }));
+      dispatch(getNotificationsError({ message: error.message, errorType: error.errorType }));
+    } finally {
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
+export const getActiveNotifications: AppThunk = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch(getNotificationsPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await getResourceRequest(`${ApiRoutes.NOTIFICATION}/active?notice=5`);
+      if (response.data?.length) {
+        dispatch(getNotificationsSuccess(response.data));
+      }
+    } catch (error: any) {
+      dispatch(getNotificationsError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -44,9 +61,7 @@ export const createNotification: AppThunk = (data) => {
         dispatch(createNotificationSuccess(response.data));
       }
     } catch (error) {
-      dispatch(
-        createNotificationError({ message: error.message, networkError: error.networkError }),
-      );
+      dispatch(createNotificationError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -63,9 +78,7 @@ export const deleteNotification: AppThunk = (id: string) => {
         dispatch(deleteNotificationSuccess(id));
       }
     } catch (error: any) {
-      dispatch(
-        deleteNotificationError({ message: error.message, networkError: error.networkError }),
-      );
+      dispatch(deleteNotificationError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setOpenMessageAlert());
     }

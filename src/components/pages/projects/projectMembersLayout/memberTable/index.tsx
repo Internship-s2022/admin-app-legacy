@@ -45,7 +45,6 @@ const MemberTable = (props: MemberTableProps) => {
   const handleEdit = (id) => {
     setMemberId(id);
     dispatch(openModal());
-    dispatch(setSnackbarOperation('editado'));
   };
 
   const handleAdd = () => {
@@ -61,7 +60,7 @@ const MemberTable = (props: MemberTableProps) => {
           testId="addMember"
           materialVariant={Variant.CONTAINED}
           onClick={() => handleAdd()}
-          label="+ Agregar miembros"
+          label="+ Agregar miembro"
         />
       </div>
       <table className={styles.table}>

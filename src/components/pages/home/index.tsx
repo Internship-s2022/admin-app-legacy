@@ -8,8 +8,9 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
-import { getNotifications } from 'src/redux/notifications/thunk';
+import { getActiveNotifications } from 'src/redux/notifications/thunk';
 import { RootState } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
@@ -107,7 +108,7 @@ const Home = () => {
   }, [notifications, filters.newest, filters.role, filters.search]);
 
   useEffect(() => {
-    dispatch(getNotifications());
+    dispatch(getActiveNotifications());
   }, []);
 
   useEffect(() => {
@@ -118,7 +119,8 @@ const Home = () => {
     navigate(path);
   };
 
-  const showErrorMessage = notificationError?.networkError || !listNotifications.length;
+  const showErrorMessage =
+    notificationError?.errorType === ErrorType.NETWORK_ERROR || !listNotifications.length;
 
   return (
     <>
@@ -215,6 +217,8 @@ const Home = () => {
                     members={item.members}
                     customMessage={item.customMessage}
                     isCustom={item.isCustom}
+                    notification={item.notification}
+                    date={item.date}
                   />
                 </>
               );

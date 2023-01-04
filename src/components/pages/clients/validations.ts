@@ -16,7 +16,7 @@ const clientValidation = Joi.object({
     name: Joi.string()
       .min(3)
       .max(35)
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .trim()
       .messages({
         'string.min': 'El nombre debe contener al menos 3 letras',
@@ -41,7 +41,7 @@ const clientValidation = Joi.object({
     name: Joi.string()
       .min(3)
       .max(35)
-      .regex(/^[a-zA-Z\s]*$/)
+      .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
       .trim()
       .messages({
         'string.min': 'El nombre debe contener al menos 3 letras',

@@ -25,7 +25,6 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
-        error: undefined,
       };
     case Actions.GET_PROJECTS_ERROR:
       return {
@@ -41,6 +40,7 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
     case Actions.GET_PROJECT_BY_ID_SUCCESS:
       return {
         ...state,
+        isLoading: false,
         selectedProject: action.payload,
         error: undefined,
       };
@@ -121,6 +121,7 @@ const projectReducer: Reducer<ProjectState, ActionsType> = (
       return {
         ...state,
         selectedProject: {} as Project,
+        isLoading: true,
       };
     default:
       return state;

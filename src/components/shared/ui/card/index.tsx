@@ -1,3 +1,4 @@
+import { isAfter } from 'date-fns';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +14,7 @@ import EmployeeCardIcon from '../icons/cardIcons/employeeCardIcon';
 import ProjectCardIcon from '../icons/cardIcons/projectCardIcon';
 import TickIcon from '../icons/cardIcons/tickIcon';
 import styles from './card.module.css';
+import { dataCards } from './constants';
 import { CardProps } from './types';
 
 const defineIcon = (resourceType) => {
@@ -50,16 +52,23 @@ const Card = (props: CardProps) => {
     isCustom,
     resourceId,
     id,
+    date,
   } = props;
+  const navigate = useNavigate();
+  const dispatch: AppDispatch<null> = useDispatch();
+  const [checked, setChecked] = React.useState(false);
+
   const isProject = !!(resource === 'PROJECT');
   const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
-  const shownNotification = isCustom ? 'Notificación Personalizada' : notification;
-  const navigate = useNavigate();
-  const dispatch: AppDispatch<null> = useDispatch();
+  const isExpired = isAfter(new Date(Date.now()), new Date(date));
+  const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
-  const [checked, setChecked] = React.useState(false);
+  const changedNotificationData = (notification) => {
+    const newData = dataCards.find((item) => item.key === notification);
+    return newData?.data;
+  };
 
   const redirectClick = (data) => {
     if (isProject) {
@@ -75,20 +84,26 @@ const Card = (props: CardProps) => {
     setChecked(!checked);
     setTimeout(() => {
       dispatch(deleteNotification(id));
-    }, 250);
+    }, 50);
   };
 
   return (
     <Grow
       in={!checked}
       style={{ transformOrigin: '0 0 0' }}
-      {...(!checked ? { timeout: 1000 } : {})}
+      {...(!checked ? { timeout: 250 } : {})}
     >
       <div data-testid={'card-component'}>
         <div className={`${styles.baseIconTab} ${cardIcon.color}`} data-testid="card-icon">
           {cardIcon.icon}
         </div>
-        <div className={`${styles.cardContainer} ${styles.card}`}>
+        <div
+          className={
+            isExpired
+              ? `${styles.expiredCardContainer} ${styles.expiredCard}`
+              : `${styles.cardContainer} ${styles.card}`
+          }
+        >
           <div className={styles.cardContent} onClick={() => redirectClick(resourceId)}>
             <div className={styles.title}>
               <div className={styles.nameContainer}>
@@ -110,7 +125,7 @@ const Card = (props: CardProps) => {
                         })}
                       </AvatarGroup>
                     </div>
-                    {!!members?.length && <p>{members?.length} involucrados</p>}
+                    <p>{members?.length} involucrados</p>
                   </div>
                   <div className={`${styles.criticality} ${criticalityColor}`}>
                     {criticality?.toUpperCase()}
@@ -118,7 +133,9 @@ const Card = (props: CardProps) => {
                 </>
               </div>
             )}
-            {isCustom && <div className={styles.customMessage}>{customMessage}</div>}
+            <div className={styles.customMessage}>
+              {isCustom ? customMessage : changedNotificationData(notification)}
+            </div>
           </div>
           <div className={styles.notification}>
             <p>{shownNotification}</p>

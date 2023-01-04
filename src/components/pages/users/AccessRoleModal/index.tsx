@@ -50,16 +50,16 @@ const AccessRoleModal = (props: AccessRoleModalProps) => {
       </div>
       <div className={styles.confirmBtns}>
         <Button
-          testId={'confirmAccessRoleBtn'}
-          materialVariant={Variant.CONTAINED}
-          label={'Confirmar'}
-          onClick={() => onSubmit(options)}
-        ></Button>
-        <Button
           testId={'cancelAccessRoleBtn'}
           materialVariant={Variant.OUTLINED}
           label={'Cancelar'}
           onClick={() => dispatch(closeModal())}
+        ></Button>
+        <Button
+          testId={'confirmAccessRoleBtn'}
+          materialVariant={Variant.CONTAINED}
+          label={'Confirmar'}
+          onClick={() => onSubmit(options)}
         ></Button>
       </div>
     </div>

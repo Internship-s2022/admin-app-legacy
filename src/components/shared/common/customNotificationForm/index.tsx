@@ -4,7 +4,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 
 import { createNotification } from 'src/redux/notifications/thunk';
 import { useAppDispatch } from 'src/redux/store';
-import { closeFormModal } from 'src/redux/ui/actions';
+import { closeFormModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch } from 'src/types';
 
 import { Button, DatePicker, TextInput } from '../../ui';
@@ -46,6 +46,7 @@ const CustomNotifications = (props: customNotificationProps) => {
       isCustom: true,
     };
     dispatch(createNotification(newBody(resource, id, body)));
+    dispatch(setSnackbarOperation('agregada'));
     dispatch(closeFormModal());
   };
 
