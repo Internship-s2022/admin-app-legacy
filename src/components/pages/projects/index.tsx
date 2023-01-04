@@ -19,6 +19,7 @@ import { UiRoutes } from 'src/constants';
 import { cleanSelectedProject } from 'src/redux/project/actions';
 import { deleteProject, editProject, getProjects } from 'src/redux/project/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import {
   closeConfirmationModal,
   closeMessageAlert,
@@ -182,7 +183,8 @@ const Projects = () => {
         },
       ];
 
-  const showErrorMessage = projectError?.networkError || !projectList.length;
+  const showErrorMessage =
+    projectError?.errorType === ErrorType.NETWORK_ERROR || !projectList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler

@@ -10,6 +10,7 @@ import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
 import { getActiveNotifications } from 'src/redux/notifications/thunk';
 import { RootState } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
 
@@ -118,7 +119,8 @@ const Home = () => {
     navigate(path);
   };
 
-  const showErrorMessage = notificationError?.networkError || !listNotifications.length;
+  const showErrorMessage =
+    notificationError?.errorType === ErrorType.NETWORK_ERROR || !listNotifications.length;
 
   return (
     <>

@@ -35,7 +35,7 @@ export const getMembers: AppThunk = (filter) => {
         dispatch(getMembersSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getMembersError({ message: error.message, networkError: error.networkError }));
+      dispatch(getMembersError({ message: error.message, errorType: error.errorType }));
     }
   };
 };
@@ -49,7 +49,7 @@ export const addMember: AppThunk = (data) => {
         dispatch(addMemberSuccess(response.data));
       }
     } catch (error) {
-      dispatch(addMemberError({ message: error.message, networkError: error.networkError }));
+      dispatch(addMemberError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setOpenMessageAlert());
     }
@@ -66,7 +66,7 @@ export const editMember: AppThunk = (options: { id: string; body: Member }) => {
         dispatch(editMemberSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editMemberError({ message: error.message, networkError: error.networkError }));
+      dispatch(editMemberError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -82,7 +82,7 @@ export const deleteMember: AppThunk = (id) => {
         dispatch(deleteMemberSuccess(id));
       }
     } catch (error) {
-      dispatch(deleteMemberError({ message: error.message, networkError: error.networkError }));
+      dispatch(deleteMemberError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setOpenMessageAlert());
     }

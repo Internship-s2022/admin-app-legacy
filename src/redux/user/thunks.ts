@@ -36,7 +36,7 @@ export const getUsers: AppThunk = () => {
         dispatch(getUsersSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getUsersError({ message: error.message, networkError: error.networkError }));
+      dispatch(getUsersError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -53,7 +53,7 @@ export const addUser: AppThunk = (data) => {
         dispatch(addUserSuccess(response.data));
       }
     } catch (error) {
-      dispatch(addUsersError({ message: error.message, networkError: error.networkError }));
+      dispatch(addUsersError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -71,7 +71,7 @@ export const editUser: AppThunk = (options: { id: string; body: User }) => {
         dispatch(editUserSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editUserError({ message: error.message, networkError: error.networkError }));
+      dispatch(editUserError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -89,7 +89,7 @@ export const deleteUser: AppThunk = (id) => {
         dispatch(deleteUserSuccess(id));
       }
     } catch (error) {
-      dispatch(deleteUserError({ message: error.message, networkError: error.networkError }));
+      dispatch(deleteUserError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

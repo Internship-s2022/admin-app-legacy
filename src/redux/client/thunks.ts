@@ -39,7 +39,7 @@ export const getClients: AppThunk = () => {
         dispatch(getClientsSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getClientsError({ message: error.message, networkError: error.networkError }));
+      dispatch(getClientsError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -56,7 +56,7 @@ export const getClientsById: AppThunk = (id) => {
         dispatch(getClientByIdSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getClientByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getClientByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -73,7 +73,7 @@ export const deleteClient: AppThunk = (id) => {
         dispatch(deleteClientSuccess(id));
       }
     } catch (error) {
-      dispatch(deleteClientError({ message: error.message, networkError: error.networkError }));
+      dispatch(deleteClientError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -91,7 +91,7 @@ export const addClient: AppThunk = (data) => {
         dispatch(addClientSuccess(response.data));
       }
     } catch (error) {
-      dispatch(addClientError({ message: error.message, networkError: error.networkError }));
+      dispatch(addClientError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -109,7 +109,7 @@ export const editClient: AppThunk = (options: { body: Client; id: string }) => {
         dispatch(editClientSuccess(response.data, options.id));
       }
     } catch (error: any) {
-      dispatch(editClientError({ message: error.message, networkError: error.networkError }));
+      dispatch(editClientError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

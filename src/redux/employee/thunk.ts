@@ -28,7 +28,7 @@ export const getEmployees: AppThunk = () => {
         dispatch(getEmployeeSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getEmployeeError({ message: error.message, networkError: error.networkError }));
+      dispatch(getEmployeeError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -45,7 +45,7 @@ export const getEmployeeById: AppThunk = (id) => {
         dispatch(getEmployeeByIdSuccess(response.data));
       }
     } catch (error) {
-      dispatch(getEmployeeByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getEmployeeByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -62,7 +62,7 @@ export const editEmployee: AppThunk = (options: { body: Employee; id: string }) 
         return dispatch(editEmployeeSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editEmployeeError({ message: error.message, networkError: error.networkError }));
+      dispatch(editEmployeeError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

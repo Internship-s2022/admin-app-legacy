@@ -16,6 +16,7 @@ import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import {
   closeConfirmationModal,
   closeFormModal,
@@ -179,7 +180,7 @@ const Users = () => {
         },
       ];
 
-  const showErrorMessage = userError?.networkError || !userList.length;
+  const showErrorMessage = userError?.errorType === ErrorType.NETWORK_ERROR || !userList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
