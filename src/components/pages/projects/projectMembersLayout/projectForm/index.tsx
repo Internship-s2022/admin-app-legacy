@@ -74,6 +74,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     resolver: joiResolver(projectValidation),
   });
 
+  const formChanged = Boolean(!isDirty && id);
+
   const onSubmit = (data) => {
     const options = {
       id: id,
@@ -195,7 +197,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     materialVariant={Variant.CONTAINED}
                     onClick={id ? () => dispatch(openConfirmationModal()) : handleSubmit(onSubmit)}
                     label="Guardar"
-                    disabled={!isDirty}
+                    disabled={formChanged}
                   />
                 </div>
               </div>

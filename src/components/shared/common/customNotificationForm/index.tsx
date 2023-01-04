@@ -29,11 +29,7 @@ const CustomNotifications = (props: customNotificationProps) => {
 
   const { resource, id } = props;
 
-  const {
-    formState: { isDirty },
-    control,
-    handleSubmit,
-  } = useForm<FormValues>({
+  const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       customMessage: '',
       date: null,
@@ -94,7 +90,6 @@ const CustomNotifications = (props: customNotificationProps) => {
                 materialVariant={Variant.CONTAINED}
                 onClick={handleSubmit(onSubmit)}
                 label="Confirmar"
-                disabled={!isDirty}
               />
             </div>
           </div>

@@ -24,13 +24,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
 
   const dispatch: AppDispatch<null> = useDispatch();
 
-  const {
-    formState: { isDirty },
-    handleSubmit,
-    control,
-    reset,
-    getValues,
-  } = useForm<FormAbsencesValue>({
+  const { handleSubmit, control, reset, getValues } = useForm<FormAbsencesValue>({
     defaultValues: {
       motive: '' as Motives,
       startDate: '',
@@ -155,7 +149,6 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
-            disabled={!isDirty}
           />
         </div>
       </div>

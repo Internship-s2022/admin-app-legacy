@@ -19,12 +19,7 @@ import { userValidation } from '../validations';
 const UserForm = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
 
-  const {
-    formState: { isDirty },
-    handleSubmit,
-    control,
-    reset,
-  } = useForm<FormValues>({
+  const { handleSubmit, control, reset } = useForm<FormValues>({
     defaultValues: {
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
@@ -126,7 +121,6 @@ const UserForm = () => {
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
-            disabled={!isDirty}
           />
         </div>
       </form>

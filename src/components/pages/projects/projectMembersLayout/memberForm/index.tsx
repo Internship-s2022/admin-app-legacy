@@ -56,6 +56,7 @@ const MemberForm = (props: MemberFormProps) => {
   });
 
   const selectedMember = watch('employee');
+  const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
     return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
@@ -285,7 +286,7 @@ const MemberForm = (props: MemberFormProps) => {
                   materialVariant={Variant.CONTAINED}
                   onClick={handleSubmit(onSubmit)}
                   label="Confirmar"
-                  disabled={!isDirty}
+                  disabled={formChanged}
                 />
               </div>
             </div>

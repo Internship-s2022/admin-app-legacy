@@ -102,6 +102,8 @@ const EditEmployee = () => {
     resolver: joiResolver(employeeValidations),
   });
 
+  const formChanged = !isDirty && absences === selectedEmployee.absences;
+
   useEffect(() => {
     if (Object.keys(selectedEmployee).length) {
       reset({
@@ -342,7 +344,7 @@ const EditEmployee = () => {
               materialVariant={Variant.CONTAINED}
               onClick={() => dispatch(openConfirmationModal())}
               label="Confirmar"
-              disabled={!isDirty}
+              disabled={formChanged}
             />
           </div>
         </div>
