@@ -24,7 +24,7 @@ export const tokenListener = () => {
       if (user) {
         const {
           token,
-          claims: { role, email, name, picture },
+          claims: { role, email, name, picture, status },
         } = await user.getIdTokenResult(true);
         store.dispatch(
           loginSuccess({
@@ -33,6 +33,7 @@ export const tokenListener = () => {
             email,
             name,
             photo: picture,
+            status: status,
           }),
         );
         localStorage.setItem('token', token);
@@ -41,7 +42,14 @@ export const tokenListener = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         store.dispatch(
-          setAuthentication({ token: '', accessRoleType: '', email: '', name: '', photo: '' }),
+          setAuthentication({
+            token: '',
+            accessRoleType: '',
+            email: '',
+            name: '',
+            photo: '',
+            status: false,
+          }),
         );
       }
     } catch (error: any) {
