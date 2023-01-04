@@ -77,7 +77,12 @@ const ClientForm = () => {
     }
   }, [selectedClient]);
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm<FormValues>({
     defaultValues: {
       name: '',
       localContact: {
@@ -96,6 +101,8 @@ const ClientForm = () => {
     mode: 'onBlur',
     resolver: joiResolver(validations.clientValidation),
   });
+
+  const formChanged = isDirty;
 
   const latestClientsList = selectedClient?.projects?.slice(-2);
 
@@ -323,6 +330,7 @@ const ClientForm = () => {
                   : handleSubmit(onSubmit)
               }
               label="Confirmar"
+              disabled={!formChanged}
             />
           </div>
         </div>

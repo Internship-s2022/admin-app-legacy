@@ -19,7 +19,12 @@ import { userValidation } from '../validations';
 const UserForm = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const {
+    formState: { isDirty },
+    handleSubmit,
+    control,
+    reset,
+  } = useForm<FormValues>({
     defaultValues: {
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
@@ -32,6 +37,8 @@ const UserForm = () => {
     mode: 'onBlur',
     resolver: joiResolver(userValidation),
   });
+
+  const formChanged = isDirty;
 
   const onClose = () => {
     reset();
@@ -121,6 +128,7 @@ const UserForm = () => {
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
+            disabled={!formChanged}
           />
         </div>
       </form>
