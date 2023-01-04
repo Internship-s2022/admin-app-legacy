@@ -102,8 +102,6 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation),
   });
 
-  const formChanged = isDirty;
-
   const latestClientsList = selectedClient?.projects?.slice(-2);
 
   const formattedProjects = latestClientsList?.map((item) => ({
@@ -330,7 +328,7 @@ const ClientForm = () => {
                   : handleSubmit(onSubmit)
               }
               label="Confirmar"
-              disabled={!formChanged}
+              disabled={!isDirty}
             />
           </div>
         </div>

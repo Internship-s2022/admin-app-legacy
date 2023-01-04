@@ -48,8 +48,6 @@ const AbsencesModal = (props: AbsencesModalProps) => {
     });
   }, [startDate, endDate]);
 
-  const formChanged = isDirty;
-
   const handleStartDate = (date) => {
     setStartDate(date);
   };
@@ -157,7 +155,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
-            disabled={!formChanged}
+            disabled={!isDirty}
           />
         </div>
       </div>

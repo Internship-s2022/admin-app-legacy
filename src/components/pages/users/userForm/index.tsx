@@ -38,8 +38,6 @@ const UserForm = () => {
     resolver: joiResolver(userValidation),
   });
 
-  const formChanged = isDirty;
-
   const onClose = () => {
     reset();
     dispatch(closeFormModal());
@@ -128,7 +126,7 @@ const UserForm = () => {
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleSubmit(onSubmit)}
-            disabled={!formChanged}
+            disabled={!isDirty}
           />
         </div>
       </form>

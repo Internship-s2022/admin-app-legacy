@@ -42,8 +42,6 @@ const CustomNotifications = (props: customNotificationProps) => {
     resolver: joiResolver(customNotificationsValidations),
   });
 
-  const formChanged = isDirty;
-
   const onSubmit = (data) => {
     const body = {
       ...data,
@@ -96,7 +94,7 @@ const CustomNotifications = (props: customNotificationProps) => {
                 materialVariant={Variant.CONTAINED}
                 onClick={handleSubmit(onSubmit)}
                 label="Confirmar"
-                disabled={!formChanged}
+                disabled={!isDirty}
               />
             </div>
           </div>

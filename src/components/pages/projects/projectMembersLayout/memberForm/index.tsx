@@ -55,7 +55,6 @@ const MemberForm = (props: MemberFormProps) => {
     resolver: joiResolver(memberValidations),
   });
 
-  const formChanged = isDirty;
   const selectedMember = watch('employee');
 
   const employeeDropdownList = dropdownData.map((employee) => {
@@ -286,7 +285,7 @@ const MemberForm = (props: MemberFormProps) => {
                   materialVariant={Variant.CONTAINED}
                   onClick={handleSubmit(onSubmit)}
                   label="Confirmar"
-                  disabled={!formChanged}
+                  disabled={!isDirty}
                 />
               </div>
             </div>
