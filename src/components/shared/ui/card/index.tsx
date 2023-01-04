@@ -84,14 +84,14 @@ const Card = (props: CardProps) => {
     setChecked(!checked);
     setTimeout(() => {
       dispatch(deleteNotification(id));
-    }, 150);
+    }, 50);
   };
 
   return (
     <Grow
       in={!checked}
       style={{ transformOrigin: '0 0 0' }}
-      {...(!checked ? { timeout: 1000 } : {})}
+      {...(!checked ? { timeout: 250 } : {})}
     >
       <div data-testid={'card-component'}>
         <div className={`${styles.baseIconTab} ${cardIcon.color}`} data-testid="card-icon">
