@@ -27,7 +27,7 @@ export const userValidation = Joi.object({
   firstName: Joi.string()
     .min(3)
     .max(35)
-    .regex(/^[a-zA-Z\s]*$/)
+    .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
     .trim()
     .messages({
       'string.min': 'El nombre debe contener al menos 3 letras',
@@ -38,7 +38,7 @@ export const userValidation = Joi.object({
     .required(),
 
   lastName: Joi.string()
-    .regex(/^[a-zA-Z\s]*$/)
+    .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
     .min(3)
     .max(35)
     .trim()
@@ -52,7 +52,7 @@ export const userValidation = Joi.object({
 
   location: Joi.string()
     .min(3)
-    .regex(/^[a-zA-Z0-9 ]*$/)
+    .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ ]*$/)
     .trim()
     .messages({
       'string.pattern.base': 'El formato de localidad no es válido',
