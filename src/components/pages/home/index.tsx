@@ -8,7 +8,7 @@ import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import { Button } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import Card from 'src/components/shared/ui/card';
-import { getNotifications } from 'src/redux/notifications/thunk';
+import { getActiveNotifications } from 'src/redux/notifications/thunk';
 import { RootState } from 'src/redux/store';
 import { AppDispatch, Resources } from 'src/types';
 import { capitalizeFirstLetter } from 'src/utils/formatters';
@@ -107,7 +107,7 @@ const Home = () => {
   }, [notifications, filters.newest, filters.role, filters.search]);
 
   useEffect(() => {
-    dispatch(getNotifications());
+    dispatch(getActiveNotifications());
   }, []);
 
   useEffect(() => {

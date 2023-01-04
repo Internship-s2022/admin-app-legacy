@@ -34,6 +34,23 @@ export const getNotifications: AppThunk = () => {
   };
 };
 
+export const getActiveNotifications: AppThunk = () => {
+  return async (dispatch: Dispatch) => {
+    dispatch(getNotificationsPending());
+    dispatch(setLoaderOn());
+    try {
+      const response = await getResourceRequest(`${ApiRoutes.NOTIFICATION}/active?notice=5`);
+      if (response.data?.length) {
+        dispatch(getNotificationsSuccess(response.data));
+      }
+    } catch (error: any) {
+      dispatch(getNotificationsError({ message: error.message, networkError: error.networkError }));
+    } finally {
+      dispatch(setLoaderOff());
+    }
+  };
+};
+
 export const createNotification: AppThunk = (data) => {
   return async (dispatch: Dispatch) => {
     dispatch(createNotificationPending());
