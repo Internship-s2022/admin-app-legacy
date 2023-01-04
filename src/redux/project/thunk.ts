@@ -42,7 +42,7 @@ export const getProjects: AppThunk = () => {
         dispatch(getProjectsSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getProjectsError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectsError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -59,7 +59,7 @@ export const getProjectById: AppThunk = (id) => {
         dispatch(getProjectByIdSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -83,7 +83,7 @@ export const getProjectAndClients: AppThunk = (id) => {
       responses[1]?.data && dispatch(getProjectByIdSuccess(responses[1]?.data));
       responses[2]?.data && dispatch(getMembersSuccess(responses[2]?.data));
     } catch (error: any) {
-      dispatch(getProjectByIdError({ message: error.message, networkError: error.networkError }));
+      dispatch(getProjectByIdError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
@@ -100,7 +100,7 @@ export const createProject: AppThunk = (data) => {
         dispatch(createProjectSuccess(response.data));
       }
     } catch (error) {
-      dispatch(createProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(createProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -118,7 +118,7 @@ export const editProject: AppThunk = (options: { id: string; body: Project }) =>
         dispatch(editProjectSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(editProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -136,7 +136,7 @@ export const deleteProject: AppThunk = (id: string) => {
         dispatch(deleteProjectSuccess(id));
       }
     } catch (error: any) {
-      dispatch(deleteProjectError({ message: error.message, networkError: error.networkError }));
+      dispatch(deleteProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

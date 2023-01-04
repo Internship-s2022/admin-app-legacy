@@ -12,6 +12,7 @@ import { UiRoutes } from 'src/constants';
 import { setSelectedEmployee } from 'src/redux/employee/actions';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
+import { ErrorType } from 'src/redux/types';
 import { closeMessageAlert, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
@@ -101,7 +102,8 @@ const Employees = () => {
     setDataList(data);
   };
 
-  const showErrorMessage = employeeError?.networkError || !employeeList.length;
+  const showErrorMessage =
+    employeeError?.errorType === ErrorType.NETWORK_ERROR || !employeeList.length;
 
   useEffect(() => {
     dispatch(getEmployees());
