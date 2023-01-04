@@ -44,7 +44,7 @@ export const getActiveNotifications: AppThunk = () => {
         dispatch(getNotificationsSuccess(response.data));
       }
     } catch (error: any) {
-      dispatch(getNotificationsError({ message: error.message, networkError: error.networkError }));
+      dispatch(getNotificationsError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
     }
