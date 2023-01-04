@@ -34,3 +34,11 @@
   width: 100%;
   margin-top: 30px;
 }
+
+.addMemberButton > button {
+  background-color: #4f987b;
+}
+
+.addMemberButton > button:hover {
+  background-color: #478c71;
+}

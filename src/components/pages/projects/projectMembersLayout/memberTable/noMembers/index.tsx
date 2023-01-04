@@ -33,7 +33,7 @@ const EmptyMemberMessage = (props: NoMembersProps) => {
               dispatch(openModal());
               dispatch(setSnackbarOperation('agregado'));
             }}
-            label="+ Agregar Miembro"
+            label="+ Agregar miembro"
             disabled={!projectId}
           />
         </div>
