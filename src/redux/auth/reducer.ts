@@ -4,7 +4,7 @@ import { Actions } from './constants';
 import { ActionsType, State } from './types';
 
 const initialState: State = {
-  authUser: { token: '', accessRoleType: '', name: '', email: '', photo: '', status: false },
+  authUser: { token: '', accessRoleType: '', name: '', email: '', photo: '', isActive: false },
   isLoading: true,
   error: undefined,
 };

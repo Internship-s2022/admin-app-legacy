@@ -20,7 +20,7 @@ const PrivateRoute = ({
   const accessRole = localStorage.getItem('role');
   const token = localStorage.getItem('token');
 
-  if (!authUser.status || role !== accessRole || error || !token) {
+  if (!authUser.isActive || role !== accessRole || error || !token) {
     return <Navigate to={redirectPath} />;
   }
   return children ? children : <Outlet />;

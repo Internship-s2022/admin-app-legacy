@@ -24,7 +24,7 @@ export const tokenListener = () => {
       if (user) {
         const {
           token,
-          claims: { role, email, name, picture, status },
+          claims: { role, email, name, picture, isActive },
         } = await user.getIdTokenResult(true);
         store.dispatch(
           loginSuccess({
@@ -33,7 +33,7 @@ export const tokenListener = () => {
             email,
             name,
             photo: picture,
-            status: status,
+            isActive: isActive,
           }),
         );
         localStorage.setItem('token', token);
@@ -48,7 +48,7 @@ export const tokenListener = () => {
             email: '',
             name: '',
             photo: '',
-            status: false,
+            isActive: false,
           }),
         );
       }
