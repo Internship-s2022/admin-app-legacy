@@ -25,7 +25,6 @@ const notificationReducer: Reducer<NotificationState, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
-        error: undefined,
       };
     case Actions.GET_NOTIFICATIONS_ERROR:
       return {

@@ -25,7 +25,6 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
         ...state,
         isLoading: false,
         list: action.payload,
-        error: undefined,
       };
     case Actions.GET_EMPLOYEE_ERROR:
       return {

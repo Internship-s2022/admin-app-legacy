@@ -25,7 +25,6 @@ const memberReducer: Reducer<State<Member>, ActionsType> = (
         ...state,
         list: action.payload,
         isLoading: false,
-        error: undefined,
       };
     case Actions.GET_MEMBERS_ERROR:
       return {
