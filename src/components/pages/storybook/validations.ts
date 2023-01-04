@@ -22,7 +22,7 @@ export const storybookValidation = Joi.object({
     }),
 
   firstName: Joi.string()
-    .regex(/^[a-zA-Z\s]*$/)
+    .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
     .min(3)
     .messages({
       'string.base': 'El nombre debe contener solo letras',
@@ -33,7 +33,7 @@ export const storybookValidation = Joi.object({
     .required(),
 
   lastName: Joi.string()
-    .regex(/^[a-zA-Z\s]*$/)
+    .regex(/^[a-zA-ZñáéíóúüÁÉÍÓÚÜ\s]*$/)
     .min(3)
     .messages({
       'string.base': 'El apellido debe contener solo letras',
