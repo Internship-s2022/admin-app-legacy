@@ -13,8 +13,8 @@ import { AppDispatch } from 'src/types';
 
 import { accessRoles } from '../constants';
 import { FormValues } from '../types';
-import styles from '../users.module.css';
 import { userValidation } from '../validations';
+import styles from './userForm.module.css';
 
 const UserForm = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
@@ -52,7 +52,7 @@ const UserForm = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.addUserMessage}>Agregar usuario</div>
         <div className={styles.inputsContainer}>
-          <div className={styles.leftInputsContainer}>
+          <div className={styles.inputsColumns}>
             <TextInput
               control={control}
               testId={'first-name-input'}
@@ -78,7 +78,7 @@ const UserForm = () => {
               fullWidth
             />
           </div>
-          <div className={styles.rightInputsContainer}>
+          <div className={styles.inputsColumns}>
             <TextInput
               control={control}
               testId={'last-name-input'}
