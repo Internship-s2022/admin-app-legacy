@@ -52,12 +52,14 @@ export const userValidation = Joi.object({
 
   location: Joi.string()
     .min(3)
+    .max(15)
     .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ ]*$/)
     .trim()
     .messages({
       'string.pattern.base': 'El formato de localidad no es válido',
       'string.empty': 'Este campo es requerido',
       'string.min': 'El nombre de la localidad debe tener al menos 3 letras',
+      'string.max': 'El nombre de la localidad no debe tener más de 15 caracteres',
     })
     .required(),
 
