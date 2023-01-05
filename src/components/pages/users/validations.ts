@@ -62,8 +62,10 @@ export const userValidation = Joi.object({
     .required(),
 
   birthDate: Joi.date()
+    .greater('01-01-1930')
     .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
     .messages({
+      'date.greater': 'La fecha debe ser posterior a 01-01-1930',
       'date.less': 'El usuario debe ser mayor a 18 años',
       'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
     })

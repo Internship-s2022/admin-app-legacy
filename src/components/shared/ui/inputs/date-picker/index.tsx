@@ -21,6 +21,7 @@ const DatePickerInput = <Form extends FieldValues>(props: DPickerProps<Form>): J
         label={label}
         className={styles}
         disabled={disabled}
+        onClose={onBlur}
         renderInput={(params) => (
           <TextField
             {...params}
