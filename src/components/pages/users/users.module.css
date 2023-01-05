@@ -91,28 +91,8 @@
   background-color: #478c71;
 }
 
-.inputsContainer {
-  display: flex;
-  flex-direction: row;
-  gap: 50px;
-  width: 600px;
-  height: 350px;
-}
-
-.formContainer {
-  display: flex;
-  flex-direction: row;
-}
-
 ::-webkit-scrollbar {
   display: none;
-}
-
-.buttonsContainer {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  padding: 0 20px 20px;
 }
 
 .noList {
@@ -177,29 +157,4 @@ input:focus {
 .option {
   font-weight: 500;
   color: #373867;
-}
-
-.leftInputsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  width: 100%;
-  padding: 20px;
-  margin-left: 20px;
-}
-
-.rightInputsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  width: 100%;
-  padding: 20px;
-  margin-right: 20px;
-}
-
-.addUserMessage {
-  padding: 20px;
-  font-size: 20px;
-  font-weight: 500;
-  border-bottom: 1px #d7d7d7 solid;
 }
