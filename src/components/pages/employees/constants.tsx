@@ -7,14 +7,4 @@ export const header: Headers[] = [
   { header: 'Disponibilidad', key: 'availability' },
 ];
 
-export const employeeFilterOptions = [
-  'name',
-  'email',
-  'projects',
-  'seniority',
-  'notes',
-  'careerPlan',
-  'skills',
-  'potentialRole',
-  'availability',
-];
+export const employeeFilterOptions = ['name', 'projects', 'skills', 'potentialRole'];

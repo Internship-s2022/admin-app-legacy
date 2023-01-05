@@ -20,12 +20,4 @@ export const optionsIsCritic = [
   { value: CriticalType.BAJA, label: 'Baja' },
 ];
 
-export const projectFilterOptions = [
-  'projectName',
-  'clientName',
-  'projectType',
-  'startDate',
-  'endDate',
-  'description',
-  'members',
-];
+export const projectFilterOptions = ['projectName', 'projectType', 'clientName', 'members'];
