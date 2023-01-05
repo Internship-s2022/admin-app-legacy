@@ -7,14 +7,4 @@ export const header: Headers[] = [
   { header: 'Contacto Radium', key: 'localContact' },
 ];
 
-export const clientFilterOptions = [
-  'name',
-  'projects',
-  'clientContact',
-  'email',
-  'localContact',
-  'localContactEmail',
-  'relationshipEnd',
-  'relationshipStart',
-  'notes',
-];
+export const clientFilterOptions = ['name', 'projects', 'clientContact', 'localContact'];

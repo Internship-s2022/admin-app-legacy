@@ -12,4 +12,4 @@ export const accessRoles = [
   { value: AccessRoleType.EMPLOYEE, label: 'Empleado' },
 ];
 
-export const userFilterOptions = ['name', 'email', 'firebaseUid', 'location', 'birthDate'];
+export const userFilterOptions = ['name', 'email'];
