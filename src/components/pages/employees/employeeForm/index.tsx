@@ -172,7 +172,7 @@ const EditEmployee = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Editar un empleado</div>
+        <div>Editar empleado</div>
         <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
           <BellIcon color={'#373867'} />
         </div>
@@ -246,7 +246,7 @@ const EditEmployee = () => {
                         testId="absencesButton"
                         materialVariant={Variant.CONTAINED}
                         onClick={() => dispatch(openModal())}
-                        label="+ Agregar ausencias"
+                        label="+ Agregar ausencia"
                         styles={styles.buttonText}
                       />
                     </div>
