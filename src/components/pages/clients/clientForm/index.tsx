@@ -89,6 +89,7 @@ const ClientForm = () => {
     reset,
     trigger,
     getValues,
+    watch,
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -134,6 +135,7 @@ const ClientForm = () => {
     }, 500),
     [],
   );
+  const startDate = watch('relationshipStart');
 
   const formChanged = Boolean(!isDirty && id);
 
@@ -263,6 +265,7 @@ const ClientForm = () => {
                       label={'Fin'}
                       testId={'endDatePickerTestId'}
                       name="relationshipEnd"
+                      minDate={startDate}
                       control={control}
                       disabled={endDateDisabled}
                     />

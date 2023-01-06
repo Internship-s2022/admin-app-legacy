@@ -1,3 +1,4 @@
+import { subYears } from 'date-fns';
 import Joi from 'joi';
 
 import { AccessRoleType } from 'src/constants';
@@ -45,7 +46,7 @@ export const storybookValidation = Joi.object({
 
   date: Joi.date()
     .greater('1-1-1900')
-    .less(new Date(Date.now() - 1000 * 60 * 60 * 24 * 365 * 18))
+    .less(subYears(new Date(), 18))
     .messages({
       'date.greater': 'La fecha de nacimiento no puede ser anterior al 1900',
       'date.less': 'El usuario debe ser mayor a 18 anos',

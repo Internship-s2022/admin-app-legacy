@@ -16,7 +16,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
-import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
+import { createProject, editProject } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
@@ -41,14 +41,14 @@ const ProjectForm = (props: ProjectFormProps) => {
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
-  const clientList = useSelector((state: RootState) =>
-    state.client.list?.reduce((acc, item) => {
-      if (item.isActive) {
-        acc.push({ value: item._id, label: item.name });
-      }
-      return acc;
-    }, []),
-  );
+  const clientList = useSelector((state: RootState) => state.client.list);
+
+  const clientDropdownList = clientList?.reduce((acc, item) => {
+    if (item.isActive) {
+      acc.push({ value: item._id, label: item.name });
+    }
+    return acc;
+  }, []);
 
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
@@ -58,6 +58,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     formState: { isDirty },
     control,
     reset,
+    watch,
     handleSubmit,
   } = useForm<ProjectFormValues>({
     defaultValues: {
@@ -75,6 +76,10 @@ const ProjectForm = (props: ProjectFormProps) => {
   });
 
   const formChanged = Boolean(!isDirty && id);
+  const clientId = watch('clientName');
+  const startDate = watch('startDate');
+
+  const selectedClient = clientList.find((client) => client._id === clientId);
 
   const onSubmit = (data) => {
     const options = {
@@ -151,7 +156,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     testId={'clientName'}
                     label={'Cliente'}
                     name="clientName"
-                    options={clientList}
+                    options={clientDropdownList}
                     fullWidth
                     disabled={id && true}
                   />
@@ -174,6 +179,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       label={'Inicio'}
                       testId={'startDate'}
                       name="startDate"
+                      minDate={selectedClient?.relationshipStart}
                       control={control}
                     />
                     <EndDateCheckbox
@@ -188,6 +194,8 @@ const ProjectForm = (props: ProjectFormProps) => {
                       label={'Fin'}
                       testId={'endDate'}
                       name="endDate"
+                      minDate={startDate}
+                      maxDate={selectedClient?.relationshipEnd}
                       control={control}
                     />
                   </div>

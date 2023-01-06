@@ -6,4 +6,6 @@ export type DPickerProps<Form extends FieldValues> = {
   styles?: string;
   error?: boolean;
   disabled?: boolean;
+  maxDate?: Date;
+  minDate?: Date;
 } & UseControllerProps<Form>;

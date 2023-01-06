@@ -72,6 +72,7 @@ const CustomNotifications = (props: customNotificationProps) => {
               label={'Fecha de recordatorio'}
               testId={'date-picker-custom'}
               name="date"
+              minDate={new Date()}
               control={control}
             />
           </div>

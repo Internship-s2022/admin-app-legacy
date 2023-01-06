@@ -1,3 +1,4 @@
+import parse from 'date-fns/parse';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +30,10 @@ const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
+  const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
+
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const { startDate, endDate } = selectedProject;
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -58,6 +62,8 @@ const MemberForm = (props: MemberFormProps) => {
   });
 
   const selectedMember = watch('employee');
+  const startMemberDate = watch('startDate');
+
   const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
@@ -261,6 +267,7 @@ const MemberForm = (props: MemberFormProps) => {
                   testId={'startDate'}
                   name="startDate"
                   control={control}
+                  minDate={startDate}
                 />
                 <EndDateCheckbox
                   endDateDisabled={endDateDisabled}
@@ -274,6 +281,8 @@ const MemberForm = (props: MemberFormProps) => {
                   label={'Fin'}
                   testId={'endDate'}
                   name="endDate"
+                  minDate={startMemberDate}
+                  maxDate={endDate}
                   control={control}
                 />
               </div>

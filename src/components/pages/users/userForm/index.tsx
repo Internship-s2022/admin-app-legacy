@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, subYears } from 'date-fns';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -26,7 +26,7 @@ const UserForm = () => {
       firstName: '',
       lastName: '',
       location: '',
-      birthDate: new Date(undefined),
+      birthDate: subYears(new Date(), 18),
       isActive: true,
     },
     mode: 'onBlur',
@@ -66,6 +66,7 @@ const UserForm = () => {
               label={'Fecha de nacimiento'}
               testId={'birthDate'}
               name="birthDate"
+              maxDate={subYears(new Date(), 18)}
               control={control}
             />
             <TextInput
