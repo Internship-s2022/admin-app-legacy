@@ -7,6 +7,7 @@ const initialState: State = {
   authUser: { token: '', accessRoleType: '', name: '', email: '', photo: '', isActive: false },
   isLoading: true,
   error: undefined,
+  authError: false,
 };
 
 const authReducer: Reducer<State, ActionsType> = (state = initialState, action): State => {
@@ -34,6 +35,11 @@ const authReducer: Reducer<State, ActionsType> = (state = initialState, action):
         ...state,
         authUser: action.payload,
         isLoading: false,
+      };
+    case Actions.SET_AUTH_ERROR:
+      return {
+        ...state,
+        authError: action.payload,
       };
     default:
       return state;
