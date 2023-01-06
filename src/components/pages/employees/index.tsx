@@ -219,7 +219,7 @@ const Employees = () => {
                   seniority: '',
                   availability: '',
                 });
-                setChecked(!checked);
+                setChecked(false);
               }}
               label={'Resetear filtros'}
               testId={'reset-filter'}
