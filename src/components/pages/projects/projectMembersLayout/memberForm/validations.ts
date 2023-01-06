@@ -22,6 +22,7 @@ export const memberValidations = Joi.object({
     .required(),
 
   memberDedication: Joi.number()
+    .integer()
     .min(0)
     .max(100)
     .messages({
@@ -42,6 +43,7 @@ export const memberValidations = Joi.object({
       })
       .required(),
     dependency: Joi.number()
+      .integer()
       .min(0)
       .max(100)
       .messages({
@@ -51,6 +53,7 @@ export const memberValidations = Joi.object({
       })
       .required(),
     dedication: Joi.number()
+      .integer()
       .min(0)
       .max(100)
       .messages({

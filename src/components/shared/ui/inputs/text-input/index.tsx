@@ -17,6 +17,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     disabled,
     inputProps,
     placeholder,
+    onKeyDown,
   } = props;
 
   const {
@@ -42,6 +43,11 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
         color={color}
         inputProps={inputProps}
         placeholder={placeholder}
+        onKeyDown={(e) => {
+          if (type === 'number' && ['e', 'E', '+', '-'].includes(e.key)) {
+            e.preventDefault();
+          }
+        }}
       />
     </div>
   );

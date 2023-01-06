@@ -52,6 +52,7 @@ const MemberForm = (props: MemberFormProps) => {
       active: true,
     },
     mode: 'onBlur',
+    reValidateMode: 'onSubmit',
     resolver: joiResolver(memberValidations),
   });
 
@@ -75,7 +76,7 @@ const MemberForm = (props: MemberFormProps) => {
       return acc;
     }, []);
 
-    helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
+    helperDropdownList.unshift({ value: undefined, label: 'Sin ayudante' });
     return helperDropdownList;
   };
 
@@ -234,6 +235,7 @@ const MemberForm = (props: MemberFormProps) => {
                     type={'number'}
                     variant="outlined"
                     fullWidth
+                    disabled={watch('helper.helperReference').value === undefined}
                   />
                   <TextInput
                     control={control}
@@ -243,6 +245,7 @@ const MemberForm = (props: MemberFormProps) => {
                     type={'number'}
                     variant="outlined"
                     fullWidth
+                    disabled={watch('helper.helperReference').value === undefined}
                   />
                 </div>
               </div>
