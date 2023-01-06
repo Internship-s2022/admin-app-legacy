@@ -4,7 +4,6 @@ import { Outlet } from 'react-router-dom';
 
 import firebaseApp from 'src/helper/firebase';
 import { RootState } from 'src/redux/store';
-import { ErrorType } from 'src/redux/types';
 
 import { Header } from '../shared/common';
 import { Loader } from '../shared/ui';
@@ -12,9 +11,8 @@ import styles from './layout.module.css';
 
 const Layout = (): JSX.Element => {
   const isLoading = useSelector((state: RootState) => state.ui.isLoading);
-  const error = useSelector((state: RootState) =>
-    Object.values(state).some((item) => item.error?.errorType === ErrorType.AUTH_ERROR),
-  );
+
+  const authError = useSelector((state: RootState) => state.auth.authError);
 
   const handleLogout = async () => {
     try {
@@ -24,7 +22,7 @@ const Layout = (): JSX.Element => {
     }
   };
 
-  error && handleLogout();
+  authError && handleLogout();
 
   const roleAuth = useSelector((state: RootState) => state.auth.authUser.accessRoleType);
   return (

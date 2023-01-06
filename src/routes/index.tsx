@@ -45,7 +45,9 @@ const AppRoutes = (): JSX.Element => {
 
   useEffect(() => {
     if (roleFromStore) {
-      pathname !== '/' ? navigate(pathname) : navigate(redirectPath(roleFromStore));
+      pathname === '/' || pathname === '/not-allowed'
+        ? navigate(redirectPath(roleFromStore))
+        : navigate(pathname);
     }
   }, [roleFromStore]);
 

@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GoogleButton from 'react-google-button';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
 import LoginLogo from 'src/components/shared/ui/icons/loginLogo';
+import { setAuthError } from 'src/redux/auth/actions';
 import { login } from 'src/redux/auth/thunk';
 import { AppDispatch } from 'src/types';
 
 import styles from './login.module.css';
 
 const Login = () => {
-  const dispatch: AppDispatch<any> = useDispatch();
+  const dispatch: AppDispatch<null> = useDispatch();
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(setAuthError(false));
+  }, []);
 
   const handleGoogleSignIn = async () => {
     const role = await dispatch(login());
