@@ -92,7 +92,7 @@ const EditEmployee = () => {
       seniority: Seniority.JR,
       skills: [],
       potentialRole: [],
-      availability: true,
+      availability: false,
       projectHistory: [],
       careerPlan: '',
       notes: '',
