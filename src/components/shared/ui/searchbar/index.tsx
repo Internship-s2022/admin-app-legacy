@@ -20,9 +20,10 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
     setFilter(value);
   };
 
-  const handleChange = (e, value) => {
-    setInputValue(e.target.value);
-    setFilter(!value.length ? ' ' : inputValue.trim());
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    setFilter(!value.length ? ' ' : value.trim());
   };
 
   return (
@@ -40,9 +41,7 @@ const SearchBar = <T extends SearchData>(props: SearchBarProps<T>): JSX.Element 
             data-testid="searchbar-input"
             className={styles.searchInput}
             placeholder="Búsqueda por palabra clave"
-            onChange={(e) => {
-              handleChange(e, inputValue);
-            }}
+            onChange={handleChange}
             value={inputValue}
           />
         </div>
