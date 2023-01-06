@@ -78,6 +78,11 @@ const employeeReducer: Reducer<EmployeeState, ActionsType> = (
         ...state,
         selectedEmployee: action.payload,
       };
+    case Actions.CLEAN_SELECTED_EMPLOYEE:
+      return {
+        ...state,
+        selectedEmployee: {} as Employee,
+      };
 
     default:
       return state;

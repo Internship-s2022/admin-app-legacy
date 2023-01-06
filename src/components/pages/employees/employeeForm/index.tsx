@@ -25,6 +25,7 @@ import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import AutocompleteChip from 'src/components/shared/ui/inputs/autocompleteChip';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedEmployee } from 'src/redux/employee/actions';
 import { editEmployee, getEmployeeById } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
@@ -70,6 +71,9 @@ const EditEmployee = () => {
     if (!Object.keys(selectedEmployee).length) {
       params.id && dispatch(getEmployeeById(params.id));
     }
+    return () => {
+      dispatch(cleanSelectedEmployee());
+    };
   }, []);
 
   const [absences, setAbsences] = React.useState(selectedEmployee?.absences || []);
