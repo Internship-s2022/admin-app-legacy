@@ -1,4 +1,3 @@
-import parse from 'date-fns/parse';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -58,7 +57,7 @@ const MemberForm = (props: MemberFormProps) => {
       active: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(memberValidations),
+    resolver: joiResolver(memberValidations(startDate, endDate)),
   });
 
   const selectedMember = watch('employee');

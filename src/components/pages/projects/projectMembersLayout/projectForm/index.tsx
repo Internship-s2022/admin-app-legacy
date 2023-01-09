@@ -16,6 +16,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
+import { Client } from 'src/redux/client/types';
 import { createProject, editProject } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {
@@ -39,9 +40,10 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const [endDateDisabled, setEndDateDisabled] = useState(false);
-
   const clientList = useSelector((state: RootState) => state.client.list);
+
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({} as Client);
 
   const clientDropdownList = clientList?.reduce((acc, item) => {
     if (item.isActive) {
@@ -72,14 +74,18 @@ const ProjectForm = (props: ProjectFormProps) => {
       notes: '',
     },
     mode: 'onBlur',
-    resolver: joiResolver(projectValidation),
+    resolver: joiResolver(
+      projectValidation(selectedClient?.relationshipStart, selectedClient?.relationshipEnd),
+    ),
   });
 
   const formChanged = Boolean(!isDirty && id);
   const clientId = watch('clientName');
   const startDate = watch('startDate');
 
-  const selectedClient = clientList.find((client) => client._id === clientId);
+  useEffect(() => {
+    setSelectedClient(clientList.find((client) => client._id === clientId));
+  }, [clientId]);
 
   const onSubmit = (data) => {
     const options = {
