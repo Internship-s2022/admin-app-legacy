@@ -81,7 +81,11 @@ const ProjectMembersLayout = () => {
     return matchedMember
       ? activeEmployees
       : activeEmployees.reduce((acc, item) => {
-          !activeMembersList.some((member) => member?.employee?._id === item._id) && acc.push(item);
+          if (item.availability) {
+            !activeMembersList.some((member) => member?.employee?._id === item._id) &&
+              acc.push(item);
+            return acc;
+          }
           return acc;
         }, []);
   };

@@ -59,7 +59,10 @@ const MemberForm = (props: MemberFormProps) => {
   const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
-    return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
+    return {
+      value: employee._id,
+      label: `${employee.user?.firstName} ${employee.user?.lastName}`,
+    };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
