@@ -193,8 +193,6 @@ const ClientForm = () => {
     setEndDateDisabled(data);
   };
 
-  const styleConsideringTable = formattedProjects ? styles.secondLeftColumn : styles.leftColumns;
-
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
@@ -248,7 +246,7 @@ const ClientForm = () => {
                 />
               </div>
             </div>
-            <div className={styleConsideringTable}>
+            <div className={styles.leftColumns}>
               <div className={styles.dateContainer}>
                 <div className={styles.datePickers}>
                   <div>
