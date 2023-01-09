@@ -52,7 +52,6 @@ const MemberForm = (props: MemberFormProps) => {
       active: true,
     },
     mode: 'onBlur',
-    reValidateMode: 'onSubmit',
     resolver: joiResolver(memberValidations),
   });
 

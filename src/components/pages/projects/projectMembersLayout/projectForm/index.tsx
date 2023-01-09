@@ -153,6 +153,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     name="clientName"
                     options={clientList}
                     fullWidth
+                    disabled={id && true}
                   />
                 </div>
                 <div className={styles.elementContainer}>
