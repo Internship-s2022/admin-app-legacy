@@ -69,7 +69,11 @@ const MemberForm = (props: MemberFormProps) => {
 
   const filterDropdownList = () => {
     const helperDropdownList = employeeList.reduce((acc, employee) => {
-      if (employee._id !== selectedMember.value && employee?.user?.isActive) {
+      if (
+        employee._id !== selectedMember.value &&
+        employee?.user?.isActive &&
+        employee?.availability
+      ) {
         acc.push({
           value: employee._id,
           label: `${employee.user?.firstName} ${employee.user?.lastName}`,
