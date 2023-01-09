@@ -17,10 +17,11 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     disabled,
     inputProps,
     placeholder,
+    handleOnChange,
   } = props;
 
   const {
-    field,
+    field: { onChange, ...rest },
     fieldState: { error },
   } = useController(props);
 
@@ -36,7 +37,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
   return (
     <div>
       <TextField
-        {...field}
+        {...rest}
         value={type === 'number' ? cleanCharacters(field.value) : field.value}
         data-testid={testId}
         className={styles}
@@ -56,6 +57,10 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
           if (type === 'number' && ['e', 'E', '+', '-'].includes(e.key)) {
             e.preventDefault();
           }
+        }}
+        onChange={(e) => {
+          onChange(e);
+          handleOnChange && handleOnChange(e);
         }}
       />
     </div>

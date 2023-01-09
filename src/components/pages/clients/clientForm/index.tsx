@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,8 +21,8 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
-import { addResourceRequest } from 'src/config/api';
-import { ApiRoutes, UiRoutes } from 'src/constants';
+import { getByFilterResourceRequest } from 'src/config/api';
+import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState, useAppSelector } from 'src/redux/store';
@@ -49,10 +50,10 @@ const ClientForm = () => {
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
-  const clientError = useAppSelector((state: RootState) => state.client.error);
   const resource = snackbarOperation != 'agregada' ? Resources.Clientes : Resources.Notificaciones;
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [validate, setValidate] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -87,6 +88,8 @@ const ClientForm = () => {
     handleSubmit,
     control,
     reset,
+    trigger,
+    getValues,
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -104,8 +107,37 @@ const ClientForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.clientValidation),
+    resolver: joiResolver(validations.clientValidation(validate)),
   });
+
+  const nameValidationTrigger = async () => {
+    await trigger('name');
+  };
+
+  useEffect(() => {
+    if (!id && getValues('name')) {
+      nameValidationTrigger();
+    }
+  }, [validate]);
+
+  const nameValue = useCallback(
+    debounce(async (value) => {
+      try {
+        const response = await getByFilterResourceRequest('/clients/clientExists', { name: value });
+        console.log('response.error', response.error);
+        if (!response.error) {
+          setValidate(false);
+        }
+      } catch (error: any) {
+        setValidate(true);
+      }
+    }, 500),
+    [],
+  );
+
+  const nameChangeHandler = (e) => {
+    nameValue(e?.target?.value);
+  };
 
   const formChanged = Boolean(!isDirty && id);
 
@@ -119,11 +151,11 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
-  const onSubmit = async (data) => {
+  const onSubmit = (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
-        name: data.name,
+        name: !id || !data.name ? getValues('name') : data.name,
         localContact: {
           name: data.localContact.name,
           email: data.localContact.email,
@@ -139,16 +171,15 @@ const ClientForm = () => {
       }),
     };
     if (id) {
-      await dispatch(editClient(options));
+      dispatch(editClient(options));
       dispatch(setSnackbarOperation('editado'));
     } else {
-      await dispatch(addClient(options));
+      dispatch(addClient(options));
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
     onClose();
   };
-  console.log('clientError', clientError);
 
   const onClose = () => {
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`);
@@ -189,6 +220,7 @@ const ClientForm = () => {
                   type={'text'}
                   variant="outlined"
                   fullWidth
+                  handleOnChange={nameChangeHandler}
                 />
               </div>
               <div className={styles.inputs}>
@@ -371,7 +403,7 @@ const ClientForm = () => {
       </Modal>
       <SuccessErrorMessage
         open={showAlert}
-        error={notificationError ?? clientError}
+        error={notificationError}
         resource={resource}
         operation={snackbarOperation}
       />
