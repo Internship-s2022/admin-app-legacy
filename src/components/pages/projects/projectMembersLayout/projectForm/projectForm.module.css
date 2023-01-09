@@ -54,6 +54,10 @@
   margin: 20px 0;
 }
 
+.elementContainer > div {
+  height: 100px;
+}
+
 .dateSelection {
   display: flex;
   flex-direction: column;

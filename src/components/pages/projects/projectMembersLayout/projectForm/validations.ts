@@ -4,21 +4,25 @@ import { CriticalType, ProjectType } from './types';
 
 export const projectValidation = Joi.object({
   clientName: Joi.string()
+    .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ'&-/ ]*$/)
     .messages({
       'any.required': 'Este campo es requerido',
       'string.empty': 'Este campo es requerido',
+      'string.pattern.base': 'El nombre debe contener solo letras y numeros',
     })
     .required(),
 
   projectName: Joi.string()
     .min(3)
     .max(35)
+    .regex(/^[a-zA-Z0-9ñáéíóúüÁÉÍÓÚÜ'&-/ ]*$/)
     .trim()
     .messages({
       'any.required': 'Este campo es requerido',
       'string.min': 'El nombre debe contener al menos 3 caracteres',
       'string.max': 'El nombre no debe contener más de 35 caracteres',
       'string.empty': 'Este campo es requerido',
+      'string.pattern.base': 'El nombre debe contener solo letras y numeros',
     })
     .required(),
 

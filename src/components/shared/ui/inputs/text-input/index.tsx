@@ -17,7 +17,6 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     disabled,
     inputProps,
     placeholder,
-    onKeyDown,
   } = props;
 
   const {
@@ -25,10 +24,20 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     fieldState: { error },
   } = useController(props);
 
+  const cleanCharacters = (value) => {
+    for (let i = 0; i < value.length; i++) {
+      if (value.charAt(i) != '0') {
+        const res = value.substr(i);
+        return res;
+      }
+    }
+    return value;
+  };
   return (
     <div>
       <TextField
         {...field}
+        value={type === 'number' ? cleanCharacters(field.value) : field.value}
         data-testid={testId}
         className={styles}
         label={label}

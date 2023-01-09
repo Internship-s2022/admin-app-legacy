@@ -29,6 +29,7 @@ export const memberValidations = Joi.object({
       'any.required': 'Este campo es requerido',
       'number.min': 'El porcentaje de dedicacion debe ser mayor a 0',
       'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
+      'number.base': 'Debe ingresar un número del 0 al 100',
     })
     .required(),
 
@@ -50,6 +51,7 @@ export const memberValidations = Joi.object({
         'any.required': 'Este campo es requerido',
         'number.min': 'El porcentaje de dependencia debe ser mayor a 0',
         'number.max': 'El porcentaje de dependencia debe ser menor a 100',
+        'number.base': 'Debe ingresar un número del 0 al 100',
       })
       .required(),
     dedication: Joi.number()
@@ -60,6 +62,7 @@ export const memberValidations = Joi.object({
         'any.required': 'Este campo es requerido',
         'number.min': 'El porcentaje de dedicacion debe ser mayor a 0',
         'number.max': 'El porcentaje de dedicacion debe ser menor a 100',
+        'number.base': 'Debe ingresar un número del 0 al 100',
       })
       .required(),
   }),
