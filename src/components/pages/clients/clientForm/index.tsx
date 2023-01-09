@@ -20,7 +20,8 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
-import { UiRoutes } from 'src/constants';
+import { addResourceRequest } from 'src/config/api';
+import { ApiRoutes, UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
 import { RootState, useAppSelector } from 'src/redux/store';
@@ -29,6 +30,7 @@ import {
   closeFormModal,
   openConfirmationModal,
   openFormModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
@@ -47,6 +49,9 @@ const ClientForm = () => {
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
+  const clientError = useAppSelector((state: RootState) => state.client.error);
+  const resource = snackbarOperation != 'agregada' ? Resources.Clientes : Resources.Notificaciones;
+
   const [endDateDisabled, setEndDateDisabled] = useState(false);
 
   useEffect(() => {
@@ -114,7 +119,7 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
   }));
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
@@ -133,10 +138,17 @@ const ClientForm = () => {
         isActive: true,
       }),
     };
-    id ? dispatch(editClient(options)) : dispatch(addClient(options));
+    if (id) {
+      await dispatch(editClient(options));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      await dispatch(addClient(options));
+      dispatch(setSnackbarOperation('agregado'));
+    }
     dispatch(closeConfirmationModal());
     onClose();
   };
+  console.log('clientError', clientError);
 
   const onClose = () => {
     handleNavigation(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS}`);
@@ -359,8 +371,8 @@ const ClientForm = () => {
       </Modal>
       <SuccessErrorMessage
         open={showAlert}
-        error={notificationError}
-        resource={Resources.Notificaciones}
+        error={notificationError ?? clientError}
+        resource={resource}
         operation={snackbarOperation}
       />
     </div>

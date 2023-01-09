@@ -114,7 +114,6 @@ const Clients = () => {
   };
 
   const handleEdit = (row) => {
-    dispatch(setSnackbarOperation('editado'));
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
   };
 
@@ -196,7 +195,6 @@ const Clients = () => {
             materialVariant={Variant.CONTAINED}
             onClick={() => {
               navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}`);
-              dispatch(setSnackbarOperation('agregado'));
             }}
             label={'+ Agregar cliente'}
             testId={'add-client-button'}
