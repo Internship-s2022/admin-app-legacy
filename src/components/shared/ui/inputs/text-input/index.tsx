@@ -37,7 +37,7 @@ const Input = <Form extends FieldValues>(props: InputProps<Form>): JSX.Element =
     <div>
       <TextField
         {...field}
-        value={type === 'number' && cleanCharacters(field.value)}
+        value={type === 'number' ? cleanCharacters(field.value) : field.value}
         data-testid={testId}
         className={styles}
         label={label}
