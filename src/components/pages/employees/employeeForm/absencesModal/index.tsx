@@ -1,4 +1,4 @@
-import { areIntervalsOverlapping, format } from 'date-fns';
+import { addDays, areIntervalsOverlapping, format, isEqual } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -19,8 +19,10 @@ const AbsencesModal = (props: AbsencesModalProps) => {
   const { setAbsence, absences } = props;
 
   const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(addDays(new Date(), 1));
   const [error, setError] = React.useState(false);
+  const [errorMsg, setErrorMsg] = React.useState('');
+  const [excludeStartDate, setExcludeStartDate] = React.useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -38,12 +40,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
     reset({
       motive: getValues('motive'),
       startDate: format(new Date(startDate), 'dd/MM/yyyy'),
-      endDate: format(new Date(endDate), 'dd/MM/yyyy'),
+      endDate: endDate ? format(new Date(endDate), 'dd/MM/yyyy') : undefined,
     });
   }, [startDate, endDate]);
 
   const handleStartDate = (date) => {
     setStartDate(date);
+    setExcludeStartDate(true);
   };
 
   const handleEndDate = (date) => {
@@ -68,6 +71,10 @@ const AbsencesModal = (props: AbsencesModalProps) => {
       ),
     );
     if (absenceOverlap) {
+      setError(true);
+      setErrorMsg('Ausencia registrada en el período indicado');
+    } else if (isEqual(startDate, endDate)) {
+      setErrorMsg('La fecha de fin debe ser posterior a la de inicio');
       setError(true);
     } else {
       setAbsence([...absences, { ...body }]);
@@ -126,11 +133,12 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             setEnd={handleEndDate}
             startDate={startDate}
             endDate={endDate}
+            excludeStartDate={excludeStartDate}
           />
         </div>
         {error && (
           <div className={styles.absenceError}>
-            <span>Error: Ausencia registrada en el período indicado</span>
+            <span>Error: {errorMsg}</span>
           </div>
         )}
       </form>
