@@ -1,11 +1,13 @@
 import { format, subYears } from 'date-fns';
-import React from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 
 import { Button, DatePicker, Dropdown, TextInput } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import { AccessRoleType } from 'src/constants';
+import { getByFilterResourceRequest } from 'src/config/api';
+import { AccessRoleType, ApiRoutes } from 'src/constants';
 import { useAppDispatch } from 'src/redux/store';
 import { closeFormModal } from 'src/redux/ui/actions';
 import { addUser } from 'src/redux/user/thunks';
@@ -18,8 +20,35 @@ import styles from './userForm.module.css';
 
 const UserForm = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
+  const [userEmailValidation, setUserEmailValidation] = useState(false);
 
-  const { handleSubmit, control, reset } = useForm<FormValues>({
+  const emailValidationTrigger = async () => {
+    await trigger('email');
+  };
+
+  useEffect(() => {
+    if (getValues('email')) {
+      emailValidationTrigger();
+    }
+  }, [userEmailValidation]);
+
+  const emailChangeHandler = useCallback(
+    debounce(async (e) => {
+      try {
+        const response = await getByFilterResourceRequest(`${ApiRoutes.USER}/userExists`, {
+          email: e.target.value,
+        });
+        if (!response.error) {
+          setUserEmailValidation(false);
+        }
+      } catch (error) {
+        setUserEmailValidation(true);
+      }
+    }, 1000),
+    [],
+  );
+
+  const { handleSubmit, control, reset, trigger, getValues } = useForm<FormValues>({
     defaultValues: {
       accessRoleType: AccessRoleType.EMPLOYEE,
       email: '',
@@ -30,7 +59,7 @@ const UserForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(userValidation),
+    resolver: joiResolver(userValidation(userEmailValidation)),
   });
 
   const onClose = () => {
@@ -98,6 +127,7 @@ const UserForm = () => {
               variant="outlined"
               error
               fullWidth
+              handleOnChange={emailChangeHandler}
             />
             <Dropdown
               control={control}
