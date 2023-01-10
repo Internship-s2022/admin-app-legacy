@@ -50,10 +50,9 @@ const ClientForm = () => {
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
-  const resource = snackbarOperation != 'agregada' ? Resources.Clientes : Resources.Notificaciones;
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
-  const [validate, setValidate] = useState(false);
+  const [clientNameValidation, setClientNameValidation] = useState(false);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -107,7 +106,7 @@ const ClientForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.clientValidation(validate, id)),
+    resolver: joiResolver(validations.clientValidation(clientNameValidation, id)),
   });
 
   const nameValidationTrigger = async () => {
@@ -118,26 +117,23 @@ const ClientForm = () => {
     if (!id && getValues('name')) {
       nameValidationTrigger();
     }
-  }, [validate]);
+  }, [clientNameValidation]);
 
-  const nameValue = useCallback(
-    debounce(async (value) => {
+  const nameChangeHandler = useCallback(
+    debounce(async (e) => {
       try {
-        const response = await getByFilterResourceRequest('/clients/clientExists', { name: value });
-        console.log('response.error', response.error);
+        const response = await getByFilterResourceRequest('/clients/clientExists', {
+          name: e.target.value,
+        });
         if (!response.error) {
-          setValidate(false);
+          setClientNameValidation(false);
         }
       } catch (error: any) {
-        setValidate(true);
+        setClientNameValidation(true);
       }
     }, 500),
     [],
   );
-
-  const nameChangeHandler = (e) => {
-    nameValue(e?.target?.value);
-  };
 
   const formChanged = Boolean(!isDirty && id);
 
@@ -402,7 +398,7 @@ const ClientForm = () => {
       <SuccessErrorMessage
         open={showAlert}
         error={notificationError}
-        resource={resource}
+        resource={Resources.Notificaciones}
         operation={snackbarOperation}
       />
     </div>
