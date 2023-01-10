@@ -24,7 +24,7 @@ export const navbarItems = {
 export const formattedRoleType = {
   SUPER_ADMIN: 'Super Admin',
   ADMIN: 'Admin',
-  EMPLOYEE: 'Employee',
+  EMPLOYEE: 'Empleado',
   MANAGER: 'Manager',
 };
 
