@@ -61,6 +61,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     control,
     reset,
     watch,
+    trigger,
     handleSubmit,
   } = useForm<ProjectFormValues>({
     defaultValues: {
@@ -80,8 +81,17 @@ const ProjectForm = (props: ProjectFormProps) => {
   });
 
   const formChanged = Boolean(!isDirty && id);
-  const clientId = watch('clientName');
   const startDate = watch('startDate');
+  const clientId = watch('clientName');
+
+  const triggerDatesValidations = async () => {
+    await trigger('startDate');
+    await trigger('endDate');
+  };
+
+  useEffect(() => {
+    triggerDatesValidations();
+  }, [selectedClient]);
 
   useEffect(() => {
     setSelectedClient(clientList.find((client) => client._id === clientId));
