@@ -1,4 +1,4 @@
-import { addDays, areIntervalsOverlapping, format, isEqual } from 'date-fns';
+import { addDays, areIntervalsOverlapping, format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -21,7 +21,6 @@ const AbsencesModal = (props: AbsencesModalProps) => {
   const [startDate, setStartDate] = React.useState(new Date());
   const [endDate, setEndDate] = React.useState(addDays(new Date(), 1));
   const [error, setError] = React.useState(false);
-  const [errorMsg, setErrorMsg] = React.useState('');
   const [excludeStartDate, setExcludeStartDate] = React.useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
@@ -71,10 +70,6 @@ const AbsencesModal = (props: AbsencesModalProps) => {
       ),
     );
     if (absenceOverlap) {
-      setError(true);
-      setErrorMsg('Ausencia registrada en el período indicado');
-    } else if (isEqual(startDate, endDate)) {
-      setErrorMsg('La fecha de fin debe ser posterior a la de inicio');
       setError(true);
     } else {
       setAbsence([...absences, { ...body }]);
@@ -138,7 +133,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
         </div>
         {error && (
           <div className={styles.absenceError}>
-            <span>Error: {errorMsg}</span>
+            <span>Error: Ausencia registrada en el período indicado</span>
           </div>
         )}
       </form>
