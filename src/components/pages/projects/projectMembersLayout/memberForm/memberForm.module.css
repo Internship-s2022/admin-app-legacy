@@ -1,7 +1,7 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
-  height: 600px;
+  height: 530px;
 }
 
 .headerAddMember {
@@ -53,6 +53,7 @@
 .buttonsContainer {
   display: flex;
   gap: 20px;
+  align-items: flex-end;
   justify-content: flex-end;
 }
 

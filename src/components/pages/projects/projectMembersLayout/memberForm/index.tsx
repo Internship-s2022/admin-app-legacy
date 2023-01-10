@@ -18,6 +18,7 @@ import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
+import { warningBox } from 'src/utils/memberWarningComponent/warningBox';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
@@ -277,23 +278,11 @@ const MemberForm = (props: MemberFormProps) => {
                 />
               </div>
             </div>
-            <div className={styles.warningContainer}>
-              <>
-                {dropdownData.map((item) => {
-                  return (
-                    !item?.availability &&
-                    watch('employee.value') === item._id && (
-                      <div className={styles.warningMessage}>
-                        <WarningIcon />
-                        <p className={styles.warningText}>
-                          El empleado seleccionado no se encuentra disponible
-                        </p>
-                      </div>
-                    )
-                  );
-                })}
-              </>
-            </div>
+            {warningBox(
+              dropdownData,
+              watch('employee.value'),
+              watch('helper.helperReference.value'),
+            )}
             <div className={styles.buttonsContainer}>
               <div>
                 <Button
