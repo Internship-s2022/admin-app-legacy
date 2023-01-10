@@ -81,9 +81,9 @@ const clientValidation = (clientNameValidation) => {
       })
       .allow(null),
 
-    notes: Joi.string().min(0).max(35).messages({
+    notes: Joi.string().min(0).max(500).messages({
       'string.base': 'Notas tiene que ser un string',
-      'string.min': 'Notes no debe contener más de  3 letras',
+      'string.max': 'Notes no debe contener más de  500 caracteres',
     }),
   }).options({ allowUnknown: true });
 };
