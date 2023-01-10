@@ -11,6 +11,7 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import WarningIcon from 'src/components/shared/ui/icons/warning';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
@@ -69,11 +70,7 @@ const MemberForm = (props: MemberFormProps) => {
 
   const filterDropdownList = () => {
     const helperDropdownList = employeeList.reduce((acc, employee) => {
-      if (
-        employee._id !== selectedMember.value &&
-        employee?.user?.isActive &&
-        employee?.availability
-      ) {
+      if (employee._id !== selectedMember.value && employee?.user?.isActive) {
         acc.push({
           value: employee._id,
           label: `${employee.user?.firstName} ${employee.user?.lastName}`,
@@ -279,6 +276,23 @@ const MemberForm = (props: MemberFormProps) => {
                   control={control}
                 />
               </div>
+            </div>
+            <div className={styles.warningContainer}>
+              <>
+                {dropdownData.map((item) => {
+                  return (
+                    !item?.availability &&
+                    watch('employee.value') === item._id && (
+                      <div className={styles.warningMessage}>
+                        <WarningIcon />
+                        <p className={styles.warningText}>
+                          El empleado seleccionado no se encuentra disponible
+                        </p>
+                      </div>
+                    )
+                  );
+                })}
+              </>
             </div>
             <div className={styles.buttonsContainer}>
               <div>
