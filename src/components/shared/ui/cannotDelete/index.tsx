@@ -15,10 +15,8 @@ const CannotDelete = (props: CannotDeleteProps) => {
         </div>
       </div>
       <div className={styles.description}>
-        <p>
-          El proyecto seleccionado contiene miembros asociados. Por favor asegurese de que el mismo
-          no tenga miembros asociados.
-        </p>
+        <p>No es posible desactivar el proyecto debido a que posee miembros asociados.</p>
+        <p>Por favor, deshabilite los miembros e intente nuevamente.</p>
       </div>
       <div className={styles.buttonsContainer}>
         <Button
