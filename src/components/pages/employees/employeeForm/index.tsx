@@ -297,7 +297,7 @@ const EditEmployee = () => {
                 />
               </div>
               <div className={styles.elementContainer}>
-                <AutocompleteChip control={control} name={'skills'} skills={arraySkills} />{' '}
+                <AutocompleteChip control={control} name={'skills'} skills={arraySkills} />
               </div>
             </div>
           </div>
