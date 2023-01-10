@@ -52,7 +52,7 @@ const Card = (props: CardProps) => {
     isCustom,
     resourceId,
     id,
-    date,
+    limitDate,
   } = props;
   const navigate = useNavigate();
   const dispatch: AppDispatch<null> = useDispatch();
@@ -62,7 +62,7 @@ const Card = (props: CardProps) => {
   const isEmployee = !!(resource === 'EMPLOYEE');
   const cardIcon = defineIcon(resource);
   const criticalityColor = defineCriticality(criticality);
-  const isExpired = isAfter(new Date(Date.now()), new Date(date));
+  const isExpired = isAfter(new Date(), new Date(limitDate));
   const shownNotification = isCustom ? 'Notificación Personalizada' : 'Notificación Automática';
 
   const changedNotificationData = (notification) => {

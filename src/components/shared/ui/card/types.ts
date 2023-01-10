@@ -11,5 +11,5 @@ export interface CardProps {
   criticality?: Criticality;
   customMessage?: string;
   isCustom?: boolean;
-  date?: Date;
+  limitDate?: Date;
 }
