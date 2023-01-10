@@ -1,5 +1,6 @@
 export { default as Button } from './buttons/button';
 export { default as ToggleButton } from './buttons/toggle-button';
+export { default as CannotDelete } from './cannotDelete';
 export { default as ConfirmationMessage } from './confirmationMessage';
 export { default as AutocompleteChip } from './inputs/autocompleteChip';
 export { default as AutocompleteInput } from './inputs/autocompleteInput';

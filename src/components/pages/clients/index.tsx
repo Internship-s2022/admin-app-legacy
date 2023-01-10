@@ -3,28 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import { Typography } from '@mui/material';
 
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
-import {
-  Button,
-  ConfirmationMessage,
-  Modal,
-  SuccessErrorMessage,
-  Table,
-} from 'src/components/shared/ui';
+import { Button, SuccessErrorMessage, Table } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
-import { deleteClient, editClient, getClients } from 'src/redux/client/thunks';
+import { getClients } from 'src/redux/client/thunks';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { ErrorType } from 'src/redux/types';
-import {
-  closeConfirmationModal,
-  closeMessageAlert,
-  openConfirmationModal,
-  setSnackbarOperation,
-} from 'src/redux/ui/actions';
+import { closeMessageAlert, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
@@ -49,26 +37,19 @@ const filterData = (list, filters) => {
 };
 
 const Clients = () => {
-  const [row, setRow] = React.useState({} as ClientsData);
-  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useAppDispatch();
+  const navigate = useNavigate();
 
   const clientsList = useAppSelector((state: RootState) => state.client?.list);
   const clientError = useAppSelector((state: RootState) => state.client?.error);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
-  const navigate = useNavigate();
 
   const [dataList, setDataList] = useState([]);
   const [filters, setFilters] = React.useState({
     isActive: true,
     search: '',
   });
-  const [checked, setChecked] = React.useState(false);
-  const confirmationTitle = filters.isActive ? 'Desactivar cliente' : 'Activar cliente';
-  const confirmationDescription = filters.isActive
-    ? `¿Desea desactivar al cliente ${row.name}?`
-    : `¿Desea activar al cliente ${row.name}?`;
 
   const activeClientsList = useMemo(() => {
     const mappedClients = clientsList.reduce((acc, item) => {
@@ -93,81 +74,35 @@ const Clients = () => {
 
   useEffect(() => {
     dispatch(getClients());
+    dispatch(clearSelectedClient());
     return () => {
       dispatch(closeMessageAlert());
     };
   }, []);
 
   useEffect(() => {
-    dispatch(getClients());
-    dispatch(clearSelectedClient());
-  }, []);
-
-  useEffect(() => {
     setDataList(activeClientsList);
   }, [clientsList, filters.isActive, filters.search]);
 
-  const handleDelete = (id) => {
-    dispatch(deleteClient(id));
-    dispatch(setSnackbarOperation('inactivado'));
-    dispatch(closeConfirmationModal());
-  };
-
   const handleEdit = (row) => {
     navigate(`${UiRoutes.ADMIN}${UiRoutes.CLIENTS_FORM}/${row._id}`);
-  };
-
-  const handleActivate = (data) => {
-    dispatch(editClient(data));
-    dispatch(setSnackbarOperation('activado'));
-    dispatch(closeConfirmationModal());
-  };
-
-  const options = {
-    id: row._id,
-    body: {
-      isActive: true,
-    },
   };
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
-  const buttonsArray = filters.isActive
-    ? [
-        {
-          active: true,
-          testId: 'delete-button',
-          variant: Variant.CONTAINED,
-          onClick: (data) => {
-            dispatch(openConfirmationModal());
-            setRow(data);
-          },
-          icon: <DeleteIcon />,
-        },
-        {
-          active: true,
-          testId: 'edit-button',
-          variant: Variant.CONTAINED,
-          onClick: (row) => {
-            return handleEdit(row);
-          },
-          icon: <EditIcon />,
-        },
-      ]
-    : [
-        {
-          active: true,
-          label: 'Activar',
-          testId: 'activate-button',
-          variant: Variant.TEXT,
-          onClick: (data) => {
-            dispatch(openConfirmationModal());
-            setRow(data);
-          },
-        },
-      ];
+  const buttonsArray = filters.isActive && [
+    {
+      active: true,
+      testId: 'edit-button',
+      variant: Variant.CONTAINED,
+      onClick: (row) => {
+        return handleEdit(row);
+      },
+      icon: <EditIcon />,
+    },
+  ];
 
   const showErrorMessage =
     clientError?.errorType === ErrorType.NETWORK_ERROR || !clientsList.length;
@@ -200,34 +135,6 @@ const Clients = () => {
             testId={'add-client-button'}
             styles={'addButton'}
           />
-        </div>
-      </div>
-      <div className={styles.checkboxInput}>
-        <div className={styles.filterButtons}>
-          {checked ? (
-            <div className={styles.filterButtonsPressed}>
-              <Button
-                materialVariant={Variant.CONTAINED}
-                onClick={() => {
-                  setFilters({ ...filters, isActive: !filters.isActive });
-                  setChecked(!checked);
-                }}
-                label={'Inactivos'}
-                testId={'inactive-button'}
-                color={'warning'}
-              />
-            </div>
-          ) : (
-            <Button
-              materialVariant={Variant.TEXT}
-              onClick={() => {
-                setFilters({ ...filters, isActive: !filters.isActive });
-                setChecked(!checked);
-              }}
-              label={'Inactivos'}
-              testId={'inactive-button'}
-            />
-          )}
         </div>
       </div>
       <div className={styles.tableContainer}>
@@ -263,19 +170,6 @@ const Clients = () => {
         resource={Resources.Clientes}
         operation={snackbarOperation}
       />
-      <Modal
-        testId="confirmation-modal"
-        styles={styles.modal}
-        isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationModal())}
-      >
-        <ConfirmationMessage
-          description={confirmationDescription}
-          title={confirmationTitle}
-          handleConfirm={() => (filters.isActive ? handleDelete(row._id) : handleActivate(options))}
-          handleClose={() => dispatch(closeConfirmationModal())}
-        />
-      </Modal>
     </div>
   );
 };

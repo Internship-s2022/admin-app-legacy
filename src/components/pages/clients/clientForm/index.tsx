@@ -143,8 +143,8 @@ const ClientForm = () => {
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
-    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
-    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-',
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
   const onSubmit = (data) => {
