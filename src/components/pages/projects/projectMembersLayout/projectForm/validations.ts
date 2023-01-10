@@ -38,19 +38,19 @@ export const projectValidation = (startDate, endDate) => {
       .allow(''),
 
     startDate: Joi.date()
-      .greater(relationshipStart)
+      .min(relationshipStart)
       .messages({
-        'date.greater': 'Fecha invalida. Revisar fechas del Cliente',
+        'date.min': 'Fecha invalida. Revisar fechas del Cliente',
         'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
       })
       .allow(null),
 
     endDate: Joi.date()
-      .less(relationshipEnd)
-      .greater(Joi.ref('startDate'))
+      .max(relationshipEnd)
+      .min(Joi.ref('startDate'))
       .messages({
-        'date.less': 'Fecha invalida. Revisar fechas del Cliente',
-        'date.greater': 'Fecha de finalización debe ser posterior a la fecha de inicio',
+        'date.max': 'Fecha invalida. Revisar fechas del Cliente',
+        'date.min': 'Fecha de finalización debe ser posterior a la fecha de inicio',
         'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
       })
       .allow(null),
