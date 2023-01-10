@@ -1,6 +1,7 @@
 .modalContainer {
   display: flex;
   flex-direction: column;
+  height: 530px;
 }
 
 .headerAddMember {
@@ -52,6 +53,7 @@
 .buttonsContainer {
   display: flex;
   gap: 20px;
+  align-items: flex-end;
   justify-content: flex-end;
 }
 
@@ -59,4 +61,21 @@
   display: flex;
   gap: 40px;
   justify-content: space-around;
+}
+
+.warningContainer {
+  display: flex;
+  justify-content: flex-start;
+  height: 80px;
+}
+
+.warningMessage {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: #3f3604;
+}
+
+.warningText {
+  margin: 16px 0 10px;
 }

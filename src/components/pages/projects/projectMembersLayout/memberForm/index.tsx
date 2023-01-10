@@ -11,12 +11,14 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import WarningIcon from 'src/components/shared/ui/icons/warning';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
+import { warningBox } from 'src/utils/memberWarningComponent/warningBox';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
@@ -59,7 +61,10 @@ const MemberForm = (props: MemberFormProps) => {
   const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
-    return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
+    return {
+      value: employee._id,
+      label: `${employee.user?.firstName} ${employee.user?.lastName}`,
+    };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
@@ -273,6 +278,11 @@ const MemberForm = (props: MemberFormProps) => {
                 />
               </div>
             </div>
+            {warningBox(
+              dropdownData,
+              watch('employee.value'),
+              watch('helper.helperReference.value'),
+            )}
             <div className={styles.buttonsContainer}>
               <div>
                 <Button
