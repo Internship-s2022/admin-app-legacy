@@ -106,7 +106,7 @@ const ClientForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.clientValidation(clientNameValidation, id)),
+    resolver: joiResolver(validations.clientValidation(clientNameValidation)),
   });
 
   const nameValidationTrigger = async () => {

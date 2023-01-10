@@ -1,13 +1,13 @@
 import Joi from 'joi';
 
-const clientValidation = (clientNameValidation, id) => {
+const clientValidation = (clientNameValidation) => {
   return Joi.object({
     name: Joi.string()
       .min(3)
       .max(35)
       .trim()
       .custom((value, helper) => {
-        if (!id && value && clientNameValidation) {
+        if (value && clientNameValidation) {
           return helper.error('any.invalid');
         }
       })
