@@ -109,7 +109,7 @@ const Projects = () => {
 
   const hasMembers = useMemo(() => {
     const selectedProject = projectsList.find((project) => project._id === row._id);
-    return selectedProject?.members.some((member) => member.active);
+    return selectedProject?.isActive && selectedProject?.members.some((member) => member.active);
   }, [row]);
 
   useEffect(() => {
@@ -312,27 +312,18 @@ const Projects = () => {
         resource={Resources.Proyectos}
         operation={snackbarOperation}
       />
-      {hasMembers ? (
-        <Modal
-          testId="cannot-delete-modal"
-          styles={styles.modal}
-          isOpen={showConfirmModal}
-          onClose={() => dispatch(closeConfirmationModal())}
-        >
+      <Modal
+        testId="delete-modal"
+        styles={styles.modal}
+        isOpen={showConfirmModal}
+        onClose={() => dispatch(closeConfirmationModal())}
+      >
+        {hasMembers ? (
           <CannotDelete
-            testId="client-not-delete"
-            entity={Resources.Clientes}
-            secondEntity={Resources.Proyectos}
+            testId="project-not-delete"
             handleClose={() => dispatch(closeConfirmationModal())}
           />
-        </Modal>
-      ) : (
-        <Modal
-          testId="deleteModal"
-          styles={styles.modal}
-          isOpen={showConfirmModal}
-          onClose={() => dispatch(closeConfirmationModal())}
-        >
+        ) : (
           <ConfirmationMessage
             description={confirmationDescription}
             title={confirmationTitle}
@@ -341,8 +332,8 @@ const Projects = () => {
             }
             handleClose={() => dispatch(closeConfirmationModal())}
           />
-        </Modal>
-      )}
+        )}
+      </Modal>
     </div>
   );
 };

@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 24px;
   width: 552px;
-  height: 156px;
+  height: 170px;
   padding: 24px;
   font-size: 16px;
   color: rgb(0 0 0 / 87%);
@@ -17,10 +17,7 @@
   font-weight: 500;
 }
 
-.description {
-  line-height: 25px;
-}
-
 .buttonsContainer {
-  align-self: end;
+  display: flex;
+  justify-content: flex-end;
 }
