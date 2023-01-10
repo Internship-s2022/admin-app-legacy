@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import {
   Button,
+  CannotDelete,
   ConfirmationMessage,
   Modal,
   SuccessErrorMessage,
@@ -49,16 +50,16 @@ const filterData = (list, filters) => {
 };
 
 const Clients = () => {
-  const [row, setRow] = React.useState({} as ClientsData);
-  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const dispatch: AppDispatch<null> = useAppDispatch();
+  const navigate = useNavigate();
 
+  const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
   const clientsList = useAppSelector((state: RootState) => state.client?.list);
   const clientError = useAppSelector((state: RootState) => state.client?.error);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
-  const navigate = useNavigate();
 
+  const [row, setRow] = React.useState({} as ClientsData);
   const [dataList, setDataList] = useState([]);
   const [filters, setFilters] = React.useState({
     isActive: true,
@@ -91,16 +92,17 @@ const Clients = () => {
     return filteredData;
   }, [clientsList, filters.isActive, filters.search]);
 
-  useEffect(() => {
-    dispatch(getClients());
-    return () => {
-      dispatch(closeMessageAlert());
-    };
-  }, []);
+  const hasProjects = useMemo(() => {
+    const selectedClient = clientsList.find((client) => client._id === row._id);
+    return selectedClient?.projects.some((project) => project.isActive);
+  }, [row]);
 
   useEffect(() => {
     dispatch(getClients());
     dispatch(clearSelectedClient());
+    return () => {
+      dispatch(closeMessageAlert());
+    };
   }, []);
 
   useEffect(() => {
@@ -263,19 +265,37 @@ const Clients = () => {
         resource={Resources.Clientes}
         operation={snackbarOperation}
       />
-      <Modal
-        testId="confirmation-modal"
-        styles={styles.modal}
-        isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationModal())}
-      >
-        <ConfirmationMessage
-          description={confirmationDescription}
-          title={confirmationTitle}
-          handleConfirm={() => (filters.isActive ? handleDelete(row._id) : handleActivate(options))}
-          handleClose={() => dispatch(closeConfirmationModal())}
-        />
-      </Modal>
+      {hasProjects ? (
+        <Modal
+          testId="cannot-delete-modal"
+          styles={styles.modal}
+          isOpen={showConfirmModal}
+          onClose={() => dispatch(closeConfirmationModal())}
+        >
+          <CannotDelete
+            testId="client-not-delete"
+            entity={Resources.Clientes}
+            secondEntity={Resources.Proyectos}
+            handleClose={() => dispatch(closeConfirmationModal())}
+          />
+        </Modal>
+      ) : (
+        <Modal
+          testId="confirmation-modal"
+          styles={styles.modal}
+          isOpen={showConfirmModal}
+          onClose={() => dispatch(closeConfirmationModal())}
+        >
+          <ConfirmationMessage
+            description={confirmationDescription}
+            title={confirmationTitle}
+            handleConfirm={() =>
+              filters.isActive ? handleDelete(row._id) : handleActivate(options)
+            }
+            handleClose={() => dispatch(closeConfirmationModal())}
+          />
+        </Modal>
+      )}
     </div>
   );
 };

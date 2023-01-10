@@ -31,7 +31,7 @@ const ConfirmationMessage = (props: ConfirmationMessageProps) => {
         </div>
         <div>
           <Button
-            testId="confirm-buttonconfirmBtn"
+            testId="confirm-button"
             materialVariant={Variant.CONTAINED}
             label="Confirmar"
             onClick={handleConfirm}

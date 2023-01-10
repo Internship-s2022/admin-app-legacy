@@ -5,6 +5,7 @@ import { Typography } from '@mui/material';
 import EmptyDataHandler from 'src/components/shared/common/emptyDataHandler';
 import {
   Button,
+  CannotDelete,
   ConfirmationMessage,
   Modal,
   SuccessErrorMessage,
@@ -62,7 +63,7 @@ const Projects = () => {
   const dispatch: AppDispatch<null> = useAppDispatch();
   const projectError = useAppSelector((state: RootState) => state.project?.error);
   const showConfirmModal = useAppSelector((state: RootState) => state.ui.showConfirmModal);
-  const projectList = useAppSelector((state: RootState) => state.project.list);
+  const projectsList = useAppSelector((state: RootState) => state.project.list);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
 
@@ -79,7 +80,7 @@ const Projects = () => {
     : `¿Desea activar al proyecto ${row.projectName}?`;
 
   const activeProjectsList = useMemo(() => {
-    const formattedProjectList = projectList.map((project) => ({
+    const formattedProjectList = projectsList.map((project) => ({
       ...project,
       members: project?.members?.map((member) => ({
         ...member,
@@ -104,23 +105,24 @@ const Projects = () => {
     }, []);
     const filteredData = filterData(mappedProjects, filters);
     return filteredData;
-  }, [projectList, filters.isActive, filters.criticality, filters.search]);
+  }, [projectsList, filters.isActive, filters.criticality, filters.search]);
+
+  const hasMembers = useMemo(() => {
+    const selectedProject = projectsList.find((project) => project._id === row._id);
+    return selectedProject?.members.some((member) => member.active);
+  }, [row]);
 
   useEffect(() => {
     dispatch(getProjects());
+    dispatch(cleanSelectedProject());
     return () => {
       dispatch(closeMessageAlert());
     };
   }, []);
 
   useEffect(() => {
-    dispatch(getProjects());
-    dispatch(cleanSelectedProject());
-  }, []);
-
-  useEffect(() => {
     setDataList(activeProjectsList);
-  }, [projectList, filters.isActive, filters.criticality, filters.search]);
+  }, [projectsList, filters.isActive, filters.criticality, filters.search]);
 
   const navigate = useNavigate();
   const handleNavigation = (path) => {
@@ -184,7 +186,7 @@ const Projects = () => {
       ];
 
   const showErrorMessage =
-    projectError?.errorType === ErrorType.NETWORK_ERROR || !projectList.length;
+    projectError?.errorType === ErrorType.NETWORK_ERROR || !projectsList.length;
 
   return showErrorMessage ? (
     <EmptyDataHandler
@@ -310,19 +312,37 @@ const Projects = () => {
         resource={Resources.Proyectos}
         operation={snackbarOperation}
       />
-      <Modal
-        testId="deleteModal"
-        styles={styles.modal}
-        isOpen={showConfirmModal}
-        onClose={() => dispatch(closeConfirmationModal())}
-      >
-        <ConfirmationMessage
-          description={confirmationDescription}
-          title={confirmationTitle}
-          handleConfirm={() => (filters.isActive ? handleDelete(row._id) : handleActivate(options))}
-          handleClose={() => dispatch(closeConfirmationModal())}
-        />
-      </Modal>
+      {hasMembers ? (
+        <Modal
+          testId="cannot-delete-modal"
+          styles={styles.modal}
+          isOpen={showConfirmModal}
+          onClose={() => dispatch(closeConfirmationModal())}
+        >
+          <CannotDelete
+            testId="client-not-delete"
+            entity={Resources.Clientes}
+            secondEntity={Resources.Proyectos}
+            handleClose={() => dispatch(closeConfirmationModal())}
+          />
+        </Modal>
+      ) : (
+        <Modal
+          testId="deleteModal"
+          styles={styles.modal}
+          isOpen={showConfirmModal}
+          onClose={() => dispatch(closeConfirmationModal())}
+        >
+          <ConfirmationMessage
+            description={confirmationDescription}
+            title={confirmationTitle}
+            handleConfirm={() =>
+              filters.isActive ? handleDelete(row._id) : handleActivate(options)
+            }
+            handleClose={() => dispatch(closeConfirmationModal())}
+          />
+        </Modal>
+      )}
     </div>
   );
 };
