@@ -5,4 +5,5 @@ export type DateIntervalProps<Form extends FieldValues> = {
   setEnd: (data) => void;
   startDate: Date;
   endDate: Date;
+  excludeStartDate?: boolean;
 } & UseControllerProps<Form>;

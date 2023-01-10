@@ -1,4 +1,4 @@
-import { areIntervalsOverlapping, format } from 'date-fns';
+import { addDays, areIntervalsOverlapping, format } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -19,8 +19,9 @@ const AbsencesModal = (props: AbsencesModalProps) => {
   const { setAbsence, absences } = props;
 
   const [startDate, setStartDate] = React.useState(new Date());
-  const [endDate, setEndDate] = React.useState(new Date());
+  const [endDate, setEndDate] = React.useState(addDays(new Date(), 1));
   const [error, setError] = React.useState(false);
+  const [excludeStartDate, setExcludeStartDate] = React.useState(false);
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -38,12 +39,13 @@ const AbsencesModal = (props: AbsencesModalProps) => {
     reset({
       motive: getValues('motive'),
       startDate: format(new Date(startDate), 'dd/MM/yyyy'),
-      endDate: format(new Date(endDate), 'dd/MM/yyyy'),
+      endDate: endDate ? format(new Date(endDate), 'dd/MM/yyyy') : undefined,
     });
   }, [startDate, endDate]);
 
   const handleStartDate = (date) => {
     setStartDate(date);
+    setExcludeStartDate(true);
   };
 
   const handleEndDate = (date) => {
@@ -126,6 +128,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             setEnd={handleEndDate}
             startDate={startDate}
             endDate={endDate}
+            excludeStartDate={excludeStartDate}
           />
         </div>
         {error && (
