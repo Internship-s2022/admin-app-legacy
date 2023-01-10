@@ -5,8 +5,8 @@ import { Seniority } from '../types';
 
 const employeeValidations = Joi.object({
   skills: Joi.array().items(Joi.string().min(1).max(35)).messages({
-    'string.min': 'Las skills deben contener al menos un caracter',
-    'string.max': 'Las skills deben contener menos de 35 caracteres',
+    'string.max': 'Skills debe contener menos de 36 letras',
+    'string.base': 'Skills debe ser un string',
   }),
 
   seniority: Joi.string().valid(Seniority.JR, Seniority.SR, Seniority.SSR).messages({
