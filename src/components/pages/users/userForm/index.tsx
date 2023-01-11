@@ -71,6 +71,7 @@ const UserForm = () => {
     data = {
       ...data,
       birthDate: format(new Date(data?.birthDate), 'yyy/MM/dd'),
+      email: getValues('email'),
     };
     dispatch(addUser(data));
     onClose();
