@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, subYears } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -203,6 +203,7 @@ const EditEmployee = () => {
                   testId={'datePickerTestId'}
                   name="user.birthDate"
                   control={control}
+                  maxDate={subYears(new Date(), 18)}
                   disabled
                 />
               </div>

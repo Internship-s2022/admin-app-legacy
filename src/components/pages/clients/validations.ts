@@ -69,14 +69,16 @@ const clientValidation = (clientNameValidation) => {
         .required(),
     }),
 
-    relationshipStart: Joi.date().allow(null).messages({
-      'date.base': 'Formato dd/mm/aaaa',
-    }),
+    relationshipStart: Joi.date()
+      .messages({
+        'date.base': 'Formato dd/mm/aaaa',
+      })
+      .allow(null),
 
     relationshipEnd: Joi.date()
-      .greater(Joi.ref('relationshipStart'))
+      .min(Joi.ref('relationshipStart'))
       .messages({
-        'date.greater': 'Fecha de fin debe ser mayor a la fecha de inicio',
+        'date.min': 'Fecha de fin debe ser mayor a la fecha de inicio',
         'date.base': 'Formato dd/mm/aaaa',
       })
       .allow(null),
