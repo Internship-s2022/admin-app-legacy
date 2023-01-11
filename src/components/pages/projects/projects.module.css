@@ -67,6 +67,7 @@ h1 {
   display: flex;
   align-items: center;
   height: 28.5px;
+  padding: 2px 8px;
   /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
   font-family: Roboto;
   font-size: 0.875rem;
