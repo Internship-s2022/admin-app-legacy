@@ -18,12 +18,13 @@
 
 .formContainer form {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 100%;
 }
 
 .leftContainer {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   width: 70%;
 }
@@ -40,16 +41,15 @@
 
 .dateContainer {
   display: flex;
-  flex-direction: column;
-  height: 140px;
+  width: 50%;
 }
 
 .datePickers {
   display: flex;
   gap: 10px;
   justify-content: space-between;
-  width: calc(100% - 40px);
-  margin: 20px 0 0;
+  width: calc(100% - 70px);
+  margin: 20px 0;
 }
 
 .rightContainer fieldset {
@@ -58,17 +58,22 @@
 
 .inputs {
   display: flex;
-  flex-direction: column;
   justify-content: flex-start;
-  width: calc(100% - 40px);
-  height: 100px;
+  width: calc(45% - -45px);
   margin: 20px 0;
+}
+
+.inputs > div {
+  width: 85%;
 }
 
 .leftColumns {
   display: flex;
+}
+
+.secondWrapperInputs {
+  display: flex;
   flex-wrap: wrap;
-  width: 50%;
 }
 
 .buttonContainer {
@@ -117,4 +122,8 @@
   align-items: flex-end;
   width: 100%;
   margin-bottom: 7px;
+}
+
+.notes > div > div > div > fieldset {
+  height: 151px;
 }
