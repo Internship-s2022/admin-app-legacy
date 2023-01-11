@@ -13,7 +13,7 @@ export interface Notification {
   employee?: Employee;
   project?: Project;
   client?: Client;
-  date: Date;
+  limitDate?: Date;
   reasonType?: number;
   isChecked?: boolean;
   customMessage?: string;
