@@ -34,6 +34,7 @@ import {
   setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
+import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
@@ -133,15 +134,21 @@ const ClientForm = () => {
 
   const nameChangeHandler = useCallback(
     debounce(async (e) => {
+      let inputValue;
       try {
+        inputValue = capitalizeFirstLetter(e.target.value.trim());
         const response = await getByFilterResourceRequest('/clients/clientExists', {
-          name: e.target.value,
+          name: inputValue,
         });
         if (!response.error) {
           setClientNameValidation(false);
         }
       } catch (error: any) {
-        setClientNameValidation(true);
+        if (id && inputValue === selectedClient.name) {
+          setClientNameValidation(false);
+        } else {
+          setClientNameValidation(true);
+        }
       }
     }, 500),
     [],
@@ -157,11 +164,16 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
-  const onSubmit = async (data) => {
+  const clientHasProjects = id && selectedClient?.projects?.length ? true : false;
+
+  const onSubmit = (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
-        name: !id || !data.name ? getValues('name') : data.name,
+        name:
+          !id || !data.name
+            ? capitalizeFirstLetter(getValues('name'))
+            : capitalizeFirstLetter(data.name),
         localContact: {
           name: data.localContact.name,
           email: data.localContact.email,
@@ -237,6 +249,7 @@ const ClientForm = () => {
                       testId={'startDatePickerTestId'}
                       name="relationshipStart"
                       control={control}
+                      disabled={clientHasProjects}
                     />
                     <EndDateCheckbox
                       changed={changed}
@@ -260,53 +273,57 @@ const ClientForm = () => {
               </div>
             </div>
             <div className={styles.secondWrapperInputs}>
-              <div className={`${styles.inputs} ${styles.leftInput}`}>
-                <TextInput
-                  control={control}
-                  testId={'clientContactInput'}
-                  label="Contacto cliente"
-                  placeholder="Nombre y apellido del contacto del cliente"
-                  name="clientContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
+              <div>
+                <div className={`${styles.inputs} ${styles.leftInput}`}>
+                  <TextInput
+                    control={control}
+                    testId={'clientContactInput'}
+                    label="Contacto cliente"
+                    placeholder="Nombre y apellido del contacto del cliente"
+                    name="clientContact.name"
+                    type={'text'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.inputs}>
+                  <TextInput
+                    control={control}
+                    testId={'clientEmailInput'}
+                    label="Email cliente"
+                    name="clientContact.email"
+                    type={'text'}
+                    variant="outlined"
+                    placeholder="Email del contacto del cliente"
+                    fullWidth
+                  />
+                </div>
               </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'clientEmailInput'}
-                  label="Email cliente"
-                  name="clientContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email del contacto del cliente"
-                  fullWidth
-                />
-              </div>
-              <div className={`${styles.inputs} ${styles.leftInput}`}>
-                <TextInput
-                  control={control}
-                  testId={'localContactInput'}
-                  label="Contacto Radium Rocket"
-                  placeholder="Nombre y apellido del contacto de Radium Rocket"
-                  name="localContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
-              </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'localEmailInput'}
-                  label="Email Radium Rocket"
-                  name="localContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email del contacto de Radium Rocket"
-                  fullWidth
-                />
+              <div>
+                <div className={`${styles.inputs} ${styles.leftInput}`}>
+                  <TextInput
+                    control={control}
+                    testId={'localContactInput'}
+                    label="Contacto Radium Rocket"
+                    placeholder="Nombre y apellido del contacto de Radium Rocket"
+                    name="localContact.name"
+                    type={'text'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.inputs}>
+                  <TextInput
+                    control={control}
+                    testId={'localEmailInput'}
+                    label="Email Radium Rocket"
+                    name="localContact.email"
+                    type={'text'}
+                    variant="outlined"
+                    placeholder="Email del contacto de Radium Rocket"
+                    fullWidth
+                  />
+                </div>
               </div>
             </div>
           </div>

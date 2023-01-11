@@ -39,27 +39,11 @@
   margin: 20px;
 }
 
-.dateContainer {
-  display: flex;
-  width: 50%;
-}
-
-.datePickers {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  width: calc(100% - 70px);
-  margin: 20px 0;
-}
-
-.rightContainer fieldset {
-  height: 178px;
-}
-
 .inputs {
   display: flex;
   justify-content: flex-start;
   width: calc(45% - -40px);
+  height: 100px;
   margin: 20px 0;
 }
 
@@ -67,13 +51,41 @@
   width: 85%;
 }
 
-.leftColumns {
+.dateContainer {
   display: flex;
+  width: 50%;
 }
 
 .secondWrapperInputs {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.secondWrapperInputs > div {
+  display: flex;
+}
+
+.datePickers {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: calc(100% - 70px);
+  height: 120px;
+  margin: 20px 0;
+}
+
+.datePickers > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rightContainer fieldset {
+  height: 178px;
+}
+
+.leftColumns {
+  display: flex;
 }
 
 .buttonContainer {
