@@ -54,6 +54,16 @@ const ClientForm = () => {
   const [endDateDisabled, setEndDateDisabled] = useState(false);
   const [clientNameValidation, setClientNameValidation] = useState(false);
 
+  const nameValidationTrigger = async () => {
+    await trigger('name');
+  };
+
+  useEffect(() => {
+    if (!id && getValues('name')) {
+      nameValidationTrigger();
+    }
+  }, [clientNameValidation]);
+
   useEffect(() => {
     id && dispatch(getClientsById(id));
     return () => {
@@ -109,16 +119,6 @@ const ClientForm = () => {
     mode: 'onBlur',
     resolver: joiResolver(validations.clientValidation(clientNameValidation)),
   });
-
-  const nameValidationTrigger = async () => {
-    await trigger('name');
-  };
-
-  useEffect(() => {
-    if (!id && getValues('name')) {
-      nameValidationTrigger();
-    }
-  }, [clientNameValidation]);
 
   const nameChangeHandler = useCallback(
     debounce(async (e) => {
