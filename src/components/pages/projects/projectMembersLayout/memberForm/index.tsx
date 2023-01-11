@@ -11,12 +11,14 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
+import WarningIcon from 'src/components/shared/ui/icons/warning';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
 import { RootState } from 'src/redux/store';
 import { closeModal, setSnackbarOperation } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
+import { warningBox } from 'src/utils/memberWarningComponent/warningBox';
 
 import { roles } from './constants';
 import styles from './memberForm.module.css';
@@ -27,7 +29,10 @@ const MemberForm = (props: MemberFormProps) => {
   const { projectId, memberData, dropdownData } = props;
 
   const employeeList = useSelector((state: RootState) => state.employee.list);
+  const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
+
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const { startDate, endDate } = selectedProject;
 
   const dispatch: AppDispatch<null> = useDispatch();
 
@@ -52,14 +57,19 @@ const MemberForm = (props: MemberFormProps) => {
       active: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(memberValidations),
+    resolver: joiResolver(memberValidations(startDate, endDate)),
   });
 
   const selectedMember = watch('employee');
+  const startMemberDate = watch('startDate');
+
   const formChanged = Boolean(!isDirty && memberData);
 
   const employeeDropdownList = dropdownData.map((employee) => {
-    return { value: employee._id, label: `${employee.user?.firstName} ${employee.user?.lastName}` };
+    return {
+      value: employee._id,
+      label: `${employee.user?.firstName} ${employee.user?.lastName}`,
+    };
   });
 
   const currentHelperIndex = memberData?.helper?.findIndex((helper) => helper.isActive);
@@ -75,7 +85,7 @@ const MemberForm = (props: MemberFormProps) => {
       return acc;
     }, []);
 
-    helperDropdownList.unshift({ value: '', label: 'Sin ayudante' });
+    helperDropdownList.unshift({ value: undefined, label: 'Sin ayudante' });
     return helperDropdownList;
   };
 
@@ -234,6 +244,7 @@ const MemberForm = (props: MemberFormProps) => {
                     type={'number'}
                     variant="outlined"
                     fullWidth
+                    disabled={watch('helper.helperReference').value === undefined}
                   />
                   <TextInput
                     control={control}
@@ -243,6 +254,7 @@ const MemberForm = (props: MemberFormProps) => {
                     type={'number'}
                     variant="outlined"
                     fullWidth
+                    disabled={watch('helper.helperReference').value === undefined}
                   />
                 </div>
               </div>
@@ -254,6 +266,7 @@ const MemberForm = (props: MemberFormProps) => {
                   testId={'startDate'}
                   name="startDate"
                   control={control}
+                  minDate={startDate}
                 />
                 <EndDateCheckbox
                   endDateDisabled={endDateDisabled}
@@ -267,10 +280,17 @@ const MemberForm = (props: MemberFormProps) => {
                   label={'Fin'}
                   testId={'endDate'}
                   name="endDate"
+                  minDate={startMemberDate}
+                  maxDate={endDate}
                   control={control}
                 />
               </div>
             </div>
+            {warningBox(
+              dropdownData,
+              watch('employee.value'),
+              watch('helper.helperReference.value'),
+            )}
             <div className={styles.buttonsContainer}>
               <div>
                 <Button

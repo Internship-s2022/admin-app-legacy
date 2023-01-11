@@ -29,3 +29,5 @@ export const editEmployeeError = (error: ErrorFormat) => action(Actions.EDIT_EMP
 
 export const setSelectedEmployee = (employee: Employee) =>
   action(Actions.SET_SELECTED_EMPLOYEE, employee);
+
+export const cleanSelectedEmployee = () => action(Actions.CLEAN_SELECTED_EMPLOYEE);

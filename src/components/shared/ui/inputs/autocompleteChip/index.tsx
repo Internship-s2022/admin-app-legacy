@@ -47,16 +47,18 @@ const AutocompleteChip = <Form extends FieldValues>(
         }}
         data-testid={'autocompleteTestId'}
       />
-      {value?.map((option) => (
-        <Chip
-          key={option}
-          variant="outlined"
-          label={option}
-          onDelete={() => handleDelete(option)}
-          className={styles.chips}
-          data-testid={option.toLowerCase()}
-        />
-      ))}
+      <div className={styles.chipsContainer}>
+        {value?.reverse().map((option) => (
+          <Chip
+            key={option}
+            variant="outlined"
+            label={option}
+            onDelete={() => handleDelete(option)}
+            className={styles.chips}
+            data-testid={option.toLowerCase()}
+          />
+        ))}
+      </div>
     </div>
   );
 };

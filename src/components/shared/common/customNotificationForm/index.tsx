@@ -32,7 +32,7 @@ const CustomNotifications = (props: customNotificationProps) => {
   const { control, handleSubmit } = useForm<FormValues>({
     defaultValues: {
       customMessage: '',
-      date: null,
+      limitDate: null,
     },
     mode: 'onChange',
     resolver: joiResolver(customNotificationsValidations),
@@ -71,7 +71,7 @@ const CustomNotifications = (props: customNotificationProps) => {
             <DatePicker
               label={'Fecha de recordatorio'}
               testId={'date-picker-custom'}
-              name="date"
+              name="limitDate"
               control={control}
             />
           </div>

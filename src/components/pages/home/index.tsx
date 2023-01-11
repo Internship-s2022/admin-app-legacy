@@ -94,9 +94,9 @@ const Home = () => {
           employeeId: item.employee?._id,
           clientName: item.client?.name || '',
           clientId: item.client?._id,
-          date: item.date,
           customMessage: item.customMessage || '',
           notification: item.reasonType || '',
+          limitDate: item?.limitDate || '',
           isCustom: item.isCustom,
           active: item.isActive,
         });
@@ -218,7 +218,7 @@ const Home = () => {
                     customMessage={item.customMessage}
                     isCustom={item.isCustom}
                     notification={item.notification}
-                    date={item.date}
+                    limitDate={item.limitDate}
                   />
                 </>
               );

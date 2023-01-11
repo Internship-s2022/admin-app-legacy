@@ -1,6 +1,6 @@
 export type FormValues = {
   customMessage: string;
-  date: Date;
+  limitDate: Date;
 };
 
 export interface customNotificationProps {

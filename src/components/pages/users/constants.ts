@@ -4,6 +4,7 @@ import { AccessRoleType } from 'src/constants';
 export const userHeaders: Headers[] = [
   { header: 'Nombre', key: 'name' },
   { header: 'Rol de acceso', key: 'accessRoleType' },
+  { header: 'Email', key: 'email' },
 ];
 
 export const accessRoles = [
@@ -12,4 +13,4 @@ export const accessRoles = [
   { value: AccessRoleType.EMPLOYEE, label: 'Empleado' },
 ];
 
-export const userFilterOptions = ['name', 'email', 'firebaseUid', 'location', 'birthDate'];
+export const userFilterOptions = ['name', 'email'];

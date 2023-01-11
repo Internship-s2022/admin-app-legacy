@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
-import React, { useEffect, useState } from 'react';
+import { debounce } from 'lodash';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,6 +21,7 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import BellIcon from 'src/components/shared/ui/icons/bellIcon';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
+import { getByFilterResourceRequest } from 'src/config/api';
 import { UiRoutes } from 'src/constants';
 import { clearSelectedClient } from 'src/redux/client/actions';
 import { addClient, editClient, getClientsById } from 'src/redux/client/thunks';
@@ -29,6 +31,7 @@ import {
   closeFormModal,
   openConfirmationModal,
   openFormModal,
+  setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 
@@ -47,7 +50,19 @@ const ClientForm = () => {
   const snackbarOperation = useAppSelector((state: RootState) => state.ui.snackbarOperation);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
+
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [clientNameValidation, setClientNameValidation] = useState(false);
+
+  const nameValidationTrigger = async () => {
+    await trigger('name');
+  };
+
+  useEffect(() => {
+    if (!id && getValues('name')) {
+      nameValidationTrigger();
+    }
+  }, [clientNameValidation]);
 
   useEffect(() => {
     id && dispatch(getClientsById(id));
@@ -82,6 +97,9 @@ const ClientForm = () => {
     handleSubmit,
     control,
     reset,
+    trigger,
+    getValues,
+    watch,
   } = useForm<FormValues>({
     defaultValues: {
       name: '',
@@ -99,8 +117,25 @@ const ClientForm = () => {
       isActive: true,
     },
     mode: 'onBlur',
-    resolver: joiResolver(validations.clientValidation),
+    resolver: joiResolver(validations.clientValidation(clientNameValidation)),
   });
+
+  const nameChangeHandler = useCallback(
+    debounce(async (e) => {
+      try {
+        const response = await getByFilterResourceRequest('/clients/clientExists', {
+          name: e.target.value,
+        });
+        if (!response.error) {
+          setClientNameValidation(false);
+        }
+      } catch (error: any) {
+        setClientNameValidation(true);
+      }
+    }, 500),
+    [],
+  );
+  const startDate = watch('relationshipStart');
 
   const formChanged = Boolean(!isDirty && id);
 
@@ -110,15 +145,15 @@ const ClientForm = () => {
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
-    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
-    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-', //TODO: ESTA FECHA ME QUEDA UN DIA ANTES DE LO PENSADO
+    startDate: item?.startDate ? format(new Date(item?.startDate), 'yyy/MM/dd') : '-',
+    endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
   const onSubmit = (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
-        name: data.name,
+        name: !id || !data.name ? getValues('name') : data.name,
         localContact: {
           name: data.localContact.name,
           email: data.localContact.email,
@@ -133,7 +168,13 @@ const ClientForm = () => {
         isActive: true,
       }),
     };
-    id ? dispatch(editClient(options)) : dispatch(addClient(options));
+    if (id) {
+      dispatch(editClient(options));
+      dispatch(setSnackbarOperation('editado'));
+    } else {
+      dispatch(addClient(options));
+      dispatch(setSnackbarOperation('agregado'));
+    }
     dispatch(closeConfirmationModal());
     onClose();
   };
@@ -149,8 +190,6 @@ const ClientForm = () => {
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
   };
-
-  const styleConsideringTable = formattedProjects ? styles.secondLeftColumn : styles.leftColumns;
 
   return (
     <div className={styles.container}>
@@ -177,34 +216,9 @@ const ClientForm = () => {
                   type={'text'}
                   variant="outlined"
                   fullWidth
+                  handleOnChange={nameChangeHandler}
                 />
               </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'clientContactInput'}
-                  label="Contacto cliente"
-                  placeholder="Nombre y apellido del contacto del cliente"
-                  name="clientContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
-              </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'localContactInput'}
-                  label="Contacto Radium Rocket"
-                  placeholder="Nombre y apellido del contacto de Radium Rocket"
-                  name="localContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
-              </div>
-            </div>
-            <div className={styleConsideringTable}>
               <div className={styles.dateContainer}>
                 <div className={styles.datePickers}>
                   <div>
@@ -225,11 +239,26 @@ const ClientForm = () => {
                       label={'Fin'}
                       testId={'endDatePickerTestId'}
                       name="relationshipEnd"
+                      minDate={startDate}
                       control={control}
                       disabled={endDateDisabled}
                     />
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className={styles.secondWrapperInputs}>
+              <div className={`${styles.inputs} ${styles.leftInput}`}>
+                <TextInput
+                  control={control}
+                  testId={'clientContactInput'}
+                  label="Contacto cliente"
+                  placeholder="Nombre y apellido del contacto del cliente"
+                  name="clientContact.name"
+                  type={'text'}
+                  variant="outlined"
+                  fullWidth
+                />
               </div>
               <div className={styles.inputs}>
                 <TextInput
@@ -240,6 +269,18 @@ const ClientForm = () => {
                   type={'text'}
                   variant="outlined"
                   placeholder="Email del contacto del cliente"
+                  fullWidth
+                />
+              </div>
+              <div className={`${styles.inputs} ${styles.leftInput}`}>
+                <TextInput
+                  control={control}
+                  testId={'localContactInput'}
+                  label="Contacto Radium Rocket"
+                  placeholder="Nombre y apellido del contacto de Radium Rocket"
+                  name="localContact.name"
+                  type={'text'}
+                  variant="outlined"
                   fullWidth
                 />
               </div>
@@ -298,17 +339,19 @@ const ClientForm = () => {
                 </div>
               </div>
             )}
-            <TextInput
-              control={control}
-              testId={'notesInput'}
-              label="Notas"
-              name="notes"
-              type={'text'}
-              variant="outlined"
-              fullWidth
-              multiline
-              rows={5}
-            />
+            <div className={styles.notes}>
+              <TextInput
+                control={control}
+                testId={'notesInput'}
+                label="Notas"
+                name="notes"
+                type={'text'}
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={5}
+              />
+            </div>
           </div>
         </form>
         <div className={styles.buttonContainer}>

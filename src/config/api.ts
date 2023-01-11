@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
+import { setAuthError } from 'src/redux/auth/actions';
+import store from 'src/redux/store';
 import { ErrorFormat, ErrorType } from 'src/redux/types';
 
 const token = localStorage.getItem('token');
@@ -14,6 +16,7 @@ const api = axios.create({
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
+
 const parseError = (error) => {
   if (error.code === ErrorType.NETWORK_ERROR) {
     throw {
@@ -22,6 +25,8 @@ const parseError = (error) => {
     };
   }
   if (error.response.status === 403) {
+    store.dispatch(setAuthError(true));
+
     throw {
       message: error.response.data.message,
       errorType: ErrorType.AUTH_ERROR,

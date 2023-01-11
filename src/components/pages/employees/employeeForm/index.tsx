@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, subYears } from 'date-fns';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -25,6 +25,7 @@ import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import AutocompleteChip from 'src/components/shared/ui/inputs/autocompleteChip';
 import CheckboxInput from 'src/components/shared/ui/inputs/checkbox';
 import { UiRoutes } from 'src/constants';
+import { cleanSelectedEmployee } from 'src/redux/employee/actions';
 import { editEmployee, getEmployeeById } from 'src/redux/employee/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import {
@@ -70,6 +71,9 @@ const EditEmployee = () => {
     if (!Object.keys(selectedEmployee).length) {
       params.id && dispatch(getEmployeeById(params.id));
     }
+    return () => {
+      dispatch(cleanSelectedEmployee());
+    };
   }, []);
 
   const [absences, setAbsences] = React.useState(selectedEmployee?.absences || []);
@@ -92,7 +96,7 @@ const EditEmployee = () => {
       seniority: Seniority.JR,
       skills: [],
       potentialRole: [],
-      availability: true,
+      availability: false,
       projectHistory: [],
       careerPlan: '',
       notes: '',
@@ -172,7 +176,7 @@ const EditEmployee = () => {
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
-        <div>Editar un empleado</div>
+        <div>Editar empleado</div>
         <div className={styles.bellIcon} onClick={() => dispatch(openFormModal())}>
           <BellIcon color={'#373867'} />
         </div>
@@ -199,6 +203,7 @@ const EditEmployee = () => {
                   testId={'datePickerTestId'}
                   name="user.birthDate"
                   control={control}
+                  maxDate={subYears(new Date(), 18)}
                   disabled
                 />
               </div>
@@ -246,7 +251,7 @@ const EditEmployee = () => {
                         testId="absencesButton"
                         materialVariant={Variant.CONTAINED}
                         onClick={() => dispatch(openModal())}
-                        label="+ Agregar ausencias"
+                        label="+ Agregar ausencia"
                         styles={styles.buttonText}
                       />
                     </div>
@@ -293,7 +298,7 @@ const EditEmployee = () => {
                 />
               </div>
               <div className={styles.elementContainer}>
-                <AutocompleteChip control={control} name={'skills'} skills={arraySkills} />{' '}
+                <AutocompleteChip control={control} name={'skills'} skills={arraySkills} />
               </div>
             </div>
           </div>

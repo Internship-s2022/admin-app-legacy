@@ -16,7 +16,8 @@ import {
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { UiRoutes } from 'src/constants';
-import { createProject, editProject, getProjectAndClients } from 'src/redux/project/thunk';
+import { Client } from 'src/redux/client/types';
+import { createProject, editProject } from 'src/redux/project/thunk';
 import { RootState } from 'src/redux/store';
 import {
   closeConfirmationModal,
@@ -39,16 +40,17 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const showConfirmModal = useSelector((state: RootState) => state.ui.showConfirmModal);
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject);
-  const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const clientList = useSelector((state: RootState) => state.client.list);
 
-  const clientList = useSelector((state: RootState) =>
-    state.client.list?.reduce((acc, item) => {
-      if (item.isActive) {
-        acc.push({ value: item._id, label: item.name });
-      }
-      return acc;
-    }, []),
-  );
+  const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [selectedClient, setSelectedClient] = useState({} as Client);
+
+  const clientDropdownList = clientList?.reduce((acc, item) => {
+    if (item.isActive) {
+      acc.push({ value: item._id, label: item.name });
+    }
+    return acc;
+  }, []);
 
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
@@ -58,6 +60,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     formState: { isDirty },
     control,
     reset,
+    watch,
+    trigger,
     handleSubmit,
   } = useForm<ProjectFormValues>({
     defaultValues: {
@@ -71,10 +75,27 @@ const ProjectForm = (props: ProjectFormProps) => {
       notes: '',
     },
     mode: 'onBlur',
-    resolver: joiResolver(projectValidation),
+    resolver: joiResolver(
+      projectValidation(selectedClient?.relationshipStart, selectedClient?.relationshipEnd),
+    ),
   });
 
   const formChanged = Boolean(!isDirty && id);
+  const startDate = watch('startDate');
+  const clientId = watch('clientName');
+
+  const triggerDatesValidations = async () => {
+    await trigger('startDate');
+    await trigger('endDate');
+  };
+
+  useEffect(() => {
+    triggerDatesValidations();
+  }, [selectedClient]);
+
+  useEffect(() => {
+    setSelectedClient(clientList.find((client) => client._id === clientId));
+  }, [clientId]);
 
   const onSubmit = (data) => {
     const options = {
@@ -151,8 +172,9 @@ const ProjectForm = (props: ProjectFormProps) => {
                     testId={'clientName'}
                     label={'Cliente'}
                     name="clientName"
-                    options={clientList}
+                    options={clientDropdownList}
                     fullWidth
+                    disabled={id && true}
                   />
                 </div>
                 <div className={styles.elementContainer}>
@@ -173,6 +195,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       label={'Inicio'}
                       testId={'startDate'}
                       name="startDate"
+                      minDate={selectedClient?.relationshipStart}
                       control={control}
                     />
                     <EndDateCheckbox
@@ -187,6 +210,8 @@ const ProjectForm = (props: ProjectFormProps) => {
                       label={'Fin'}
                       testId={'endDate'}
                       name="endDate"
+                      minDate={startDate}
+                      maxDate={selectedClient?.relationshipEnd}
                       control={control}
                     />
                   </div>
