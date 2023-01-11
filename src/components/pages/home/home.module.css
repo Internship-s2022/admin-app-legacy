@@ -1,3 +1,6 @@
+/* stylelint-disable-next-line import-notation */
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
+
 .containerPage {
   display: flex;
   flex-direction: column;
@@ -81,9 +84,13 @@
 .filterDropdown {
   display: flex;
   align-items: center;
-  height: 28px;
-  font-size: 14px;
+  height: 28.5px;
+  padding: 2px 8px;
+  /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
+  font-family: Roboto;
+  font-size: 0.875rem;
   font-weight: 500;
+  line-height: 1.75;
   color: #373867;
   background-color: #ffffff;
   border: none;
