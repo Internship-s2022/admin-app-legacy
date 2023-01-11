@@ -59,7 +59,7 @@
 .inputs {
   display: flex;
   justify-content: flex-start;
-  width: calc(45% - -45px);
+  width: calc(45% - -40px);
   margin: 20px 0;
 }
 
@@ -81,7 +81,7 @@
   gap: 10px;
   justify-content: flex-end;
   width: 100%;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .tableContainer {
@@ -126,4 +126,8 @@
 
 .notes > div > div > div > fieldset {
   height: 151px;
+}
+
+.leftInput {
+  margin-bottom: 40px;
 }

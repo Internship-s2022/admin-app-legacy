@@ -248,7 +248,7 @@ const ClientForm = () => {
               </div>
             </div>
             <div className={styles.secondWrapperInputs}>
-              <div className={styles.inputs}>
+              <div className={`${styles.inputs} ${styles.leftInput}`}>
                 <TextInput
                   control={control}
                   testId={'clientContactInput'}
@@ -272,7 +272,7 @@ const ClientForm = () => {
                   fullWidth
                 />
               </div>
-              <div className={styles.inputs}>
+              <div className={`${styles.inputs} ${styles.leftInput}`}>
                 <TextInput
                   control={control}
                   testId={'localContactInput'}
