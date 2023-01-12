@@ -6,4 +6,5 @@ export interface ConfirmationMessageProps {
   testIdTitle?: string;
   testIdDescription?: string;
   color?: string;
+  userModal?: string;
 }

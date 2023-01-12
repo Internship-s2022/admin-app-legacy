@@ -11,7 +11,6 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import WarningIcon from 'src/components/shared/ui/icons/warning';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';

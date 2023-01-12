@@ -1,7 +1,6 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
   width: 552px;
   height: 156px;
   padding: 24px;
@@ -26,7 +25,6 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  margin: 0 5px;
 }
 
 .title {
@@ -42,4 +40,23 @@
   align-items: center;
   padding-top: 7px;
   margin-left: 10px;
+}
+
+.warningConfirmation {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  margin-bottom: 20px;
+}
+
+.warningConfirmation div {
+  padding-left: 4px;
+  margin-top: 3px;
+  font-size: 14px;
+  color: #3f3604;
+}
+
+.description > p {
+  line-height: 20px;
 }
