@@ -175,7 +175,7 @@ const ClientForm = () => {
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
-    // onClose();
+    onClose();
   };
 
   const onClose = () => {
