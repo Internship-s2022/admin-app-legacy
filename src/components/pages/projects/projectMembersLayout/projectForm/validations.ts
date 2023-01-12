@@ -1,10 +1,11 @@
+import { addYears } from 'date-fns';
 import Joi from 'joi';
 
 import { CriticalType, ProjectType } from './types';
 
 export const projectValidation = (startDate, endDate) => {
   const relationshipStart = startDate ? new Date(startDate) : new Date();
-  const relationshipEnd = endDate ? new Date(endDate) : new Date();
+  const relationshipEnd = endDate ? new Date(endDate) : addYears(new Date(), 77);
 
   return Joi.object({
     clientName: Joi.string()
@@ -39,18 +40,20 @@ export const projectValidation = (startDate, endDate) => {
 
     startDate: Joi.date()
       .min(relationshipStart)
+      .max(relationshipEnd)
       .messages({
         'date.min': 'Fecha invalida. Revisar fechas del Cliente',
+        'date.max': 'Fecha invalida. Revisar fechas del Cliente',
         'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
       })
       .allow(null),
 
     endDate: Joi.date()
-      .max(relationshipEnd)
       .min(Joi.ref('startDate'))
+      .max(relationshipEnd)
       .messages({
-        'date.max': 'Fecha invalida. Revisar fechas del Cliente',
         'date.min': 'Fecha de finalización debe ser posterior a la fecha de inicio',
+        'date.max': 'Fecha invalida. Revisar fechas del Cliente',
         'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
       })
       .allow(null),

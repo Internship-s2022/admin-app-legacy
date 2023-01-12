@@ -59,6 +59,10 @@ const ClientForm = () => {
     await trigger('name');
   };
 
+  const endDateValidationTrigger = async () => {
+    await trigger('relationshipEnd');
+  };
+
   useEffect(() => {
     if (!id && getValues('name')) {
       nameValidationTrigger();
@@ -121,6 +125,12 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation(clientNameValidation)),
   });
 
+  const startDate = watch('relationshipStart');
+
+  useEffect(() => {
+    endDateValidationTrigger();
+  }, [startDate]);
+
   const nameChangeHandler = useCallback(
     debounce(async (e) => {
       try {
@@ -136,7 +146,6 @@ const ClientForm = () => {
     }, 500),
     [],
   );
-  const startDate = watch('relationshipStart');
 
   const latestClientsList = selectedClient?.projects?.slice(-2);
 

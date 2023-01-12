@@ -84,14 +84,14 @@ const ProjectForm = (props: ProjectFormProps) => {
   const startDate = watch('startDate');
   const clientId = watch('clientName');
 
-  const triggerDatesValidations = async () => {
+  const datesValidationsTrigger = async () => {
     await trigger('startDate');
     await trigger('endDate');
   };
 
   useEffect(() => {
-    triggerDatesValidations();
-  }, [selectedClient]);
+    datesValidationsTrigger();
+  }, [selectedClient, startDate]);
 
   useEffect(() => {
     setSelectedClient(clientList.find((client) => client._id === clientId));
@@ -198,6 +198,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       testId={'startDate'}
                       name="startDate"
                       minDate={selectedClient?.relationshipStart}
+                      maxDate={selectedClient?.relationshipEnd}
                       control={control}
                     />
                     <EndDateCheckbox

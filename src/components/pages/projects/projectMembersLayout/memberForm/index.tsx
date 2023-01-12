@@ -11,7 +11,6 @@ import {
   TextInput,
 } from 'src/components/shared/ui';
 import { Variant } from 'src/components/shared/ui/buttons/button/types';
-import WarningIcon from 'src/components/shared/ui/icons/warning';
 import EndDateCheckbox from 'src/components/shared/ui/inputs/endDateCheckbox';
 import { getEmployees } from 'src/redux/employee/thunk';
 import { addMember, editMember } from 'src/redux/member/thunk';
@@ -53,7 +52,7 @@ const MemberForm = (props: MemberFormProps) => {
         dedication: 0,
         isActive: true,
       },
-      startDate: new Date(Date.now()),
+      startDate: new Date(startDate),
       active: true,
     },
     mode: 'onBlur',
@@ -267,6 +266,7 @@ const MemberForm = (props: MemberFormProps) => {
                   name="startDate"
                   control={control}
                   minDate={startDate}
+                  maxDate={endDate}
                 />
                 <EndDateCheckbox
                   endDateDisabled={endDateDisabled}
