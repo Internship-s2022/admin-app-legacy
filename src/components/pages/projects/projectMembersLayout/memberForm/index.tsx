@@ -52,7 +52,8 @@ const MemberForm = (props: MemberFormProps) => {
         dedication: 0,
         isActive: true,
       },
-      startDate: new Date(startDate),
+      startDate: null,
+      endDate: null,
       active: true,
     },
     mode: 'onBlur',
@@ -89,7 +90,7 @@ const MemberForm = (props: MemberFormProps) => {
   };
 
   useEffect(() => {
-    memberData &&
+    if (memberData) {
       reset({
         employee: {
           value: memberData.employee.value,
@@ -115,7 +116,8 @@ const MemberForm = (props: MemberFormProps) => {
         startDate: memberData.startDate,
         endDate: memberData.endDate,
       });
-    setEndDateDisabled(!memberData?.endDate);
+      setEndDateDisabled(!memberData?.endDate);
+    }
   }, [memberData]);
 
   const onSubmit = (data) => {
