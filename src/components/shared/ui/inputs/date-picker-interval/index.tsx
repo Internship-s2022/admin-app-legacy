@@ -9,7 +9,7 @@ import { DateIntervalProps } from './types';
 const DateIntervalPicker = <Form extends FieldValues>(
   props: DateIntervalProps<Form>,
 ): JSX.Element => {
-  const { setStart, setEnd, startDate, endDate, excludeStartDate } = props;
+  const { setStart, setEnd, startDate, endDate, excludeStartDate, minDate } = props;
   const {
     field: { value },
   } = useController(props);
@@ -31,6 +31,7 @@ const DateIntervalPicker = <Form extends FieldValues>(
       selectsDisabledDaysInRange
       inline
       excludeDates={excludeStartDate && [startDate]}
+      minDate={minDate}
     />
   );
 };
