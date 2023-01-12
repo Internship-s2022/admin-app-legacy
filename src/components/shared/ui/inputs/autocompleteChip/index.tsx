@@ -42,8 +42,10 @@ const AutocompleteChip = <Form extends FieldValues>(
             color="info"
           />
         )}
-        onChange={(_, values) => {
-          onChange(values);
+        onChange={(_, values, reason) => {
+          if (reason !== 'removeOption') {
+            onChange(values);
+          }
         }}
         data-testid={'autocompleteTestId'}
       />
