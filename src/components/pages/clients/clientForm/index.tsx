@@ -154,9 +154,12 @@ const ClientForm = () => {
     [],
   );
 
-  const latestClientsList = selectedClient?.projects?.slice(-2);
+  const latestClientsActiveProjects = selectedClient?.projects
+    ?.filter((item) => item.isActive)
+    .reverse()
+    .slice(-2);
 
-  const formattedProjects = latestClientsList?.map((item) => ({
+  const formattedProjects = latestClientsActiveProjects?.map((item) => ({
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
@@ -164,7 +167,7 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
-  const clientHasProjects = id && selectedClient?.projects?.length ? true : false;
+  const showProjectTable = Boolean(latestClientsActiveProjects?.length && id);
 
   const onSubmit = (data) => {
     const options = {
@@ -172,8 +175,8 @@ const ClientForm = () => {
       body: JSON.stringify({
         name:
           !id || !data.name
-            ? capitalizeFirstLetter(getValues('name'))
-            : capitalizeFirstLetter(data.name),
+            ? capitalizeFirstLetter(getValues('name')).trim()
+            : capitalizeFirstLetter(data.name).trim(),
         localContact: {
           name: data.localContact.name,
           email: data.localContact.email,
@@ -249,7 +252,6 @@ const ClientForm = () => {
                       testId={'startDatePickerTestId'}
                       name="relationshipStart"
                       control={control}
-                      disabled={clientHasProjects}
                     />
                     <EndDateCheckbox
                       changed={changed}
@@ -328,8 +330,9 @@ const ClientForm = () => {
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {id && (
+            {showProjectTable && (
               <div className={styles.tableContainer}>
+                <span>Últimos proyectos</span>
                 <table className={styles.table}>
                   <thead>
                     <tr>

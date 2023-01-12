@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
+  height: auto;
 }
 
 .leftContainer {
@@ -43,7 +44,7 @@
   display: flex;
   justify-content: flex-start;
   width: calc(45% - -40px);
-  height: 100px;
+  height: 80px;
   margin: 20px 0;
 }
 
@@ -70,7 +71,7 @@
   gap: 10px;
   justify-content: space-between;
   width: calc(100% - 70px);
-  height: 120px;
+  height: 100px;
   margin: 20px 0;
 }
 
@@ -92,17 +93,23 @@
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  width: 100%;
-  margin: 20px;
+  margin-bottom: 20px;
 }
 
 .tableContainer {
   margin-bottom: 20px;
 }
 
+.tableContainer span {
+  padding: 3%;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 .table {
   width: 100%;
   margin-block: 1%;
+  margin-top: 3%;
   text-align: center;
   border-collapse: collapse;
   background-color: #ffffff;

@@ -69,10 +69,11 @@ const clientValidation = (clientNameValidation) => {
         .required(),
     }),
 
-    relationshipStart: Joi.date().required().messages({
-      'date.base': 'Este campo es requerido. Formato dd/mm/aaaa',
-    }),
-    // .allow(null),
+    relationshipStart: Joi.date()
+      .messages({
+        'date.base': 'Formato dd/mm/aaaa',
+      })
+      .allow(null),
 
     relationshipEnd: Joi.date()
       .min(Joi.ref('relationshipStart'))
