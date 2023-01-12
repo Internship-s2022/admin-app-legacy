@@ -50,7 +50,7 @@ const AutocompleteChip = <Form extends FieldValues>(
         data-testid={'autocompleteTestId'}
       />
       <div className={styles.chipsContainer}>
-        {value?.reverse().map((option) => (
+        {[...value].reverse().map((option) => (
           <Chip
             key={option}
             variant="outlined"
