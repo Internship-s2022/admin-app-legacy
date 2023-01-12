@@ -65,7 +65,7 @@ const ClientForm = () => {
   };
 
   useEffect(() => {
-    if (!id && getValues('name')) {
+    if (getValues('name')) {
       nameValidationTrigger();
     }
   }, [clientNameValidation]);
@@ -133,22 +133,21 @@ const ClientForm = () => {
   }, [startDate]);
 
   const nameChangeHandler = useCallback(
-    debounce(async (e) => {
-      let inputValue;
+    debounce(async (e, client) => {
+      const inputValue = e.target.value.trim();
+      if (id && inputValue === client.name) {
+        return;
+      }
       try {
-        inputValue = capitalizeFirstLetter(e.target.value.trim());
         const response = await getByFilterResourceRequest('/clients/clientExists', {
           name: inputValue,
         });
+
         if (!response.error) {
           setClientNameValidation(false);
         }
       } catch (error: any) {
-        if (id && inputValue === selectedClient.name) {
-          setClientNameValidation(false);
-        } else {
-          setClientNameValidation(true);
-        }
+        setClientNameValidation(true);
       }
     }, 500),
     [],
@@ -169,7 +168,7 @@ const ClientForm = () => {
 
   const showProjectTable = Boolean(latestClientsActiveProjects?.length && id);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
@@ -241,7 +240,7 @@ const ClientForm = () => {
                   type={'text'}
                   variant="outlined"
                   fullWidth
-                  handleOnChange={nameChangeHandler}
+                  handleOnChange={(e) => nameChangeHandler(e, selectedClient)}
                 />
               </div>
               <div className={styles.dateContainer}>
