@@ -4,7 +4,7 @@ import Joi from 'joi';
 import { Role } from './types';
 
 export const memberValidations = (startDate, endDate) => {
-  endDate = endDate ?? addYears(new Date(), 77);
+  const projectEndDate = endDate ?? addYears(new Date(), 77);
   return Joi.object({
     employee: Joi.object({
       value: Joi.string(),
@@ -71,7 +71,7 @@ export const memberValidations = (startDate, endDate) => {
 
     startDate: Joi.date()
       .min(new Date(startDate))
-      .max(new Date(endDate))
+      .max(new Date(projectEndDate))
       .messages({
         'date.min': 'Fecha invalida. Revisar fechas del Proyecto',
         'date.max': 'Fecha invalida. Revisar fechas del Proyecto',
@@ -81,7 +81,7 @@ export const memberValidations = (startDate, endDate) => {
 
     endDate: Joi.date()
       .min(Joi.ref('startDate'))
-      .max(new Date(endDate))
+      .max(new Date(projectEndDate))
       .messages({
         'date.min': 'Fecha de finalización debe ser posterior a la fecha de inicio',
         'date.max': 'Fecha invalida. Revisar fechas del Proyecto',
