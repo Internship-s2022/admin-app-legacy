@@ -44,6 +44,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
   const [selectedClient, setSelectedClient] = useState({} as Client);
+  const [changed, setChanged] = useState(false);
 
   const clientDropdownList = clientList?.reduce((acc, item) => {
     if (item.isActive) {
@@ -80,7 +81,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     ),
   });
 
-  const formChanged = Boolean(!isDirty && id);
   const startDate = watch('startDate');
   const clientId = watch('clientName');
 
@@ -135,6 +135,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     });
     setEndDateDisabled(!selectedProject.endDate);
   }, [selectedProject]);
+
+  const formChanged = Boolean(!isDirty && id && !changed);
 
   return (
     <>
@@ -199,6 +201,8 @@ const ProjectForm = (props: ProjectFormProps) => {
                       control={control}
                     />
                     <EndDateCheckbox
+                      changed={changed}
+                      setChanged={() => setChanged(!changed)}
                       endDateDisabled={endDateDisabled}
                       handleEndDateDisable={handleEndDateDisable}
                       resource={Resources.Proyectos}

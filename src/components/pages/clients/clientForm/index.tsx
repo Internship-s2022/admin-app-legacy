@@ -52,6 +52,7 @@ const ClientForm = () => {
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [changed, setChanged] = useState(false);
   const [clientNameValidation, setClientNameValidation] = useState(false);
 
   const nameValidationTrigger = async () => {
@@ -137,8 +138,6 @@ const ClientForm = () => {
   );
   const startDate = watch('relationshipStart');
 
-  const formChanged = Boolean(!isDirty && id);
-
   const latestClientsList = selectedClient?.projects?.slice(-2);
 
   const formattedProjects = latestClientsList?.map((item) => ({
@@ -191,6 +190,8 @@ const ClientForm = () => {
     setEndDateDisabled(data);
   };
 
+  const formChanged = Boolean(!isDirty && id && !changed);
+
   return (
     <div className={styles.container}>
       <div className={styles.welcomeMessage}>
@@ -229,6 +230,8 @@ const ClientForm = () => {
                       control={control}
                     />
                     <EndDateCheckbox
+                      changed={changed}
+                      setChanged={() => setChanged(!changed)}
                       endDateDisabled={endDateDisabled}
                       handleEndDateDisable={handleEndDateDisable}
                       resource={Resources.Clientes}

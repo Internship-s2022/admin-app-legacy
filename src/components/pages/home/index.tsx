@@ -22,11 +22,15 @@ const filterData = (list, filters) => {
 
   if (filters.newest) {
     filterDataList = list.sort((a, b) => {
-      return Date.parse(b.date) - Date.parse(a.date);
+      const dateA = new Date(a.limitDate).getTime();
+      const dateB = new Date(b.limitDate).getTime();
+      return dateA > dateB ? 1 : -1;
     });
   } else {
     filterDataList = list.sort((a, b) => {
-      return Date.parse(a.date) - Date.parse(b.date);
+      const dateA = new Date(a.limitDate).getTime();
+      const dateB = new Date(b.limitDate).getTime();
+      return dateB > dateA ? 1 : -1;
     });
   }
 
