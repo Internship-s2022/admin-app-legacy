@@ -97,7 +97,7 @@ const ProjectForm = (props: ProjectFormProps) => {
     setSelectedClient(clientList.find((client) => client._id === clientId));
   }, [clientId]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
@@ -112,10 +112,10 @@ const ProjectForm = (props: ProjectFormProps) => {
       }),
     };
     if (id) {
-      dispatch(editProject(options));
+      await dispatch(editProject(options));
       dispatch(setSnackbarOperation('editado'));
     } else {
-      dispatch(createProject(options));
+      await dispatch(createProject(options));
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());

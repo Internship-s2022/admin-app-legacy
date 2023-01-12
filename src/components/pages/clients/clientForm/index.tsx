@@ -149,7 +149,7 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
@@ -169,10 +169,10 @@ const ClientForm = () => {
       }),
     };
     if (id) {
-      dispatch(editClient(options));
+      await dispatch(editClient(options));
       dispatch(setSnackbarOperation('editado'));
     } else {
-      dispatch(addClient(options));
+      await dispatch(addClient(options));
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());

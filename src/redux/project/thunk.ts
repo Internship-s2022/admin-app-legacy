@@ -97,10 +97,10 @@ export const createProject: AppThunk = (data) => {
     try {
       const response = await addResourceRequest(ApiRoutes.PROJECTS, data.body);
       if (!response.error) {
-        dispatch(createProjectSuccess(response.data));
+        return dispatch(createProjectSuccess(response.data));
       }
     } catch (error) {
-      dispatch(createProjectError({ message: error.message, errorType: error.errorType }));
+      return dispatch(createProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -115,10 +115,10 @@ export const editProject: AppThunk = (options: { id: string; body: Project }) =>
     try {
       const response = await editResourceRequest(ApiRoutes.PROJECTS, options);
       if (!response.error) {
-        dispatch(editProjectSuccess(response.data, options.id));
+        return dispatch(editProjectSuccess(response.data, options.id));
       }
     } catch (error) {
-      dispatch(editProjectError({ message: error.message, errorType: error.errorType }));
+      return dispatch(editProjectError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
