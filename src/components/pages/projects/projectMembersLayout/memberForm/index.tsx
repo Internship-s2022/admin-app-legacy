@@ -234,6 +234,7 @@ const MemberForm = (props: MemberFormProps) => {
                     label={'Ayudante'}
                     name="helper.helperReference"
                     options={filterDropdownList()}
+                    disable={watch('employee').value === ''}
                   />
                 </div>
                 <div className={styles.bottomContainer}>
