@@ -12,7 +12,7 @@ import { clearSelectedClient } from 'src/redux/client/actions';
 import { getClients } from 'src/redux/client/thunks';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { ErrorType } from 'src/redux/types';
-import { closeMessageAlert, setSnackbarOperation } from 'src/redux/ui/actions';
+import { closeMessageAlert } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
 import { formattedTableData } from 'src/utils/formatters';
 
