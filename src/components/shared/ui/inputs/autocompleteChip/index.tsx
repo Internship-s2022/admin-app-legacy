@@ -13,7 +13,7 @@ const AutocompleteChip = <Form extends FieldValues>(
 ): JSX.Element => {
   const { control, name, skills } = props;
   const {
-    field: { value, onChange },
+    field: { value = [], onChange },
     fieldState: { error },
   } = useController({ name, control });
 
@@ -43,6 +43,8 @@ const AutocompleteChip = <Form extends FieldValues>(
           />
         )}
         onChange={(_, values, reason) => {
+          if (values.some((value) => !value.trim())) return;
+          if (values.some((value) => value.length >= 50)) return;
           if (reason !== 'removeOption') {
             onChange(values);
           }
