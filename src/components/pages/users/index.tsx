@@ -15,6 +15,7 @@ import DeleteIcon from 'src/components/shared/ui/icons/tableIcons/deleteIcon';
 import EditIcon from 'src/components/shared/ui/icons/tableIcons/editIcon';
 import SearchBar from 'src/components/shared/ui/searchbar';
 import { AccessRoleType, formattedRoleType } from 'src/constants';
+import { getMembers } from 'src/redux/member/thunk';
 import { RootState, useAppDispatch, useAppSelector } from 'src/redux/store';
 import { ErrorType } from 'src/redux/types';
 import {
@@ -73,6 +74,7 @@ const Users = () => {
   const superAdmin = useAppSelector((state: RootState) => state.auth.authUser);
   const userList = useAppSelector((state: RootState) => state.user.list);
   const userError = useAppSelector((state: RootState) => state.user.error);
+  const memberList = useAppSelector((state: RootState) => state.member.list);
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const confirmationTitle = filters.isActive ? 'Desactivar usuario' : 'Activar usuario';
   const confirmationDescription = filters.isActive
@@ -105,7 +107,10 @@ const Users = () => {
     return filteredData;
   }, [userList, filters.isActive, filters.role, filters.search]);
 
+  const userWithMember = memberList.find((member) => member.employee?.user?._id === row._id);
+
   useEffect(() => {
+    dispatch(getMembers());
     dispatch(getUsers());
     return () => {
       dispatch(closeMessageAlert());
@@ -341,6 +346,7 @@ const Users = () => {
         onClose={() => dispatch(closeConfirmationModal())}
       >
         <ConfirmationMessage
+          userModal={userWithMember?._id}
           description={confirmationDescription}
           title={confirmationTitle}
           handleConfirm={() => (filters.isActive ? handleDelete(row) : handleActivate(options))}
