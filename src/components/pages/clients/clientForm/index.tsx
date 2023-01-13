@@ -135,7 +135,7 @@ const ClientForm = () => {
   const nameChangeHandler = useCallback(
     debounce(async (e, client) => {
       const inputValue = e.target.value.trim();
-      if (id && inputValue === client.name) {
+      if (id && inputValue.toLowerCase() === client.name.toLowerCase()) {
         return;
       }
       try {
