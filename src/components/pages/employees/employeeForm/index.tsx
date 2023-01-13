@@ -57,7 +57,10 @@ const EditEmployee = () => {
   const showAlert = useAppSelector((state: RootState) => state.ui.showSuccessErrorAlert);
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
 
-  const latestProjects = selectedEmployee?.projectHistory?.slice(-2);
+  const latestProjects = selectedEmployee?.projectHistory
+    ?.filter((item) => item.project?.isActive)
+    .reverse()
+    .slice(-2);
 
   const formattedProjects = latestProjects?.map((item: Projects) => ({
     id: item?.project?._id || '-',
@@ -172,6 +175,8 @@ const EditEmployee = () => {
     dispatch(closeConfirmationModal());
     navigate(`${UiRoutes.ADMIN}${UiRoutes.EMPLOYEES}`);
   };
+
+  const showProjectTable = Boolean(latestProjects?.length);
 
   return (
     <div className={styles.container}>
@@ -303,7 +308,7 @@ const EditEmployee = () => {
             </div>
           </div>
           <div className={styles.rightSide}>
-            <TableProject projectList={formattedProjects} />
+            {showProjectTable && <TableProject projectList={formattedProjects} />}
             <div>
               <div className={styles.rightInputs}>
                 <TextInput

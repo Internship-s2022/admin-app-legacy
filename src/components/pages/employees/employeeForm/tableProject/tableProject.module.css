@@ -1,5 +1,11 @@
-.tableContainer {
+/* .tableContainer {
   margin: 20px 0;
+} */
+
+.tableContainer span {
+  padding: 3%;
+  font-size: 16px;
+  font-weight: 500;
 }
 
 .table {

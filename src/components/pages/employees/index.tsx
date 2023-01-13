@@ -67,13 +67,14 @@ const Employees = () => {
 
   const listEmployee = useMemo(() => {
     const mappedEmployees = employeeList.reduce((acc, item) => {
-      const activeProjects = item?.projectHistory?.filter(
-        (project: Projects) => project?.project.isActive,
-      );
       acc.push({
         _id: item?._id,
         name: `${item?.user?.firstName} ${item?.user?.lastName}`,
-        projects: formattedTableData<Projects>(activeProjects, 'project', 'projectName'),
+        projects: formattedTableData<Projects>(
+          item?.projectHistory.filter((item) => item.project.isActive),
+          'project',
+          'projectName',
+        ),
         email: item?.user?.email,
         active: item?.user?.isActive,
         careerPlan: item?.careerPlan,
