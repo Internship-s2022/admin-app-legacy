@@ -25,10 +25,10 @@ export const userValidation = (userEmailValidation) => {
         }
       })
       .messages({
-        'string.pattern.base': 'El formato de email no es válido',
         'string.empty': 'Este campo es requerido',
         'string.min': 'El email debe contener al menos 3 letras',
         'any.invalid': 'Email ya registrado',
+        'string.pattern.base': 'El formato debe ser nombre.apellido@radiumrocket.com',
       })
       .required(),
 
