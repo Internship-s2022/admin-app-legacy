@@ -6,5 +6,4 @@ export type DateIntervalProps<Form extends FieldValues> = {
   startDate: Date;
   endDate: Date;
   excludeStartDate?: boolean;
-  minDate: Date;
 } & UseControllerProps<Form>;

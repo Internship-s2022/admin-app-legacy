@@ -131,7 +131,6 @@ const AbsencesModal = (props: AbsencesModalProps) => {
             startDate={startDate}
             endDate={endDate}
             excludeStartDate={excludeStartDate}
-            minDate={new Date()}
           />
         </div>
         {error && (
