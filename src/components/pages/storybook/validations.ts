@@ -16,10 +16,10 @@ export const storybookValidation = Joi.object({
     }),
 
   email: Joi.string()
-    .regex(/^[a-zA-Z.]*@radiumrocket.com/)
+    .regex(/^[a-zA-Z]+\.+[a-zA-Z]+@(radiumrocket.com)$/)
     .messages({
-      'string.pattern.base': 'Tienes que utilizar un mail valido',
       'string.empty': 'Debes completar este campo para crear un usuario',
+      'string.pattern.base': 'El formato debe ser nombre.apellido@radiumrocket.com',
     }),
 
   firstName: Joi.string()

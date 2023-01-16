@@ -39,7 +39,7 @@ const clientValidation = (clientNameValidation) => {
         .messages({
           'string.empty': 'Este campo es requerido',
           'string.min': 'El email debe contener al menos 3 letras',
-          'string.pattern.base': 'Formato de email no es válido',
+          'string.pattern.base': 'El formato debe ser nombre.apellido@radiumrocket.com',
         })
         .required(),
     }),
