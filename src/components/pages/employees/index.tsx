@@ -70,7 +70,11 @@ const Employees = () => {
       acc.push({
         _id: item?._id,
         name: `${item?.user?.firstName} ${item?.user?.lastName}`,
-        projects: formattedTableData<Projects>(item?.projectHistory, 'project', 'projectName'),
+        projects: formattedTableData<Projects>(
+          item?.projectHistory.filter((item) => item.project.isActive),
+          'project',
+          'projectName',
+        ),
         email: item?.user?.email,
         active: item?.user?.isActive,
         careerPlan: item?.careerPlan,

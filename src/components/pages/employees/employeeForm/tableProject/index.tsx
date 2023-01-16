@@ -11,6 +11,7 @@ const TableProject = (props: TableProjectProps) => {
   const { projectList } = props;
   return (
     <div className={styles.tableContainer}>
+      <span>Últimos proyectos</span>
       <table className={styles.table}>
         <thead>
           <tr>

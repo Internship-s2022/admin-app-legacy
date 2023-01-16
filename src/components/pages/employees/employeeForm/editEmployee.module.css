@@ -21,6 +21,10 @@
   width: 35%;
 }
 
+.rightSide > div {
+  margin-top: 20px;
+}
+
 .bellIcon {
   cursor: pointer;
 }
