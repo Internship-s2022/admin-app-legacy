@@ -22,11 +22,15 @@ const filterData = (list, filters) => {
 
   if (filters.newest) {
     filterDataList = list.sort((a, b) => {
-      return Date.parse(b.date) - Date.parse(a.date);
+      const dateA = new Date(a.limitDate).getTime();
+      const dateB = new Date(b.limitDate).getTime();
+      return dateA > dateB ? 1 : -1;
     });
   } else {
     filterDataList = list.sort((a, b) => {
-      return Date.parse(a.date) - Date.parse(b.date);
+      const dateA = new Date(a.limitDate).getTime();
+      const dateB = new Date(b.limitDate).getTime();
+      return dateB > dateA ? 1 : -1;
     });
   }
 
@@ -83,13 +87,14 @@ const Home = () => {
   const listNotifications = useMemo(() => {
     const mappedNotifications = notifications.reduce((acc, item) => {
       if (item.isActive) {
+        const filteredMembers = item.project?.members?.filter((member) => member.active);
         acc.push({
           id: item?._id,
           resource: item.notificationType,
           projectId: item.project?._id,
           projectName: item.project?.projectName || '',
           projectCriticality: item.project?.isCritic || '',
-          members: item.project?.members || [],
+          members: filteredMembers || [],
           employeeName: item.employee?.user?.firstName + ' ' + item.employee?.user?.lastName || '',
           employeeId: item.employee?._id,
           clientName: item.client?.name || '',

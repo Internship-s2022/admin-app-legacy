@@ -34,6 +34,7 @@ import {
   setSnackbarOperation,
 } from 'src/redux/ui/actions';
 import { AppDispatch, Resources } from 'src/types';
+import { capitalizeFirstLetter } from 'src/utils/formatters';
 
 import { FormValues } from '../types';
 import { clientsProjectsHeaders } from './constants';
@@ -52,14 +53,19 @@ const ClientForm = () => {
   const notificationError = useAppSelector((state: RootState) => state.notification.error);
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
+  const [changed, setChanged] = useState(false);
   const [clientNameValidation, setClientNameValidation] = useState(false);
 
   const nameValidationTrigger = async () => {
     await trigger('name');
   };
 
+  const endDateValidationTrigger = async () => {
+    await trigger('relationshipEnd');
+  };
+
   useEffect(() => {
-    if (!id && getValues('name')) {
+    if (getValues('name')) {
       nameValidationTrigger();
     }
   }, [clientNameValidation]);
@@ -120,12 +126,23 @@ const ClientForm = () => {
     resolver: joiResolver(validations.clientValidation(clientNameValidation)),
   });
 
+  const startDate = watch('relationshipStart');
+
+  useEffect(() => {
+    endDateValidationTrigger();
+  }, [startDate]);
+
   const nameChangeHandler = useCallback(
-    debounce(async (e) => {
+    debounce(async (e, client) => {
+      const inputValue = e.target.value.trim();
+      if (id && inputValue.toLowerCase() === client.name.toLowerCase()) {
+        return;
+      }
       try {
         const response = await getByFilterResourceRequest('/clients/clientExists', {
-          name: e.target.value,
+          name: inputValue,
         });
+
         if (!response.error) {
           setClientNameValidation(false);
         }
@@ -135,13 +152,13 @@ const ClientForm = () => {
     }, 500),
     [],
   );
-  const startDate = watch('relationshipStart');
 
-  const formChanged = Boolean(!isDirty && id);
+  const latestClientsActiveProjects = selectedClient?.projects
+    ?.filter((item) => item.isActive)
+    .reverse()
+    .slice(-2);
 
-  const latestClientsList = selectedClient?.projects?.slice(-2);
-
-  const formattedProjects = latestClientsList?.map((item) => ({
+  const formattedProjects = latestClientsActiveProjects?.map((item) => ({
     id: item?._id ?? '-',
     name: item?.projectName ?? '-',
     isCritic: item?.isCritic ?? '-',
@@ -149,11 +166,16 @@ const ClientForm = () => {
     endDate: item?.endDate ? format(new Date(item?.endDate), 'yyy/MM/dd') : '-',
   }));
 
-  const onSubmit = (data) => {
+  const showProjectTable = Boolean(latestClientsActiveProjects?.length && id);
+
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
-        name: !id || !data.name ? getValues('name') : data.name,
+        name:
+          !id || !data.name
+            ? capitalizeFirstLetter(getValues('name')).trim()
+            : capitalizeFirstLetter(data.name).trim(),
         localContact: {
           name: data.localContact.name,
           email: data.localContact.email,
@@ -169,10 +191,10 @@ const ClientForm = () => {
       }),
     };
     if (id) {
-      dispatch(editClient(options));
+      await dispatch(editClient(options));
       dispatch(setSnackbarOperation('editado'));
     } else {
-      dispatch(addClient(options));
+      await dispatch(addClient(options));
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
@@ -190,6 +212,8 @@ const ClientForm = () => {
   const handleEndDateDisable = (data) => {
     setEndDateDisabled(data);
   };
+
+  const formChanged = Boolean(!isDirty && id && !changed);
 
   return (
     <div className={styles.container}>
@@ -216,7 +240,7 @@ const ClientForm = () => {
                   type={'text'}
                   variant="outlined"
                   fullWidth
-                  handleOnChange={nameChangeHandler}
+                  handleOnChange={(e) => nameChangeHandler(e, selectedClient)}
                 />
               </div>
               <div className={styles.dateContainer}>
@@ -229,6 +253,8 @@ const ClientForm = () => {
                       control={control}
                     />
                     <EndDateCheckbox
+                      changed={changed}
+                      setChanged={() => setChanged(!changed)}
                       endDateDisabled={endDateDisabled}
                       handleEndDateDisable={handleEndDateDisable}
                       resource={Resources.Clientes}
@@ -248,59 +274,64 @@ const ClientForm = () => {
               </div>
             </div>
             <div className={styles.secondWrapperInputs}>
-              <div className={`${styles.inputs} ${styles.leftInput}`}>
-                <TextInput
-                  control={control}
-                  testId={'clientContactInput'}
-                  label="Contacto cliente"
-                  placeholder="Nombre y apellido del contacto del cliente"
-                  name="clientContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
+              <div>
+                <div className={`${styles.inputs} ${styles.leftInput}`}>
+                  <TextInput
+                    control={control}
+                    testId={'clientContactInput'}
+                    label="Contacto cliente"
+                    placeholder="Nombre y apellido del contacto del cliente"
+                    name="clientContact.name"
+                    type={'text'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.inputs}>
+                  <TextInput
+                    control={control}
+                    testId={'clientEmailInput'}
+                    label="Email cliente"
+                    name="clientContact.email"
+                    type={'text'}
+                    variant="outlined"
+                    placeholder="Email del contacto del cliente"
+                    fullWidth
+                  />
+                </div>
               </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'clientEmailInput'}
-                  label="Email cliente"
-                  name="clientContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email del contacto del cliente"
-                  fullWidth
-                />
-              </div>
-              <div className={`${styles.inputs} ${styles.leftInput}`}>
-                <TextInput
-                  control={control}
-                  testId={'localContactInput'}
-                  label="Contacto Radium Rocket"
-                  placeholder="Nombre y apellido del contacto de Radium Rocket"
-                  name="localContact.name"
-                  type={'text'}
-                  variant="outlined"
-                  fullWidth
-                />
-              </div>
-              <div className={styles.inputs}>
-                <TextInput
-                  control={control}
-                  testId={'localEmailInput'}
-                  label="Email Radium Rocket"
-                  name="localContact.email"
-                  type={'text'}
-                  variant="outlined"
-                  placeholder="Email del contacto de Radium Rocket"
-                  fullWidth
-                />
+              <div>
+                <div className={`${styles.inputs} ${styles.leftInput}`}>
+                  <TextInput
+                    control={control}
+                    testId={'localContactInput'}
+                    label="Contacto Radium Rocket"
+                    placeholder="Nombre y apellido del contacto de Radium Rocket"
+                    name="localContact.name"
+                    type={'text'}
+                    variant="outlined"
+                    fullWidth
+                  />
+                </div>
+                <div className={styles.inputs}>
+                  <TextInput
+                    control={control}
+                    testId={'localEmailInput'}
+                    label="Email Radium Rocket"
+                    name="localContact.email"
+                    type={'text'}
+                    variant="outlined"
+                    placeholder="Email del contacto de Radium Rocket"
+                    fullWidth
+                  />
+                </div>
               </div>
             </div>
           </div>
           <div className={styles.rightContainer}>
-            {id && (
+            {showProjectTable && (
               <div className={styles.tableContainer}>
+                <span>Últimos proyectos</span>
                 <table className={styles.table}>
                   <thead>
                     <tr>

@@ -6,10 +6,12 @@ import styles from './EndDateCheckbox.module.css';
 import { EndDateCheckboxProps } from './types';
 
 const EndDateCheckbox = (props: EndDateCheckboxProps) => {
-  const { handleEndDateDisable, endDateDisabled, resource } = props;
+  const { handleEndDateDisable, endDateDisabled, resource, setChanged, changed } = props;
+
   return (
     <div className={styles.container}>
       <input
+        onChange={() => setChanged(!changed)}
         type="checkbox"
         checked={endDateDisabled}
         onClick={() => handleEndDateDisable(!endDateDisabled)}

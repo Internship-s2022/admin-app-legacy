@@ -88,10 +88,10 @@ export const addClient: AppThunk = (data) => {
     try {
       const response = await addResourceRequest(ApiRoutes.CLIENT, data.body);
       if (!response.error) {
-        dispatch(addClientSuccess(response.data));
+        return dispatch(addClientSuccess(response.data));
       }
     } catch (error) {
-      dispatch(addClientError({ message: error.message, errorType: error.errorType }));
+      return dispatch(addClientError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());
@@ -106,10 +106,10 @@ export const editClient: AppThunk = (options: { body: Client; id: string }) => {
     try {
       const response = await editResourceRequest(ApiRoutes.CLIENT, options);
       if (!response.error) {
-        dispatch(editClientSuccess(response.data, options.id));
+        return dispatch(editClientSuccess(response.data, options.id));
       }
     } catch (error: any) {
-      dispatch(editClientError({ message: error.message, errorType: error.errorType }));
+      return dispatch(editClientError({ message: error.message, errorType: error.errorType }));
     } finally {
       dispatch(setLoaderOff());
       dispatch(setOpenMessageAlert());

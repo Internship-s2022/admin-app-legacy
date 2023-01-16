@@ -13,7 +13,7 @@ const AutocompleteChip = <Form extends FieldValues>(
 ): JSX.Element => {
   const { control, name, skills } = props;
   const {
-    field: { value, onChange },
+    field: { value = [], onChange },
     fieldState: { error },
   } = useController({ name, control });
 
@@ -42,13 +42,17 @@ const AutocompleteChip = <Form extends FieldValues>(
             color="info"
           />
         )}
-        onChange={(_, values) => {
-          onChange(values);
+        onChange={(_, values, reason) => {
+          if (values.some((value) => !value.trim())) return;
+          if (values.some((value) => value.length >= 50)) return;
+          if (reason !== 'removeOption') {
+            onChange(values);
+          }
         }}
         data-testid={'autocompleteTestId'}
       />
       <div className={styles.chipsContainer}>
-        {value?.reverse().map((option) => (
+        {[...value].reverse().map((option) => (
           <Chip
             key={option}
             variant="outlined"

@@ -103,6 +103,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
               type={'text'}
               variant="outlined"
               error
+              label={'Fecha de inicio'}
               disabled
               fullWidth
             />
@@ -116,6 +117,7 @@ const AbsencesModal = (props: AbsencesModalProps) => {
               variant="outlined"
               error
               disabled
+              label={'Fecha de reintegro'}
               fullWidth
             />
           </div>

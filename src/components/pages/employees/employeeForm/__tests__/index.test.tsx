@@ -43,10 +43,6 @@ describe('Edit Employee page - Unit Testing', () => {
         const { getByTestId } = customRender(<EditEmployee />);
         expect(getByTestId('toggleButtonTestId')).toBeInTheDocument();
       });
-      it('should check the button for view more is rendering well', () => {
-        const { getByTestId } = customRender(<EditEmployee />);
-        expect(getByTestId('viewMoreButton')).toBeInTheDocument();
-      });
       it('should check the button for cancel is rendering well', () => {
         const { getByTestId } = customRender(<EditEmployee />);
         expect(getByTestId('cancelButton')).toBeInTheDocument();

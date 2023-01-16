@@ -20,6 +20,7 @@
   display: flex;
   justify-content: space-around;
   width: 100%;
+  height: auto;
 }
 
 .leftContainer {
@@ -39,27 +40,11 @@
   margin: 20px;
 }
 
-.dateContainer {
-  display: flex;
-  width: 50%;
-}
-
-.datePickers {
-  display: flex;
-  gap: 10px;
-  justify-content: space-between;
-  width: calc(100% - 70px);
-  margin: 20px 0;
-}
-
-.rightContainer fieldset {
-  height: 178px;
-}
-
 .inputs {
   display: flex;
   justify-content: flex-start;
   width: calc(45% - -40px);
+  height: 80px;
   margin: 20px 0;
 }
 
@@ -67,30 +52,64 @@
   width: 85%;
 }
 
-.leftColumns {
+.dateContainer {
   display: flex;
+  width: 50%;
 }
 
 .secondWrapperInputs {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+}
+
+.secondWrapperInputs > div {
+  display: flex;
+}
+
+.datePickers {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: calc(100% - 70px);
+  height: 100px;
+  margin: 20px 0;
+}
+
+.datePickers > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rightContainer fieldset {
+  height: 178px;
+}
+
+.leftColumns {
+  display: flex;
 }
 
 .buttonContainer {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  width: 100%;
-  margin: 20px;
+  margin-bottom: 20px;
 }
 
 .tableContainer {
   margin-bottom: 20px;
 }
 
+.tableContainer span {
+  padding: 3%;
+  font-size: 16px;
+  font-weight: 500;
+}
+
 .table {
   width: 100%;
   margin-block: 1%;
+  margin-top: 3%;
   text-align: center;
   border-collapse: collapse;
   background-color: #ffffff;

@@ -9,6 +9,7 @@ export interface EmployeeData {
 interface Project {
   _id: string;
   projectName: string;
+  isActive: boolean;
 }
 export interface Projects {
   project: Project;

@@ -44,6 +44,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
   const [endDateDisabled, setEndDateDisabled] = useState(false);
   const [selectedClient, setSelectedClient] = useState({} as Client);
+  const [changed, setChanged] = useState(false);
 
   const clientDropdownList = clientList?.reduce((acc, item) => {
     if (item.isActive) {
@@ -80,24 +81,23 @@ const ProjectForm = (props: ProjectFormProps) => {
     ),
   });
 
-  const formChanged = Boolean(!isDirty && id);
   const startDate = watch('startDate');
   const clientId = watch('clientName');
 
-  const triggerDatesValidations = async () => {
+  const datesValidationsTrigger = async () => {
     await trigger('startDate');
     await trigger('endDate');
   };
 
   useEffect(() => {
-    triggerDatesValidations();
-  }, [selectedClient]);
+    datesValidationsTrigger();
+  }, [selectedClient, startDate]);
 
   useEffect(() => {
     setSelectedClient(clientList.find((client) => client._id === clientId));
   }, [clientId]);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const options = {
       id: id,
       body: JSON.stringify({
@@ -112,10 +112,10 @@ const ProjectForm = (props: ProjectFormProps) => {
       }),
     };
     if (id) {
-      dispatch(editProject(options));
+      await dispatch(editProject(options));
       dispatch(setSnackbarOperation('editado'));
     } else {
-      dispatch(createProject(options));
+      await dispatch(createProject(options));
       dispatch(setSnackbarOperation('agregado'));
     }
     dispatch(closeConfirmationModal());
@@ -135,6 +135,8 @@ const ProjectForm = (props: ProjectFormProps) => {
     });
     setEndDateDisabled(!selectedProject.endDate);
   }, [selectedProject]);
+
+  const formChanged = Boolean(!isDirty && id && !changed);
 
   return (
     <>
@@ -196,9 +198,12 @@ const ProjectForm = (props: ProjectFormProps) => {
                       testId={'startDate'}
                       name="startDate"
                       minDate={selectedClient?.relationshipStart}
+                      maxDate={selectedClient?.relationshipEnd}
                       control={control}
                     />
                     <EndDateCheckbox
+                      changed={changed}
+                      setChanged={() => setChanged(!changed)}
                       endDateDisabled={endDateDisabled}
                       handleEndDateDisable={handleEndDateDisable}
                       resource={Resources.Proyectos}
