@@ -1,0 +1,152 @@
+.container {
+  padding: 0 52px;
+}
+
+.welcomeMessage {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 21px;
+  margin-top: 5%;
+  font-size: 30px;
+  font-weight: 500;
+  border-bottom: 1px solid #e2e2e2;
+}
+
+.bellIcon {
+  cursor: pointer;
+}
+
+.formContainer form {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: auto;
+}
+
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+}
+
+.rightContainer {
+  width: 30%;
+  padding: 0 10px;
+  margin: 20px 0;
+}
+
+.rightContainer input {
+  margin: 20px;
+}
+
+.inputs {
+  display: flex;
+  justify-content: flex-start;
+  width: calc(45% - -40px);
+  height: 80px;
+  margin: 20px 0;
+}
+
+.inputs > div {
+  width: 85%;
+}
+
+.dateContainer {
+  display: flex;
+  width: 50%;
+}
+
+.secondWrapperInputs {
+  display: flex;
+  flex-direction: column;
+}
+
+.secondWrapperInputs > div {
+  display: flex;
+}
+
+.datePickers {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  width: calc(100% - 70px);
+  height: 100px;
+  margin: 20px 0;
+}
+
+.datePickers > div:first-child {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.rightContainer fieldset {
+  height: 178px;
+}
+
+.leftColumns {
+  display: flex;
+}
+
+.buttonContainer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.tableContainer {
+  margin-bottom: 20px;
+}
+
+.tableContainer span {
+  padding: 3%;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.table {
+  width: 100%;
+  margin-block: 1%;
+  margin-top: 3%;
+  text-align: center;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.header {
+  padding: 13px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #373867;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.rows {
+  padding: 13px;
+  font-size: 12px;
+  color: #373867;
+  border: none;
+  border-bottom: #d4d4df 2px solid;
+}
+
+.viewMore {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  margin-bottom: 7px;
+}
+
+.notes > div > div > div > fieldset {
+  height: 151px;
+}
+
+.leftInput {
+  margin-bottom: 40px;
+}

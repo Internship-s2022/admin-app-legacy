@@ -1,0 +1,31 @@
+.headers th {
+  width: 100px;
+  font-weight: bolder;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  margin-block: 1%;
+  border-right: #d4d4df 0.5px solid;
+  border-bottom: #d4d4df 0.5px solid;
+  border-left: #d4d4df 0.5px solid;
+  border-radius: 4px;
+  box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0 1px 1px rgb(0 0 0 / 14%),
+    0 1px 3px rgb(0 0 0 / 12%);
+}
+
+.buttonCell {
+  display: flex;
+  gap: 10px;
+  align-self: center;
+  height: 50px;
+}
+
+.inactiveRows {
+  color: #000000;
+  opacity: 0.3;
+}

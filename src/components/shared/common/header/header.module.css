@@ -1,57 +1,72 @@
+header {
+  color: #ffffff;
+}
+
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 50px;
-  padding: 0 5%;
-  background-color: #ea3354;
+  height: 35px;
+  padding: 18px 50px;
+  background-color: #373867;
 }
 
 .brand {
-  font-size: 1rem;
-  font-weight: bold;
-}
-
-.socialIcon {
-  margin-left: 15px;
-}
-
-.navbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  min-height: 100px;
-  padding: 0 5%;
-  background-color: #f0f4f9;
+  justify-content: center;
+  width: 166px;
+  font-size: 20px;
+  font-weight: 100;
 }
 
-.appName {
-  font-size: 2rem;
+.brand :nth-child(2) {
+  margin-right: 5px;
+  margin-left: 25px;
+  font-weight: 600;
+}
+
+.navbarContainer {
+  font-size: 1rem;
   font-weight: bold;
 }
 
-.routes {
+.logout {
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
-  list-style-type: none;
+  width: 166px;
+  height: 24px;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, Cantarell,
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: white;
+  cursor: pointer;
+  background-color: #373867;
+  border: none;
 }
 
-.routes > li > a {
-  margin-left: 15px;
-  font-size: 1rem;
-  font-weight: 600;
-  color: black;
-  text-decoration: none;
-  text-transform: capitalize;
+.logout:hover {
+  color: #5bc59b;
 }
 
-@media screen and (min-width: 750px) {
-  .container {
-    padding: 0 20%;
-  }
+.logout:hover svg path {
+  fill: #5bc59b;
+}
 
-  .navbar {
-    padding: 0 20%;
-  }
+.iconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+}
+
+.iconContainer svg {
+  height: 18px;
+  padding-top: 4px;
+}
+
+.logout span {
+  margin-right: 5px;
 }

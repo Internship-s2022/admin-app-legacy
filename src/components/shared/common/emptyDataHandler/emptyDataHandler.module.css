@@ -1,0 +1,30 @@
+.errorContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 3%;
+  font-weight: 500;
+}
+
+.textContainer {
+  font-size: 28px;
+}
+
+.textContainer p {
+  margin: 36px 0;
+}
+
+.errorMessage {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: 100;
+}
+
+.errorMessage p:last-child {
+  font-style: italic;
+}
+
+.errorImg {
+  width: 40%;
+}

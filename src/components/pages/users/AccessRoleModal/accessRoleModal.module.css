@@ -1,0 +1,48 @@
+.title {
+  margin-bottom: 5%;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 1px solid rgb(0 0 0 / 6%);
+}
+
+.title h1 {
+  padding-left: 20px;
+}
+
+.modalContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 350px;
+  height: 200px;
+  margin: 3%;
+  text-align: center;
+}
+
+.selectedBtn {
+  width: 50%;
+  background-color: #4f987b;
+}
+
+.selectedBtn:hover {
+  background-color: #478c71;
+}
+
+.unselectedBtn {
+  width: 50%;
+  color: #4f987b;
+  border: 1px solid #4f987b;
+}
+
+.unselectedBtn:hover {
+  background-color: rgb(79 152 123 / 13%);
+  border: 1px solid #4f987b;
+}
+
+.confirmBtns {
+  display: flex;
+  gap: 5%;
+  justify-content: flex-end;
+  padding: 5%;
+}

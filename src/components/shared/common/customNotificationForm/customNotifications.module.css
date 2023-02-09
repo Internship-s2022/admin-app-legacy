@@ -1,0 +1,72 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 450px;
+  height: 430px;
+  text-align: center;
+  border-radius: 14px;
+}
+
+.titleContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 20px;
+  font-size: 20px;
+  font-weight: 500;
+  border-bottom: 1px solid #c810100f;
+}
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+}
+
+.input {
+  width: 220px;
+}
+
+.input > div > div > input {
+  padding: 7px 14px;
+}
+
+.input > div > div > fieldset {
+  width: 90%;
+  height: 40px;
+}
+
+.input > div > div > div > button > svg {
+  height: 20px;
+  margin-top: 0;
+}
+
+.input > div > label {
+  margin-top: -8px;
+}
+
+.input > div > p {
+  margin-top: 2px;
+  margin-left: 1px;
+}
+
+.textArea > div > div > div {
+  background-color: #f6f6f6;
+  box-shadow: 0 0 10px 0 #0000001e inset;
+}
+
+.textArea > div > div > p {
+  margin-bottom: 20px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-end;
+  width: 100%;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  margin-right: 10px;
+}

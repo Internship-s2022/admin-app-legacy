@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 553px;
+  height: 156px;
+  padding: 24px;
+  font-size: 16px;
+  color: rgb(0 0 0 / 87%);
+}
+
+.container span {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.buttonsContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cancelBtn {
+  margin-right: 24px;
+}

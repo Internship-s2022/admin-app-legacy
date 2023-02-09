@@ -1,0 +1,11 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.checkboxMsg {
+  margin-left: 2%;
+  font-size: 14px;
+  color: rgb(0 0 0 / 70%);
+}

@@ -1,42 +1,68 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
+import firebaseApp from 'src/helper/firebase';
+import { RootState } from 'src/redux/store';
+import { closeLogoutModal, openLogoutModal } from 'src/redux/ui/actions';
+import { AppDispatch } from 'src/types';
+
+import { ConfirmationMessage, Modal } from '../../ui';
+import HeaderLogo from '../../ui/icons/headerLogo';
+import LogoutIcon from '../../ui/icons/logoutIcon';
+import Navbar from '../navbar';
 import styles from './header.module.css';
 
 const Header = () => {
+  const dispatch: AppDispatch<null> = useDispatch();
+  const showLogoutModal = useSelector((state: RootState) => state.ui.showLogoutModal);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await firebaseApp.auth().signOut();
+      dispatch(closeLogoutModal());
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <header>
       <div className={styles.container}>
-        <div className={styles.brand}>Radium Rocket</div>
-        <div className={styles.brand}>SHOW_ENV: {process.env.REACT_APP_SHOW_ENV}</div>
-        <div>
-          <a href="https://www.facebook.com/radiumrocket" target="_blank" rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/facebook.svg`}
-            />
-          </a>
-          <a href="https://twitter.com/radiumrocket" target="_blank" rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/twitter.svg`}
-            />
-          </a>
-          <a href="https://www.instagram.com/radium.rocket/" target="_blank" rel="noreferrer">
-            <img
-              className={styles.socialIcon}
-              src={`${process.env.PUBLIC_URL}/assets/images/instagram.svg`}
-            />
-          </a>
+        <div className={styles.brand}>
+          <HeaderLogo testId="header-logo" />
+          <span>Radium</span>
+          <span>Admin</span>
         </div>
+        <nav className={styles.navbarContainer}>
+          <Navbar />
+        </nav>
+        <button
+          data-testid="logout-btn"
+          className={styles.logout}
+          onClick={() => dispatch(openLogoutModal())}
+        >
+          Salir
+          <div className={styles.iconContainer}>
+            <LogoutIcon color={'white'} />
+          </div>
+        </button>
       </div>
-      <nav className={styles.navbar}>
-        <div className={styles.appName}>App</div>
-        <ul className={styles.routes}>
-          <li>
-            <a href="/login">login</a>
-          </li>
-        </ul>
-      </nav>
+      <Modal
+        testId="confirm-logout-modal"
+        styles={styles.modal}
+        isOpen={showLogoutModal}
+        onClose={() => dispatch(closeLogoutModal())}
+      >
+        <ConfirmationMessage
+          title={'Cerrar sesión'}
+          description={'¿Desea cerrar sesión de Radium Admin?'}
+          handleConfirm={() => handleLogout()}
+          handleClose={() => dispatch(closeLogoutModal())}
+          color={'black'}
+        />
+      </Modal>
     </header>
   );
 };
